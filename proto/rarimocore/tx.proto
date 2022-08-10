@@ -3,6 +3,7 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 import "rarimocore/deposit.proto";
 import "rarimocore/confirmation.proto";
+import "rarimocore/change_key_ecdsa.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -15,6 +16,9 @@ service Msg {
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc UpdateConfirmation(MsgUpdateConfirmation) returns (MsgUpdateConfirmationResponse);
   rpc DeleteConfirmation(MsgDeleteConfirmation) returns (MsgDeleteConfirmationResponse);
+  rpc CreateChangeKeyECDSA(MsgCreateChangeKeyECDSA) returns (MsgCreateChangeKeyECDSAResponse);
+  rpc UpdateChangeKeyECDSA(MsgUpdateChangeKeyECDSA) returns (MsgUpdateChangeKeyECDSAResponse);
+  rpc DeleteChangeKeyECDSA(MsgDeleteChangeKeyECDSA) returns (MsgDeleteChangeKeyECDSAResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -75,5 +79,27 @@ message MsgDeleteConfirmation {
   string height = 2;
 }
 message MsgDeleteConfirmationResponse {}
+
+message MsgCreateChangeKeyECDSA {
+  string creator = 1;
+  string newKey = 2;
+
+  string signature = 3;
+}
+message MsgCreateChangeKeyECDSAResponse {}
+
+message MsgUpdateChangeKeyECDSA {
+  string creator = 1;
+  string newKey = 2;
+
+  string signature = 3;
+}
+message MsgUpdateChangeKeyECDSAResponse {}
+
+message MsgDeleteChangeKeyECDSA {
+  string creator = 1;
+  string newKey = 2;
+}
+message MsgDeleteChangeKeyECDSAResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

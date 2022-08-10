@@ -38,6 +38,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Height: "1",
 					},
 				},
+				ChangeKeyECDSAList: []types.ChangeKeyECDSA{
+					{
+						NewKey: "0",
+					},
+					{
+						NewKey: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -65,6 +73,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Height: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated changeKeyECDSA",
+			genState: &types.GenesisState{
+				ChangeKeyECDSAList: []types.ChangeKeyECDSA{
+					{
+						NewKey: "0",
+					},
+					{
+						NewKey: "0",
 					},
 				},
 			},

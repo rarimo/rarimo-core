@@ -13,6 +13,12 @@ export interface ProtobufAny {
   "@type"?: string;
 }
 
+export interface RarimocoreChangeKeyECDSA {
+  newKey?: string;
+  signature?: string;
+  creator?: string;
+}
+
 export interface RarimocoreConfirmation {
   height?: string;
   root?: string;
@@ -32,13 +38,19 @@ export interface RarimocoreDeposit {
   creator?: string;
 }
 
+export type RarimocoreMsgCreateChangeKeyECDSAResponse = object;
+
 export type RarimocoreMsgCreateConfirmationResponse = object;
 
 export type RarimocoreMsgCreateDepositResponse = object;
 
+export type RarimocoreMsgDeleteChangeKeyECDSAResponse = object;
+
 export type RarimocoreMsgDeleteConfirmationResponse = object;
 
 export type RarimocoreMsgDeleteDepositResponse = object;
+
+export type RarimocoreMsgUpdateChangeKeyECDSAResponse = object;
 
 export type RarimocoreMsgUpdateConfirmationResponse = object;
 
@@ -48,6 +60,21 @@ export type RarimocoreMsgUpdateDepositResponse = object;
  * Params defines the parameters for the module.
  */
 export type RarimocoreParams = object;
+
+export interface RarimocoreQueryAllChangeKeyECDSAResponse {
+  changeKeyECDSA?: RarimocoreChangeKeyECDSA[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface RarimocoreQueryAllConfirmationResponse {
   confirmation?: RarimocoreConfirmation[];
@@ -77,6 +104,10 @@ export interface RarimocoreQueryAllDepositResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface RarimocoreQueryGetChangeKeyECDSAResponse {
+  changeKeyECDSA?: RarimocoreChangeKeyECDSA;
 }
 
 export interface RarimocoreQueryGetConfirmationResponse {
@@ -139,13 +170,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -357,10 +381,51 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title rarimocore/confirmation.proto
+ * @title rarimocore/change_key_ecdsa.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChangeKeyEcdsaAll
+   * @summary Queries a list of ChangeKeyECDSA items.
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa
+   */
+  queryChangeKeyEcdsaAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RarimocoreQueryAllChangeKeyECDSAResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChangeKeyEcdsa
+   * @summary Queries a ChangeKeyECDSA by index.
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}
+   */
+  queryChangeKeyEcdsa = (newKey: string, params: RequestParams = {}) =>
+    this.request<RarimocoreQueryGetChangeKeyECDSAResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/${newKey}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -375,7 +440,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -417,7 +481,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
