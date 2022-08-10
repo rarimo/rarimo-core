@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"gitlab.com/rarify-protocol/rarimo-core/crypto"
 )
 
 const (
@@ -54,6 +55,10 @@ func (msg *MsgCreateConfirmation) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateConfirmation) ValidateBasic() error {
+	if err := crypto.VerifyMerkleRoot(msg.Hashes, msg.Root); err != nil {
+		return err
+	}
+
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

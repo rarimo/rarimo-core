@@ -5,11 +5,22 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"gitlab.com/rarify-protocol/rarimo-core/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	//TODO add public key
+	if err := crypto.VerifyECDSA(msg.SigECDSA, msg.Root, nil); err != nil {
+		return nil, err
+	}
+
+	//TODO add public key
+	if err := crypto.VerifyEdDSA(msg.SigEdDSA, msg.Root, nil); err != nil {
+		return nil, err
+	}
 
 	// Check if the value already exists
 	_, isFound := k.GetConfirmation(
