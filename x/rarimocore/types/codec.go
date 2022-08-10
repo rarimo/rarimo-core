@@ -17,6 +17,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateChangeKeyECDSA{}, "rarimocore/CreateChangeKeyECDSA", nil)
 	cdc.RegisterConcrete(&MsgUpdateChangeKeyECDSA{}, "rarimocore/UpdateChangeKeyECDSA", nil)
 	cdc.RegisterConcrete(&MsgDeleteChangeKeyECDSA{}, "rarimocore/DeleteChangeKeyECDSA", nil)
+	cdc.RegisterConcrete(&MsgCreateChangeKeyEdDSA{}, "rarimocore/CreateChangeKeyEdDSA", nil)
+	cdc.RegisterConcrete(&MsgUpdateChangeKeyEdDSA{}, "rarimocore/UpdateChangeKeyEdDSA", nil)
+	cdc.RegisterConcrete(&MsgDeleteChangeKeyEdDSA{}, "rarimocore/DeleteChangeKeyEdDSA", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -35,6 +38,11 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateChangeKeyECDSA{},
 		&MsgUpdateChangeKeyECDSA{},
 		&MsgDeleteChangeKeyECDSA{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateChangeKeyEdDSA{},
+		&MsgUpdateChangeKeyEdDSA{},
+		&MsgDeleteChangeKeyEdDSA{},
 	)
 	// this line is used by starport scaffolding # 3
 

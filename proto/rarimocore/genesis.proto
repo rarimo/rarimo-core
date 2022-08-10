@@ -6,6 +6,7 @@ import "rarimocore/params.proto";
 import "rarimocore/deposit.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/change_key_ecdsa.proto";
+import "rarimocore/change_key_ed_dsa.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -16,5 +17,6 @@ message GenesisState {
   repeated Deposit depositList = 2 [(gogoproto.nullable) = false];
   repeated Confirmation confirmationList = 3 [(gogoproto.nullable) = false];
   repeated ChangeKeyECDSA changeKeyECDSAList = 4 [(gogoproto.nullable) = false];
+  repeated ChangeKeyEdDSA changeKeyEdDSAList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

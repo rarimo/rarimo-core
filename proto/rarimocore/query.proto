@@ -8,6 +8,7 @@ import "rarimocore/params.proto";
 import "rarimocore/deposit.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/change_key_ecdsa.proto";
+import "rarimocore/change_key_ed_dsa.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -46,6 +47,16 @@ service Query {
 	// Queries a list of ChangeKeyECDSA items.
 	rpc ChangeKeyECDSAAll(QueryAllChangeKeyECDSARequest) returns (QueryAllChangeKeyECDSAResponse) {
 		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa";
+	}
+
+// Queries a ChangeKeyEdDSA by index.
+	rpc ChangeKeyEdDSA(QueryGetChangeKeyEdDSARequest) returns (QueryGetChangeKeyEdDSAResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa/{newKey}";
+	}
+
+	// Queries a list of ChangeKeyEdDSA items.
+	rpc ChangeKeyEdDSAAll(QueryAllChangeKeyEdDSARequest) returns (QueryAllChangeKeyEdDSAResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -111,6 +122,24 @@ message QueryAllChangeKeyECDSARequest {
 
 message QueryAllChangeKeyECDSAResponse {
 	repeated ChangeKeyECDSA changeKeyECDSA = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetChangeKeyEdDSARequest {
+	  string newKey = 1;
+
+}
+
+message QueryGetChangeKeyEdDSAResponse {
+	ChangeKeyEdDSA changeKeyEdDSA = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChangeKeyEdDSARequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChangeKeyEdDSAResponse {
+	repeated ChangeKeyEdDSA changeKeyEdDSA = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

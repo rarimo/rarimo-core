@@ -8,6 +8,7 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Confirmation } from "../rarimocore/confirmation";
 import { ChangeKeyECDSA } from "../rarimocore/change_key_ecdsa";
+import { ChangeKeyEdDSA } from "../rarimocore/change_key_ed_dsa";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -68,6 +69,23 @@ export interface QueryAllChangeKeyECDSARequest {
 
 export interface QueryAllChangeKeyECDSAResponse {
   changeKeyECDSA: ChangeKeyECDSA[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetChangeKeyEdDSARequest {
+  newKey: string;
+}
+
+export interface QueryGetChangeKeyEdDSAResponse {
+  changeKeyEdDSA: ChangeKeyEdDSA | undefined;
+}
+
+export interface QueryAllChangeKeyEdDSARequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllChangeKeyEdDSAResponse {
+  changeKeyEdDSA: ChangeKeyEdDSA[];
   pagination: PageResponse | undefined;
 }
 
@@ -1101,6 +1119,330 @@ export const QueryAllChangeKeyECDSAResponse = {
   },
 };
 
+const baseQueryGetChangeKeyEdDSARequest: object = { newKey: "" };
+
+export const QueryGetChangeKeyEdDSARequest = {
+  encode(
+    message: QueryGetChangeKeyEdDSARequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.newKey !== "") {
+      writer.uint32(10).string(message.newKey);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChangeKeyEdDSARequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChangeKeyEdDSARequest,
+    } as QueryGetChangeKeyEdDSARequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.newKey = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChangeKeyEdDSARequest {
+    const message = {
+      ...baseQueryGetChangeKeyEdDSARequest,
+    } as QueryGetChangeKeyEdDSARequest;
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = String(object.newKey);
+    } else {
+      message.newKey = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChangeKeyEdDSARequest): unknown {
+    const obj: any = {};
+    message.newKey !== undefined && (obj.newKey = message.newKey);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChangeKeyEdDSARequest>
+  ): QueryGetChangeKeyEdDSARequest {
+    const message = {
+      ...baseQueryGetChangeKeyEdDSARequest,
+    } as QueryGetChangeKeyEdDSARequest;
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = object.newKey;
+    } else {
+      message.newKey = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetChangeKeyEdDSAResponse: object = {};
+
+export const QueryGetChangeKeyEdDSAResponse = {
+  encode(
+    message: QueryGetChangeKeyEdDSAResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.changeKeyEdDSA !== undefined) {
+      ChangeKeyEdDSA.encode(
+        message.changeKeyEdDSA,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChangeKeyEdDSAResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChangeKeyEdDSAResponse,
+    } as QueryGetChangeKeyEdDSAResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.changeKeyEdDSA = ChangeKeyEdDSA.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChangeKeyEdDSAResponse {
+    const message = {
+      ...baseQueryGetChangeKeyEdDSAResponse,
+    } as QueryGetChangeKeyEdDSAResponse;
+    if (object.changeKeyEdDSA !== undefined && object.changeKeyEdDSA !== null) {
+      message.changeKeyEdDSA = ChangeKeyEdDSA.fromJSON(object.changeKeyEdDSA);
+    } else {
+      message.changeKeyEdDSA = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChangeKeyEdDSAResponse): unknown {
+    const obj: any = {};
+    message.changeKeyEdDSA !== undefined &&
+      (obj.changeKeyEdDSA = message.changeKeyEdDSA
+        ? ChangeKeyEdDSA.toJSON(message.changeKeyEdDSA)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChangeKeyEdDSAResponse>
+  ): QueryGetChangeKeyEdDSAResponse {
+    const message = {
+      ...baseQueryGetChangeKeyEdDSAResponse,
+    } as QueryGetChangeKeyEdDSAResponse;
+    if (object.changeKeyEdDSA !== undefined && object.changeKeyEdDSA !== null) {
+      message.changeKeyEdDSA = ChangeKeyEdDSA.fromPartial(
+        object.changeKeyEdDSA
+      );
+    } else {
+      message.changeKeyEdDSA = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllChangeKeyEdDSARequest: object = {};
+
+export const QueryAllChangeKeyEdDSARequest = {
+  encode(
+    message: QueryAllChangeKeyEdDSARequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllChangeKeyEdDSARequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllChangeKeyEdDSARequest,
+    } as QueryAllChangeKeyEdDSARequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllChangeKeyEdDSARequest {
+    const message = {
+      ...baseQueryAllChangeKeyEdDSARequest,
+    } as QueryAllChangeKeyEdDSARequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllChangeKeyEdDSARequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllChangeKeyEdDSARequest>
+  ): QueryAllChangeKeyEdDSARequest {
+    const message = {
+      ...baseQueryAllChangeKeyEdDSARequest,
+    } as QueryAllChangeKeyEdDSARequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllChangeKeyEdDSAResponse: object = {};
+
+export const QueryAllChangeKeyEdDSAResponse = {
+  encode(
+    message: QueryAllChangeKeyEdDSAResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.changeKeyEdDSA) {
+      ChangeKeyEdDSA.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllChangeKeyEdDSAResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllChangeKeyEdDSAResponse,
+    } as QueryAllChangeKeyEdDSAResponse;
+    message.changeKeyEdDSA = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.changeKeyEdDSA.push(
+            ChangeKeyEdDSA.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllChangeKeyEdDSAResponse {
+    const message = {
+      ...baseQueryAllChangeKeyEdDSAResponse,
+    } as QueryAllChangeKeyEdDSAResponse;
+    message.changeKeyEdDSA = [];
+    if (object.changeKeyEdDSA !== undefined && object.changeKeyEdDSA !== null) {
+      for (const e of object.changeKeyEdDSA) {
+        message.changeKeyEdDSA.push(ChangeKeyEdDSA.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllChangeKeyEdDSAResponse): unknown {
+    const obj: any = {};
+    if (message.changeKeyEdDSA) {
+      obj.changeKeyEdDSA = message.changeKeyEdDSA.map((e) =>
+        e ? ChangeKeyEdDSA.toJSON(e) : undefined
+      );
+    } else {
+      obj.changeKeyEdDSA = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllChangeKeyEdDSAResponse>
+  ): QueryAllChangeKeyEdDSAResponse {
+    const message = {
+      ...baseQueryAllChangeKeyEdDSAResponse,
+    } as QueryAllChangeKeyEdDSAResponse;
+    message.changeKeyEdDSA = [];
+    if (object.changeKeyEdDSA !== undefined && object.changeKeyEdDSA !== null) {
+      for (const e of object.changeKeyEdDSA) {
+        message.changeKeyEdDSA.push(ChangeKeyEdDSA.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1125,6 +1467,14 @@ export interface Query {
   ChangeKeyECDSAAll(
     request: QueryAllChangeKeyECDSARequest
   ): Promise<QueryAllChangeKeyECDSAResponse>;
+  /** Queries a ChangeKeyEdDSA by index. */
+  ChangeKeyEdDSA(
+    request: QueryGetChangeKeyEdDSARequest
+  ): Promise<QueryGetChangeKeyEdDSAResponse>;
+  /** Queries a list of ChangeKeyEdDSA items. */
+  ChangeKeyEdDSAAll(
+    request: QueryAllChangeKeyEdDSARequest
+  ): Promise<QueryAllChangeKeyEdDSAResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1221,6 +1571,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllChangeKeyECDSAResponse.decode(new Reader(data))
+    );
+  }
+
+  ChangeKeyEdDSA(
+    request: QueryGetChangeKeyEdDSARequest
+  ): Promise<QueryGetChangeKeyEdDSAResponse> {
+    const data = QueryGetChangeKeyEdDSARequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Query",
+      "ChangeKeyEdDSA",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetChangeKeyEdDSAResponse.decode(new Reader(data))
+    );
+  }
+
+  ChangeKeyEdDSAAll(
+    request: QueryAllChangeKeyEdDSARequest
+  ): Promise<QueryAllChangeKeyEdDSAResponse> {
+    const data = QueryAllChangeKeyEdDSARequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Query",
+      "ChangeKeyEdDSAAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllChangeKeyEdDSAResponse.decode(new Reader(data))
     );
   }
 }

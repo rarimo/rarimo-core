@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		DepositList:        []Deposit{},
 		ConfirmationList:   []Confirmation{},
 		ChangeKeyECDSAList: []ChangeKeyECDSA{},
+		ChangeKeyEdDSAList: []ChangeKeyEdDSA{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -50,6 +51,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for changeKeyECDSA")
 		}
 		changeKeyECDSAIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in changeKeyEdDSA
+	changeKeyEdDSAIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ChangeKeyEdDSAList {
+		index := string(ChangeKeyEdDSAKey(elem.NewKey))
+		if _, ok := changeKeyEdDSAIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for changeKeyEdDSA")
+		}
+		changeKeyEdDSAIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

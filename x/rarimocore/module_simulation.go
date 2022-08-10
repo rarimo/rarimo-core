@@ -60,6 +60,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteChangeKeyECDSA int = 100
 
+	opWeightMsgCreateChangeKeyEdDSA = "op_weight_msg_change_key_ed_dsa"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateChangeKeyEdDSA int = 100
+
+	opWeightMsgUpdateChangeKeyEdDSA = "op_weight_msg_change_key_ed_dsa"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateChangeKeyEdDSA int = 100
+
+	opWeightMsgDeleteChangeKeyEdDSA = "op_weight_msg_change_key_ed_dsa"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteChangeKeyEdDSA int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -92,6 +104,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			},
 		},
 		ChangeKeyECDSAList: []types.ChangeKeyECDSA{
+			{
+				Creator: sample.AccAddress(),
+				NewKey:  "0",
+			},
+			{
+				Creator: sample.AccAddress(),
+				NewKey:  "1",
+			},
+		},
+		ChangeKeyEdDSAList: []types.ChangeKeyEdDSA{
 			{
 				Creator: sample.AccAddress(),
 				NewKey:  "0",
@@ -221,6 +243,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteChangeKeyECDSA,
 		rarimocoresimulation.SimulateMsgDeleteChangeKeyECDSA(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateChangeKeyEdDSA int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateChangeKeyEdDSA, &weightMsgCreateChangeKeyEdDSA, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateChangeKeyEdDSA = defaultWeightMsgCreateChangeKeyEdDSA
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateChangeKeyEdDSA,
+		rarimocoresimulation.SimulateMsgCreateChangeKeyEdDSA(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateChangeKeyEdDSA int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateChangeKeyEdDSA, &weightMsgUpdateChangeKeyEdDSA, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateChangeKeyEdDSA = defaultWeightMsgUpdateChangeKeyEdDSA
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateChangeKeyEdDSA,
+		rarimocoresimulation.SimulateMsgUpdateChangeKeyEdDSA(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteChangeKeyEdDSA int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteChangeKeyEdDSA, &weightMsgDeleteChangeKeyEdDSA, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteChangeKeyEdDSA = defaultWeightMsgDeleteChangeKeyEdDSA
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteChangeKeyEdDSA,
+		rarimocoresimulation.SimulateMsgDeleteChangeKeyEdDSA(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

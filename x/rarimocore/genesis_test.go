@@ -38,6 +38,14 @@ func TestGenesis(t *testing.T) {
 				NewKey: "1",
 			},
 		},
+		ChangeKeyEdDSAList: []types.ChangeKeyEdDSA{
+			{
+				NewKey: "0",
+			},
+			{
+				NewKey: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -52,5 +60,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.DepositList, got.DepositList)
 	require.ElementsMatch(t, genesisState.ConfirmationList, got.ConfirmationList)
 	require.ElementsMatch(t, genesisState.ChangeKeyECDSAList, got.ChangeKeyECDSAList)
+	require.ElementsMatch(t, genesisState.ChangeKeyEdDSAList, got.ChangeKeyEdDSAList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

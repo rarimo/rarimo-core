@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarifyprotocol.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
+
+message ChangeKeyEdDSA {
+  string newKey = 1; 
+  string signature = 2; 
+  string creator = 3;
+}
+

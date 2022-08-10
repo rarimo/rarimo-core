@@ -86,6 +86,29 @@ export interface MsgDeleteChangeKeyECDSA {
 
 export interface MsgDeleteChangeKeyECDSAResponse {}
 
+export interface MsgCreateChangeKeyEdDSA {
+  creator: string;
+  newKey: string;
+  signature: string;
+}
+
+export interface MsgCreateChangeKeyEdDSAResponse {}
+
+export interface MsgUpdateChangeKeyEdDSA {
+  creator: string;
+  newKey: string;
+  signature: string;
+}
+
+export interface MsgUpdateChangeKeyEdDSAResponse {}
+
+export interface MsgDeleteChangeKeyEdDSA {
+  creator: string;
+  newKey: string;
+}
+
+export interface MsgDeleteChangeKeyEdDSAResponse {}
+
 const baseMsgCreateDeposit: object = {
   creator: "",
   tx: "",
@@ -1644,6 +1667,453 @@ export const MsgDeleteChangeKeyECDSAResponse = {
   },
 };
 
+const baseMsgCreateChangeKeyEdDSA: object = {
+  creator: "",
+  newKey: "",
+  signature: "",
+};
+
+export const MsgCreateChangeKeyEdDSA = {
+  encode(
+    message: MsgCreateChangeKeyEdDSA,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.newKey !== "") {
+      writer.uint32(18).string(message.newKey);
+    }
+    if (message.signature !== "") {
+      writer.uint32(26).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateChangeKeyEdDSA {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSA,
+    } as MsgCreateChangeKeyEdDSA;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.newKey = reader.string();
+          break;
+        case 3:
+          message.signature = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateChangeKeyEdDSA {
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSA,
+    } as MsgCreateChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = String(object.newKey);
+    } else {
+      message.newKey = "";
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateChangeKeyEdDSA): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.newKey !== undefined && (obj.newKey = message.newKey);
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateChangeKeyEdDSA>
+  ): MsgCreateChangeKeyEdDSA {
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSA,
+    } as MsgCreateChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = object.newKey;
+    } else {
+      message.newKey = "";
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateChangeKeyEdDSAResponse: object = {};
+
+export const MsgCreateChangeKeyEdDSAResponse = {
+  encode(
+    _: MsgCreateChangeKeyEdDSAResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateChangeKeyEdDSAResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSAResponse,
+    } as MsgCreateChangeKeyEdDSAResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSAResponse,
+    } as MsgCreateChangeKeyEdDSAResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateChangeKeyEdDSAResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateChangeKeyEdDSAResponse>
+  ): MsgCreateChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgCreateChangeKeyEdDSAResponse,
+    } as MsgCreateChangeKeyEdDSAResponse;
+    return message;
+  },
+};
+
+const baseMsgUpdateChangeKeyEdDSA: object = {
+  creator: "",
+  newKey: "",
+  signature: "",
+};
+
+export const MsgUpdateChangeKeyEdDSA = {
+  encode(
+    message: MsgUpdateChangeKeyEdDSA,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.newKey !== "") {
+      writer.uint32(18).string(message.newKey);
+    }
+    if (message.signature !== "") {
+      writer.uint32(26).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateChangeKeyEdDSA {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSA,
+    } as MsgUpdateChangeKeyEdDSA;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.newKey = reader.string();
+          break;
+        case 3:
+          message.signature = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateChangeKeyEdDSA {
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSA,
+    } as MsgUpdateChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = String(object.newKey);
+    } else {
+      message.newKey = "";
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateChangeKeyEdDSA): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.newKey !== undefined && (obj.newKey = message.newKey);
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateChangeKeyEdDSA>
+  ): MsgUpdateChangeKeyEdDSA {
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSA,
+    } as MsgUpdateChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = object.newKey;
+    } else {
+      message.newKey = "";
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateChangeKeyEdDSAResponse: object = {};
+
+export const MsgUpdateChangeKeyEdDSAResponse = {
+  encode(
+    _: MsgUpdateChangeKeyEdDSAResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateChangeKeyEdDSAResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSAResponse,
+    } as MsgUpdateChangeKeyEdDSAResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSAResponse,
+    } as MsgUpdateChangeKeyEdDSAResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateChangeKeyEdDSAResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateChangeKeyEdDSAResponse>
+  ): MsgUpdateChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgUpdateChangeKeyEdDSAResponse,
+    } as MsgUpdateChangeKeyEdDSAResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteChangeKeyEdDSA: object = { creator: "", newKey: "" };
+
+export const MsgDeleteChangeKeyEdDSA = {
+  encode(
+    message: MsgDeleteChangeKeyEdDSA,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.newKey !== "") {
+      writer.uint32(18).string(message.newKey);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgDeleteChangeKeyEdDSA {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSA,
+    } as MsgDeleteChangeKeyEdDSA;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.newKey = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteChangeKeyEdDSA {
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSA,
+    } as MsgDeleteChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = String(object.newKey);
+    } else {
+      message.newKey = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteChangeKeyEdDSA): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.newKey !== undefined && (obj.newKey = message.newKey);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteChangeKeyEdDSA>
+  ): MsgDeleteChangeKeyEdDSA {
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSA,
+    } as MsgDeleteChangeKeyEdDSA;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.newKey !== undefined && object.newKey !== null) {
+      message.newKey = object.newKey;
+    } else {
+      message.newKey = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteChangeKeyEdDSAResponse: object = {};
+
+export const MsgDeleteChangeKeyEdDSAResponse = {
+  encode(
+    _: MsgDeleteChangeKeyEdDSAResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteChangeKeyEdDSAResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSAResponse,
+    } as MsgDeleteChangeKeyEdDSAResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSAResponse,
+    } as MsgDeleteChangeKeyEdDSAResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteChangeKeyEdDSAResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteChangeKeyEdDSAResponse>
+  ): MsgDeleteChangeKeyEdDSAResponse {
+    const message = {
+      ...baseMsgDeleteChangeKeyEdDSAResponse,
+    } as MsgDeleteChangeKeyEdDSAResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateDeposit(request: MsgCreateDeposit): Promise<MsgCreateDepositResponse>;
@@ -1664,10 +2134,19 @@ export interface Msg {
   UpdateChangeKeyECDSA(
     request: MsgUpdateChangeKeyECDSA
   ): Promise<MsgUpdateChangeKeyECDSAResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteChangeKeyECDSA(
     request: MsgDeleteChangeKeyECDSA
   ): Promise<MsgDeleteChangeKeyECDSAResponse>;
+  CreateChangeKeyEdDSA(
+    request: MsgCreateChangeKeyEdDSA
+  ): Promise<MsgCreateChangeKeyEdDSAResponse>;
+  UpdateChangeKeyEdDSA(
+    request: MsgUpdateChangeKeyEdDSA
+  ): Promise<MsgUpdateChangeKeyEdDSAResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  DeleteChangeKeyEdDSA(
+    request: MsgDeleteChangeKeyEdDSA
+  ): Promise<MsgDeleteChangeKeyEdDSAResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1792,6 +2271,48 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteChangeKeyECDSAResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateChangeKeyEdDSA(
+    request: MsgCreateChangeKeyEdDSA
+  ): Promise<MsgCreateChangeKeyEdDSAResponse> {
+    const data = MsgCreateChangeKeyEdDSA.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "CreateChangeKeyEdDSA",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateChangeKeyEdDSAResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateChangeKeyEdDSA(
+    request: MsgUpdateChangeKeyEdDSA
+  ): Promise<MsgUpdateChangeKeyEdDSAResponse> {
+    const data = MsgUpdateChangeKeyEdDSA.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "UpdateChangeKeyEdDSA",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateChangeKeyEdDSAResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteChangeKeyEdDSA(
+    request: MsgDeleteChangeKeyEdDSA
+  ): Promise<MsgDeleteChangeKeyEdDSAResponse> {
+    const data = MsgDeleteChangeKeyEdDSA.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "DeleteChangeKeyEdDSA",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteChangeKeyEdDSAResponse.decode(new Reader(data))
     );
   }
 }
