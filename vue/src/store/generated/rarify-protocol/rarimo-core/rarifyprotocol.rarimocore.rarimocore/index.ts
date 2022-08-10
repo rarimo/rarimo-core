@@ -1,10 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Confirmation } from "./module/types/rarimocore/confirmation"
 import { Deposit } from "./module/types/rarimocore/deposit"
 import { Params } from "./module/types/rarimocore/params"
 
 
-export { Deposit, Params };
+export { Confirmation, Deposit, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -45,8 +46,11 @@ const getDefaultState = () => {
 				Params: {},
 				Deposit: {},
 				DepositAll: {},
+				Confirmation: {},
+				ConfirmationAll: {},
 				
 				_Structure: {
+						Confirmation: getStructure(Confirmation.fromPartial({})),
 						Deposit: getStructure(Deposit.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
@@ -94,6 +98,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.DepositAll[JSON.stringify(params)] ?? {}
+		},
+				getConfirmation: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Confirmation[JSON.stringify(params)] ?? {}
+		},
+				getConfirmationAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ConfirmationAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -199,6 +215,54 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryConfirmation({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryConfirmation( key.height)).data
+				
+					
+				commit('QUERY', { query: 'Confirmation', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryConfirmation', payload: { options: { all }, params: {...key},query }})
+				return getters['getConfirmation']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryConfirmation API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryConfirmationAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryConfirmationAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryConfirmationAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ConfirmationAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryConfirmationAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getConfirmationAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryConfirmationAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgUpdateDeposit({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -214,18 +278,33 @@ export default {
 				}
 			}
 		},
-		async sendMsgDeleteDeposit({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgCreateConfirmation({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDeleteDeposit(value)
+				const msg = await txClient.msgCreateConfirmation(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDeleteDeposit:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgCreateConfirmation:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgDeleteDeposit:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgCreateConfirmation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgDeleteConfirmation({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgDeleteConfirmation(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDeleteConfirmation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgDeleteConfirmation:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -244,6 +323,36 @@ export default {
 				}
 			}
 		},
+		async sendMsgDeleteDeposit({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgDeleteDeposit(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDeleteDeposit:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgDeleteDeposit:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateConfirmation({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUpdateConfirmation(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateConfirmation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateConfirmation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgUpdateDeposit({ rootGetters }, { value }) {
 			try {
@@ -255,6 +364,45 @@ export default {
 					throw new Error('TxClient:MsgUpdateDeposit:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgUpdateDeposit:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateConfirmation({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateConfirmation(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateConfirmation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateConfirmation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgDeleteConfirmation({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgDeleteConfirmation(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDeleteConfirmation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgDeleteConfirmation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateDeposit({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateDeposit(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateDeposit:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateDeposit:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -271,16 +419,16 @@ export default {
 				}
 			}
 		},
-		async MsgCreateDeposit({ rootGetters }, { value }) {
+		async MsgUpdateConfirmation({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateDeposit(value)
+				const msg = await txClient.msgUpdateConfirmation(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateDeposit:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateConfirmation:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgCreateDeposit:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgUpdateConfirmation:Create Could not create message: ' + e.message)
 				}
 			}
 		},

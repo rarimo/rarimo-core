@@ -13,6 +13,14 @@ export interface ProtobufAny {
   "@type"?: string;
 }
 
+export interface RarimocoreConfirmation {
+  height?: string;
+  root?: string;
+  hashes?: string[];
+  signature?: string;
+  creator?: string;
+}
+
 export interface RarimocoreDeposit {
   tx?: string;
   fromChain?: string;
@@ -23,9 +31,15 @@ export interface RarimocoreDeposit {
   creator?: string;
 }
 
+export type RarimocoreMsgCreateConfirmationResponse = object;
+
 export type RarimocoreMsgCreateDepositResponse = object;
 
+export type RarimocoreMsgDeleteConfirmationResponse = object;
+
 export type RarimocoreMsgDeleteDepositResponse = object;
+
+export type RarimocoreMsgUpdateConfirmationResponse = object;
 
 export type RarimocoreMsgUpdateDepositResponse = object;
 
@@ -33,6 +47,21 @@ export type RarimocoreMsgUpdateDepositResponse = object;
  * Params defines the parameters for the module.
  */
 export type RarimocoreParams = object;
+
+export interface RarimocoreQueryAllConfirmationResponse {
+  confirmation?: RarimocoreConfirmation[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface RarimocoreQueryAllDepositResponse {
   deposit?: RarimocoreDeposit[];
@@ -47,6 +76,10 @@ export interface RarimocoreQueryAllDepositResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface RarimocoreQueryGetConfirmationResponse {
+  confirmation?: RarimocoreConfirmation;
 }
 
 export interface RarimocoreQueryGetDepositResponse {
@@ -105,6 +138,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -316,10 +356,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title rarimocore/deposit.proto
+ * @title rarimocore/confirmation.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryConfirmationAll
+   * @summary Queries a list of Confirmation items.
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation
+   */
+  queryConfirmationAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RarimocoreQueryAllConfirmationResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryConfirmation
+   * @summary Queries a Confirmation by index.
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation/{height}
+   */
+  queryConfirmation = (height: string, params: RequestParams = {}) =>
+    this.request<RarimocoreQueryGetConfirmationResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation/${height}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -334,6 +416,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

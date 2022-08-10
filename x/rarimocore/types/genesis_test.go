@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Tx: "1",
 					},
 				},
+				ConfirmationList: []types.Confirmation{
+					{
+						Height: "0",
+					},
+					{
+						Height: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -43,6 +51,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Tx: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated confirmation",
+			genState: &types.GenesisState{
+				ConfirmationList: []types.Confirmation{
+					{
+						Height: "0",
+					},
+					{
+						Height: "0",
 					},
 				},
 			},

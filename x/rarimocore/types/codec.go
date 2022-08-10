@@ -11,6 +11,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateDeposit{}, "rarimocore/CreateDeposit", nil)
 	cdc.RegisterConcrete(&MsgUpdateDeposit{}, "rarimocore/UpdateDeposit", nil)
 	cdc.RegisterConcrete(&MsgDeleteDeposit{}, "rarimocore/DeleteDeposit", nil)
+	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
+	cdc.RegisterConcrete(&MsgUpdateConfirmation{}, "rarimocore/UpdateConfirmation", nil)
+	cdc.RegisterConcrete(&MsgDeleteConfirmation{}, "rarimocore/DeleteConfirmation", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -19,6 +22,11 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateDeposit{},
 		&MsgUpdateDeposit{},
 		&MsgDeleteDeposit{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateConfirmation{},
+		&MsgUpdateConfirmation{},
+		&MsgDeleteConfirmation{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -6,6 +6,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Confirmation } from "../rarimocore/confirmation";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -32,6 +33,23 @@ export interface QueryAllDepositRequest {
 
 export interface QueryAllDepositResponse {
   deposit: Deposit[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetConfirmationRequest {
+  height: string;
+}
+
+export interface QueryGetConfirmationResponse {
+  confirmation: Confirmation | undefined;
+}
+
+export interface QueryAllConfirmationRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllConfirmationResponse {
+  confirmation: Confirmation[];
   pagination: PageResponse | undefined;
 }
 
@@ -422,6 +440,325 @@ export const QueryAllDepositResponse = {
   },
 };
 
+const baseQueryGetConfirmationRequest: object = { height: "" };
+
+export const QueryGetConfirmationRequest = {
+  encode(
+    message: QueryGetConfirmationRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.height !== "") {
+      writer.uint32(10).string(message.height);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetConfirmationRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetConfirmationRequest,
+    } as QueryGetConfirmationRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.height = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetConfirmationRequest {
+    const message = {
+      ...baseQueryGetConfirmationRequest,
+    } as QueryGetConfirmationRequest;
+    if (object.height !== undefined && object.height !== null) {
+      message.height = String(object.height);
+    } else {
+      message.height = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetConfirmationRequest): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = message.height);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetConfirmationRequest>
+  ): QueryGetConfirmationRequest {
+    const message = {
+      ...baseQueryGetConfirmationRequest,
+    } as QueryGetConfirmationRequest;
+    if (object.height !== undefined && object.height !== null) {
+      message.height = object.height;
+    } else {
+      message.height = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetConfirmationResponse: object = {};
+
+export const QueryGetConfirmationResponse = {
+  encode(
+    message: QueryGetConfirmationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.confirmation !== undefined) {
+      Confirmation.encode(
+        message.confirmation,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetConfirmationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetConfirmationResponse,
+    } as QueryGetConfirmationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.confirmation = Confirmation.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetConfirmationResponse {
+    const message = {
+      ...baseQueryGetConfirmationResponse,
+    } as QueryGetConfirmationResponse;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = Confirmation.fromJSON(object.confirmation);
+    } else {
+      message.confirmation = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetConfirmationResponse): unknown {
+    const obj: any = {};
+    message.confirmation !== undefined &&
+      (obj.confirmation = message.confirmation
+        ? Confirmation.toJSON(message.confirmation)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetConfirmationResponse>
+  ): QueryGetConfirmationResponse {
+    const message = {
+      ...baseQueryGetConfirmationResponse,
+    } as QueryGetConfirmationResponse;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = Confirmation.fromPartial(object.confirmation);
+    } else {
+      message.confirmation = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllConfirmationRequest: object = {};
+
+export const QueryAllConfirmationRequest = {
+  encode(
+    message: QueryAllConfirmationRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllConfirmationRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllConfirmationRequest,
+    } as QueryAllConfirmationRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllConfirmationRequest {
+    const message = {
+      ...baseQueryAllConfirmationRequest,
+    } as QueryAllConfirmationRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllConfirmationRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllConfirmationRequest>
+  ): QueryAllConfirmationRequest {
+    const message = {
+      ...baseQueryAllConfirmationRequest,
+    } as QueryAllConfirmationRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllConfirmationResponse: object = {};
+
+export const QueryAllConfirmationResponse = {
+  encode(
+    message: QueryAllConfirmationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.confirmation) {
+      Confirmation.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllConfirmationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllConfirmationResponse,
+    } as QueryAllConfirmationResponse;
+    message.confirmation = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.confirmation.push(
+            Confirmation.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllConfirmationResponse {
+    const message = {
+      ...baseQueryAllConfirmationResponse,
+    } as QueryAllConfirmationResponse;
+    message.confirmation = [];
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      for (const e of object.confirmation) {
+        message.confirmation.push(Confirmation.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllConfirmationResponse): unknown {
+    const obj: any = {};
+    if (message.confirmation) {
+      obj.confirmation = message.confirmation.map((e) =>
+        e ? Confirmation.toJSON(e) : undefined
+      );
+    } else {
+      obj.confirmation = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllConfirmationResponse>
+  ): QueryAllConfirmationResponse {
+    const message = {
+      ...baseQueryAllConfirmationResponse,
+    } as QueryAllConfirmationResponse;
+    message.confirmation = [];
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      for (const e of object.confirmation) {
+        message.confirmation.push(Confirmation.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -430,6 +767,14 @@ export interface Query {
   Deposit(request: QueryGetDepositRequest): Promise<QueryGetDepositResponse>;
   /** Queries a list of Deposit items. */
   DepositAll(request: QueryAllDepositRequest): Promise<QueryAllDepositResponse>;
+  /** Queries a Confirmation by index. */
+  Confirmation(
+    request: QueryGetConfirmationRequest
+  ): Promise<QueryGetConfirmationResponse>;
+  /** Queries a list of Confirmation items. */
+  ConfirmationAll(
+    request: QueryAllConfirmationRequest
+  ): Promise<QueryAllConfirmationResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -470,6 +815,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllDepositResponse.decode(new Reader(data))
+    );
+  }
+
+  Confirmation(
+    request: QueryGetConfirmationRequest
+  ): Promise<QueryGetConfirmationResponse> {
+    const data = QueryGetConfirmationRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Query",
+      "Confirmation",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetConfirmationResponse.decode(new Reader(data))
+    );
+  }
+
+  ConfirmationAll(
+    request: QueryAllConfirmationRequest
+  ): Promise<QueryAllConfirmationResponse> {
+    const data = QueryAllConfirmationRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Query",
+      "ConfirmationAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllConfirmationResponse.decode(new Reader(data))
     );
   }
 }

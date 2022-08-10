@@ -1,0 +1,91 @@
+package keeper
+
+import (
+	"context"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+)
+
+func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if the value already exists
+	_, isFound := k.GetConfirmation(
+		ctx,
+		msg.Height,
+	)
+	if isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+	}
+
+	var confirmation = types.Confirmation{
+		Creator:   msg.Creator,
+		Height:    msg.Height,
+		Root:      msg.Root,
+		Hashes:    msg.Hashes,
+		Signature: msg.Signature,
+	}
+
+	k.SetConfirmation(
+		ctx,
+		confirmation,
+	)
+	return &types.MsgCreateConfirmationResponse{}, nil
+}
+
+func (k msgServer) UpdateConfirmation(goCtx context.Context, msg *types.MsgUpdateConfirmation) (*types.MsgUpdateConfirmationResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if the value exists
+	valFound, isFound := k.GetConfirmation(
+		ctx,
+		msg.Height,
+	)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+	}
+
+	// Checks if the the msg creator is the same as the current owner
+	if msg.Creator != valFound.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+	}
+
+	var confirmation = types.Confirmation{
+		Creator:   msg.Creator,
+		Height:    msg.Height,
+		Root:      msg.Root,
+		Hashes:    msg.Hashes,
+		Signature: msg.Signature,
+	}
+
+	k.SetConfirmation(ctx, confirmation)
+
+	return &types.MsgUpdateConfirmationResponse{}, nil
+}
+
+func (k msgServer) DeleteConfirmation(goCtx context.Context, msg *types.MsgDeleteConfirmation) (*types.MsgDeleteConfirmationResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if the value exists
+	valFound, isFound := k.GetConfirmation(
+		ctx,
+		msg.Height,
+	)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+	}
+
+	// Checks if the the msg creator is the same as the current owner
+	if msg.Creator != valFound.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
+	}
+
+	k.RemoveConfirmation(
+		ctx,
+		msg.Height,
+	)
+
+	return &types.MsgDeleteConfirmationResponse{}, nil
+}

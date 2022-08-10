@@ -2,6 +2,7 @@ syntax = "proto3";
 package rarifyprotocol.rarimocore.rarimocore;
 
 import "rarimocore/deposit.proto";
+import "rarimocore/confirmation.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -11,6 +12,9 @@ service Msg {
       rpc CreateDeposit(MsgCreateDeposit) returns (MsgCreateDepositResponse);
   rpc UpdateDeposit(MsgUpdateDeposit) returns (MsgUpdateDepositResponse);
   rpc DeleteDeposit(MsgDeleteDeposit) returns (MsgDeleteDepositResponse);
+  rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
+  rpc UpdateConfirmation(MsgUpdateConfirmation) returns (MsgUpdateConfirmationResponse);
+  rpc DeleteConfirmation(MsgDeleteConfirmation) returns (MsgDeleteConfirmationResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -43,5 +47,31 @@ message MsgDeleteDeposit {
   string tx = 2;
 }
 message MsgDeleteDepositResponse {}
+
+message MsgCreateConfirmation {
+  string creator = 1;
+  string height = 2;
+
+  string root = 3;
+  repeated string hashes = 4;
+  string signature = 5;
+}
+message MsgCreateConfirmationResponse {}
+
+message MsgUpdateConfirmation {
+  string creator = 1;
+  string height = 2;
+
+  string root = 3;
+  repeated string hashes = 4;
+  string signature = 5;
+}
+message MsgUpdateConfirmationResponse {}
+
+message MsgDeleteConfirmation {
+  string creator = 1;
+  string height = 2;
+}
+message MsgDeleteConfirmationResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

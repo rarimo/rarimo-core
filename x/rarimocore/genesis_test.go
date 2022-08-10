@@ -22,6 +22,14 @@ func TestGenesis(t *testing.T) {
 				Tx: "1",
 			},
 		},
+		ConfirmationList: []types.Confirmation{
+			{
+				Height: "0",
+			},
+			{
+				Height: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -34,5 +42,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.DepositList, got.DepositList)
+	require.ElementsMatch(t, genesisState.ConfirmationList, got.ConfirmationList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

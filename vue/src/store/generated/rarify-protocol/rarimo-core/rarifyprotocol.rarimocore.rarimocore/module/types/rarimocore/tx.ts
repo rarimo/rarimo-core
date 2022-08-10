@@ -34,6 +34,33 @@ export interface MsgDeleteDeposit {
 
 export interface MsgDeleteDepositResponse {}
 
+export interface MsgCreateConfirmation {
+  creator: string;
+  height: string;
+  root: string;
+  hashes: string[];
+  signature: string;
+}
+
+export interface MsgCreateConfirmationResponse {}
+
+export interface MsgUpdateConfirmation {
+  creator: string;
+  height: string;
+  root: string;
+  hashes: string[];
+  signature: string;
+}
+
+export interface MsgUpdateConfirmationResponse {}
+
+export interface MsgDeleteConfirmation {
+  creator: string;
+  height: string;
+}
+
+export interface MsgDeleteConfirmationResponse {}
+
 const baseMsgCreateDeposit: object = {
   creator: "",
   tx: "",
@@ -594,12 +621,536 @@ export const MsgDeleteDepositResponse = {
   },
 };
 
+const baseMsgCreateConfirmation: object = {
+  creator: "",
+  height: "",
+  root: "",
+  hashes: "",
+  signature: "",
+};
+
+export const MsgCreateConfirmation = {
+  encode(
+    message: MsgCreateConfirmation,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== "") {
+      writer.uint32(18).string(message.height);
+    }
+    if (message.root !== "") {
+      writer.uint32(26).string(message.root);
+    }
+    for (const v of message.hashes) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.signature !== "") {
+      writer.uint32(42).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateConfirmation {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
+    message.hashes = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = reader.string();
+          break;
+        case 3:
+          message.root = reader.string();
+          break;
+        case 4:
+          message.hashes.push(reader.string());
+          break;
+        case 5:
+          message.signature = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateConfirmation {
+    const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
+    message.hashes = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = String(object.height);
+    } else {
+      message.height = "";
+    }
+    if (object.root !== undefined && object.root !== null) {
+      message.root = String(object.root);
+    } else {
+      message.root = "";
+    }
+    if (object.hashes !== undefined && object.hashes !== null) {
+      for (const e of object.hashes) {
+        message.hashes.push(String(e));
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateConfirmation): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = message.height);
+    message.root !== undefined && (obj.root = message.root);
+    if (message.hashes) {
+      obj.hashes = message.hashes.map((e) => e);
+    } else {
+      obj.hashes = [];
+    }
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateConfirmation>
+  ): MsgCreateConfirmation {
+    const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
+    message.hashes = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = object.height;
+    } else {
+      message.height = "";
+    }
+    if (object.root !== undefined && object.root !== null) {
+      message.root = object.root;
+    } else {
+      message.root = "";
+    }
+    if (object.hashes !== undefined && object.hashes !== null) {
+      for (const e of object.hashes) {
+        message.hashes.push(e);
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateConfirmationResponse: object = {};
+
+export const MsgCreateConfirmationResponse = {
+  encode(
+    _: MsgCreateConfirmationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateConfirmationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateConfirmationResponse,
+    } as MsgCreateConfirmationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateConfirmationResponse {
+    const message = {
+      ...baseMsgCreateConfirmationResponse,
+    } as MsgCreateConfirmationResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateConfirmationResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateConfirmationResponse>
+  ): MsgCreateConfirmationResponse {
+    const message = {
+      ...baseMsgCreateConfirmationResponse,
+    } as MsgCreateConfirmationResponse;
+    return message;
+  },
+};
+
+const baseMsgUpdateConfirmation: object = {
+  creator: "",
+  height: "",
+  root: "",
+  hashes: "",
+  signature: "",
+};
+
+export const MsgUpdateConfirmation = {
+  encode(
+    message: MsgUpdateConfirmation,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== "") {
+      writer.uint32(18).string(message.height);
+    }
+    if (message.root !== "") {
+      writer.uint32(26).string(message.root);
+    }
+    for (const v of message.hashes) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.signature !== "") {
+      writer.uint32(42).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateConfirmation {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUpdateConfirmation } as MsgUpdateConfirmation;
+    message.hashes = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = reader.string();
+          break;
+        case 3:
+          message.root = reader.string();
+          break;
+        case 4:
+          message.hashes.push(reader.string());
+          break;
+        case 5:
+          message.signature = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateConfirmation {
+    const message = { ...baseMsgUpdateConfirmation } as MsgUpdateConfirmation;
+    message.hashes = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = String(object.height);
+    } else {
+      message.height = "";
+    }
+    if (object.root !== undefined && object.root !== null) {
+      message.root = String(object.root);
+    } else {
+      message.root = "";
+    }
+    if (object.hashes !== undefined && object.hashes !== null) {
+      for (const e of object.hashes) {
+        message.hashes.push(String(e));
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateConfirmation): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = message.height);
+    message.root !== undefined && (obj.root = message.root);
+    if (message.hashes) {
+      obj.hashes = message.hashes.map((e) => e);
+    } else {
+      obj.hashes = [];
+    }
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateConfirmation>
+  ): MsgUpdateConfirmation {
+    const message = { ...baseMsgUpdateConfirmation } as MsgUpdateConfirmation;
+    message.hashes = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = object.height;
+    } else {
+      message.height = "";
+    }
+    if (object.root !== undefined && object.root !== null) {
+      message.root = object.root;
+    } else {
+      message.root = "";
+    }
+    if (object.hashes !== undefined && object.hashes !== null) {
+      for (const e of object.hashes) {
+        message.hashes.push(e);
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateConfirmationResponse: object = {};
+
+export const MsgUpdateConfirmationResponse = {
+  encode(
+    _: MsgUpdateConfirmationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateConfirmationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateConfirmationResponse,
+    } as MsgUpdateConfirmationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateConfirmationResponse {
+    const message = {
+      ...baseMsgUpdateConfirmationResponse,
+    } as MsgUpdateConfirmationResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateConfirmationResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateConfirmationResponse>
+  ): MsgUpdateConfirmationResponse {
+    const message = {
+      ...baseMsgUpdateConfirmationResponse,
+    } as MsgUpdateConfirmationResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteConfirmation: object = { creator: "", height: "" };
+
+export const MsgDeleteConfirmation = {
+  encode(
+    message: MsgDeleteConfirmation,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== "") {
+      writer.uint32(18).string(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgDeleteConfirmation {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgDeleteConfirmation } as MsgDeleteConfirmation;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteConfirmation {
+    const message = { ...baseMsgDeleteConfirmation } as MsgDeleteConfirmation;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = String(object.height);
+    } else {
+      message.height = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteConfirmation): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = message.height);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteConfirmation>
+  ): MsgDeleteConfirmation {
+    const message = { ...baseMsgDeleteConfirmation } as MsgDeleteConfirmation;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = object.height;
+    } else {
+      message.height = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteConfirmationResponse: object = {};
+
+export const MsgDeleteConfirmationResponse = {
+  encode(
+    _: MsgDeleteConfirmationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteConfirmationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteConfirmationResponse,
+    } as MsgDeleteConfirmationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteConfirmationResponse {
+    const message = {
+      ...baseMsgDeleteConfirmationResponse,
+    } as MsgDeleteConfirmationResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteConfirmationResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteConfirmationResponse>
+  ): MsgDeleteConfirmationResponse {
+    const message = {
+      ...baseMsgDeleteConfirmationResponse,
+    } as MsgDeleteConfirmationResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateDeposit(request: MsgCreateDeposit): Promise<MsgCreateDepositResponse>;
   UpdateDeposit(request: MsgUpdateDeposit): Promise<MsgUpdateDepositResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteDeposit(request: MsgDeleteDeposit): Promise<MsgDeleteDepositResponse>;
+  CreateConfirmation(
+    request: MsgCreateConfirmation
+  ): Promise<MsgCreateConfirmationResponse>;
+  UpdateConfirmation(
+    request: MsgUpdateConfirmation
+  ): Promise<MsgUpdateConfirmationResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  DeleteConfirmation(
+    request: MsgDeleteConfirmation
+  ): Promise<MsgDeleteConfirmationResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -640,6 +1191,48 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteDepositResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateConfirmation(
+    request: MsgCreateConfirmation
+  ): Promise<MsgCreateConfirmationResponse> {
+    const data = MsgCreateConfirmation.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "CreateConfirmation",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateConfirmationResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateConfirmation(
+    request: MsgUpdateConfirmation
+  ): Promise<MsgUpdateConfirmationResponse> {
+    const data = MsgUpdateConfirmation.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "UpdateConfirmation",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateConfirmationResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteConfirmation(
+    request: MsgDeleteConfirmation
+  ): Promise<MsgDeleteConfirmationResponse> {
+    const data = MsgDeleteConfirmation.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "DeleteConfirmation",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteConfirmationResponse.decode(new Reader(data))
     );
   }
 }
