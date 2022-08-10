@@ -23,7 +23,7 @@ func TestCreateConfirmation(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz", "xyz"}
+	fields := []string{"xyz", "abc,xyz", "xyz", "xyz"}
 	for _, tc := range []struct {
 		desc     string
 		idHeight string
@@ -68,7 +68,7 @@ func TestUpdateConfirmation(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz", "xyz"}
+	fields := []string{"xyz", "abc,xyz", "xyz", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -130,7 +130,7 @@ func TestDeleteConfirmation(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{"xyz", "abc,xyz", "xyz"}
+	fields := []string{"xyz", "abc,xyz", "xyz", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),

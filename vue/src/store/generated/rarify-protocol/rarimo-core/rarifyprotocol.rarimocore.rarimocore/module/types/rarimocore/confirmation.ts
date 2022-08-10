@@ -7,7 +7,8 @@ export interface Confirmation {
   height: string;
   root: string;
   hashes: string[];
-  signature: string;
+  sigECDSA: string;
+  sigEdDSA: string;
   creator: string;
 }
 
@@ -15,7 +16,8 @@ const baseConfirmation: object = {
   height: "",
   root: "",
   hashes: "",
-  signature: "",
+  sigECDSA: "",
+  sigEdDSA: "",
   creator: "",
 };
 
@@ -30,11 +32,14 @@ export const Confirmation = {
     for (const v of message.hashes) {
       writer.uint32(26).string(v!);
     }
-    if (message.signature !== "") {
-      writer.uint32(34).string(message.signature);
+    if (message.sigECDSA !== "") {
+      writer.uint32(34).string(message.sigECDSA);
+    }
+    if (message.sigEdDSA !== "") {
+      writer.uint32(42).string(message.sigEdDSA);
     }
     if (message.creator !== "") {
-      writer.uint32(42).string(message.creator);
+      writer.uint32(50).string(message.creator);
     }
     return writer;
   },
@@ -57,9 +62,12 @@ export const Confirmation = {
           message.hashes.push(reader.string());
           break;
         case 4:
-          message.signature = reader.string();
+          message.sigECDSA = reader.string();
           break;
         case 5:
+          message.sigEdDSA = reader.string();
+          break;
+        case 6:
           message.creator = reader.string();
           break;
         default:
@@ -88,10 +96,15 @@ export const Confirmation = {
         message.hashes.push(String(e));
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = String(object.sigECDSA);
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = String(object.sigEdDSA);
+    } else {
+      message.sigEdDSA = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -110,7 +123,8 @@ export const Confirmation = {
     } else {
       obj.hashes = [];
     }
-    message.signature !== undefined && (obj.signature = message.signature);
+    message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
+    message.sigEdDSA !== undefined && (obj.sigEdDSA = message.sigEdDSA);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
@@ -133,10 +147,15 @@ export const Confirmation = {
         message.hashes.push(e);
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = object.sigECDSA;
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = object.sigEdDSA;
+    } else {
+      message.sigEdDSA = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;

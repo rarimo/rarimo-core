@@ -39,7 +39,8 @@ export interface MsgCreateConfirmation {
   height: string;
   root: string;
   hashes: string[];
-  signature: string;
+  sigECDSA: string;
+  sigEdDSA: string;
 }
 
 export interface MsgCreateConfirmationResponse {}
@@ -49,7 +50,8 @@ export interface MsgUpdateConfirmation {
   height: string;
   root: string;
   hashes: string[];
-  signature: string;
+  sigECDSA: string;
+  sigEdDSA: string;
 }
 
 export interface MsgUpdateConfirmationResponse {}
@@ -626,7 +628,8 @@ const baseMsgCreateConfirmation: object = {
   height: "",
   root: "",
   hashes: "",
-  signature: "",
+  sigECDSA: "",
+  sigEdDSA: "",
 };
 
 export const MsgCreateConfirmation = {
@@ -646,8 +649,11 @@ export const MsgCreateConfirmation = {
     for (const v of message.hashes) {
       writer.uint32(34).string(v!);
     }
-    if (message.signature !== "") {
-      writer.uint32(42).string(message.signature);
+    if (message.sigECDSA !== "") {
+      writer.uint32(42).string(message.sigECDSA);
+    }
+    if (message.sigEdDSA !== "") {
+      writer.uint32(50).string(message.sigEdDSA);
     }
     return writer;
   },
@@ -673,7 +679,10 @@ export const MsgCreateConfirmation = {
           message.hashes.push(reader.string());
           break;
         case 5:
-          message.signature = reader.string();
+          message.sigECDSA = reader.string();
+          break;
+        case 6:
+          message.sigEdDSA = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -706,10 +715,15 @@ export const MsgCreateConfirmation = {
         message.hashes.push(String(e));
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = String(object.sigECDSA);
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = String(object.sigEdDSA);
+    } else {
+      message.sigEdDSA = "";
     }
     return message;
   },
@@ -724,7 +738,8 @@ export const MsgCreateConfirmation = {
     } else {
       obj.hashes = [];
     }
-    message.signature !== undefined && (obj.signature = message.signature);
+    message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
+    message.sigEdDSA !== undefined && (obj.sigEdDSA = message.sigEdDSA);
     return obj;
   },
 
@@ -753,10 +768,15 @@ export const MsgCreateConfirmation = {
         message.hashes.push(e);
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = object.sigECDSA;
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = object.sigEdDSA;
+    } else {
+      message.sigEdDSA = "";
     }
     return message;
   },
@@ -819,7 +839,8 @@ const baseMsgUpdateConfirmation: object = {
   height: "",
   root: "",
   hashes: "",
-  signature: "",
+  sigECDSA: "",
+  sigEdDSA: "",
 };
 
 export const MsgUpdateConfirmation = {
@@ -839,8 +860,11 @@ export const MsgUpdateConfirmation = {
     for (const v of message.hashes) {
       writer.uint32(34).string(v!);
     }
-    if (message.signature !== "") {
-      writer.uint32(42).string(message.signature);
+    if (message.sigECDSA !== "") {
+      writer.uint32(42).string(message.sigECDSA);
+    }
+    if (message.sigEdDSA !== "") {
+      writer.uint32(50).string(message.sigEdDSA);
     }
     return writer;
   },
@@ -866,7 +890,10 @@ export const MsgUpdateConfirmation = {
           message.hashes.push(reader.string());
           break;
         case 5:
-          message.signature = reader.string();
+          message.sigECDSA = reader.string();
+          break;
+        case 6:
+          message.sigEdDSA = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -899,10 +926,15 @@ export const MsgUpdateConfirmation = {
         message.hashes.push(String(e));
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = String(object.sigECDSA);
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = String(object.sigEdDSA);
+    } else {
+      message.sigEdDSA = "";
     }
     return message;
   },
@@ -917,7 +949,8 @@ export const MsgUpdateConfirmation = {
     } else {
       obj.hashes = [];
     }
-    message.signature !== undefined && (obj.signature = message.signature);
+    message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
+    message.sigEdDSA !== undefined && (obj.sigEdDSA = message.sigEdDSA);
     return obj;
   },
 
@@ -946,10 +979,15 @@ export const MsgUpdateConfirmation = {
         message.hashes.push(e);
       }
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
+    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
+      message.sigECDSA = object.sigECDSA;
     } else {
-      message.signature = "";
+      message.sigECDSA = "";
+    }
+    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
+      message.sigEdDSA = object.sigEdDSA;
+    } else {
+      message.sigEdDSA = "";
     }
     return message;
   },

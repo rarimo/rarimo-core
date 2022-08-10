@@ -54,7 +54,8 @@ message MsgCreateConfirmation {
 
   string root = 3;
   repeated string hashes = 4;
-  string signature = 5;
+  string sigECDSA = 5;
+  string sigEdDSA = 6;
 }
 message MsgCreateConfirmationResponse {}
 
@@ -64,7 +65,8 @@ message MsgUpdateConfirmation {
 
   string root = 3;
   repeated string hashes = 4;
-  string signature = 5;
+  string sigECDSA = 5;
+  string sigEdDSA = 6;
 }
 message MsgUpdateConfirmationResponse {}
 

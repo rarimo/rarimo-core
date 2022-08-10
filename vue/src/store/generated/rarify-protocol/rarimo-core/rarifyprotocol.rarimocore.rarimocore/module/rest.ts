@@ -17,7 +17,8 @@ export interface RarimocoreConfirmation {
   height?: string;
   root?: string;
   hashes?: string[];
-  signature?: string;
+  sigECDSA?: string;
+  sigEdDSA?: string;
   creator?: string;
 }
 

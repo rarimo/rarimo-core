@@ -21,11 +21,12 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	var confirmation = types.Confirmation{
-		Creator:   msg.Creator,
-		Height:    msg.Height,
-		Root:      msg.Root,
-		Hashes:    msg.Hashes,
-		Signature: msg.Signature,
+		Creator:  msg.Creator,
+		Height:   msg.Height,
+		Root:     msg.Root,
+		Hashes:   msg.Hashes,
+		SigECDSA: msg.SigECDSA,
+		SigEdDSA: msg.SigEdDSA,
 	}
 
 	k.SetConfirmation(
@@ -53,11 +54,12 @@ func (k msgServer) UpdateConfirmation(goCtx context.Context, msg *types.MsgUpdat
 	}
 
 	var confirmation = types.Confirmation{
-		Creator:   msg.Creator,
-		Height:    msg.Height,
-		Root:      msg.Root,
-		Hashes:    msg.Hashes,
-		Signature: msg.Signature,
+		Creator:  msg.Creator,
+		Height:   msg.Height,
+		Root:     msg.Root,
+		Hashes:   msg.Hashes,
+		SigECDSA: msg.SigECDSA,
+		SigEdDSA: msg.SigEdDSA,
 	}
 
 	k.SetConfirmation(ctx, confirmation)

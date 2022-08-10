@@ -7,7 +7,8 @@ message Confirmation {
   string height = 1; 
   string root = 2; 
   repeated string hashes = 3; 
-  string signature = 4; 
-  string creator = 5;
+  string sigECDSA = 4; 
+  string sigEdDSA = 5; 
+  string creator = 6;
 }
 

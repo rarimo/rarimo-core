@@ -18,15 +18,17 @@ func NewMsgCreateConfirmation(
 	height string,
 	root string,
 	hashes []string,
-	signature string,
+	sigECDSA string,
+	sigEdDSA string,
 
 ) *MsgCreateConfirmation {
 	return &MsgCreateConfirmation{
-		Creator:   creator,
-		Height:    height,
-		Root:      root,
-		Hashes:    hashes,
-		Signature: signature,
+		Creator:  creator,
+		Height:   height,
+		Root:     root,
+		Hashes:   hashes,
+		SigECDSA: sigECDSA,
+		SigEdDSA: sigEdDSA,
 	}
 }
 
@@ -66,15 +68,17 @@ func NewMsgUpdateConfirmation(
 	height string,
 	root string,
 	hashes []string,
-	signature string,
+	sigECDSA string,
+	sigEdDSA string,
 
 ) *MsgUpdateConfirmation {
 	return &MsgUpdateConfirmation{
-		Creator:   creator,
-		Height:    height,
-		Root:      root,
-		Hashes:    hashes,
-		Signature: signature,
+		Creator:  creator,
+		Height:   height,
+		Root:     root,
+		Hashes:   hashes,
+		SigECDSA: sigECDSA,
+		SigEdDSA: sigEdDSA,
 	}
 }
 

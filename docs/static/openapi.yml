@@ -30199,7 +30199,9 @@ paths:
                       type: array
                       items:
                         type: string
-                    signature:
+                    sigECDSA:
+                      type: string
+                    sigEdDSA:
                       type: string
                     creator:
                       type: string
@@ -30328,7 +30330,9 @@ paths:
                     type: array
                     items:
                       type: string
-                  signature:
+                  sigECDSA:
+                    type: string
+                  sigEdDSA:
                     type: string
                   creator:
                     type: string
@@ -51971,7 +51975,9 @@ definitions:
         type: array
         items:
           type: string
-      signature:
+      sigECDSA:
+        type: string
+      sigEdDSA:
         type: string
       creator:
         type: string
@@ -52023,7 +52029,9 @@ definitions:
               type: array
               items:
                 type: string
-            signature:
+            sigECDSA:
+              type: string
+            sigEdDSA:
               type: string
             creator:
               type: string
@@ -52113,7 +52121,9 @@ definitions:
             type: array
             items:
               type: string
-          signature:
+          sigECDSA:
+            type: string
+          sigEdDSA:
             type: string
           creator:
             type: string

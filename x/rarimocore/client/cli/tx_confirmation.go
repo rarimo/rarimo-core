@@ -11,9 +11,9 @@ import (
 
 func CmdCreateConfirmation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-confirmation [height] [root] [hashes] [signature]",
+		Use:   "create-confirmation [height] [root] [hashes] [sig-ecdsa] [sig-ed-dsa]",
 		Short: "Create a new confirmation",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexHeight := args[0]
@@ -21,7 +21,8 @@ func CmdCreateConfirmation() *cobra.Command {
 			// Get value arguments
 			argRoot := args[1]
 			argHashes := strings.Split(args[2], listSeparator)
-			argSignature := args[3]
+			argSigECDSA := args[3]
+			argSigEdDSA := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -33,7 +34,8 @@ func CmdCreateConfirmation() *cobra.Command {
 				indexHeight,
 				argRoot,
 				argHashes,
-				argSignature,
+				argSigECDSA,
+				argSigEdDSA,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -49,9 +51,9 @@ func CmdCreateConfirmation() *cobra.Command {
 
 func CmdUpdateConfirmation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-confirmation [height] [root] [hashes] [signature]",
+		Use:   "update-confirmation [height] [root] [hashes] [sig-ecdsa] [sig-ed-dsa]",
 		Short: "Update a confirmation",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexHeight := args[0]
@@ -59,7 +61,8 @@ func CmdUpdateConfirmation() *cobra.Command {
 			// Get value arguments
 			argRoot := args[1]
 			argHashes := strings.Split(args[2], listSeparator)
-			argSignature := args[3]
+			argSigECDSA := args[3]
+			argSigEdDSA := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -71,7 +74,8 @@ func CmdUpdateConfirmation() *cobra.Command {
 				indexHeight,
 				argRoot,
 				argHashes,
-				argSignature,
+				argSigECDSA,
+				argSigEdDSA,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
