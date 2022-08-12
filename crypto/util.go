@@ -10,6 +10,14 @@ import (
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
+func ValidateECDSAKey(hexKey string) error {
+	return nil
+}
+
+func ValidateEdDSAKey(hexKey string) error {
+	return nil
+}
+
 func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey []byte) error {
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {

@@ -8,5 +8,5 @@ import (
 
 // x/rarimocore module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidKey = sdkerrors.Register(ModuleName, 1100, "The public key is invalid in some way")
 )

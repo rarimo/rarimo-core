@@ -14,3 +14,7 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
+
+genesis:
+  chain_id: "rarimo-core"
+  
