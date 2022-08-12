@@ -18,7 +18,11 @@ func ValidateEdDSAKey(hexKey string) error {
 	return nil
 }
 
-func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey []byte) error {
+func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) error {
+	if targetPublicKey == "" {
+		return nil
+	}
+
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Merkle root hash", err)
@@ -29,14 +33,23 @@ func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey []byte) er
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA signature format", err)
 	}
 
-	if !secp256k1.VerifySignature(targetPublicKey, rootBytes, sigBytes) {
+	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA target key format", err)
+	}
+
+	if !secp256k1.VerifySignature(targetKeyBytes, rootBytes, sigBytes) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "signed ECDSA key does not match", err)
 	}
 
 	return nil
 }
 
-func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey []byte) error {
+func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey string) error {
+	if targetPublicKey == "" {
+		return nil
+	}
+
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Merkle root hash", err)
@@ -47,7 +60,12 @@ func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey []byte) er
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA signature format", err)
 	}
 
-	if !ed25519.Verify(targetPublicKey, rootBytes, sigBytes) {
+	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid EdDSA target key format", err)
+	}
+
+	if !ed25519.Verify(targetKeyBytes, rootBytes, sigBytes) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "signed EdDSA key does not match", err)
 	}
 

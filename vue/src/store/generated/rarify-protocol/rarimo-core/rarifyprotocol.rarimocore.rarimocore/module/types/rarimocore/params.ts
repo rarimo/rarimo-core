@@ -4,12 +4,21 @@ import { Writer, Reader } from "protobufjs/minimal";
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 /** Params defines the parameters for the module. */
-export interface Params {}
+export interface Params {
+  keyECDSA: string;
+  keyEdDSA: string;
+}
 
-const baseParams: object = {};
+const baseParams: object = { keyECDSA: "", keyEdDSA: "" };
 
 export const Params = {
-  encode(_: Params, writer: Writer = Writer.create()): Writer {
+  encode(message: Params, writer: Writer = Writer.create()): Writer {
+    if (message.keyECDSA !== "") {
+      writer.uint32(10).string(message.keyECDSA);
+    }
+    if (message.keyEdDSA !== "") {
+      writer.uint32(18).string(message.keyEdDSA);
+    }
     return writer;
   },
 
@@ -20,6 +29,12 @@ export const Params = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.keyECDSA = reader.string();
+          break;
+        case 2:
+          message.keyEdDSA = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -28,18 +43,40 @@ export const Params = {
     return message;
   },
 
-  fromJSON(_: any): Params {
+  fromJSON(object: any): Params {
     const message = { ...baseParams } as Params;
+    if (object.keyECDSA !== undefined && object.keyECDSA !== null) {
+      message.keyECDSA = String(object.keyECDSA);
+    } else {
+      message.keyECDSA = "";
+    }
+    if (object.keyEdDSA !== undefined && object.keyEdDSA !== null) {
+      message.keyEdDSA = String(object.keyEdDSA);
+    } else {
+      message.keyEdDSA = "";
+    }
     return message;
   },
 
-  toJSON(_: Params): unknown {
+  toJSON(message: Params): unknown {
     const obj: any = {};
+    message.keyECDSA !== undefined && (obj.keyECDSA = message.keyECDSA);
+    message.keyEdDSA !== undefined && (obj.keyEdDSA = message.keyEdDSA);
     return obj;
   },
 
-  fromPartial(_: DeepPartial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = { ...baseParams } as Params;
+    if (object.keyECDSA !== undefined && object.keyECDSA !== null) {
+      message.keyECDSA = object.keyECDSA;
+    } else {
+      message.keyECDSA = "";
+    }
+    if (object.keyEdDSA !== undefined && object.keyEdDSA !== null) {
+      message.keyEdDSA = object.keyEdDSA;
+    } else {
+      message.keyEdDSA = "";
+    }
     return message;
   },
 };

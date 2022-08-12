@@ -12,13 +12,11 @@ import (
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	//TODO add public key
-	if err := crypto.VerifyECDSA(msg.SigECDSA, msg.Root, nil); err != nil {
+	if err := crypto.VerifyECDSA(msg.SigECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
 		return nil, err
 	}
 
-	//TODO add public key
-	if err := crypto.VerifyEdDSA(msg.SigEdDSA, msg.Root, nil); err != nil {
+	if err := crypto.VerifyEdDSA(msg.SigEdDSA, msg.Root, k.GetKeyEdDSA(ctx)); err != nil {
 		return nil, err
 	}
 

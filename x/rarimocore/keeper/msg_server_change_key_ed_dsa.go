@@ -12,8 +12,7 @@ import (
 func (k msgServer) CreateChangeKeyEdDSA(goCtx context.Context, msg *types.MsgCreateChangeKeyEdDSA) (*types.MsgCreateChangeKeyEdDSAResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	//TODO add public key
-	if err := crypto.VerifyEdDSA(msg.Signature, msg.NewKey, nil); err != nil {
+	if err := crypto.VerifyEdDSA(msg.Signature, msg.NewKey, k.GetKeyEdDSA(ctx)); err != nil {
 		return nil, err
 	}
 
@@ -36,6 +35,12 @@ func (k msgServer) CreateChangeKeyEdDSA(goCtx context.Context, msg *types.MsgCre
 		ctx,
 		changeKeyEdDSA,
 	)
+
+	k.UpdateKeyEdDSA(
+		ctx,
+		msg.NewKey,
+	)
+
 	return &types.MsgCreateChangeKeyEdDSAResponse{}, nil
 }
 

@@ -30897,6 +30897,11 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  keyECDSA:
+                    type: string
+                  keyEdDSA:
+                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -52380,6 +52385,11 @@ definitions:
     type: object
   rarifyprotocol.rarimocore.rarimocore.Params:
     type: object
+    properties:
+      keyECDSA:
+        type: string
+      keyEdDSA:
+        type: string
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.rarimocore.QueryAllChangeKeyECDSAResponse:
     type: object
@@ -52623,6 +52633,11 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          keyECDSA:
+            type: string
+          keyEdDSA:
+            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object
