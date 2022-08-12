@@ -10,11 +10,41 @@ import (
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
+const ECDSAPublicKeySize = 33
+
 func ValidateECDSAKey(hexKey string) error {
+	if hexKey == "" {
+		// Key has not been initialized
+		return nil
+	}
+
+	keyBytes, err := hexutil.Decode(hexKey)
+	if err != nil {
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
+	}
+
+	if len(keyBytes) != ECDSAPublicKeySize {
+		return ErrInvalidKey
+	}
+
 	return nil
 }
 
 func ValidateEdDSAKey(hexKey string) error {
+	if hexKey == "" {
+		// Key has not been initialized
+		return nil
+	}
+
+	keyBytes, err := hexutil.Decode(hexKey)
+	if err != nil {
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
+	}
+
+	if len(keyBytes) != ed25519.PublicKeySize {
+		return ErrInvalidKey
+	}
+
 	return nil
 }
 
@@ -25,17 +55,17 @@ func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) er
 
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
 	}
 
 	sigBytes, err := hexutil.Decode(hexSignature)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA signature format", err)
+		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
 	}
 
 	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA target key format", err)
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA target key format", err)
 	}
 
 	if !secp256k1.VerifySignature(targetKeyBytes, rootBytes, sigBytes) {
@@ -52,17 +82,17 @@ func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey string) er
 
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
 	}
 
 	sigBytes, err := hexutil.Decode(hexSignature)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid ECDSA signature format", err)
+		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
 	}
 
 	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid EdDSA target key format", err)
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid EdDSA target key format", err)
 	}
 
 	if !ed25519.Verify(targetKeyBytes, rootBytes, sigBytes) {
@@ -80,12 +110,12 @@ func VerifyMerkleRoot(hashes []string, hexRoot string) error {
 
 	t, err := merkletree.NewTree(list)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error building merkle tree", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "error building merkle tree", err)
 	}
 
 	root, err := hexutil.Decode(hexRoot)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
 	}
 
 	if !bytes.Equal(t.MerkleRoot(), root) {
