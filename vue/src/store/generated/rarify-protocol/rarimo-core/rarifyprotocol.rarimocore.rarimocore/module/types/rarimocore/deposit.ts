@@ -11,6 +11,7 @@ export interface Deposit {
   tokenAddress: string;
   tokenId: string;
   creator: string;
+  signed: boolean;
 }
 
 const baseDeposit: object = {
@@ -21,6 +22,7 @@ const baseDeposit: object = {
   tokenAddress: "",
   tokenId: "",
   creator: "",
+  signed: false,
 };
 
 export const Deposit = {
@@ -45,6 +47,9 @@ export const Deposit = {
     }
     if (message.creator !== "") {
       writer.uint32(58).string(message.creator);
+    }
+    if (message.signed === true) {
+      writer.uint32(64).bool(message.signed);
     }
     return writer;
   },
@@ -76,6 +81,9 @@ export const Deposit = {
           break;
         case 7:
           message.creator = reader.string();
+          break;
+        case 8:
+          message.signed = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -122,6 +130,11 @@ export const Deposit = {
     } else {
       message.creator = "";
     }
+    if (object.signed !== undefined && object.signed !== null) {
+      message.signed = Boolean(object.signed);
+    } else {
+      message.signed = false;
+    }
     return message;
   },
 
@@ -135,6 +148,7 @@ export const Deposit = {
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.signed !== undefined && (obj.signed = message.signed);
     return obj;
   },
 
@@ -174,6 +188,11 @@ export const Deposit = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.signed !== undefined && object.signed !== null) {
+      message.signed = object.signed;
+    } else {
+      message.signed = false;
     }
     return message;
   },

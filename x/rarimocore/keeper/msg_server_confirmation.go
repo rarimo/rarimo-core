@@ -29,11 +29,14 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
+	deposits := make([]types.Deposit, 0, len(msg.Hashes))
+
 	for _, hash := range msg.Hashes {
-		_, ok := k.GetDeposit(ctx, hash)
+		deposit, ok := k.GetDeposit(ctx, hash)
 		if !ok {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "deposit "+hash+" not found")
 		}
+		deposits = append(deposits, deposit)
 	}
 
 	var confirmation = types.Confirmation{
@@ -43,6 +46,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		Hashes:   msg.Hashes,
 		SigECDSA: msg.SigECDSA,
 		SigEdDSA: msg.SigEdDSA,
+	}
+
+	for _, deposit := range deposits {
+		deposit.Signed = true
+		k.SetDeposit(ctx, deposit)
 	}
 
 	k.SetConfirmation(

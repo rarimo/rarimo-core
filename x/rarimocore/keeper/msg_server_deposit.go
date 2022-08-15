@@ -28,6 +28,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		Receiver:     msg.Receiver,
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
+		Signed:       false,
 	}
 
 	k.SetDeposit(
@@ -62,6 +63,7 @@ func (k msgServer) UpdateDeposit(goCtx context.Context, msg *types.MsgUpdateDepo
 		Receiver:     msg.Receiver,
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
+		Signed:       false,
 	}
 
 	k.SetDeposit(ctx, deposit)

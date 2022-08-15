@@ -4,12 +4,13 @@ package rarifyprotocol.rarimocore.rarimocore;
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
 message Deposit {
-  string tx = 1; 
-  string fromChain = 2; 
-  string toChain = 3; 
-  string receiver = 4; 
-  string tokenAddress = 5; 
-  string tokenId = 6; 
+  string tx = 1;
+  string fromChain = 2;
+  string toChain = 3;
+  string receiver = 4;
+  string tokenAddress = 5;
+  string tokenId = 6;
   string creator = 7;
+  bool signed = 8;
 }
 

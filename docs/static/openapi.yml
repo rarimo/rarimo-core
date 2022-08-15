@@ -30728,6 +30728,8 @@ paths:
                       type: string
                     creator:
                       type: string
+                    signed:
+                      type: boolean
               pagination:
                 type: object
                 properties:
@@ -30859,6 +30861,8 @@ paths:
                     type: string
                   creator:
                     type: string
+                  signed:
+                    type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -52359,6 +52363,8 @@ definitions:
         type: string
       creator:
         type: string
+      signed:
+        type: boolean
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSAResponse:
@@ -52538,6 +52544,8 @@ definitions:
               type: string
             creator:
               type: string
+            signed:
+              type: boolean
       pagination:
         type: object
         properties:
@@ -52627,6 +52635,8 @@ definitions:
             type: string
           creator:
             type: string
+          signed:
+            type: boolean
   rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:
