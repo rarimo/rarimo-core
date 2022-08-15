@@ -29,6 +29,13 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
+	for _, hash := range msg.Hashes {
+		_, ok := k.GetDeposit(ctx, hash)
+		if !ok {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "deposit "+hash+" not found")
+		}
+	}
+
 	var confirmation = types.Confirmation{
 		Creator:  msg.Creator,
 		Height:   msg.Height,
@@ -42,6 +49,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		ctx,
 		confirmation,
 	)
+
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
