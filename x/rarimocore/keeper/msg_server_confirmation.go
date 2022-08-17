@@ -3,9 +3,10 @@ package keeper
 import (
 	"context"
 
+	"github.com/cbergoon/merkletree"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarify-protocol/rarimo-core/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
@@ -30,6 +31,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	deposits := make([]types.Deposit, 0, len(msg.Hashes))
+	content := make([]merkletree.Content, 0, len(msg.Hashes))
 
 	for _, hash := range msg.Hashes {
 		deposit, ok := k.GetDeposit(ctx, hash)
@@ -37,6 +39,17 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "deposit "+hash+" not found")
 		}
 		deposits = append(deposits, deposit)
+		content = append(content, crypto.HashContent{
+			TxHash:        hash,
+			TokenAddress:  deposit.TokenAddress,
+			TokenId:       deposit.TokenId,
+			Receiver:      deposit.Receiver,
+			TargetNetwork: deposit.ToChain,
+		})
+	}
+
+	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
+		return nil, err
 	}
 
 	var confirmation = types.Confirmation{

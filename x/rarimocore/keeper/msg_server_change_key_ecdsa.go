@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarify-protocol/rarimo-core/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 

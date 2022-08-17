@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gitlab.com/rarify-protocol/rarimo-core/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)

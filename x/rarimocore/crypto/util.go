@@ -102,13 +102,8 @@ func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey string) er
 	return nil
 }
 
-func VerifyMerkleRoot(hashes []string, hexRoot string) error {
-	list := make([]merkletree.Content, 0, len(hashes))
-	for _, hash := range hashes {
-		list = append(list, HashContent{Hash: hash})
-	}
-
-	t, err := merkletree.NewTree(list)
+func VerifyMerkleRoot(hashes []merkletree.Content, hexRoot string) error {
+	t, err := merkletree.NewTree(hashes)
 	if err != nil {
 		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "error building merkle tree", err)
 	}
