@@ -45,6 +45,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			TokenId:       deposit.TokenId,
 			Receiver:      deposit.Receiver,
 			TargetNetwork: deposit.ToChain,
+			Type:          deposit.TokenType,
 		})
 	}
 

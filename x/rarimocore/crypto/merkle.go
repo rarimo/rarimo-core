@@ -2,11 +2,22 @@ package crypto
 
 import (
 	"crypto/sha256"
+	"fmt"
 
 	"github.com/cbergoon/merkletree"
 )
 
 var _ merkletree.Content = HashContent{}
+
+type TokenType int32
+
+var (
+	Native   TokenType = 0
+	ERC20    TokenType = 1
+	ERC721   TokenType = 2
+	ERC1155  TokenType = 3
+	Metaplex TokenType = 4
+)
 
 // HashContent implements the Content interface provided by merkletree and represents the content stored in the tree.
 type HashContent struct {
@@ -19,10 +30,11 @@ type HashContent struct {
 	// Receiver address on target network
 	Receiver      string
 	TargetNetwork string
+	Type          TokenType
 }
 
 func (c HashContent) String() string {
-	return c.TxHash + c.TokenAddress + c.TokenId + c.Receiver + c.TargetNetwork
+	return c.TxHash + c.TokenAddress + c.TokenId + c.Receiver + c.TargetNetwork + fmt.Sprint(c.Type)
 }
 
 func (c HashContent) CalculateHash() ([]byte, error) {
@@ -41,7 +53,8 @@ func (c HashContent) Equals(other merkletree.Content) (bool, error) {
 			c.TokenAddress == oc.TokenAddress &&
 			c.TokenId == oc.TokenId &&
 			c.Receiver == oc.Receiver &&
-			c.TokenAddress == oc.TargetNetwork, nil
+			c.TokenAddress == oc.TargetNetwork &&
+			c.Type == oc.Type, nil
 	}
 	return false, nil
 }

@@ -4,13 +4,8 @@
 package types
 
 import (
-	context "context"
 	fmt "fmt"
-	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -35,6 +30,7 @@ type MsgCreateDeposit struct {
 	Receiver     string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
 	TokenAddress string `protobuf:"bytes,6,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
 	TokenId      string `protobuf:"bytes,7,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
+	TokenType    Type   `protobuf:"varint,8,opt,name=TokenType,proto3,enum=rarifyprotocol.rarimocore.rarimocore.Type" json:"TokenType,omitempty"`
 }
 
 func (m *MsgCreateDeposit) Reset()         { *m = MsgCreateDeposit{} }
@@ -119,6 +115,13 @@ func (m *MsgCreateDeposit) GetTokenId() string {
 	return ""
 }
 
+func (m *MsgCreateDeposit) GetTokenType() Type {
+	if m != nil {
+		return m.TokenType
+	}
+	return Type_NATIVE
+}
+
 type MsgCreateDepositResponse struct {
 }
 
@@ -163,6 +166,7 @@ type MsgUpdateDeposit struct {
 	Receiver     string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
 	TokenAddress string `protobuf:"bytes,6,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
 	TokenId      string `protobuf:"bytes,7,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
+	TokenType    Type   `protobuf:"varint,8,opt,name=TokenType,proto3,enum=rarifyprotocol.rarimocore.rarimocore.Type" json:"TokenType,omitempty"`
 }
 
 func (m *MsgUpdateDeposit) Reset()         { *m = MsgUpdateDeposit{} }
@@ -245,6 +249,13 @@ func (m *MsgUpdateDeposit) GetTokenId() string {
 		return m.TokenId
 	}
 	return ""
+}
+
+func (m *MsgUpdateDeposit) GetTokenType() Type {
+	if m != nil {
+		return m.TokenType
+	}
+	return Type_NATIVE
 }
 
 type MsgUpdateDepositResponse struct {
@@ -1289,528 +1300,54 @@ func init() {
 func init() { proto.RegisterFile("rarimocore/tx.proto", fileDescriptor_d9dffb74ddf0d475) }
 
 var fileDescriptor_d9dffb74ddf0d475 = []byte{
-	// 719 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x57, 0xcb, 0x6e, 0xd3, 0x4c,
-	0x14, 0xae, 0xdb, 0xfe, 0xe9, 0xdf, 0x11, 0x54, 0x68, 0xb8, 0x59, 0x16, 0x75, 0x5b, 0x8b, 0x05,
-	0x9b, 0x26, 0x12, 0x48, 0x48, 0xa8, 0x14, 0xa9, 0xa4, 0x5d, 0x54, 0x55, 0x37, 0xad, 0xd8, 0xb0,
-	0x89, 0x5c, 0xcf, 0x89, 0x63, 0x25, 0xf1, 0x44, 0x33, 0x03, 0x24, 0x4f, 0xc0, 0x96, 0x15, 0x2b,
-	0x1e, 0x80, 0x0d, 0xef, 0xc1, 0x0a, 0x75, 0xc9, 0x12, 0x25, 0x2f, 0x82, 0x3c, 0xbe, 0xc4, 0x4e,
-	0x27, 0x17, 0xdb, 0x28, 0x12, 0xec, 0x7c, 0xee, 0xdf, 0x39, 0x5f, 0xdd, 0x2f, 0x46, 0x77, 0x99,
-	0xcd, 0xbc, 0x2e, 0x75, 0x28, 0x83, 0x9a, 0xe8, 0x57, 0x7b, 0x8c, 0x0a, 0x8a, 0x1f, 0x07, 0xce,
-	0xe6, 0x40, 0x1a, 0x0e, 0xed, 0x54, 0xc7, 0x39, 0xa9, 0x47, 0x43, 0x4f, 0x95, 0x12, 0xe8, 0x51,
-	0xee, 0x89, 0xb0, 0xde, 0xd8, 0x4e, 0x45, 0x1c, 0xea, 0x37, 0x3d, 0xd6, 0xb5, 0x85, 0x47, 0xfd,
-	0x28, 0xbc, 0x97, 0x0e, 0xb7, 0x6c, 0xdf, 0x85, 0x46, 0x1b, 0x06, 0x0d, 0x70, 0x08, 0xb7, 0xa3,
-	0x14, 0x6b, 0x4a, 0x0a, 0x69, 0x24, 0x39, 0xd6, 0x0f, 0x0d, 0xdd, 0x39, 0xe7, 0x6e, 0x9d, 0x81,
-	0x2d, 0xe0, 0x38, 0x04, 0x80, 0x75, 0xb4, 0xe1, 0x04, 0x0e, 0xca, 0x74, 0x6d, 0x57, 0x7b, 0xb2,
-	0x79, 0x11, 0x9b, 0x78, 0x0b, 0xad, 0x8a, 0xbe, 0xbe, 0x2a, 0x9d, 0xab, 0xa2, 0x8f, 0x1f, 0xa1,
-	0xcd, 0x26, 0xa3, 0xdd, 0x7a, 0xcb, 0xf6, 0x7c, 0x7d, 0x4d, 0xba, 0xc7, 0x8e, 0xa0, 0x8f, 0xa0,
-	0x61, 0x6c, 0x3d, 0xec, 0x13, 0x99, 0xd8, 0x40, 0xff, 0x33, 0x70, 0xc0, 0x7b, 0x0f, 0x4c, 0xff,
-	0x4f, 0x86, 0x12, 0x1b, 0x5b, 0xe8, 0x96, 0xa0, 0x6d, 0xf0, 0x8f, 0x08, 0x61, 0xc0, 0xb9, 0x5e,
-	0x91, 0xf1, 0x8c, 0x2f, 0xec, 0xdc, 0x06, 0xff, 0x94, 0xe8, 0x1b, 0x71, 0x67, 0x69, 0x5a, 0x06,
-	0xd2, 0x27, 0xf7, 0xb9, 0x00, 0xde, 0xa3, 0x3e, 0x87, 0x78, 0xd9, 0x37, 0x3d, 0xf2, 0x4f, 0x2d,
-	0x9b, 0xd9, 0x27, 0x59, 0xf6, 0xa5, 0xdc, 0xf5, 0x18, 0x3a, 0x50, 0x60, 0xd7, 0xa8, 0x73, 0xa6,
-	0x3a, 0xe9, 0xfc, 0x4d, 0x43, 0xf7, 0x93, 0x1b, 0xd7, 0x53, 0x7f, 0x9a, 0x33, 0xfa, 0x3f, 0x40,
-	0x95, 0x16, 0x78, 0x6e, 0x4b, 0x44, 0x33, 0x22, 0x0b, 0x63, 0xb4, 0xce, 0x28, 0x15, 0xd1, 0x39,
-	0xe5, 0xb3, 0xcc, 0xb5, 0x79, 0x0b, 0xb8, 0xbe, 0xbe, 0xbb, 0x26, 0x73, 0xa5, 0x15, 0xdc, 0x91,
-	0x7b, 0xee, 0x49, 0xfd, 0xf8, 0xf2, 0x28, 0xbe, 0x63, 0x6c, 0xc7, 0x31, 0x12, 0xc4, 0x2a, 0xe3,
-	0x58, 0x60, 0x5b, 0x3b, 0x68, 0x5b, 0x09, 0x77, 0x72, 0xa1, 0xf0, 0x8e, 0x7f, 0xcd, 0x42, 0x37,
-	0xe1, 0x26, 0x0b, 0x9d, 0xca, 0x7d, 0x42, 0xf6, 0xca, 0xed, 0x13, 0xcd, 0xba, 0xd9, 0x2a, 0x99,
-	0xe5, 0xa1, 0x87, 0xe3, 0xeb, 0xca, 0xff, 0x32, 0x67, 0x30, 0x08, 0x77, 0x98, 0x39, 0xcd, 0x87,
-	0x0f, 0x67, 0x30, 0x88, 0xa7, 0x85, 0x56, 0xf0, 0x8a, 0x71, 0xcf, 0xf5, 0x6d, 0xf1, 0x8e, 0x41,
-	0xfc, 0x8a, 0x25, 0x0e, 0x6b, 0x0f, 0xed, 0x4c, 0x19, 0x35, 0x81, 0x26, 0x3a, 0xcd, 0x32, 0xd0,
-	0xa8, 0x46, 0x25, 0x68, 0xce, 0x24, 0x9a, 0xe8, 0x78, 0x25, 0xd1, 0x44, 0xf3, 0x54, 0xcd, 0xe6,
-	0x70, 0x41, 0x96, 0xc7, 0x05, 0x99, 0xcf, 0x05, 0x59, 0x1e, 0x17, 0x64, 0x3e, 0x17, 0xe4, 0x4f,
-	0x72, 0x91, 0x9e, 0xf7, 0xf4, 0xeb, 0x16, 0x5a, 0x3b, 0xe7, 0x2e, 0xfe, 0xa8, 0xa1, 0xdb, 0x59,
-	0x79, 0x7d, 0x5e, 0x5d, 0xe4, 0xa7, 0x41, 0x75, 0x52, 0xc6, 0x8c, 0x57, 0xc5, 0xea, 0x62, 0x44,
-	0x12, 0x49, 0x56, 0xfb, 0x16, 0x47, 0x92, 0xa9, 0xcb, 0x81, 0x44, 0xa9, 0x4d, 0x12, 0x49, 0x56,
-	0x99, 0x16, 0x47, 0x92, 0xa9, 0xcb, 0x81, 0x44, 0xa9, 0x65, 0xf8, 0xb3, 0x86, 0xb0, 0x42, 0xc8,
-	0x0e, 0x72, 0x9e, 0x3a, 0x5d, 0x6c, 0xd4, 0x4b, 0x14, 0x67, 0x80, 0x29, 0x04, 0xe9, 0x20, 0xe7,
-	0xe5, 0x0b, 0x02, 0x9b, 0xae, 0x2d, 0x12, 0x98, 0x42, 0x59, 0x0e, 0x72, 0x12, 0x51, 0x10, 0xd8,
-	0x74, 0x21, 0xc2, 0x5f, 0x34, 0x74, 0x4f, 0x29, 0x43, 0x87, 0x79, 0xf9, 0xc8, 0x94, 0x1b, 0x27,
-	0xa5, 0xca, 0x33, 0xf0, 0x94, 0xba, 0x74, 0x98, 0x97, 0x95, 0xa2, 0xf0, 0x66, 0x49, 0x95, 0x84,
-	0xa7, 0x14, 0xaa, 0xc3, 0xbc, 0xdc, 0x14, 0x85, 0x37, 0x4b, 0xd9, 0x94, 0xe4, 0x92, 0x72, 0xe4,
-	0x92, 0x72, 0xe4, 0x92, 0x79, 0xe4, 0x92, 0x72, 0xe4, 0x92, 0x72, 0xe4, 0x92, 0x79, 0xe4, 0x92,
-	0x72, 0xe4, 0x92, 0x72, 0xe4, 0xa6, 0xe1, 0xbd, 0xbe, 0xfc, 0x3e, 0x34, 0xb5, 0xeb, 0xa1, 0xa9,
-	0xfd, 0x1a, 0x9a, 0xda, 0xa7, 0x91, 0xb9, 0x72, 0x3d, 0x32, 0x57, 0x7e, 0x8e, 0xcc, 0x95, 0xb7,
-	0x2f, 0x5c, 0x4f, 0x74, 0xec, 0xab, 0xaa, 0x43, 0xbb, 0xb5, 0x70, 0xd4, 0x7e, 0x3c, 0xab, 0x16,
-	0x0e, 0xd8, 0x97, 0x9f, 0xb7, 0xfd, 0x5a, 0xfa, 0x13, 0x7c, 0xd0, 0x03, 0x7e, 0x55, 0x91, 0x89,
-	0xcf, 0x7e, 0x07, 0x00, 0x00, 0xff, 0xff, 0x55, 0xcc, 0x06, 0x7b, 0x9d, 0x0f, 0x00, 0x00,
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion4
-
-// MsgClient is the client API for Msg service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type MsgClient interface {
-	CreateDeposit(ctx context.Context, in *MsgCreateDeposit, opts ...grpc.CallOption) (*MsgCreateDepositResponse, error)
-	UpdateDeposit(ctx context.Context, in *MsgUpdateDeposit, opts ...grpc.CallOption) (*MsgUpdateDepositResponse, error)
-	DeleteDeposit(ctx context.Context, in *MsgDeleteDeposit, opts ...grpc.CallOption) (*MsgDeleteDepositResponse, error)
-	CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error)
-	UpdateConfirmation(ctx context.Context, in *MsgUpdateConfirmation, opts ...grpc.CallOption) (*MsgUpdateConfirmationResponse, error)
-	DeleteConfirmation(ctx context.Context, in *MsgDeleteConfirmation, opts ...grpc.CallOption) (*MsgDeleteConfirmationResponse, error)
-	CreateChangeKeyECDSA(ctx context.Context, in *MsgCreateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyECDSAResponse, error)
-	UpdateChangeKeyECDSA(ctx context.Context, in *MsgUpdateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyECDSAResponse, error)
-	DeleteChangeKeyECDSA(ctx context.Context, in *MsgDeleteChangeKeyECDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyECDSAResponse, error)
-	CreateChangeKeyEdDSA(ctx context.Context, in *MsgCreateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyEdDSAResponse, error)
-	UpdateChangeKeyEdDSA(ctx context.Context, in *MsgUpdateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyEdDSAResponse, error)
-	DeleteChangeKeyEdDSA(ctx context.Context, in *MsgDeleteChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyEdDSAResponse, error)
-}
-
-type msgClient struct {
-	cc grpc1.ClientConn
-}
-
-func NewMsgClient(cc grpc1.ClientConn) MsgClient {
-	return &msgClient{cc}
-}
-
-func (c *msgClient) CreateDeposit(ctx context.Context, in *MsgCreateDeposit, opts ...grpc.CallOption) (*MsgCreateDepositResponse, error) {
-	out := new(MsgCreateDepositResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateDeposit", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateDeposit(ctx context.Context, in *MsgUpdateDeposit, opts ...grpc.CallOption) (*MsgUpdateDepositResponse, error) {
-	out := new(MsgUpdateDepositResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateDeposit", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteDeposit(ctx context.Context, in *MsgDeleteDeposit, opts ...grpc.CallOption) (*MsgDeleteDepositResponse, error) {
-	out := new(MsgDeleteDepositResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteDeposit", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error) {
-	out := new(MsgCreateConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateConfirmation(ctx context.Context, in *MsgUpdateConfirmation, opts ...grpc.CallOption) (*MsgUpdateConfirmationResponse, error) {
-	out := new(MsgUpdateConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateConfirmation", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteConfirmation(ctx context.Context, in *MsgDeleteConfirmation, opts ...grpc.CallOption) (*MsgDeleteConfirmationResponse, error) {
-	out := new(MsgDeleteConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteConfirmation", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateChangeKeyECDSA(ctx context.Context, in *MsgCreateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyECDSAResponse, error) {
-	out := new(MsgCreateChangeKeyECDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyECDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateChangeKeyECDSA(ctx context.Context, in *MsgUpdateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyECDSAResponse, error) {
-	out := new(MsgUpdateChangeKeyECDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyECDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteChangeKeyECDSA(ctx context.Context, in *MsgDeleteChangeKeyECDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyECDSAResponse, error) {
-	out := new(MsgDeleteChangeKeyECDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyECDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) CreateChangeKeyEdDSA(ctx context.Context, in *MsgCreateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyEdDSAResponse, error) {
-	out := new(MsgCreateChangeKeyEdDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyEdDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdateChangeKeyEdDSA(ctx context.Context, in *MsgUpdateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyEdDSAResponse, error) {
-	out := new(MsgUpdateChangeKeyEdDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyEdDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteChangeKeyEdDSA(ctx context.Context, in *MsgDeleteChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyEdDSAResponse, error) {
-	out := new(MsgDeleteChangeKeyEdDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyEdDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// MsgServer is the server API for Msg service.
-type MsgServer interface {
-	CreateDeposit(context.Context, *MsgCreateDeposit) (*MsgCreateDepositResponse, error)
-	UpdateDeposit(context.Context, *MsgUpdateDeposit) (*MsgUpdateDepositResponse, error)
-	DeleteDeposit(context.Context, *MsgDeleteDeposit) (*MsgDeleteDepositResponse, error)
-	CreateConfirmation(context.Context, *MsgCreateConfirmation) (*MsgCreateConfirmationResponse, error)
-	UpdateConfirmation(context.Context, *MsgUpdateConfirmation) (*MsgUpdateConfirmationResponse, error)
-	DeleteConfirmation(context.Context, *MsgDeleteConfirmation) (*MsgDeleteConfirmationResponse, error)
-	CreateChangeKeyECDSA(context.Context, *MsgCreateChangeKeyECDSA) (*MsgCreateChangeKeyECDSAResponse, error)
-	UpdateChangeKeyECDSA(context.Context, *MsgUpdateChangeKeyECDSA) (*MsgUpdateChangeKeyECDSAResponse, error)
-	DeleteChangeKeyECDSA(context.Context, *MsgDeleteChangeKeyECDSA) (*MsgDeleteChangeKeyECDSAResponse, error)
-	CreateChangeKeyEdDSA(context.Context, *MsgCreateChangeKeyEdDSA) (*MsgCreateChangeKeyEdDSAResponse, error)
-	UpdateChangeKeyEdDSA(context.Context, *MsgUpdateChangeKeyEdDSA) (*MsgUpdateChangeKeyEdDSAResponse, error)
-	DeleteChangeKeyEdDSA(context.Context, *MsgDeleteChangeKeyEdDSA) (*MsgDeleteChangeKeyEdDSAResponse, error)
-}
-
-// UnimplementedMsgServer can be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct {
-}
-
-func (*UnimplementedMsgServer) CreateDeposit(ctx context.Context, req *MsgCreateDeposit) (*MsgCreateDepositResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateDeposit not implemented")
-}
-func (*UnimplementedMsgServer) UpdateDeposit(ctx context.Context, req *MsgUpdateDeposit) (*MsgUpdateDepositResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateDeposit not implemented")
-}
-func (*UnimplementedMsgServer) DeleteDeposit(ctx context.Context, req *MsgDeleteDeposit) (*MsgDeleteDepositResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteDeposit not implemented")
-}
-func (*UnimplementedMsgServer) CreateConfirmation(ctx context.Context, req *MsgCreateConfirmation) (*MsgCreateConfirmationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateConfirmation not implemented")
-}
-func (*UnimplementedMsgServer) UpdateConfirmation(ctx context.Context, req *MsgUpdateConfirmation) (*MsgUpdateConfirmationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateConfirmation not implemented")
-}
-func (*UnimplementedMsgServer) DeleteConfirmation(ctx context.Context, req *MsgDeleteConfirmation) (*MsgDeleteConfirmationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteConfirmation not implemented")
-}
-func (*UnimplementedMsgServer) CreateChangeKeyECDSA(ctx context.Context, req *MsgCreateChangeKeyECDSA) (*MsgCreateChangeKeyECDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateChangeKeyECDSA not implemented")
-}
-func (*UnimplementedMsgServer) UpdateChangeKeyECDSA(ctx context.Context, req *MsgUpdateChangeKeyECDSA) (*MsgUpdateChangeKeyECDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateChangeKeyECDSA not implemented")
-}
-func (*UnimplementedMsgServer) DeleteChangeKeyECDSA(ctx context.Context, req *MsgDeleteChangeKeyECDSA) (*MsgDeleteChangeKeyECDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteChangeKeyECDSA not implemented")
-}
-func (*UnimplementedMsgServer) CreateChangeKeyEdDSA(ctx context.Context, req *MsgCreateChangeKeyEdDSA) (*MsgCreateChangeKeyEdDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateChangeKeyEdDSA not implemented")
-}
-func (*UnimplementedMsgServer) UpdateChangeKeyEdDSA(ctx context.Context, req *MsgUpdateChangeKeyEdDSA) (*MsgUpdateChangeKeyEdDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateChangeKeyEdDSA not implemented")
-}
-func (*UnimplementedMsgServer) DeleteChangeKeyEdDSA(ctx context.Context, req *MsgDeleteChangeKeyEdDSA) (*MsgDeleteChangeKeyEdDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteChangeKeyEdDSA not implemented")
-}
-
-func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
-	s.RegisterService(&_Msg_serviceDesc, srv)
-}
-
-func _Msg_CreateDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateDeposit)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateDeposit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateDeposit",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateDeposit(ctx, req.(*MsgCreateDeposit))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateDeposit)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateDeposit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateDeposit",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateDeposit(ctx, req.(*MsgUpdateDeposit))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteDeposit)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteDeposit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteDeposit",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteDeposit(ctx, req.(*MsgDeleteDeposit))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateConfirmation)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateConfirmation(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateConfirmation(ctx, req.(*MsgCreateConfirmation))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateConfirmation)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateConfirmation(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateConfirmation",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateConfirmation(ctx, req.(*MsgUpdateConfirmation))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteConfirmation)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteConfirmation(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteConfirmation",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteConfirmation(ctx, req.(*MsgDeleteConfirmation))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateChangeKeyECDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateChangeKeyECDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyECDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateChangeKeyECDSA(ctx, req.(*MsgCreateChangeKeyECDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateChangeKeyECDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateChangeKeyECDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyECDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateChangeKeyECDSA(ctx, req.(*MsgUpdateChangeKeyECDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteChangeKeyECDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteChangeKeyECDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyECDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteChangeKeyECDSA(ctx, req.(*MsgDeleteChangeKeyECDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_CreateChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateChangeKeyEdDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateChangeKeyEdDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyEdDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateChangeKeyEdDSA(ctx, req.(*MsgCreateChangeKeyEdDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdateChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateChangeKeyEdDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateChangeKeyEdDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyEdDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateChangeKeyEdDSA(ctx, req.(*MsgUpdateChangeKeyEdDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteChangeKeyEdDSA)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteChangeKeyEdDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyEdDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteChangeKeyEdDSA(ctx, req.(*MsgDeleteChangeKeyEdDSA))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "rarifyprotocol.rarimocore.rarimocore.Msg",
-	HandlerType: (*MsgServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "CreateDeposit",
-			Handler:    _Msg_CreateDeposit_Handler,
-		},
-		{
-			MethodName: "UpdateDeposit",
-			Handler:    _Msg_UpdateDeposit_Handler,
-		},
-		{
-			MethodName: "DeleteDeposit",
-			Handler:    _Msg_DeleteDeposit_Handler,
-		},
-		{
-			MethodName: "CreateConfirmation",
-			Handler:    _Msg_CreateConfirmation_Handler,
-		},
-		{
-			MethodName: "UpdateConfirmation",
-			Handler:    _Msg_UpdateConfirmation_Handler,
-		},
-		{
-			MethodName: "DeleteConfirmation",
-			Handler:    _Msg_DeleteConfirmation_Handler,
-		},
-		{
-			MethodName: "CreateChangeKeyECDSA",
-			Handler:    _Msg_CreateChangeKeyECDSA_Handler,
-		},
-		{
-			MethodName: "UpdateChangeKeyECDSA",
-			Handler:    _Msg_UpdateChangeKeyECDSA_Handler,
-		},
-		{
-			MethodName: "DeleteChangeKeyECDSA",
-			Handler:    _Msg_DeleteChangeKeyECDSA_Handler,
-		},
-		{
-			MethodName: "CreateChangeKeyEdDSA",
-			Handler:    _Msg_CreateChangeKeyEdDSA_Handler,
-		},
-		{
-			MethodName: "UpdateChangeKeyEdDSA",
-			Handler:    _Msg_UpdateChangeKeyEdDSA_Handler,
-		},
-		{
-			MethodName: "DeleteChangeKeyEdDSA",
-			Handler:    _Msg_DeleteChangeKeyEdDSA_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "rarimocore/tx.proto",
+	// 747 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x58, 0x4d, 0x4b, 0xdc, 0x40,
+	0x18, 0x36, 0xab, 0x5d, 0x75, 0x68, 0xa5, 0x4c, 0xbf, 0x42, 0xa8, 0xab, 0x86, 0x1e, 0xa4, 0xe0,
+	0x2e, 0x58, 0x28, 0x14, 0x6b, 0xc1, 0xae, 0x42, 0x45, 0xbc, 0xa8, 0xbd, 0xf4, 0x22, 0x31, 0xf3,
+	0x9a, 0x0d, 0xba, 0x99, 0x30, 0x33, 0x6d, 0x37, 0xbf, 0xa0, 0xd7, 0x9e, 0x4a, 0x0f, 0xfd, 0x01,
+	0xbd, 0xf4, 0x7f, 0xf4, 0xe8, 0xb1, 0xc7, 0xa2, 0x7f, 0xa4, 0x64, 0xf2, 0xb1, 0xc9, 0x3a, 0xfb,
+	0x91, 0xa4, 0x08, 0x85, 0xde, 0xf2, 0xce, 0xfb, 0xf5, 0xcc, 0xf3, 0x90, 0x3c, 0xec, 0xa2, 0x7b,
+	0xcc, 0x62, 0x6e, 0x97, 0xda, 0x94, 0x41, 0x4b, 0xf4, 0x9a, 0x3e, 0xa3, 0x82, 0xe2, 0x27, 0xe1,
+	0xe1, 0x69, 0x20, 0x03, 0x9b, 0x9e, 0x37, 0xfb, 0x35, 0x99, 0x47, 0x43, 0xcf, 0xb4, 0x12, 0xf0,
+	0x29, 0x77, 0x45, 0xd4, 0x6f, 0x2c, 0x66, 0x32, 0x36, 0xf5, 0x4e, 0x5d, 0xd6, 0xb5, 0x84, 0x4b,
+	0xbd, 0x38, 0xbd, 0x92, 0x4d, 0x77, 0x2c, 0xcf, 0x81, 0xe3, 0x33, 0x08, 0x8e, 0xc1, 0x26, 0xdc,
+	0x8a, 0x4b, 0xcc, 0x21, 0x25, 0xe4, 0x38, 0xad, 0x31, 0xbf, 0xd6, 0xd0, 0xdd, 0x7d, 0xee, 0xb4,
+	0x19, 0x58, 0x02, 0xb6, 0x23, 0x00, 0x58, 0x47, 0xb3, 0x76, 0x78, 0x40, 0x99, 0xae, 0x2d, 0x6b,
+	0xab, 0xf3, 0x07, 0x49, 0x88, 0x17, 0x50, 0x4d, 0xf4, 0xf4, 0x9a, 0x3c, 0xac, 0x89, 0x1e, 0x7e,
+	0x8c, 0xe6, 0x4f, 0x19, 0xed, 0xb6, 0x3b, 0x96, 0xeb, 0xe9, 0xd3, 0xf2, 0xb8, 0x7f, 0x10, 0xce,
+	0x11, 0x34, 0xca, 0xcd, 0x44, 0x73, 0xe2, 0x10, 0x1b, 0x68, 0x8e, 0x81, 0x0d, 0xee, 0x07, 0x60,
+	0xfa, 0x2d, 0x99, 0x4a, 0x63, 0x6c, 0xa2, 0xdb, 0x82, 0x9e, 0x81, 0xb7, 0x45, 0x08, 0x03, 0xce,
+	0xf5, 0xba, 0xcc, 0xe7, 0xce, 0xa2, 0xc9, 0x67, 0xe0, 0xed, 0x12, 0x7d, 0x36, 0x99, 0x2c, 0x43,
+	0xfc, 0x06, 0xcd, 0x1f, 0x85, 0x8f, 0x47, 0x81, 0x0f, 0xfa, 0xdc, 0xb2, 0xb6, 0xba, 0xb0, 0xfe,
+	0xb4, 0x39, 0x89, 0x14, 0x4d, 0x11, 0xf8, 0x70, 0xd0, 0x6f, 0x36, 0x0d, 0xa4, 0x0f, 0x32, 0x73,
+	0x00, 0xdc, 0xa7, 0x1e, 0x87, 0x84, 0xb6, 0xb7, 0x3e, 0xf9, 0x4f, 0x9b, 0x92, 0xb6, 0x1c, 0x33,
+	0x29, 0x6d, 0x2f, 0x25, 0x6b, 0xdb, 0x70, 0x0e, 0x25, 0x58, 0x8b, 0x27, 0xe7, 0xba, 0xd3, 0xc9,
+	0x3f, 0x34, 0xf4, 0x20, 0x55, 0xab, 0x9d, 0x79, 0x5d, 0x46, 0xcc, 0x7f, 0x88, 0xea, 0x1d, 0x70,
+	0x9d, 0x8e, 0x88, 0x77, 0xc4, 0x11, 0xc6, 0x68, 0x86, 0x51, 0x2a, 0x62, 0x61, 0xe4, 0xb3, 0xac,
+	0xb5, 0x78, 0x07, 0xb8, 0x3e, 0xb3, 0x3c, 0x2d, 0x6b, 0x65, 0x14, 0x2a, 0xc2, 0x5d, 0x67, 0xa7,
+	0xbd, 0x7d, 0xb8, 0x95, 0x28, 0x92, 0xc4, 0x49, 0x8e, 0x84, 0xb9, 0x7a, 0x3f, 0x17, 0xc6, 0xe6,
+	0x12, 0x5a, 0x54, 0xc2, 0x1d, 0xbc, 0x50, 0xc4, 0xe3, 0x3f, 0x73, 0xa1, 0xeb, 0x70, 0xd3, 0x0b,
+	0xed, 0xca, 0xfb, 0x44, 0xea, 0x55, 0xbb, 0x4f, 0xbc, 0xeb, 0xfa, 0xa8, 0x74, 0x97, 0x8b, 0x1e,
+	0xf5, 0xd9, 0x95, 0x5f, 0xbe, 0x3d, 0x08, 0xa2, 0x3b, 0x8c, 0xdc, 0xe6, 0xc1, 0xc7, 0x3d, 0x08,
+	0x92, 0x6d, 0x51, 0x14, 0xbe, 0xac, 0xdc, 0x75, 0x3c, 0x4b, 0xbc, 0x67, 0x90, 0xbc, 0xac, 0xe9,
+	0x81, 0xb9, 0x82, 0x96, 0x86, 0xac, 0x1a, 0x40, 0x13, 0x53, 0x73, 0x13, 0x68, 0x54, 0xab, 0x52,
+	0x34, 0x7b, 0x12, 0x4d, 0x4c, 0x5e, 0x45, 0x34, 0xf1, 0x3e, 0xd5, 0xb0, 0x31, 0x5a, 0x90, 0x9b,
+	0xd3, 0x82, 0x8c, 0xd7, 0x82, 0xdc, 0x9c, 0x16, 0x64, 0xbc, 0x16, 0xe4, 0x6f, 0x6a, 0x91, 0xdd,
+	0xb7, 0xfe, 0x7d, 0x01, 0x4d, 0xef, 0x73, 0x07, 0x7f, 0xd2, 0xd0, 0x9d, 0xbc, 0xe5, 0x3f, 0x9f,
+	0xec, 0x63, 0x3f, 0x68, 0x88, 0xc6, 0xab, 0x72, 0x7d, 0x09, 0x22, 0x89, 0x24, 0xef, 0xa2, 0x93,
+	0x23, 0xc9, 0xf5, 0x15, 0x40, 0xa2, 0xf4, 0x26, 0x89, 0x24, 0xef, 0x4c, 0x93, 0x23, 0xc9, 0xf5,
+	0x15, 0x40, 0xa2, 0xf4, 0x32, 0xfc, 0x45, 0x43, 0x58, 0x61, 0x64, 0x1b, 0x05, 0xa9, 0xce, 0x36,
+	0x1b, 0xed, 0x0a, 0xcd, 0x39, 0x60, 0x0a, 0x43, 0xda, 0x28, 0xc8, 0x7c, 0x49, 0x60, 0xc3, 0xbd,
+	0x45, 0x02, 0x53, 0x38, 0xcb, 0x46, 0x41, 0x21, 0x4a, 0x02, 0x1b, 0x6e, 0x44, 0xf8, 0x9b, 0x86,
+	0xee, 0x2b, 0x6d, 0x68, 0xb3, 0xa8, 0x1e, 0xb9, 0x76, 0x63, 0xa7, 0x52, 0x7b, 0x0e, 0x9e, 0xd2,
+	0x97, 0x36, 0x8b, 0xaa, 0x52, 0x16, 0xde, 0x28, 0xab, 0x92, 0xf0, 0x94, 0x46, 0xb5, 0x59, 0x54,
+	0x9b, 0xb2, 0xf0, 0x46, 0x39, 0x9b, 0x52, 0x5c, 0x52, 0x4d, 0x5c, 0x52, 0x4d, 0x5c, 0x32, 0x4e,
+	0x5c, 0x52, 0x4d, 0x5c, 0x52, 0x4d, 0x5c, 0x32, 0x4e, 0x5c, 0x52, 0x4d, 0x5c, 0x52, 0x4d, 0xdc,
+	0x2c, 0xbc, 0xd7, 0x87, 0x3f, 0x2f, 0x1b, 0xda, 0xc5, 0x65, 0x43, 0xfb, 0x7d, 0xd9, 0xd0, 0x3e,
+	0x5f, 0x35, 0xa6, 0x2e, 0xae, 0x1a, 0x53, 0xbf, 0xae, 0x1a, 0x53, 0xef, 0x5e, 0x38, 0xae, 0x38,
+	0xb7, 0x4e, 0x9a, 0x36, 0xed, 0xb6, 0xa2, 0x55, 0x6b, 0xc9, 0xae, 0x56, 0xb4, 0x60, 0x4d, 0xfe,
+	0xe4, 0xee, 0xb5, 0xb2, 0x7f, 0x0b, 0x04, 0x3e, 0xf0, 0x93, 0xba, 0x2c, 0x7c, 0xf6, 0x27, 0x00,
+	0x00, 0xff, 0xff, 0x79, 0xbf, 0xfb, 0x17, 0x31, 0x10, 0x00, 0x00,
 }
 
 func (m *MsgCreateDeposit) Marshal() (dAtA []byte, err error) {
@@ -1833,6 +1370,11 @@ func (m *MsgCreateDeposit) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TokenType != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.TokenType))
+		i--
+		dAtA[i] = 0x40
+	}
 	if len(m.TokenId) > 0 {
 		i -= len(m.TokenId)
 		copy(dAtA[i:], m.TokenId)
@@ -1928,6 +1470,11 @@ func (m *MsgUpdateDeposit) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TokenType != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.TokenType))
+		i--
+		dAtA[i] = 0x40
+	}
 	if len(m.TokenId) > 0 {
 		i -= len(m.TokenId)
 		copy(dAtA[i:], m.TokenId)
@@ -2736,6 +2283,9 @@ func (m *MsgCreateDeposit) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	if m.TokenType != 0 {
+		n += 1 + sovTx(uint64(m.TokenType))
+	}
 	return n
 }
 
@@ -2781,6 +2331,9 @@ func (m *MsgUpdateDeposit) Size() (n int) {
 	l = len(m.TokenId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.TokenType != 0 {
+		n += 1 + sovTx(uint64(m.TokenType))
 	}
 	return n
 }
@@ -3365,6 +2918,25 @@ func (m *MsgCreateDeposit) Unmarshal(dAtA []byte) error {
 			}
 			m.TokenId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenType", wireType)
+			}
+			m.TokenType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TokenType |= Type(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -3689,6 +3261,25 @@ func (m *MsgUpdateDeposit) Unmarshal(dAtA []byte) error {
 			}
 			m.TokenId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenType", wireType)
+			}
+			m.TokenType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TokenType |= Type(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
