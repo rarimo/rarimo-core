@@ -12,11 +12,12 @@ var _ merkletree.Content = HashContent{}
 type TokenType int32
 
 var (
-	Native   TokenType = 0
-	ERC20    TokenType = 1
-	ERC721   TokenType = 2
-	ERC1155  TokenType = 3
-	Metaplex TokenType = 4
+	Native      TokenType = 0
+	ERC20       TokenType = 1
+	ERC721      TokenType = 2
+	ERC1155     TokenType = 3
+	MetaplexNFT TokenType = 4
+	MetaplexFT  TokenType = 5
 )
 
 // HashContent implements the Content interface provided by merkletree and represents the content stored in the tree.
