@@ -40,12 +40,16 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		}
 		deposits = append(deposits, deposit)
 		content = append(content, crypto.HashContent{
-			TxHash:        hash,
-			TokenAddress:  deposit.TokenAddress,
-			TokenId:       deposit.TokenId,
-			Receiver:      deposit.Receiver,
-			TargetNetwork: deposit.ToChain,
-			Type:          deposit.TokenType,
+			TxHash:         hash,
+			CurrentAddress: deposit.TokenAddress,
+			CurrentId:      deposit.TokenId,
+			Receiver:       deposit.Receiver,
+			TargetNetwork:  deposit.ToChain,
+			CurrentNetwork: deposit.FromChain,
+			Type:           deposit.TokenType,
+			//TODO: fill
+			TargetAddress: "",
+			TargetId:      "",
 		})
 	}
 
