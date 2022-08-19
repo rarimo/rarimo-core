@@ -1,0 +1,13 @@
+syntax = "proto3";
+package rarifyprotocol.rarimocore.tokenmanager;
+
+option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+
+message Item {
+  string tokenAddress = 1; 
+  string tokenId = 2; 
+  string index = 3; 
+  string chain = 4; 
+  
+}
+

@@ -14,6 +14,16 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
+		ItemList: []types.Item{
+			{
+				TokenAddress: "0",
+				TokenId:      "0",
+			},
+			{
+				TokenAddress: "1",
+				TokenId:      "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -25,5 +35,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
+	require.ElementsMatch(t, genesisState.ItemList, got.ItemList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
