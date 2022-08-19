@@ -132,3 +132,41 @@ func CmdDeleteInfo() *cobra.Command {
 
 	return cmd
 }
+
+func CmdAddChain() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "add-chain [index] [chain] [tokenAddress] [tokenId]",
+		Short: "Add a chain to info",
+		Args:  cobra.ExactArgs(10),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			// Get indexes
+			indexIndex := args[0]
+
+			// Get value arguments
+			argChain := args[1]
+			argTokenAddress := args[3]
+			argTokenInfo := args[4]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgAddChain(
+				clientCtx.GetFromAddress().String(),
+				indexIndex,
+				argChain,
+				argTokenAddress,
+				argTokenInfo,
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
