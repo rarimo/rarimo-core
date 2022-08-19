@@ -4,33 +4,33 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateChangeKeyECDSA } from "./types/rarimocore/tx";
-import { MsgDeleteChangeKeyECDSA } from "./types/rarimocore/tx";
-import { MsgCreateChangeKeyECDSA } from "./types/rarimocore/tx";
-import { MsgDeleteDeposit } from "./types/rarimocore/tx";
-import { MsgCreateChangeKeyEdDSA } from "./types/rarimocore/tx";
+import { MsgDeleteChangeKeyEdDSA } from "./types/rarimocore/tx";
 import { MsgDeleteConfirmation } from "./types/rarimocore/tx";
 import { MsgCreateDeposit } from "./types/rarimocore/tx";
+import { MsgDeleteDeposit } from "./types/rarimocore/tx";
+import { MsgCreateChangeKeyECDSA } from "./types/rarimocore/tx";
 import { MsgUpdateChangeKeyEdDSA } from "./types/rarimocore/tx";
-import { MsgDeleteChangeKeyEdDSA } from "./types/rarimocore/tx";
-import { MsgCreateConfirmation } from "./types/rarimocore/tx";
-import { MsgUpdateConfirmation } from "./types/rarimocore/tx";
 import { MsgUpdateDeposit } from "./types/rarimocore/tx";
+import { MsgDeleteChangeKeyECDSA } from "./types/rarimocore/tx";
+import { MsgUpdateConfirmation } from "./types/rarimocore/tx";
+import { MsgUpdateChangeKeyECDSA } from "./types/rarimocore/tx";
+import { MsgCreateConfirmation } from "./types/rarimocore/tx";
+import { MsgCreateChangeKeyEdDSA } from "./types/rarimocore/tx";
 
 
 const types = [
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyECDSA", MsgUpdateChangeKeyECDSA],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyECDSA", MsgDeleteChangeKeyECDSA],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSA", MsgCreateChangeKeyECDSA],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteDeposit", MsgDeleteDeposit],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSA", MsgCreateChangeKeyEdDSA],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyEdDSA", MsgDeleteChangeKeyEdDSA],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteConfirmation", MsgDeleteConfirmation],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateDeposit", MsgCreateDeposit],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteDeposit", MsgDeleteDeposit],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSA", MsgCreateChangeKeyECDSA],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyEdDSA", MsgUpdateChangeKeyEdDSA],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyEdDSA", MsgDeleteChangeKeyEdDSA],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateConfirmation", MsgUpdateConfirmation],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateDeposit", MsgUpdateDeposit],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyECDSA", MsgDeleteChangeKeyECDSA],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateConfirmation", MsgUpdateConfirmation],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyECDSA", MsgUpdateChangeKeyECDSA],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSA", MsgCreateChangeKeyEdDSA],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -63,18 +63,18 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUpdateChangeKeyECDSA: (data: MsgUpdateChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyECDSA", value: MsgUpdateChangeKeyECDSA.fromPartial( data ) }),
-    msgDeleteChangeKeyECDSA: (data: MsgDeleteChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyECDSA", value: MsgDeleteChangeKeyECDSA.fromPartial( data ) }),
-    msgCreateChangeKeyECDSA: (data: MsgCreateChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSA", value: MsgCreateChangeKeyECDSA.fromPartial( data ) }),
-    msgDeleteDeposit: (data: MsgDeleteDeposit): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteDeposit", value: MsgDeleteDeposit.fromPartial( data ) }),
-    msgCreateChangeKeyEdDSA: (data: MsgCreateChangeKeyEdDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSA", value: MsgCreateChangeKeyEdDSA.fromPartial( data ) }),
+    msgDeleteChangeKeyEdDSA: (data: MsgDeleteChangeKeyEdDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyEdDSA", value: MsgDeleteChangeKeyEdDSA.fromPartial( data ) }),
     msgDeleteConfirmation: (data: MsgDeleteConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteConfirmation", value: MsgDeleteConfirmation.fromPartial( data ) }),
     msgCreateDeposit: (data: MsgCreateDeposit): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateDeposit", value: MsgCreateDeposit.fromPartial( data ) }),
+    msgDeleteDeposit: (data: MsgDeleteDeposit): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteDeposit", value: MsgDeleteDeposit.fromPartial( data ) }),
+    msgCreateChangeKeyECDSA: (data: MsgCreateChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSA", value: MsgCreateChangeKeyECDSA.fromPartial( data ) }),
     msgUpdateChangeKeyEdDSA: (data: MsgUpdateChangeKeyEdDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyEdDSA", value: MsgUpdateChangeKeyEdDSA.fromPartial( data ) }),
-    msgDeleteChangeKeyEdDSA: (data: MsgDeleteChangeKeyEdDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyEdDSA", value: MsgDeleteChangeKeyEdDSA.fromPartial( data ) }),
-    msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
-    msgUpdateConfirmation: (data: MsgUpdateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateConfirmation", value: MsgUpdateConfirmation.fromPartial( data ) }),
     msgUpdateDeposit: (data: MsgUpdateDeposit): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateDeposit", value: MsgUpdateDeposit.fromPartial( data ) }),
+    msgDeleteChangeKeyECDSA: (data: MsgDeleteChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgDeleteChangeKeyECDSA", value: MsgDeleteChangeKeyECDSA.fromPartial( data ) }),
+    msgUpdateConfirmation: (data: MsgUpdateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateConfirmation", value: MsgUpdateConfirmation.fromPartial( data ) }),
+    msgUpdateChangeKeyECDSA: (data: MsgUpdateChangeKeyECDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgUpdateChangeKeyECDSA", value: MsgUpdateChangeKeyECDSA.fromPartial( data ) }),
+    msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
+    msgCreateChangeKeyEdDSA: (data: MsgCreateChangeKeyEdDSA): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSA", value: MsgCreateChangeKeyEdDSA.fromPartial( data ) }),
     
   };
 };

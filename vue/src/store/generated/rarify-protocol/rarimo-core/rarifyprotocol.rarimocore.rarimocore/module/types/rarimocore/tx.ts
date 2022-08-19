@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { type, typeFromJSON, typeToJSON } from "../rarimocore/deposit";
 import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
@@ -11,6 +12,7 @@ export interface MsgCreateDeposit {
   receiver: string;
   tokenAddress: string;
   tokenId: string;
+  TokenType: type;
 }
 
 export interface MsgCreateDepositResponse {}
@@ -23,6 +25,7 @@ export interface MsgUpdateDeposit {
   receiver: string;
   tokenAddress: string;
   tokenId: string;
+  TokenType: type;
 }
 
 export interface MsgUpdateDepositResponse {}
@@ -117,6 +120,7 @@ const baseMsgCreateDeposit: object = {
   receiver: "",
   tokenAddress: "",
   tokenId: "",
+  TokenType: 0,
 };
 
 export const MsgCreateDeposit = {
@@ -141,6 +145,9 @@ export const MsgCreateDeposit = {
     }
     if (message.tokenId !== "") {
       writer.uint32(58).string(message.tokenId);
+    }
+    if (message.TokenType !== 0) {
+      writer.uint32(64).int32(message.TokenType);
     }
     return writer;
   },
@@ -172,6 +179,9 @@ export const MsgCreateDeposit = {
           break;
         case 7:
           message.tokenId = reader.string();
+          break;
+        case 8:
+          message.TokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -218,6 +228,11 @@ export const MsgCreateDeposit = {
     } else {
       message.tokenId = "";
     }
+    if (object.TokenType !== undefined && object.TokenType !== null) {
+      message.TokenType = typeFromJSON(object.TokenType);
+    } else {
+      message.TokenType = 0;
+    }
     return message;
   },
 
@@ -231,6 +246,8 @@ export const MsgCreateDeposit = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.TokenType !== undefined &&
+      (obj.TokenType = typeToJSON(message.TokenType));
     return obj;
   },
 
@@ -270,6 +287,11 @@ export const MsgCreateDeposit = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
+    }
+    if (object.TokenType !== undefined && object.TokenType !== null) {
+      message.TokenType = object.TokenType;
+    } else {
+      message.TokenType = 0;
     }
     return message;
   },
@@ -335,6 +357,7 @@ const baseMsgUpdateDeposit: object = {
   receiver: "",
   tokenAddress: "",
   tokenId: "",
+  TokenType: 0,
 };
 
 export const MsgUpdateDeposit = {
@@ -359,6 +382,9 @@ export const MsgUpdateDeposit = {
     }
     if (message.tokenId !== "") {
       writer.uint32(58).string(message.tokenId);
+    }
+    if (message.TokenType !== 0) {
+      writer.uint32(64).int32(message.TokenType);
     }
     return writer;
   },
@@ -390,6 +416,9 @@ export const MsgUpdateDeposit = {
           break;
         case 7:
           message.tokenId = reader.string();
+          break;
+        case 8:
+          message.TokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -436,6 +465,11 @@ export const MsgUpdateDeposit = {
     } else {
       message.tokenId = "";
     }
+    if (object.TokenType !== undefined && object.TokenType !== null) {
+      message.TokenType = typeFromJSON(object.TokenType);
+    } else {
+      message.TokenType = 0;
+    }
     return message;
   },
 
@@ -449,6 +483,8 @@ export const MsgUpdateDeposit = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.TokenType !== undefined &&
+      (obj.TokenType = typeToJSON(message.TokenType));
     return obj;
   },
 
@@ -488,6 +524,11 @@ export const MsgUpdateDeposit = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
+    }
+    if (object.TokenType !== undefined && object.TokenType !== null) {
+      message.TokenType = object.TokenType;
+    } else {
+      message.TokenType = 0;
     }
     return message;
   },

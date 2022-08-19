@@ -30730,6 +30730,16 @@ paths:
                       type: string
                     signed:
                       type: boolean
+                    tokenType:
+                      type: string
+                      enum:
+                        - NATIVE
+                        - ERC20
+                        - ERC721
+                        - ERC1155
+                        - METAPLEX_NFT
+                        - METAPLEX_FT
+                      default: NATIVE
               pagination:
                 type: object
                 properties:
@@ -30863,6 +30873,16 @@ paths:
                     type: string
                   signed:
                     type: boolean
+                  tokenType:
+                    type: string
+                    enum:
+                      - NATIVE
+                      - ERC20
+                      - ERC721
+                      - ERC1155
+                      - METAPLEX_NFT
+                      - METAPLEX_FT
+                    default: NATIVE
         default:
           description: An unexpected error response.
           schema:
@@ -30906,6 +30926,42 @@ paths:
                     type: string
                   keyEdDSA:
                     type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /rarify-protocol/rarimo-core/tokenmanager/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarifyprotocolRarimocoreTokenmanagerParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -52365,6 +52421,16 @@ definitions:
         type: string
       signed:
         type: boolean
+      tokenType:
+        type: string
+        enum:
+          - NATIVE
+          - ERC20
+          - ERC721
+          - ERC1155
+          - METAPLEX_NFT
+          - METAPLEX_FT
+        default: NATIVE
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyEdDSAResponse:
@@ -52546,6 +52612,16 @@ definitions:
               type: string
             signed:
               type: boolean
+            tokenType:
+              type: string
+              enum:
+                - NATIVE
+                - ERC20
+                - ERC721
+                - ERC1155
+                - METAPLEX_NFT
+                - METAPLEX_FT
+              default: NATIVE
       pagination:
         type: object
         properties:
@@ -52637,6 +52713,16 @@ definitions:
             type: string
           signed:
             type: boolean
+          tokenType:
+            type: string
+            enum:
+              - NATIVE
+              - ERC20
+              - ERC721
+              - ERC1155
+              - METAPLEX_NFT
+              - METAPLEX_FT
+            default: NATIVE
   rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:
@@ -52648,6 +52734,26 @@ definitions:
             type: string
           keyEdDSA:
             type: string
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarifyprotocol.rarimocore.rarimocore.type:
+    type: string
+    enum:
+      - NATIVE
+      - ERC20
+      - ERC721
+      - ERC1155
+      - METAPLEX_NFT
+      - METAPLEX_FT
+    default: NATIVE
+  rarifyprotocol.rarimocore.tokenmanager.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

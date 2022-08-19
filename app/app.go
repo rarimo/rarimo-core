@@ -103,6 +103,9 @@ import (
 	rarimocoremodule "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore"
 	rarimocoremodulekeeper "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/keeper"
 	rarimocoremoduletypes "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	tokenmanagermodule "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager"
+	tokenmanagermodulekeeper "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/keeper"
+	tokenmanagermoduletypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -158,6 +161,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		rarimocoremodule.AppModuleBasic{},
+		tokenmanagermodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -231,6 +235,8 @@ type App struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
+
+	TokenmanagerKeeper tokenmanagermodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -268,6 +274,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		rarimocoremoduletypes.StoreKey,
+		tokenmanagermoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -397,6 +404,14 @@ func New(
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.TokenmanagerKeeper = *tokenmanagermodulekeeper.NewKeeper(
+		appCodec,
+		keys[tokenmanagermoduletypes.StoreKey],
+		keys[tokenmanagermoduletypes.MemStoreKey],
+		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
+	)
+	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -439,6 +454,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		rarimocoreModule,
+		tokenmanagerModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -467,6 +483,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
+		tokenmanagermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -491,6 +508,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
+		tokenmanagermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -520,6 +538,7 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
+		tokenmanagermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -545,6 +564,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		rarimocoreModule,
+		tokenmanagerModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -735,6 +755,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(rarimocoremoduletypes.ModuleName)
+	paramsKeeper.Subspace(tokenmanagermoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

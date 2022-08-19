@@ -4,8 +4,13 @@
 package types
 
 import (
+	context "context"
 	fmt "fmt"
+	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -1348,6 +1353,482 @@ var fileDescriptor_d9dffb74ddf0d475 = []byte{
 	0xb7, 0x4e, 0x9a, 0x36, 0xed, 0xb6, 0xa2, 0x55, 0x6b, 0xc9, 0xae, 0x56, 0xb4, 0x60, 0x4d, 0xfe,
 	0xe4, 0xee, 0xb5, 0xb2, 0x7f, 0x0b, 0x04, 0x3e, 0xf0, 0x93, 0xba, 0x2c, 0x7c, 0xf6, 0x27, 0x00,
 	0x00, 0xff, 0xff, 0x79, 0xbf, 0xfb, 0x17, 0x31, 0x10, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// MsgClient is the client API for Msg service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type MsgClient interface {
+	CreateDeposit(ctx context.Context, in *MsgCreateDeposit, opts ...grpc.CallOption) (*MsgCreateDepositResponse, error)
+	UpdateDeposit(ctx context.Context, in *MsgUpdateDeposit, opts ...grpc.CallOption) (*MsgUpdateDepositResponse, error)
+	DeleteDeposit(ctx context.Context, in *MsgDeleteDeposit, opts ...grpc.CallOption) (*MsgDeleteDepositResponse, error)
+	CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error)
+	UpdateConfirmation(ctx context.Context, in *MsgUpdateConfirmation, opts ...grpc.CallOption) (*MsgUpdateConfirmationResponse, error)
+	DeleteConfirmation(ctx context.Context, in *MsgDeleteConfirmation, opts ...grpc.CallOption) (*MsgDeleteConfirmationResponse, error)
+	CreateChangeKeyECDSA(ctx context.Context, in *MsgCreateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyECDSAResponse, error)
+	UpdateChangeKeyECDSA(ctx context.Context, in *MsgUpdateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyECDSAResponse, error)
+	DeleteChangeKeyECDSA(ctx context.Context, in *MsgDeleteChangeKeyECDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyECDSAResponse, error)
+	CreateChangeKeyEdDSA(ctx context.Context, in *MsgCreateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyEdDSAResponse, error)
+	UpdateChangeKeyEdDSA(ctx context.Context, in *MsgUpdateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyEdDSAResponse, error)
+	DeleteChangeKeyEdDSA(ctx context.Context, in *MsgDeleteChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyEdDSAResponse, error)
+}
+
+type msgClient struct {
+	cc grpc1.ClientConn
+}
+
+func NewMsgClient(cc grpc1.ClientConn) MsgClient {
+	return &msgClient{cc}
+}
+
+func (c *msgClient) CreateDeposit(ctx context.Context, in *MsgCreateDeposit, opts ...grpc.CallOption) (*MsgCreateDepositResponse, error) {
+	out := new(MsgCreateDepositResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateDeposit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateDeposit(ctx context.Context, in *MsgUpdateDeposit, opts ...grpc.CallOption) (*MsgUpdateDepositResponse, error) {
+	out := new(MsgUpdateDepositResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateDeposit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteDeposit(ctx context.Context, in *MsgDeleteDeposit, opts ...grpc.CallOption) (*MsgDeleteDepositResponse, error) {
+	out := new(MsgDeleteDepositResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteDeposit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error) {
+	out := new(MsgCreateConfirmationResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateConfirmation(ctx context.Context, in *MsgUpdateConfirmation, opts ...grpc.CallOption) (*MsgUpdateConfirmationResponse, error) {
+	out := new(MsgUpdateConfirmationResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateConfirmation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteConfirmation(ctx context.Context, in *MsgDeleteConfirmation, opts ...grpc.CallOption) (*MsgDeleteConfirmationResponse, error) {
+	out := new(MsgDeleteConfirmationResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteConfirmation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateChangeKeyECDSA(ctx context.Context, in *MsgCreateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyECDSAResponse, error) {
+	out := new(MsgCreateChangeKeyECDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyECDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateChangeKeyECDSA(ctx context.Context, in *MsgUpdateChangeKeyECDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyECDSAResponse, error) {
+	out := new(MsgUpdateChangeKeyECDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyECDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteChangeKeyECDSA(ctx context.Context, in *MsgDeleteChangeKeyECDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyECDSAResponse, error) {
+	out := new(MsgDeleteChangeKeyECDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyECDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateChangeKeyEdDSA(ctx context.Context, in *MsgCreateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgCreateChangeKeyEdDSAResponse, error) {
+	out := new(MsgCreateChangeKeyEdDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyEdDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateChangeKeyEdDSA(ctx context.Context, in *MsgUpdateChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgUpdateChangeKeyEdDSAResponse, error) {
+	out := new(MsgUpdateChangeKeyEdDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyEdDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteChangeKeyEdDSA(ctx context.Context, in *MsgDeleteChangeKeyEdDSA, opts ...grpc.CallOption) (*MsgDeleteChangeKeyEdDSAResponse, error) {
+	out := new(MsgDeleteChangeKeyEdDSAResponse)
+	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyEdDSA", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// MsgServer is the server API for Msg service.
+type MsgServer interface {
+	CreateDeposit(context.Context, *MsgCreateDeposit) (*MsgCreateDepositResponse, error)
+	UpdateDeposit(context.Context, *MsgUpdateDeposit) (*MsgUpdateDepositResponse, error)
+	DeleteDeposit(context.Context, *MsgDeleteDeposit) (*MsgDeleteDepositResponse, error)
+	CreateConfirmation(context.Context, *MsgCreateConfirmation) (*MsgCreateConfirmationResponse, error)
+	UpdateConfirmation(context.Context, *MsgUpdateConfirmation) (*MsgUpdateConfirmationResponse, error)
+	DeleteConfirmation(context.Context, *MsgDeleteConfirmation) (*MsgDeleteConfirmationResponse, error)
+	CreateChangeKeyECDSA(context.Context, *MsgCreateChangeKeyECDSA) (*MsgCreateChangeKeyECDSAResponse, error)
+	UpdateChangeKeyECDSA(context.Context, *MsgUpdateChangeKeyECDSA) (*MsgUpdateChangeKeyECDSAResponse, error)
+	DeleteChangeKeyECDSA(context.Context, *MsgDeleteChangeKeyECDSA) (*MsgDeleteChangeKeyECDSAResponse, error)
+	CreateChangeKeyEdDSA(context.Context, *MsgCreateChangeKeyEdDSA) (*MsgCreateChangeKeyEdDSAResponse, error)
+	UpdateChangeKeyEdDSA(context.Context, *MsgUpdateChangeKeyEdDSA) (*MsgUpdateChangeKeyEdDSAResponse, error)
+	DeleteChangeKeyEdDSA(context.Context, *MsgDeleteChangeKeyEdDSA) (*MsgDeleteChangeKeyEdDSAResponse, error)
+}
+
+// UnimplementedMsgServer can be embedded to have forward compatible implementations.
+type UnimplementedMsgServer struct {
+}
+
+func (*UnimplementedMsgServer) CreateDeposit(ctx context.Context, req *MsgCreateDeposit) (*MsgCreateDepositResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDeposit not implemented")
+}
+func (*UnimplementedMsgServer) UpdateDeposit(ctx context.Context, req *MsgUpdateDeposit) (*MsgUpdateDepositResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDeposit not implemented")
+}
+func (*UnimplementedMsgServer) DeleteDeposit(ctx context.Context, req *MsgDeleteDeposit) (*MsgDeleteDepositResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDeposit not implemented")
+}
+func (*UnimplementedMsgServer) CreateConfirmation(ctx context.Context, req *MsgCreateConfirmation) (*MsgCreateConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateConfirmation not implemented")
+}
+func (*UnimplementedMsgServer) UpdateConfirmation(ctx context.Context, req *MsgUpdateConfirmation) (*MsgUpdateConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConfirmation not implemented")
+}
+func (*UnimplementedMsgServer) DeleteConfirmation(ctx context.Context, req *MsgDeleteConfirmation) (*MsgDeleteConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteConfirmation not implemented")
+}
+func (*UnimplementedMsgServer) CreateChangeKeyECDSA(ctx context.Context, req *MsgCreateChangeKeyECDSA) (*MsgCreateChangeKeyECDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateChangeKeyECDSA not implemented")
+}
+func (*UnimplementedMsgServer) UpdateChangeKeyECDSA(ctx context.Context, req *MsgUpdateChangeKeyECDSA) (*MsgUpdateChangeKeyECDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateChangeKeyECDSA not implemented")
+}
+func (*UnimplementedMsgServer) DeleteChangeKeyECDSA(ctx context.Context, req *MsgDeleteChangeKeyECDSA) (*MsgDeleteChangeKeyECDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteChangeKeyECDSA not implemented")
+}
+func (*UnimplementedMsgServer) CreateChangeKeyEdDSA(ctx context.Context, req *MsgCreateChangeKeyEdDSA) (*MsgCreateChangeKeyEdDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateChangeKeyEdDSA not implemented")
+}
+func (*UnimplementedMsgServer) UpdateChangeKeyEdDSA(ctx context.Context, req *MsgUpdateChangeKeyEdDSA) (*MsgUpdateChangeKeyEdDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateChangeKeyEdDSA not implemented")
+}
+func (*UnimplementedMsgServer) DeleteChangeKeyEdDSA(ctx context.Context, req *MsgDeleteChangeKeyEdDSA) (*MsgDeleteChangeKeyEdDSAResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteChangeKeyEdDSA not implemented")
+}
+
+func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
+	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_CreateDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDeposit)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateDeposit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateDeposit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateDeposit(ctx, req.(*MsgCreateDeposit))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateDeposit)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateDeposit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateDeposit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateDeposit(ctx, req.(*MsgUpdateDeposit))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteDeposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteDeposit)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteDeposit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteDeposit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteDeposit(ctx, req.(*MsgDeleteDeposit))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateConfirmation)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateConfirmation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateConfirmation(ctx, req.(*MsgCreateConfirmation))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateConfirmation)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateConfirmation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateConfirmation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateConfirmation(ctx, req.(*MsgUpdateConfirmation))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteConfirmation)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteConfirmation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteConfirmation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteConfirmation(ctx, req.(*MsgDeleteConfirmation))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateChangeKeyECDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateChangeKeyECDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyECDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateChangeKeyECDSA(ctx, req.(*MsgCreateChangeKeyECDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateChangeKeyECDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateChangeKeyECDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyECDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateChangeKeyECDSA(ctx, req.(*MsgUpdateChangeKeyECDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteChangeKeyECDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteChangeKeyECDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteChangeKeyECDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyECDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteChangeKeyECDSA(ctx, req.(*MsgDeleteChangeKeyECDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateChangeKeyEdDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateChangeKeyEdDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangeKeyEdDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateChangeKeyEdDSA(ctx, req.(*MsgCreateChangeKeyEdDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateChangeKeyEdDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateChangeKeyEdDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/UpdateChangeKeyEdDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateChangeKeyEdDSA(ctx, req.(*MsgUpdateChangeKeyEdDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteChangeKeyEdDSA)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteChangeKeyEdDSA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/DeleteChangeKeyEdDSA",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteChangeKeyEdDSA(ctx, req.(*MsgDeleteChangeKeyEdDSA))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Msg_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "rarifyprotocol.rarimocore.rarimocore.Msg",
+	HandlerType: (*MsgServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateDeposit",
+			Handler:    _Msg_CreateDeposit_Handler,
+		},
+		{
+			MethodName: "UpdateDeposit",
+			Handler:    _Msg_UpdateDeposit_Handler,
+		},
+		{
+			MethodName: "DeleteDeposit",
+			Handler:    _Msg_DeleteDeposit_Handler,
+		},
+		{
+			MethodName: "CreateConfirmation",
+			Handler:    _Msg_CreateConfirmation_Handler,
+		},
+		{
+			MethodName: "UpdateConfirmation",
+			Handler:    _Msg_UpdateConfirmation_Handler,
+		},
+		{
+			MethodName: "DeleteConfirmation",
+			Handler:    _Msg_DeleteConfirmation_Handler,
+		},
+		{
+			MethodName: "CreateChangeKeyECDSA",
+			Handler:    _Msg_CreateChangeKeyECDSA_Handler,
+		},
+		{
+			MethodName: "UpdateChangeKeyECDSA",
+			Handler:    _Msg_UpdateChangeKeyECDSA_Handler,
+		},
+		{
+			MethodName: "DeleteChangeKeyECDSA",
+			Handler:    _Msg_DeleteChangeKeyECDSA_Handler,
+		},
+		{
+			MethodName: "CreateChangeKeyEdDSA",
+			Handler:    _Msg_CreateChangeKeyEdDSA_Handler,
+		},
+		{
+			MethodName: "UpdateChangeKeyEdDSA",
+			Handler:    _Msg_UpdateChangeKeyEdDSA_Handler,
+		},
+		{
+			MethodName: "DeleteChangeKeyEdDSA",
+			Handler:    _Msg_DeleteChangeKeyEdDSA_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "rarimocore/tx.proto",
 }
 
 func (m *MsgCreateDeposit) Marshal() (dAtA []byte, err error) {

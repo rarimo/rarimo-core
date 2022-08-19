@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rarifyprotocol.rarimocore.tokenmanager;
+
+import "gogoproto/gogo.proto";
+import "tokenmanager/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+
+// GenesisState defines the tokenmanager module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

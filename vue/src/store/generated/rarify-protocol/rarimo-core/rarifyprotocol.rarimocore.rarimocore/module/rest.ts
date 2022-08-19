@@ -43,6 +43,7 @@ export interface RarimocoreDeposit {
   tokenId?: string;
   creator?: string;
   signed?: boolean;
+  tokenType?: Rarimocoretype;
 }
 
 export type RarimocoreMsgCreateChangeKeyECDSAResponse = object;
@@ -159,6 +160,15 @@ export interface RarimocoreQueryGetDepositResponse {
 export interface RarimocoreQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: RarimocoreParams;
+}
+
+export enum Rarimocoretype {
+  NATIVE = "NATIVE",
+  ERC20 = "ERC20",
+  ERC721 = "ERC721",
+  ERC1155 = "ERC1155",
+  METAPLEX_NFT = "METAPLEX_NFT",
+  METAPLEX_FT = "METAPLEX_FT",
 }
 
 export interface RpcStatus {
