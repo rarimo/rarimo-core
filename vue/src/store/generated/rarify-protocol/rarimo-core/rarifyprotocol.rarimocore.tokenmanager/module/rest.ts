@@ -20,6 +20,25 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface TokenmanagerChainInfo {
+  tokenAddress?: string;
+  tokenId?: string;
+}
+
+export interface TokenmanagerInfo {
+  index?: string;
+  name?: string;
+  symbol?: string;
+  image?: string;
+  description?: string;
+  animationUrl?: string;
+  externalUrl?: string;
+  attributes?: string;
+  currentChain?: string;
+  chains?: Record<string, TokenmanagerChainInfo>;
+  creator?: string;
+}
+
 export interface TokenmanagerItem {
   tokenAddress?: string;
   tokenId?: string;
@@ -27,10 +46,33 @@ export interface TokenmanagerItem {
   chain?: string;
 }
 
+export type TokenmanagerMsgAddChainResponse = object;
+
+export type TokenmanagerMsgCreateInfoResponse = object;
+
+export type TokenmanagerMsgDeleteInfoResponse = object;
+
+export type TokenmanagerMsgUpdateInfoResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
 export type TokenmanagerParams = object;
+
+export interface TokenmanagerQueryAllInfoResponse {
+  info?: TokenmanagerInfo[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface TokenmanagerQueryAllItemResponse {
   item?: TokenmanagerItem[];
@@ -45,6 +87,10 @@ export interface TokenmanagerQueryAllItemResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface TokenmanagerQueryGetInfoResponse {
+  info?: TokenmanagerInfo;
 }
 
 export interface TokenmanagerQueryGetItemResponse {
@@ -96,6 +142,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -315,6 +368,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryInfoAll
+   * @summary Queries a list of Info items.
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/info
+   */
+  queryInfoAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<TokenmanagerQueryAllInfoResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/tokenmanager/info`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryInfo
+   * @summary Queries a Info by index.
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/info/{index}
+   */
+  queryInfo = (index: string, params: RequestParams = {}) =>
+    this.request<TokenmanagerQueryGetInfoResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/tokenmanager/info/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryItemAll
    * @summary Queries a list of Item items.
    * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item
@@ -325,6 +420,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

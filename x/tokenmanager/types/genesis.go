@@ -11,6 +11,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ItemList: []Item{},
+		InfoList: []Info{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +29,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for item")
 		}
 		itemIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in info
+	infoIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.InfoList {
+		index := string(InfoKey(elem.Index))
+		if _, ok := infoIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for info")
+		}
+		infoIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

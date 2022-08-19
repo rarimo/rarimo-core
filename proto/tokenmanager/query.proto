@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "tokenmanager/params.proto";
 import "tokenmanager/item.proto";
+import "tokenmanager/info.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of Item items.
 	rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
 		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item";
+	}
+
+// Queries a Info by index.
+	rpc Info(QueryGetInfoRequest) returns (QueryGetInfoResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info/{index}";
+	}
+
+	// Queries a list of Info items.
+	rpc InfoAll(QueryAllInfoRequest) returns (QueryAllInfoResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -54,6 +65,24 @@ message QueryAllItemRequest {
 
 message QueryAllItemResponse {
 	repeated Item item = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetInfoRequest {
+	  string index = 1;
+
+}
+
+message QueryGetInfoResponse {
+	Info info = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllInfoRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllInfoResponse {
+	repeated Info info = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

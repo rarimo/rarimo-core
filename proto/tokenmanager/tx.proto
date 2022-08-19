@@ -1,13 +1,65 @@
 syntax = "proto3";
 package rarifyprotocol.rarimocore.tokenmanager;
 
+import "tokenmanager/info.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateInfo(MsgCreateInfo) returns (MsgCreateInfoResponse);
+  rpc UpdateInfo(MsgUpdateInfo) returns (MsgUpdateInfoResponse);
+  rpc DeleteInfo(MsgDeleteInfo) returns (MsgDeleteInfoResponse);
+  rpc AddChain(MsgAddChain) returns (MsgAddChainResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
 }
+
+message MsgCreateInfo {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string symbol = 4;
+  string image = 5;
+  string description = 6;
+  string animationUrl = 7;
+  string externalUrl = 8;
+  string attributes = 9;
+  string currentChain = 10;
+}
+message MsgCreateInfoResponse {}
+
+message MsgUpdateInfo {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string symbol = 4;
+  string image = 5;
+  string description = 6;
+  string animationUrl = 7;
+  string externalUrl = 8;
+  string attributes = 9;
+  string currentChain = 10;
+}
+message MsgUpdateInfoResponse {}
+
+message MsgDeleteInfo {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteInfoResponse {}
+
+message MsgAddChain {
+  string creator = 1;
+  string index = 2;
+
+  string chain = 3;
+  string tokenAddress = 4;
+  string tokenId = 5;
+}
+
+message MsgAddChainResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

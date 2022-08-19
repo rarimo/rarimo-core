@@ -2,12 +2,14 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cbergoon/merkletree"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
@@ -31,14 +33,29 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	deposits := make([]types.Deposit, 0, len(msg.Hashes))
+	infos := make([]tokentypes.Info, 0, len(msg.Hashes))
 	content := make([]merkletree.Content, 0, len(msg.Hashes))
 
 	for _, hash := range msg.Hashes {
 		deposit, ok := k.GetDeposit(ctx, hash)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "deposit "+hash+" not found")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", hash))
 		}
+
 		deposits = append(deposits, deposit)
+
+		item, ok := k.tm.GetItem(ctx, deposit.TokenAddress, deposit.TokenId)
+		if !ok {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token item %s %s not dound", deposit.TokenAddress, deposit.TokenId))
+		}
+
+		info, ok := k.tm.GetInfo(ctx, item.Index)
+		if !ok {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not dound", item.Index))
+		}
+
+		infos = append(infos, info)
+
 		content = append(content, crypto.HashContent{
 			TxHash:         hash,
 			CurrentAddress: deposit.TokenAddress,
@@ -46,11 +63,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			Receiver:       deposit.Receiver,
 			TargetNetwork:  deposit.ToChain,
 			CurrentNetwork: deposit.FromChain,
-			Type:           deposit.TokenType,
-			//TODO: fill
-			TargetAddress: "",
-			TargetId:      "",
+			Type:           crypto.TokenType(deposit.TokenType),
+			TargetAddress:  info.Chains[deposit.ToChain].TokenAddress,
+			TargetId:       info.Chains[deposit.ToChain].TokenId,
 		})
+
 	}
 
 	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
@@ -69,6 +86,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	for _, deposit := range deposits {
 		deposit.Signed = true
 		k.SetDeposit(ctx, deposit)
+	}
+
+	for i, info := range infos {
+		info.CurrentChain = deposits[i].ToChain
+		k.tm.SetInfo(ctx, info)
 	}
 
 	k.SetConfirmation(

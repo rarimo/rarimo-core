@@ -6,6 +6,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Info } from "../tokenmanager/info";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
@@ -33,6 +34,23 @@ export interface QueryAllItemRequest {
 
 export interface QueryAllItemResponse {
   item: Item[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetInfoRequest {
+  index: string;
+}
+
+export interface QueryGetInfoResponse {
+  info: Info | undefined;
+}
+
+export interface QueryAllInfoRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllInfoResponse {
+  info: Info[];
   pagination: PageResponse | undefined;
 }
 
@@ -417,6 +435,272 @@ export const QueryAllItemResponse = {
   },
 };
 
+const baseQueryGetInfoRequest: object = { index: "" };
+
+export const QueryGetInfoRequest = {
+  encode(
+    message: QueryGetInfoRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetInfoRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetInfoRequest } as QueryGetInfoRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetInfoRequest {
+    const message = { ...baseQueryGetInfoRequest } as QueryGetInfoRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetInfoRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetInfoRequest>): QueryGetInfoRequest {
+    const message = { ...baseQueryGetInfoRequest } as QueryGetInfoRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetInfoResponse: object = {};
+
+export const QueryGetInfoResponse = {
+  encode(
+    message: QueryGetInfoResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.info !== undefined) {
+      Info.encode(message.info, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetInfoResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetInfoResponse } as QueryGetInfoResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.info = Info.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetInfoResponse {
+    const message = { ...baseQueryGetInfoResponse } as QueryGetInfoResponse;
+    if (object.info !== undefined && object.info !== null) {
+      message.info = Info.fromJSON(object.info);
+    } else {
+      message.info = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetInfoResponse): unknown {
+    const obj: any = {};
+    message.info !== undefined &&
+      (obj.info = message.info ? Info.toJSON(message.info) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetInfoResponse>): QueryGetInfoResponse {
+    const message = { ...baseQueryGetInfoResponse } as QueryGetInfoResponse;
+    if (object.info !== undefined && object.info !== null) {
+      message.info = Info.fromPartial(object.info);
+    } else {
+      message.info = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllInfoRequest: object = {};
+
+export const QueryAllInfoRequest = {
+  encode(
+    message: QueryAllInfoRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllInfoRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllInfoRequest } as QueryAllInfoRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllInfoRequest {
+    const message = { ...baseQueryAllInfoRequest } as QueryAllInfoRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllInfoRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllInfoRequest>): QueryAllInfoRequest {
+    const message = { ...baseQueryAllInfoRequest } as QueryAllInfoRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllInfoResponse: object = {};
+
+export const QueryAllInfoResponse = {
+  encode(
+    message: QueryAllInfoResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.info) {
+      Info.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllInfoResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllInfoResponse } as QueryAllInfoResponse;
+    message.info = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.info.push(Info.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllInfoResponse {
+    const message = { ...baseQueryAllInfoResponse } as QueryAllInfoResponse;
+    message.info = [];
+    if (object.info !== undefined && object.info !== null) {
+      for (const e of object.info) {
+        message.info.push(Info.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllInfoResponse): unknown {
+    const obj: any = {};
+    if (message.info) {
+      obj.info = message.info.map((e) => (e ? Info.toJSON(e) : undefined));
+    } else {
+      obj.info = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllInfoResponse>): QueryAllInfoResponse {
+    const message = { ...baseQueryAllInfoResponse } as QueryAllInfoResponse;
+    message.info = [];
+    if (object.info !== undefined && object.info !== null) {
+      for (const e of object.info) {
+        message.info.push(Info.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -425,6 +709,10 @@ export interface Query {
   Item(request: QueryGetItemRequest): Promise<QueryGetItemResponse>;
   /** Queries a list of Item items. */
   ItemAll(request: QueryAllItemRequest): Promise<QueryAllItemResponse>;
+  /** Queries a Info by index. */
+  Info(request: QueryGetInfoRequest): Promise<QueryGetInfoResponse>;
+  /** Queries a list of Info items. */
+  InfoAll(request: QueryAllInfoRequest): Promise<QueryAllInfoResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -463,6 +751,30 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllItemResponse.decode(new Reader(data))
+    );
+  }
+
+  Info(request: QueryGetInfoRequest): Promise<QueryGetInfoResponse> {
+    const data = QueryGetInfoRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.tokenmanager.Query",
+      "Info",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetInfoResponse.decode(new Reader(data))
+    );
+  }
+
+  InfoAll(request: QueryAllInfoRequest): Promise<QueryAllInfoResponse> {
+    const data = QueryAllInfoRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.tokenmanager.Query",
+      "InfoAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllInfoResponse.decode(new Reader(data))
     );
   }
 }

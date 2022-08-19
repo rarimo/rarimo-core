@@ -1,0 +1,24 @@
+syntax = "proto3";
+package rarifyprotocol.rarimocore.tokenmanager;
+
+option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+
+message ChainInfo {
+  string tokenAddress = 1;
+  string tokenId = 2;
+}
+
+message Info {
+  string index = 1;
+  string name = 2;
+  string symbol = 3;
+  string image = 4;
+  string description = 5;
+  string animationUrl = 6;
+  string externalUrl = 7;
+  string attributes = 8;
+  string currentChain = 9;
+  map<string, ChainInfo> chains = 10;
+  string creator = 11;
+}
+

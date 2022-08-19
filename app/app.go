@@ -396,14 +396,6 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
-		appCodec,
-		keys[rarimocoremoduletypes.StoreKey],
-		keys[rarimocoremoduletypes.MemStoreKey],
-		app.GetSubspace(rarimocoremoduletypes.ModuleName),
-	)
-	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
-
 	app.TokenmanagerKeeper = *tokenmanagermodulekeeper.NewKeeper(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
@@ -411,6 +403,15 @@ func New(
 		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
+
+	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
+		appCodec,
+		keys[rarimocoremoduletypes.StoreKey],
+		keys[rarimocoremoduletypes.MemStoreKey],
+		app.GetSubspace(rarimocoremoduletypes.ModuleName),
+		&app.TokenmanagerKeeper,
+	)
+	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -453,8 +454,8 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		monitoringModule,
-		rarimocoreModule,
 		tokenmanagerModule,
+		rarimocoreModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -482,8 +483,8 @@ func New(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
-		rarimocoremoduletypes.ModuleName,
 		tokenmanagermoduletypes.ModuleName,
+		rarimocoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -507,8 +508,8 @@ func New(
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
-		rarimocoremoduletypes.ModuleName,
 		tokenmanagermoduletypes.ModuleName,
+		rarimocoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -537,8 +538,8 @@ func New(
 		ibctransfertypes.ModuleName,
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
-		rarimocoremoduletypes.ModuleName,
 		tokenmanagermoduletypes.ModuleName,
+		rarimocoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -563,8 +564,8 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		monitoringModule,
-		rarimocoreModule,
 		tokenmanagerModule,
+		rarimocoreModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
