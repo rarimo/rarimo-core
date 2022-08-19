@@ -126,5 +126,12 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 
 	k.SetInfo(ctx, valFound)
 
+	k.SetItem(ctx, types.Item{
+		TokenAddress: msg.TokenAddress,
+		TokenId:      msg.TokenId,
+		Index:        valFound.Index,
+		Chain:        msg.Chain,
+	})
+
 	return &types.MsgAddChainResponse{}, nil
 }
