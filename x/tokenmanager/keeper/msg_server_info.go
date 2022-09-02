@@ -26,12 +26,13 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		Name:         msg.Name,
 		Symbol:       msg.Symbol,
 		Image:        msg.Image,
-		Description:  msg.Description,
-		AnimationUrl: msg.AnimationUrl,
-		ExternalUrl:  msg.ExternalUrl,
-		Attributes:   msg.Attributes,
 		CurrentChain: msg.CurrentChain,
-		Chains:       make(map[string]*types.ChainInfo),
+		Chains: map[string]*types.ChainInfo{
+			msg.CurrentChain: &types.ChainInfo{
+				TokenAddress: msg.CurrentAddress,
+				TokenId:      msg.CurrentId,
+			},
+		},
 	}
 
 	k.SetInfo(
@@ -64,11 +65,7 @@ func (k msgServer) UpdateInfo(goCtx context.Context, msg *types.MsgUpdateInfo) (
 		Name:         msg.Name,
 		Symbol:       msg.Symbol,
 		Image:        msg.Image,
-		Description:  msg.Description,
-		AnimationUrl: msg.AnimationUrl,
-		ExternalUrl:  msg.ExternalUrl,
-		Attributes:   msg.Attributes,
-		CurrentChain: msg.CurrentChain,
+		CurrentChain: valFound.CurrentChain,
 		Chains:       valFound.Chains,
 	}
 
@@ -119,7 +116,7 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	valFound.Chains[msg.Chain] = &types.ChainInfo{
+	valFound.Chains[msg.ChainName] = &types.ChainInfo{
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
 	}
@@ -130,7 +127,7 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
 		Index:        valFound.Index,
-		Chain:        msg.Chain,
+		Chain:        msg.ChainName,
 	})
 
 	return &types.MsgAddChainResponse{}, nil

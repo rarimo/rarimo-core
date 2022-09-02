@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"encoding/hex"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -10,7 +12,7 @@ import (
 
 func CmdCreateInfo() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-info [index] [name] [symbol] [image] [description] [animation-url] [external-url] [attributes] [current-chain]",
+		Use:   "create-info [index] [name] [symbol] [image] [current-chain] [current-address-hex] [current-id-hex]",
 		Short: "Create a new info",
 		Args:  cobra.ExactArgs(10),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -21,11 +23,15 @@ func CmdCreateInfo() *cobra.Command {
 			argName := args[1]
 			argSymbol := args[2]
 			argImage := args[3]
-			argDescription := args[4]
-			argAnimationUrl := args[5]
-			argExternalUrl := args[6]
-			argAttributes := args[7]
-			argCurrentChain := args[8]
+			argCurrentChain := args[4]
+			argCurrentAddress, err := hex.DecodeString(args[5])
+			if err != nil {
+				return err
+			}
+			argCurrentId, err := hex.DecodeString(args[6])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -38,10 +44,8 @@ func CmdCreateInfo() *cobra.Command {
 				argName,
 				argSymbol,
 				argImage,
-				argDescription,
-				argAnimationUrl,
-				argExternalUrl,
-				argAttributes,
+				argCurrentId,
+				argCurrentAddress,
 				argCurrentChain,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -58,7 +62,7 @@ func CmdCreateInfo() *cobra.Command {
 
 func CmdUpdateInfo() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-info [index] [name] [symbol] [image] [description] [animation-url] [external-url] [attributes] [current-chain]",
+		Use:   "update-info [index] [name] [symbol] [image]",
 		Short: "Update a info",
 		Args:  cobra.ExactArgs(10),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -69,11 +73,6 @@ func CmdUpdateInfo() *cobra.Command {
 			argName := args[1]
 			argSymbol := args[2]
 			argImage := args[3]
-			argDescription := args[4]
-			argAnimationUrl := args[5]
-			argExternalUrl := args[6]
-			argAttributes := args[7]
-			argCurrentChain := args[8]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -86,11 +85,6 @@ func CmdUpdateInfo() *cobra.Command {
 				argName,
 				argSymbol,
 				argImage,
-				argDescription,
-				argAnimationUrl,
-				argExternalUrl,
-				argAttributes,
-				argCurrentChain,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -135,7 +129,7 @@ func CmdDeleteInfo() *cobra.Command {
 
 func CmdAddChain() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-chain [index] [chain] [tokenAddress] [tokenId]",
+		Use:   "add-chain [index] [chain] [token-address-hex] [token-id-hex]",
 		Short: "Add a chain to info",
 		Args:  cobra.ExactArgs(10),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -144,8 +138,14 @@ func CmdAddChain() *cobra.Command {
 
 			// Get value arguments
 			argChain := args[1]
-			argTokenAddress := args[3]
-			argTokenInfo := args[4]
+			argTokenAddress, err := hex.DecodeString(args[2])
+			if err != nil {
+				return err
+			}
+			argTokenId, err := hex.DecodeString(args[3])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -157,7 +157,7 @@ func CmdAddChain() *cobra.Command {
 				indexIndex,
 				argChain,
 				argTokenAddress,
-				argTokenInfo,
+				argTokenId,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

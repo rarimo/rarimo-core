@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"crypto/ed25519"
 
-	"github.com/cbergoon/merkletree"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
+	merkle "gitlab.com/rarify-protocol/go-merkle"
 )
 
 const ECDSAPublicKeySize = 33
@@ -102,18 +103,15 @@ func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey string) er
 	return nil
 }
 
-func VerifyMerkleRoot(hashes []merkletree.Content, hexRoot string) error {
-	t, err := merkletree.NewTree(hashes)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "error building merkle tree", err)
-	}
+func VerifyMerkleRoot(hashes []merkle.Content, hexRoot string) error {
+	t := merkle.NewTree(crypto.Keccak256, hashes...)
 
 	root, err := hexutil.Decode(hexRoot)
 	if err != nil {
 		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
 	}
 
-	if !bytes.Equal(t.MerkleRoot(), root) {
+	if !bytes.Equal(t.Root(), root) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "wrong Merkle root hash", err)
 	}
 

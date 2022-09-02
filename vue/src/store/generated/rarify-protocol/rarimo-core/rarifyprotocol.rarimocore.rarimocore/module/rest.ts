@@ -19,12 +19,6 @@ export interface RarimocoreChangeKeyECDSA {
   creator?: string;
 }
 
-export interface RarimocoreChangeKeyEdDSA {
-  newKey?: string;
-  signature?: string;
-  creator?: string;
-}
-
 export interface RarimocoreConfirmation {
   height?: string;
   root?: string;
@@ -36,10 +30,17 @@ export interface RarimocoreConfirmation {
 
 export interface RarimocoreDeposit {
   tx?: string;
+  eventId?: string;
   fromChain?: string;
   toChain?: string;
+
+  /** @format byte */
   receiver?: string;
+
+  /** @format byte */
   tokenAddress?: string;
+
+  /** @format byte */
   tokenId?: string;
   creator?: string;
   signed?: boolean;
@@ -48,53 +49,19 @@ export interface RarimocoreDeposit {
 
 export type RarimocoreMsgCreateChangeKeyECDSAResponse = object;
 
-export type RarimocoreMsgCreateChangeKeyEdDSAResponse = object;
-
 export type RarimocoreMsgCreateConfirmationResponse = object;
 
 export type RarimocoreMsgCreateDepositResponse = object;
-
-export type RarimocoreMsgDeleteChangeKeyECDSAResponse = object;
-
-export type RarimocoreMsgDeleteChangeKeyEdDSAResponse = object;
-
-export type RarimocoreMsgDeleteConfirmationResponse = object;
-
-export type RarimocoreMsgDeleteDepositResponse = object;
-
-export type RarimocoreMsgUpdateChangeKeyECDSAResponse = object;
-
-export type RarimocoreMsgUpdateChangeKeyEdDSAResponse = object;
-
-export type RarimocoreMsgUpdateConfirmationResponse = object;
-
-export type RarimocoreMsgUpdateDepositResponse = object;
 
 /**
  * Params defines the parameters for the module.
  */
 export interface RarimocoreParams {
   keyECDSA?: string;
-  keyEdDSA?: string;
 }
 
 export interface RarimocoreQueryAllChangeKeyECDSAResponse {
   changeKeyECDSA?: RarimocoreChangeKeyECDSA[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface RarimocoreQueryAllChangeKeyEdDSAResponse {
-  changeKeyEdDSA?: RarimocoreChangeKeyEdDSA[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -140,10 +107,6 @@ export interface RarimocoreQueryAllDepositResponse {
 
 export interface RarimocoreQueryGetChangeKeyECDSAResponse {
   changeKeyECDSA?: RarimocoreChangeKeyECDSA;
-}
-
-export interface RarimocoreQueryGetChangeKeyEdDSAResponse {
-  changeKeyEdDSA?: RarimocoreChangeKeyEdDSA;
 }
 
 export interface RarimocoreQueryGetConfirmationResponse {
@@ -215,13 +178,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -451,7 +407,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -483,48 +438,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryChangeKeyEdDsaAll
-   * @summary Queries a list of ChangeKeyEdDSA items.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa
-   */
-  queryChangeKeyEdDsaAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<RarimocoreQueryAllChangeKeyEdDSAResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryChangeKeyEdDsa
-   * @summary Queries a ChangeKeyEdDSA by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa/{newKey}
-   */
-  queryChangeKeyEdDsa = (newKey: string, params: RequestParams = {}) =>
-    this.request<RarimocoreQueryGetChangeKeyEdDSAResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ed_dsa/${newKey}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryConfirmationAll
    * @summary Queries a list of Confirmation items.
    * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation
@@ -535,7 +448,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -577,7 +489,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

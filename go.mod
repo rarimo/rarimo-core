@@ -3,7 +3,6 @@ module gitlab.com/rarify-protocol/rarimo-core
 go 1.18
 
 require (
-	github.com/cbergoon/merkletree v0.2.0
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/cosmos/ibc-go/v3 v3.0.1
 	github.com/ethereum/go-ethereum v1.9.25
@@ -18,7 +17,8 @@ require (
 	github.com/tendermint/spn v0.2.1-0.20220708132853-26a17f03c072
 	github.com/tendermint/tendermint v0.34.19
 	github.com/tendermint/tm-db v0.6.7
-	google.golang.org/genproto v0.0.0-20220805133916-01dd62135a58
+	gitlab.com/rarify-protocol/go-merkle v0.0.0-20220831221733-8f4135fe9f1f
+	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc
 	google.golang.org/grpc v1.48.0
 	gopkg.in/yaml.v2 v2.4.0
 )

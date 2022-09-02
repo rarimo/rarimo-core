@@ -11,7 +11,6 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
 	KeyECDSA = []byte("keyECDSAParam")
-	KeyEdDSA = []byte("keyEdDSAParam")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -23,7 +22,6 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(keyECDSA, keyEdDSA string) Params {
 	return Params{
 		KeyECDSA: keyECDSA,
-		KeyEdDSA: keyEdDSA,
 	}
 }
 
@@ -36,7 +34,6 @@ func DefaultParams() Params {
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
-		paramtypes.NewParamSetPair(KeyEdDSA, &p.KeyEdDSA, validateKeyEdDSA),
 	}
 }
 
@@ -45,11 +42,6 @@ func (p Params) Validate() error {
 	if err := validateKeyECDSA(p.KeyECDSA); err != nil {
 		return err
 	}
-
-	if err := validateKeyEdDSA(p.KeyEdDSA); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -60,13 +52,4 @@ func validateKeyECDSA(i interface{}) error {
 	}
 
 	return crypto.ValidateECDSAKey(v)
-}
-
-func validateKeyEdDSA(i interface{}) error {
-	v, ok := i.(string)
-	if !ok {
-		return fmt.Errorf("invalid parameter type: %T", i)
-	}
-
-	return crypto.ValidateEdDSAKey(v)
 }

@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"encoding/hex"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -10,19 +12,29 @@ import (
 
 func CmdCreateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [tx] [from-chain] [to-chain] [receiver] [token-address] [token-id]",
+		Use:   "create-deposit [tx] [event-id] [from-chain] [to-chain] [receiver-hex] [token-address-hex] [token-id-hex]",
 		Short: "Create a new deposit",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTx := args[0]
+			eventId := args[1]
 
 			// Get value arguments
-			argFromChain := args[1]
-			argToChain := args[2]
-			argReceiver := args[3]
-			argTokenAddress := args[4]
-			argTokenId := args[5]
+			argFromChain := args[2]
+			argToChain := args[3]
+			argReceiver, err := hex.DecodeString(args[4])
+			if err != nil {
+				return err
+			}
+			argTokenAddress, err := hex.DecodeString(args[5])
+			if err != nil {
+				return err
+			}
+			argTokenId, err := hex.DecodeString(args[6])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -32,82 +44,12 @@ func CmdCreateDeposit() *cobra.Command {
 			msg := types.NewMsgCreateDeposit(
 				clientCtx.GetFromAddress().String(),
 				indexTx,
+				eventId,
 				argFromChain,
 				argToChain,
 				argReceiver,
 				argTokenAddress,
 				argTokenId,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdUpdateDeposit() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "update-deposit [tx] [from-chain] [to-chain] [receiver] [token-address] [token-id]",
-		Short: "Update a deposit",
-		Args:  cobra.ExactArgs(6),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			// Get indexes
-			indexTx := args[0]
-
-			// Get value arguments
-			argFromChain := args[1]
-			argToChain := args[2]
-			argReceiver := args[3]
-			argTokenAddress := args[4]
-			argTokenId := args[5]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgUpdateDeposit(
-				clientCtx.GetFromAddress().String(),
-				indexTx,
-				argFromChain,
-				argToChain,
-				argReceiver,
-				argTokenAddress,
-				argTokenId,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdDeleteDeposit() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "delete-deposit [tx]",
-		Short: "Delete a deposit",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			indexTx := args[0]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgDeleteDeposit(
-				clientCtx.GetFromAddress().String(),
-				indexTx,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

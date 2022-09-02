@@ -20,38 +20,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateDeposit:
 			res, err := msgServer.CreateDeposit(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateDeposit:
-			res, err := msgServer.UpdateDeposit(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteDeposit:
-			res, err := msgServer.DeleteDeposit(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCreateConfirmation:
 			res, err := msgServer.CreateConfirmation(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateConfirmation:
-			res, err := msgServer.UpdateConfirmation(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteConfirmation:
-			res, err := msgServer.DeleteConfirmation(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCreateChangeKeyECDSA:
 			res, err := msgServer.CreateChangeKeyECDSA(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateChangeKeyECDSA:
-			res, err := msgServer.UpdateChangeKeyECDSA(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteChangeKeyECDSA:
-			res, err := msgServer.DeleteChangeKeyECDSA(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateChangeKeyEdDSA:
-			res, err := msgServer.CreateChangeKeyEdDSA(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateChangeKeyEdDSA:
-			res, err := msgServer.UpdateChangeKeyEdDSA(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteChangeKeyEdDSA:
-			res, err := msgServer.DeleteChangeKeyEdDSA(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

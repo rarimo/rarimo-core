@@ -9,40 +9,20 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateDeposit{}, "rarimocore/CreateDeposit", nil)
-	cdc.RegisterConcrete(&MsgUpdateDeposit{}, "rarimocore/UpdateDeposit", nil)
-	cdc.RegisterConcrete(&MsgDeleteDeposit{}, "rarimocore/DeleteDeposit", nil)
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
-	cdc.RegisterConcrete(&MsgUpdateConfirmation{}, "rarimocore/UpdateConfirmation", nil)
-	cdc.RegisterConcrete(&MsgDeleteConfirmation{}, "rarimocore/DeleteConfirmation", nil)
 	cdc.RegisterConcrete(&MsgCreateChangeKeyECDSA{}, "rarimocore/CreateChangeKeyECDSA", nil)
-	cdc.RegisterConcrete(&MsgUpdateChangeKeyECDSA{}, "rarimocore/UpdateChangeKeyECDSA", nil)
-	cdc.RegisterConcrete(&MsgDeleteChangeKeyECDSA{}, "rarimocore/DeleteChangeKeyECDSA", nil)
-	cdc.RegisterConcrete(&MsgCreateChangeKeyEdDSA{}, "rarimocore/CreateChangeKeyEdDSA", nil)
-	cdc.RegisterConcrete(&MsgUpdateChangeKeyEdDSA{}, "rarimocore/UpdateChangeKeyEdDSA", nil)
-	cdc.RegisterConcrete(&MsgDeleteChangeKeyEdDSA{}, "rarimocore/DeleteChangeKeyEdDSA", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateDeposit{},
-		&MsgUpdateDeposit{},
-		&MsgDeleteDeposit{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateConfirmation{},
-		&MsgUpdateConfirmation{},
-		&MsgDeleteConfirmation{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateChangeKeyECDSA{},
-		&MsgUpdateChangeKeyECDSA{},
-		&MsgDeleteChangeKeyECDSA{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateChangeKeyEdDSA{},
-		&MsgUpdateChangeKeyEdDSA{},
-		&MsgDeleteChangeKeyEdDSA{},
 	)
 	// this line is used by starport scaffolding # 3
 

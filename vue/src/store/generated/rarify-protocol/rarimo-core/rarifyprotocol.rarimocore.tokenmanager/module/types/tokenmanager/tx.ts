@@ -9,10 +9,8 @@ export interface MsgCreateInfo {
   name: string;
   symbol: string;
   image: string;
-  description: string;
-  animationUrl: string;
-  externalUrl: string;
-  attributes: string;
+  currentAddress: Uint8Array;
+  currentId: Uint8Array;
   currentChain: string;
 }
 
@@ -24,11 +22,6 @@ export interface MsgUpdateInfo {
   name: string;
   symbol: string;
   image: string;
-  description: string;
-  animationUrl: string;
-  externalUrl: string;
-  attributes: string;
-  currentChain: string;
 }
 
 export interface MsgUpdateInfoResponse {}
@@ -43,9 +36,9 @@ export interface MsgDeleteInfoResponse {}
 export interface MsgAddChain {
   creator: string;
   index: string;
-  chain: string;
-  tokenAddress: string;
-  tokenId: string;
+  chainName: string;
+  tokenAddress: Uint8Array;
+  tokenId: Uint8Array;
 }
 
 export interface MsgAddChainResponse {}
@@ -56,10 +49,6 @@ const baseMsgCreateInfo: object = {
   name: "",
   symbol: "",
   image: "",
-  description: "",
-  animationUrl: "",
-  externalUrl: "",
-  attributes: "",
   currentChain: "",
 };
 
@@ -80,20 +69,14 @@ export const MsgCreateInfo = {
     if (message.image !== "") {
       writer.uint32(42).string(message.image);
     }
-    if (message.description !== "") {
-      writer.uint32(50).string(message.description);
+    if (message.currentAddress.length !== 0) {
+      writer.uint32(50).bytes(message.currentAddress);
     }
-    if (message.animationUrl !== "") {
-      writer.uint32(58).string(message.animationUrl);
-    }
-    if (message.externalUrl !== "") {
-      writer.uint32(66).string(message.externalUrl);
-    }
-    if (message.attributes !== "") {
-      writer.uint32(74).string(message.attributes);
+    if (message.currentId.length !== 0) {
+      writer.uint32(58).bytes(message.currentId);
     }
     if (message.currentChain !== "") {
-      writer.uint32(82).string(message.currentChain);
+      writer.uint32(66).string(message.currentChain);
     }
     return writer;
   },
@@ -121,18 +104,12 @@ export const MsgCreateInfo = {
           message.image = reader.string();
           break;
         case 6:
-          message.description = reader.string();
+          message.currentAddress = reader.bytes();
           break;
         case 7:
-          message.animationUrl = reader.string();
+          message.currentId = reader.bytes();
           break;
         case 8:
-          message.externalUrl = reader.string();
-          break;
-        case 9:
-          message.attributes = reader.string();
-          break;
-        case 10:
           message.currentChain = reader.string();
           break;
         default:
@@ -170,25 +147,11 @@ export const MsgCreateInfo = {
     } else {
       message.image = "";
     }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = String(object.description);
-    } else {
-      message.description = "";
+    if (object.currentAddress !== undefined && object.currentAddress !== null) {
+      message.currentAddress = bytesFromBase64(object.currentAddress);
     }
-    if (object.animationUrl !== undefined && object.animationUrl !== null) {
-      message.animationUrl = String(object.animationUrl);
-    } else {
-      message.animationUrl = "";
-    }
-    if (object.externalUrl !== undefined && object.externalUrl !== null) {
-      message.externalUrl = String(object.externalUrl);
-    } else {
-      message.externalUrl = "";
-    }
-    if (object.attributes !== undefined && object.attributes !== null) {
-      message.attributes = String(object.attributes);
-    } else {
-      message.attributes = "";
+    if (object.currentId !== undefined && object.currentId !== null) {
+      message.currentId = bytesFromBase64(object.currentId);
     }
     if (object.currentChain !== undefined && object.currentChain !== null) {
       message.currentChain = String(object.currentChain);
@@ -205,13 +168,16 @@ export const MsgCreateInfo = {
     message.name !== undefined && (obj.name = message.name);
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.image !== undefined && (obj.image = message.image);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    message.animationUrl !== undefined &&
-      (obj.animationUrl = message.animationUrl);
-    message.externalUrl !== undefined &&
-      (obj.externalUrl = message.externalUrl);
-    message.attributes !== undefined && (obj.attributes = message.attributes);
+    message.currentAddress !== undefined &&
+      (obj.currentAddress = base64FromBytes(
+        message.currentAddress !== undefined
+          ? message.currentAddress
+          : new Uint8Array()
+      ));
+    message.currentId !== undefined &&
+      (obj.currentId = base64FromBytes(
+        message.currentId !== undefined ? message.currentId : new Uint8Array()
+      ));
     message.currentChain !== undefined &&
       (obj.currentChain = message.currentChain);
     return obj;
@@ -244,25 +210,15 @@ export const MsgCreateInfo = {
     } else {
       message.image = "";
     }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = object.description;
+    if (object.currentAddress !== undefined && object.currentAddress !== null) {
+      message.currentAddress = object.currentAddress;
     } else {
-      message.description = "";
+      message.currentAddress = new Uint8Array();
     }
-    if (object.animationUrl !== undefined && object.animationUrl !== null) {
-      message.animationUrl = object.animationUrl;
+    if (object.currentId !== undefined && object.currentId !== null) {
+      message.currentId = object.currentId;
     } else {
-      message.animationUrl = "";
-    }
-    if (object.externalUrl !== undefined && object.externalUrl !== null) {
-      message.externalUrl = object.externalUrl;
-    } else {
-      message.externalUrl = "";
-    }
-    if (object.attributes !== undefined && object.attributes !== null) {
-      message.attributes = object.attributes;
-    } else {
-      message.attributes = "";
+      message.currentId = new Uint8Array();
     }
     if (object.currentChain !== undefined && object.currentChain !== null) {
       message.currentChain = object.currentChain;
@@ -317,11 +273,6 @@ const baseMsgUpdateInfo: object = {
   name: "",
   symbol: "",
   image: "",
-  description: "",
-  animationUrl: "",
-  externalUrl: "",
-  attributes: "",
-  currentChain: "",
 };
 
 export const MsgUpdateInfo = {
@@ -340,21 +291,6 @@ export const MsgUpdateInfo = {
     }
     if (message.image !== "") {
       writer.uint32(42).string(message.image);
-    }
-    if (message.description !== "") {
-      writer.uint32(50).string(message.description);
-    }
-    if (message.animationUrl !== "") {
-      writer.uint32(58).string(message.animationUrl);
-    }
-    if (message.externalUrl !== "") {
-      writer.uint32(66).string(message.externalUrl);
-    }
-    if (message.attributes !== "") {
-      writer.uint32(74).string(message.attributes);
-    }
-    if (message.currentChain !== "") {
-      writer.uint32(82).string(message.currentChain);
     }
     return writer;
   },
@@ -380,21 +316,6 @@ export const MsgUpdateInfo = {
           break;
         case 5:
           message.image = reader.string();
-          break;
-        case 6:
-          message.description = reader.string();
-          break;
-        case 7:
-          message.animationUrl = reader.string();
-          break;
-        case 8:
-          message.externalUrl = reader.string();
-          break;
-        case 9:
-          message.attributes = reader.string();
-          break;
-        case 10:
-          message.currentChain = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -431,31 +352,6 @@ export const MsgUpdateInfo = {
     } else {
       message.image = "";
     }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = String(object.description);
-    } else {
-      message.description = "";
-    }
-    if (object.animationUrl !== undefined && object.animationUrl !== null) {
-      message.animationUrl = String(object.animationUrl);
-    } else {
-      message.animationUrl = "";
-    }
-    if (object.externalUrl !== undefined && object.externalUrl !== null) {
-      message.externalUrl = String(object.externalUrl);
-    } else {
-      message.externalUrl = "";
-    }
-    if (object.attributes !== undefined && object.attributes !== null) {
-      message.attributes = String(object.attributes);
-    } else {
-      message.attributes = "";
-    }
-    if (object.currentChain !== undefined && object.currentChain !== null) {
-      message.currentChain = String(object.currentChain);
-    } else {
-      message.currentChain = "";
-    }
     return message;
   },
 
@@ -466,15 +362,6 @@ export const MsgUpdateInfo = {
     message.name !== undefined && (obj.name = message.name);
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.image !== undefined && (obj.image = message.image);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    message.animationUrl !== undefined &&
-      (obj.animationUrl = message.animationUrl);
-    message.externalUrl !== undefined &&
-      (obj.externalUrl = message.externalUrl);
-    message.attributes !== undefined && (obj.attributes = message.attributes);
-    message.currentChain !== undefined &&
-      (obj.currentChain = message.currentChain);
     return obj;
   },
 
@@ -504,31 +391,6 @@ export const MsgUpdateInfo = {
       message.image = object.image;
     } else {
       message.image = "";
-    }
-    if (object.description !== undefined && object.description !== null) {
-      message.description = object.description;
-    } else {
-      message.description = "";
-    }
-    if (object.animationUrl !== undefined && object.animationUrl !== null) {
-      message.animationUrl = object.animationUrl;
-    } else {
-      message.animationUrl = "";
-    }
-    if (object.externalUrl !== undefined && object.externalUrl !== null) {
-      message.externalUrl = object.externalUrl;
-    } else {
-      message.externalUrl = "";
-    }
-    if (object.attributes !== undefined && object.attributes !== null) {
-      message.attributes = object.attributes;
-    } else {
-      message.attributes = "";
-    }
-    if (object.currentChain !== undefined && object.currentChain !== null) {
-      message.currentChain = object.currentChain;
-    } else {
-      message.currentChain = "";
     }
     return message;
   },
@@ -682,13 +544,7 @@ export const MsgDeleteInfoResponse = {
   },
 };
 
-const baseMsgAddChain: object = {
-  creator: "",
-  index: "",
-  chain: "",
-  tokenAddress: "",
-  tokenId: "",
-};
+const baseMsgAddChain: object = { creator: "", index: "", chainName: "" };
 
 export const MsgAddChain = {
   encode(message: MsgAddChain, writer: Writer = Writer.create()): Writer {
@@ -698,14 +554,14 @@ export const MsgAddChain = {
     if (message.index !== "") {
       writer.uint32(18).string(message.index);
     }
-    if (message.chain !== "") {
-      writer.uint32(26).string(message.chain);
+    if (message.chainName !== "") {
+      writer.uint32(26).string(message.chainName);
     }
-    if (message.tokenAddress !== "") {
-      writer.uint32(34).string(message.tokenAddress);
+    if (message.tokenAddress.length !== 0) {
+      writer.uint32(34).bytes(message.tokenAddress);
     }
-    if (message.tokenId !== "") {
-      writer.uint32(42).string(message.tokenId);
+    if (message.tokenId.length !== 0) {
+      writer.uint32(42).bytes(message.tokenId);
     }
     return writer;
   },
@@ -724,13 +580,13 @@ export const MsgAddChain = {
           message.index = reader.string();
           break;
         case 3:
-          message.chain = reader.string();
+          message.chainName = reader.string();
           break;
         case 4:
-          message.tokenAddress = reader.string();
+          message.tokenAddress = reader.bytes();
           break;
         case 5:
-          message.tokenId = reader.string();
+          message.tokenId = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -752,20 +608,16 @@ export const MsgAddChain = {
     } else {
       message.index = "";
     }
-    if (object.chain !== undefined && object.chain !== null) {
-      message.chain = String(object.chain);
+    if (object.chainName !== undefined && object.chainName !== null) {
+      message.chainName = String(object.chainName);
     } else {
-      message.chain = "";
+      message.chainName = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = String(object.tokenAddress);
-    } else {
-      message.tokenAddress = "";
+      message.tokenAddress = bytesFromBase64(object.tokenAddress);
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = String(object.tokenId);
-    } else {
-      message.tokenId = "";
+      message.tokenId = bytesFromBase64(object.tokenId);
     }
     return message;
   },
@@ -774,10 +626,17 @@ export const MsgAddChain = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.index !== undefined && (obj.index = message.index);
-    message.chain !== undefined && (obj.chain = message.chain);
+    message.chainName !== undefined && (obj.chainName = message.chainName);
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = message.tokenAddress);
-    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+      (obj.tokenAddress = base64FromBytes(
+        message.tokenAddress !== undefined
+          ? message.tokenAddress
+          : new Uint8Array()
+      ));
+    message.tokenId !== undefined &&
+      (obj.tokenId = base64FromBytes(
+        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
+      ));
     return obj;
   },
 
@@ -793,20 +652,20 @@ export const MsgAddChain = {
     } else {
       message.index = "";
     }
-    if (object.chain !== undefined && object.chain !== null) {
-      message.chain = object.chain;
+    if (object.chainName !== undefined && object.chainName !== null) {
+      message.chainName = object.chainName;
     } else {
-      message.chain = "";
+      message.chainName = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = "";
+      message.tokenAddress = new Uint8Array();
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = "";
+      message.tokenId = new Uint8Array();
     }
     return message;
   },
@@ -917,6 +776,39 @@ interface Rpc {
     method: string,
     data: Uint8Array
   ): Promise<Uint8Array>;
+}
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
+const atob: (b64: string) => string =
+  globalThis.atob ||
+  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+function bytesFromBase64(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; ++i) {
+    arr[i] = bin.charCodeAt(i);
+  }
+  return arr;
+}
+
+const btoa: (bin: string) => string =
+  globalThis.btoa ||
+  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+function base64FromBytes(arr: Uint8Array): string {
+  const bin: string[] = [];
+  for (let i = 0; i < arr.byteLength; ++i) {
+    bin.push(String.fromCharCode(arr[i]));
+  }
+  return btoa(bin.join(""));
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;

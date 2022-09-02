@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"encoding/hex"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -44,7 +45,7 @@ func CmdListItem() *cobra.Command {
 
 func CmdShowItem() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-item [token-address] [token-id]",
+		Use:   "show-item [token-address-hex] [token-id-hex]",
 		Short: "shows a item",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -52,8 +53,14 @@ func CmdShowItem() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argTokenAddress := args[0]
-			argTokenId := args[1]
+			argTokenAddress, err := hex.DecodeString(args[0])
+			if err != nil {
+				return err
+			}
+			argTokenId, err := hex.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
 
 			params := &types.QueryGetItemRequest{
 				TokenAddress: argTokenAddress,

@@ -3,7 +3,6 @@ import { Params } from "../rarimocore/params";
 import { Deposit } from "../rarimocore/deposit";
 import { Confirmation } from "../rarimocore/confirmation";
 import { ChangeKeyECDSA } from "../rarimocore/change_key_ecdsa";
-import { ChangeKeyEdDSA } from "../rarimocore/change_key_ed_dsa";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
@@ -13,9 +12,8 @@ export interface GenesisState {
   params: Params | undefined;
   depositList: Deposit[];
   confirmationList: Confirmation[];
-  changeKeyECDSAList: ChangeKeyECDSA[];
   /** this line is used by starport scaffolding # genesis/proto/state */
-  changeKeyEdDSAList: ChangeKeyEdDSA[];
+  changeKeyECDSAList: ChangeKeyECDSA[];
 }
 
 const baseGenesisState: object = {};
@@ -34,9 +32,6 @@ export const GenesisState = {
     for (const v of message.changeKeyECDSAList) {
       ChangeKeyECDSA.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    for (const v of message.changeKeyEdDSAList) {
-      ChangeKeyEdDSA.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
     return writer;
   },
 
@@ -47,7 +42,6 @@ export const GenesisState = {
     message.depositList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
-    message.changeKeyEdDSAList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -67,11 +61,6 @@ export const GenesisState = {
             ChangeKeyECDSA.decode(reader, reader.uint32())
           );
           break;
-        case 5:
-          message.changeKeyEdDSAList.push(
-            ChangeKeyEdDSA.decode(reader, reader.uint32())
-          );
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -85,7 +74,6 @@ export const GenesisState = {
     message.depositList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
-    message.changeKeyEdDSAList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -110,14 +98,6 @@ export const GenesisState = {
     ) {
       for (const e of object.changeKeyECDSAList) {
         message.changeKeyECDSAList.push(ChangeKeyECDSA.fromJSON(e));
-      }
-    }
-    if (
-      object.changeKeyEdDSAList !== undefined &&
-      object.changeKeyEdDSAList !== null
-    ) {
-      for (const e of object.changeKeyEdDSAList) {
-        message.changeKeyEdDSAList.push(ChangeKeyEdDSA.fromJSON(e));
       }
     }
     return message;
@@ -148,13 +128,6 @@ export const GenesisState = {
     } else {
       obj.changeKeyECDSAList = [];
     }
-    if (message.changeKeyEdDSAList) {
-      obj.changeKeyEdDSAList = message.changeKeyEdDSAList.map((e) =>
-        e ? ChangeKeyEdDSA.toJSON(e) : undefined
-      );
-    } else {
-      obj.changeKeyEdDSAList = [];
-    }
     return obj;
   },
 
@@ -163,7 +136,6 @@ export const GenesisState = {
     message.depositList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
-    message.changeKeyEdDSAList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -188,14 +160,6 @@ export const GenesisState = {
     ) {
       for (const e of object.changeKeyECDSAList) {
         message.changeKeyECDSAList.push(ChangeKeyECDSA.fromPartial(e));
-      }
-    }
-    if (
-      object.changeKeyEdDSAList !== undefined &&
-      object.changeKeyEdDSAList !== null
-    ) {
-      for (const e of object.changeKeyEdDSAList) {
-        message.changeKeyEdDSAList.push(ChangeKeyEdDSA.fromPartial(e));
       }
     }
     return message;

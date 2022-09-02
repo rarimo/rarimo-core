@@ -6,18 +6,14 @@ export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 /** Params defines the parameters for the module. */
 export interface Params {
   keyECDSA: string;
-  keyEdDSA: string;
 }
 
-const baseParams: object = { keyECDSA: "", keyEdDSA: "" };
+const baseParams: object = { keyECDSA: "" };
 
 export const Params = {
   encode(message: Params, writer: Writer = Writer.create()): Writer {
     if (message.keyECDSA !== "") {
       writer.uint32(10).string(message.keyECDSA);
-    }
-    if (message.keyEdDSA !== "") {
-      writer.uint32(18).string(message.keyEdDSA);
     }
     return writer;
   },
@@ -31,9 +27,6 @@ export const Params = {
       switch (tag >>> 3) {
         case 1:
           message.keyECDSA = reader.string();
-          break;
-        case 2:
-          message.keyEdDSA = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -50,18 +43,12 @@ export const Params = {
     } else {
       message.keyECDSA = "";
     }
-    if (object.keyEdDSA !== undefined && object.keyEdDSA !== null) {
-      message.keyEdDSA = String(object.keyEdDSA);
-    } else {
-      message.keyEdDSA = "";
-    }
     return message;
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
     message.keyECDSA !== undefined && (obj.keyECDSA = message.keyECDSA);
-    message.keyEdDSA !== undefined && (obj.keyEdDSA = message.keyEdDSA);
     return obj;
   },
 
@@ -71,11 +58,6 @@ export const Params = {
       message.keyECDSA = object.keyECDSA;
     } else {
       message.keyECDSA = "";
-    }
-    if (object.keyEdDSA !== undefined && object.keyEdDSA !== null) {
-      message.keyEdDSA = object.keyEdDSA;
-    } else {
-      message.keyEdDSA = "";
     }
     return message;
   },

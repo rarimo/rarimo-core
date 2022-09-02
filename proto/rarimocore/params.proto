@@ -6,5 +6,4 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 // Params defines the parameters for the module.
 message Params {
   string keyECDSA = 1;
-  string keyEdDSA = 2;
 }

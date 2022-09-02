@@ -11,17 +11,15 @@ const (
 
 // ItemKey returns the store key to retrieve a Item from the index fields
 func ItemKey(
-	tokenAddress string,
-	tokenId string,
+	tokenAddress []byte,
+	tokenId []byte,
 ) []byte {
 	var key []byte
 
-	tokenAddressBytes := []byte(tokenAddress)
-	key = append(key, tokenAddressBytes...)
+	key = append(key, tokenAddress...)
 	key = append(key, []byte("/")...)
 
-	tokenIdBytes := []byte(tokenId)
-	key = append(key, tokenIdBytes...)
+	key = append(key, tokenId...)
 	key = append(key, []byte("/")...)
 
 	return key

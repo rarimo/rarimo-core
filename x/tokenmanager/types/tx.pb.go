@@ -28,16 +28,14 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgCreateInfo struct {
-	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Index        string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
-	Name         string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Symbol       string `protobuf:"bytes,4,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	Image        string `protobuf:"bytes,5,opt,name=image,proto3" json:"image,omitempty"`
-	Description  string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
-	AnimationUrl string `protobuf:"bytes,7,opt,name=animationUrl,proto3" json:"animationUrl,omitempty"`
-	ExternalUrl  string `protobuf:"bytes,8,opt,name=externalUrl,proto3" json:"externalUrl,omitempty"`
-	Attributes   string `protobuf:"bytes,9,opt,name=attributes,proto3" json:"attributes,omitempty"`
-	CurrentChain string `protobuf:"bytes,10,opt,name=currentChain,proto3" json:"currentChain,omitempty"`
+	Creator        string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Index          string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	Name           string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Symbol         string `protobuf:"bytes,4,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Image          string `protobuf:"bytes,5,opt,name=image,proto3" json:"image,omitempty"`
+	CurrentAddress []byte `protobuf:"bytes,6,opt,name=currentAddress,proto3" json:"currentAddress,omitempty"`
+	CurrentId      []byte `protobuf:"bytes,7,opt,name=currentId,proto3" json:"currentId,omitempty"`
+	CurrentChain   string `protobuf:"bytes,8,opt,name=currentChain,proto3" json:"currentChain,omitempty"`
 }
 
 func (m *MsgCreateInfo) Reset()         { *m = MsgCreateInfo{} }
@@ -108,32 +106,18 @@ func (m *MsgCreateInfo) GetImage() string {
 	return ""
 }
 
-func (m *MsgCreateInfo) GetDescription() string {
+func (m *MsgCreateInfo) GetCurrentAddress() []byte {
 	if m != nil {
-		return m.Description
+		return m.CurrentAddress
 	}
-	return ""
+	return nil
 }
 
-func (m *MsgCreateInfo) GetAnimationUrl() string {
+func (m *MsgCreateInfo) GetCurrentId() []byte {
 	if m != nil {
-		return m.AnimationUrl
+		return m.CurrentId
 	}
-	return ""
-}
-
-func (m *MsgCreateInfo) GetExternalUrl() string {
-	if m != nil {
-		return m.ExternalUrl
-	}
-	return ""
-}
-
-func (m *MsgCreateInfo) GetAttributes() string {
-	if m != nil {
-		return m.Attributes
-	}
-	return ""
+	return nil
 }
 
 func (m *MsgCreateInfo) GetCurrentChain() string {
@@ -180,16 +164,11 @@ func (m *MsgCreateInfoResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgCreateInfoResponse proto.InternalMessageInfo
 
 type MsgUpdateInfo struct {
-	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Index        string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
-	Name         string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Symbol       string `protobuf:"bytes,4,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	Image        string `protobuf:"bytes,5,opt,name=image,proto3" json:"image,omitempty"`
-	Description  string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
-	AnimationUrl string `protobuf:"bytes,7,opt,name=animationUrl,proto3" json:"animationUrl,omitempty"`
-	ExternalUrl  string `protobuf:"bytes,8,opt,name=externalUrl,proto3" json:"externalUrl,omitempty"`
-	Attributes   string `protobuf:"bytes,9,opt,name=attributes,proto3" json:"attributes,omitempty"`
-	CurrentChain string `protobuf:"bytes,10,opt,name=currentChain,proto3" json:"currentChain,omitempty"`
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Index   string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	Name    string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Symbol  string `protobuf:"bytes,4,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Image   string `protobuf:"bytes,5,opt,name=image,proto3" json:"image,omitempty"`
 }
 
 func (m *MsgUpdateInfo) Reset()         { *m = MsgUpdateInfo{} }
@@ -256,41 +235,6 @@ func (m *MsgUpdateInfo) GetSymbol() string {
 func (m *MsgUpdateInfo) GetImage() string {
 	if m != nil {
 		return m.Image
-	}
-	return ""
-}
-
-func (m *MsgUpdateInfo) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
-func (m *MsgUpdateInfo) GetAnimationUrl() string {
-	if m != nil {
-		return m.AnimationUrl
-	}
-	return ""
-}
-
-func (m *MsgUpdateInfo) GetExternalUrl() string {
-	if m != nil {
-		return m.ExternalUrl
-	}
-	return ""
-}
-
-func (m *MsgUpdateInfo) GetAttributes() string {
-	if m != nil {
-		return m.Attributes
-	}
-	return ""
-}
-
-func (m *MsgUpdateInfo) GetCurrentChain() string {
-	if m != nil {
-		return m.CurrentChain
 	}
 	return ""
 }
@@ -422,9 +366,9 @@ var xxx_messageInfo_MsgDeleteInfoResponse proto.InternalMessageInfo
 type MsgAddChain struct {
 	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Index        string `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
-	Chain        string `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
-	TokenAddress string `protobuf:"bytes,4,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
-	TokenId      string `protobuf:"bytes,5,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
+	ChainName    string `protobuf:"bytes,3,opt,name=chainName,proto3" json:"chainName,omitempty"`
+	TokenAddress []byte `protobuf:"bytes,4,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
+	TokenId      []byte `protobuf:"bytes,5,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
 }
 
 func (m *MsgAddChain) Reset()         { *m = MsgAddChain{} }
@@ -474,25 +418,25 @@ func (m *MsgAddChain) GetIndex() string {
 	return ""
 }
 
-func (m *MsgAddChain) GetChain() string {
+func (m *MsgAddChain) GetChainName() string {
 	if m != nil {
-		return m.Chain
+		return m.ChainName
 	}
 	return ""
 }
 
-func (m *MsgAddChain) GetTokenAddress() string {
+func (m *MsgAddChain) GetTokenAddress() []byte {
 	if m != nil {
 		return m.TokenAddress
 	}
-	return ""
+	return nil
 }
 
-func (m *MsgAddChain) GetTokenId() string {
+func (m *MsgAddChain) GetTokenId() []byte {
 	if m != nil {
 		return m.TokenId
 	}
-	return ""
+	return nil
 }
 
 type MsgAddChainResponse struct {
@@ -545,38 +489,37 @@ func init() {
 func init() { proto.RegisterFile("tokenmanager/tx.proto", fileDescriptor_0b7dd519179c34b5) }
 
 var fileDescriptor_0b7dd519179c34b5 = []byte{
-	// 496 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x55, 0xb1, 0x6e, 0xdb, 0x30,
-	0x10, 0x8d, 0x12, 0xdb, 0x49, 0x2e, 0xed, 0xc2, 0xc6, 0x0d, 0xe1, 0x41, 0x08, 0x3c, 0x14, 0x5d,
-	0x22, 0x01, 0x0d, 0x3a, 0x05, 0x45, 0x91, 0xa6, 0x4b, 0x06, 0x2f, 0x01, 0xbc, 0x74, 0xa3, 0xa5,
-	0xb3, 0x4a, 0x54, 0x22, 0x05, 0x92, 0x01, 0x6c, 0xa0, 0x53, 0xbf, 0xa0, 0xed, 0x7f, 0xf4, 0x3f,
-	0x3a, 0x66, 0xec, 0x58, 0xd8, 0x3f, 0x52, 0x90, 0x92, 0x6c, 0x0a, 0x59, 0x22, 0xcf, 0xdd, 0xfc,
-	0x9e, 0x79, 0xef, 0x1e, 0xdf, 0x1d, 0x21, 0x18, 0x1a, 0xf9, 0x05, 0x45, 0xc1, 0x04, 0xcb, 0x50,
-	0xc5, 0x66, 0x11, 0x95, 0x4a, 0x1a, 0x49, 0x5e, 0x29, 0xa6, 0xf8, 0x7c, 0xe9, 0x40, 0x22, 0xf3,
-	0xc8, 0xc2, 0x42, 0x26, 0x52, 0x61, 0xe4, 0x17, 0x8c, 0xce, 0x5a, 0xe5, 0x5c, 0xcc, 0x65, 0x25,
-	0x30, 0xfe, 0xb5, 0x0f, 0xcf, 0x27, 0x3a, 0xbb, 0x51, 0xc8, 0x0c, 0xde, 0x8a, 0xb9, 0x24, 0x14,
-	0x0e, 0x13, 0x8b, 0xa4, 0xa2, 0xc1, 0x79, 0xf0, 0xfa, 0xf8, 0xae, 0x81, 0xe4, 0x14, 0xfa, 0x5c,
-	0xa4, 0xb8, 0xa0, 0xfb, 0x8e, 0xaf, 0x00, 0x21, 0xd0, 0x13, 0xac, 0x40, 0x7a, 0xe0, 0x48, 0xf7,
-	0x9b, 0xbc, 0x84, 0x81, 0x5e, 0x16, 0x33, 0x99, 0xd3, 0x9e, 0x63, 0x6b, 0xe4, 0x14, 0x0a, 0x96,
-	0x21, 0xed, 0xd7, 0x0a, 0x16, 0x90, 0x73, 0x38, 0x49, 0x51, 0x27, 0x8a, 0x97, 0x86, 0x4b, 0x41,
-	0x07, 0xee, 0x3f, 0x9f, 0x22, 0x63, 0x78, 0xc6, 0x04, 0x2f, 0x98, 0x05, 0x53, 0x95, 0xd3, 0x43,
-	0x77, 0xa4, 0xc5, 0x59, 0x15, 0x5c, 0x18, 0x54, 0x82, 0xe5, 0xf6, 0xc8, 0x51, 0xa5, 0xe2, 0x51,
-	0x24, 0x04, 0x60, 0xc6, 0x28, 0x3e, 0xbb, 0x37, 0xa8, 0xe9, 0xb1, 0x3b, 0xe0, 0x31, 0xb6, 0x4b,
-	0x72, 0xaf, 0x14, 0x0a, 0x73, 0xf3, 0x99, 0x71, 0x41, 0xa1, 0xea, 0xe2, 0x73, 0xe3, 0x33, 0x18,
-	0xb6, 0xe2, 0xba, 0x43, 0x5d, 0x4a, 0xa1, 0xb1, 0x09, 0x72, 0x5a, 0xa6, 0xff, 0x83, 0x7c, 0x7a,
-	0x90, 0xdb, 0xb8, 0x36, 0x41, 0xbe, 0x77, 0x39, 0x7e, 0xc4, 0x1c, 0x77, 0xcb, 0xb1, 0x56, 0xde,
-	0x0a, 0x6c, 0x94, 0x7f, 0x04, 0x70, 0x32, 0xd1, 0xd9, 0x75, 0x9a, 0x3a, 0x0b, 0x9d, 0x07, 0x74,
-	0x0a, 0xfd, 0xc4, 0xdd, 0xa7, 0x9a, 0x50, 0x05, 0xec, 0x65, 0xdd, 0xe3, 0xba, 0x4e, 0x53, 0x85,
-	0x5a, 0xd7, 0x83, 0x6a, 0x71, 0xb6, 0x93, 0xc3, 0xb7, 0x69, 0x3d, 0xb0, 0x06, 0x8e, 0x87, 0xf0,
-	0xc2, 0xb3, 0xd4, 0x58, 0x7d, 0xf3, 0xb3, 0x07, 0x07, 0x13, 0x9d, 0x91, 0x6f, 0x01, 0x80, 0xf7,
-	0x36, 0xdf, 0x46, 0x4f, 0x7b, 0xef, 0x51, 0x6b, 0x47, 0x47, 0xef, 0x76, 0x2a, 0x6b, 0xcc, 0x38,
-	0x13, 0xde, 0x5e, 0x77, 0x31, 0xb1, 0x2d, 0xeb, 0x64, 0xe2, 0xf1, 0x5a, 0x38, 0x13, 0xde, 0x52,
-	0x74, 0x31, 0xb1, 0x2d, 0xeb, 0x64, 0xe2, 0xf1, 0x06, 0x91, 0xaf, 0x70, 0xb4, 0xd9, 0x9e, 0xcb,
-	0x0e, 0x52, 0x4d, 0xd1, 0xe8, 0x6a, 0x87, 0xa2, 0xa6, 0xfb, 0x87, 0xe9, 0xef, 0x55, 0x18, 0x3c,
-	0xac, 0xc2, 0xe0, 0xef, 0x2a, 0x0c, 0xbe, 0xaf, 0xc3, 0xbd, 0x87, 0x75, 0xb8, 0xf7, 0x67, 0x1d,
-	0xee, 0x7d, 0xba, 0xca, 0xb8, 0xc9, 0xd9, 0x2c, 0x4a, 0x64, 0x11, 0x57, 0x0d, 0x2e, 0x9a, 0x0e,
-	0x71, 0xd5, 0xe1, 0xc2, 0xb6, 0x88, 0x17, 0x71, 0xfb, 0x33, 0xb2, 0x2c, 0x51, 0xcf, 0x06, 0xee,
-	0xe8, 0xe5, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x22, 0x76, 0x9d, 0xea, 0x63, 0x06, 0x00, 0x00,
+	// 470 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x94, 0x31, 0x6f, 0xd3, 0x40,
+	0x14, 0xc7, 0x73, 0x34, 0x4d, 0xdb, 0x47, 0x60, 0x38, 0x08, 0x3d, 0x45, 0xc8, 0xaa, 0x3c, 0x54,
+	0x5d, 0x6a, 0x4b, 0x54, 0x4c, 0x15, 0x42, 0xa5, 0x2c, 0x19, 0xc2, 0x10, 0xa9, 0x0b, 0x9b, 0xe3,
+	0xbb, 0x18, 0x8b, 0xf8, 0x2e, 0xba, 0x33, 0x52, 0x22, 0xb1, 0xc0, 0x27, 0x40, 0x6c, 0x7c, 0x23,
+	0xc6, 0x8e, 0x8c, 0x28, 0x19, 0xf9, 0x12, 0xe8, 0x9e, 0x7d, 0xb1, 0x4d, 0x17, 0x9c, 0xa5, 0x5b,
+	0xfe, 0x7f, 0xdd, 0xff, 0xbd, 0xdf, 0xdd, 0x7b, 0x31, 0x0c, 0x72, 0xf5, 0x51, 0xc8, 0x2c, 0x92,
+	0x51, 0x22, 0x74, 0x98, 0x2f, 0x83, 0x85, 0x56, 0xb9, 0xa2, 0xa7, 0x3a, 0xd2, 0xe9, 0x6c, 0x85,
+	0x22, 0x56, 0xf3, 0xc0, 0xca, 0x4c, 0xc5, 0x4a, 0x8b, 0xa0, 0x1e, 0x18, 0x1e, 0x37, 0xe2, 0xa9,
+	0x9c, 0xa9, 0xa2, 0x80, 0xff, 0x87, 0xc0, 0xa3, 0xb1, 0x49, 0xae, 0xb5, 0x88, 0x72, 0x31, 0x92,
+	0x33, 0x45, 0x19, 0x1c, 0xc4, 0x56, 0x29, 0xcd, 0xc8, 0x09, 0x39, 0x3b, 0x9a, 0x38, 0x49, 0x9f,
+	0xc2, 0x7e, 0x2a, 0xb9, 0x58, 0xb2, 0x07, 0xe8, 0x17, 0x82, 0x52, 0xe8, 0xca, 0x28, 0x13, 0x6c,
+	0x0f, 0x4d, 0xfc, 0x4d, 0x9f, 0x41, 0xcf, 0xac, 0xb2, 0xa9, 0x9a, 0xb3, 0x2e, 0xba, 0xa5, 0xc2,
+	0x0a, 0x59, 0x94, 0x08, 0xb6, 0x5f, 0x56, 0xb0, 0x82, 0x9e, 0xc2, 0xe3, 0xf8, 0x93, 0xd6, 0x42,
+	0xe6, 0x57, 0x9c, 0x6b, 0x61, 0x0c, 0xeb, 0x9d, 0x90, 0xb3, 0xfe, 0xe4, 0x1f, 0x97, 0x3e, 0x87,
+	0xa3, 0xd2, 0x19, 0x71, 0x76, 0x80, 0x47, 0x2a, 0x83, 0xfa, 0xd0, 0x2f, 0xc5, 0xf5, 0x87, 0x28,
+	0x95, 0xec, 0x10, 0x5b, 0x34, 0x3c, 0xff, 0x18, 0x06, 0x8d, 0xcb, 0x4e, 0x84, 0x59, 0x28, 0x69,
+	0x84, 0xff, 0xa5, 0x78, 0x86, 0x9b, 0x05, 0xbf, 0xb7, 0x67, 0x28, 0xe1, 0x2a, 0x84, 0x2d, 0xdc,
+	0x6b, 0x64, 0x7b, 0x2b, 0xe6, 0x62, 0x37, 0xb6, 0xb2, 0x72, 0x55, 0x60, 0x5b, 0xf9, 0x07, 0x81,
+	0x87, 0x63, 0x93, 0x5c, 0x71, 0x8e, 0xef, 0xd3, 0xfa, 0xd2, 0x76, 0x22, 0x36, 0xf8, 0xae, 0xba,
+	0x79, 0x65, 0xd8, 0x89, 0xe0, 0xda, 0xb9, 0xa9, 0x76, 0x71, 0x64, 0x0d, 0xcf, 0x76, 0x44, 0x3d,
+	0xe2, 0xf8, 0x18, 0xfd, 0x89, 0x93, 0xfe, 0x00, 0x9e, 0xd4, 0xd0, 0x1c, 0xf2, 0x8b, 0xef, 0x5d,
+	0xd8, 0x1b, 0x9b, 0x84, 0x7e, 0x25, 0x00, 0xb5, 0xad, 0x7d, 0x19, 0xfc, 0xdf, 0x3f, 0x21, 0x68,
+	0xcc, 0x7f, 0xf8, 0x6a, 0xa7, 0x98, 0x83, 0x41, 0x88, 0xda, 0xce, 0xb4, 0x81, 0xa8, 0x62, 0xad,
+	0x20, 0xee, 0xae, 0x07, 0x42, 0xd4, 0x96, 0xa3, 0x0d, 0x44, 0x15, 0x6b, 0x05, 0x71, 0x77, 0x93,
+	0xe8, 0x67, 0x38, 0xdc, 0x6e, 0xd1, 0x45, 0x8b, 0x52, 0x2e, 0x34, 0xbc, 0xdc, 0x21, 0xe4, 0xba,
+	0xbf, 0xb9, 0xf9, 0xb9, 0xf6, 0xc8, 0xed, 0xda, 0x23, 0xbf, 0xd7, 0x1e, 0xf9, 0xb6, 0xf1, 0x3a,
+	0xb7, 0x1b, 0xaf, 0xf3, 0x6b, 0xe3, 0x75, 0xde, 0x5f, 0x26, 0x69, 0x3e, 0x8f, 0xa6, 0x41, 0xac,
+	0xb2, 0xb0, 0x68, 0x70, 0xee, 0x3a, 0x84, 0x45, 0x87, 0x73, 0xdb, 0x22, 0x5c, 0x86, 0xcd, 0x0f,
+	0xec, 0x6a, 0x21, 0xcc, 0xb4, 0x87, 0x47, 0x2f, 0xfe, 0x06, 0x00, 0x00, 0xff, 0xff, 0xe6, 0xd1,
+	0x8d, 0xfe, 0x7d, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -792,33 +735,19 @@ func (m *MsgCreateInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.CurrentChain)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.CurrentChain)))
 		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.Attributes) > 0 {
-		i -= len(m.Attributes)
-		copy(dAtA[i:], m.Attributes)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Attributes)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.ExternalUrl) > 0 {
-		i -= len(m.ExternalUrl)
-		copy(dAtA[i:], m.ExternalUrl)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ExternalUrl)))
-		i--
 		dAtA[i] = 0x42
 	}
-	if len(m.AnimationUrl) > 0 {
-		i -= len(m.AnimationUrl)
-		copy(dAtA[i:], m.AnimationUrl)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.AnimationUrl)))
+	if len(m.CurrentId) > 0 {
+		i -= len(m.CurrentId)
+		copy(dAtA[i:], m.CurrentId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.CurrentId)))
 		i--
 		dAtA[i] = 0x3a
 	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+	if len(m.CurrentAddress) > 0 {
+		i -= len(m.CurrentAddress)
+		copy(dAtA[i:], m.CurrentAddress)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.CurrentAddress)))
 		i--
 		dAtA[i] = 0x32
 	}
@@ -903,41 +832,6 @@ func (m *MsgUpdateInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.CurrentChain) > 0 {
-		i -= len(m.CurrentChain)
-		copy(dAtA[i:], m.CurrentChain)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.CurrentChain)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.Attributes) > 0 {
-		i -= len(m.Attributes)
-		copy(dAtA[i:], m.Attributes)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Attributes)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.ExternalUrl) > 0 {
-		i -= len(m.ExternalUrl)
-		copy(dAtA[i:], m.ExternalUrl)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ExternalUrl)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.AnimationUrl) > 0 {
-		i -= len(m.AnimationUrl)
-		copy(dAtA[i:], m.AnimationUrl)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.AnimationUrl)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
-		i--
-		dAtA[i] = 0x32
-	}
 	if len(m.Image) > 0 {
 		i -= len(m.Image)
 		copy(dAtA[i:], m.Image)
@@ -1093,10 +987,10 @@ func (m *MsgAddChain) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.Chain) > 0 {
-		i -= len(m.Chain)
-		copy(dAtA[i:], m.Chain)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Chain)))
+	if len(m.ChainName) > 0 {
+		i -= len(m.ChainName)
+		copy(dAtA[i:], m.ChainName)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ChainName)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -1177,19 +1071,11 @@ func (m *MsgCreateInfo) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Description)
+	l = len(m.CurrentAddress)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.AnimationUrl)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.ExternalUrl)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Attributes)
+	l = len(m.CurrentId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1232,26 +1118,6 @@ func (m *MsgUpdateInfo) Size() (n int) {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	l = len(m.Image)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Description)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.AnimationUrl)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.ExternalUrl)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Attributes)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.CurrentChain)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1307,7 +1173,7 @@ func (m *MsgAddChain) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Chain)
+	l = len(m.ChainName)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1528,9 +1394,9 @@ func (m *MsgCreateInfo) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentAddress", wireType)
 			}
-			var stringLen uint64
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1540,29 +1406,31 @@ func (m *MsgCreateInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if byteLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Description = string(dAtA[iNdEx:postIndex])
+			m.CurrentAddress = append(m.CurrentAddress[:0], dAtA[iNdEx:postIndex]...)
+			if m.CurrentAddress == nil {
+				m.CurrentAddress = []byte{}
+			}
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AnimationUrl", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentId", wireType)
 			}
-			var stringLen uint64
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1572,89 +1440,27 @@ func (m *MsgCreateInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if byteLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AnimationUrl = string(dAtA[iNdEx:postIndex])
+			m.CurrentId = append(m.CurrentId[:0], dAtA[iNdEx:postIndex]...)
+			if m.CurrentId == nil {
+				m.CurrentId = []byte{}
+			}
 			iNdEx = postIndex
 		case 8:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExternalUrl", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ExternalUrl = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 9:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Attributes", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Attributes = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CurrentChain", wireType)
 			}
@@ -1945,166 +1751,6 @@ func (m *MsgUpdateInfo) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Image = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Description = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 7:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AnimationUrl", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.AnimationUrl = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 8:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExternalUrl", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ExternalUrl = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 9:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Attributes", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Attributes = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 10:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CurrentChain", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.CurrentChain = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2436,7 +2082,7 @@ func (m *MsgAddChain) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainName", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2464,13 +2110,13 @@ func (m *MsgAddChain) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Chain = string(dAtA[iNdEx:postIndex])
+			m.ChainName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TokenAddress", wireType)
 			}
-			var stringLen uint64
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2480,29 +2126,31 @@ func (m *MsgAddChain) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if byteLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TokenAddress = string(dAtA[iNdEx:postIndex])
+			m.TokenAddress = append(m.TokenAddress[:0], dAtA[iNdEx:postIndex]...)
+			if m.TokenAddress == nil {
+				m.TokenAddress = []byte{}
+			}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TokenId", wireType)
 			}
-			var stringLen uint64
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2512,23 +2160,25 @@ func (m *MsgAddChain) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if byteLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TokenId = string(dAtA[iNdEx:postIndex])
+			m.TokenId = append(m.TokenId[:0], dAtA[iNdEx:postIndex]...)
+			if m.TokenId == nil {
+				m.TokenId = []byte{}
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

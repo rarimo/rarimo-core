@@ -20,24 +20,20 @@ func NewMsgCreateInfo(
 	name string,
 	symbol string,
 	image string,
-	description string,
-	animationUrl string,
-	externalUrl string,
-	attributes string,
+	currentId []byte,
+	currentAddress []byte,
 	currentChain string,
 
 ) *MsgCreateInfo {
 	return &MsgCreateInfo{
-		Creator:      creator,
-		Index:        index,
-		Name:         name,
-		Symbol:       symbol,
-		Image:        image,
-		Description:  description,
-		AnimationUrl: animationUrl,
-		ExternalUrl:  externalUrl,
-		Attributes:   attributes,
-		CurrentChain: currentChain,
+		Creator:        creator,
+		Index:          index,
+		Name:           name,
+		Symbol:         symbol,
+		Image:          image,
+		CurrentChain:   currentChain,
+		CurrentId:      currentId,
+		CurrentAddress: currentAddress,
 	}
 }
 
@@ -78,24 +74,14 @@ func NewMsgUpdateInfo(
 	name string,
 	symbol string,
 	image string,
-	description string,
-	animationUrl string,
-	externalUrl string,
-	attributes string,
-	currentChain string,
 
 ) *MsgUpdateInfo {
 	return &MsgUpdateInfo{
-		Creator:      creator,
-		Index:        index,
-		Name:         name,
-		Symbol:       symbol,
-		Image:        image,
-		Description:  description,
-		AnimationUrl: animationUrl,
-		ExternalUrl:  externalUrl,
-		Attributes:   attributes,
-		CurrentChain: currentChain,
+		Creator: creator,
+		Index:   index,
+		Name:    name,
+		Symbol:  symbol,
+		Image:   image,
 	}
 }
 
@@ -175,13 +161,13 @@ func NewMsgAddChain(
 	creator string,
 	index string,
 	chain string,
-	tokenAddress string,
-	tokenId string,
+	tokenAddress []byte,
+	tokenId []byte,
 ) *MsgAddChain {
 	return &MsgAddChain{
 		Creator:      creator,
 		Index:        index,
-		Chain:        chain,
+		ChainName:    chain,
 		TokenAddress: tokenAddress,
 		TokenId:      tokenId,
 	}

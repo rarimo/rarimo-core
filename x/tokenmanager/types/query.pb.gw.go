@@ -67,7 +67,7 @@ func request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler, clie
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tokenAddress")
 	}
 
-	protoReq.TokenAddress, err = runtime.String(val)
+	protoReq.TokenAddress, err = runtime.Bytes(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenAddress", err)
@@ -78,7 +78,7 @@ func request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler, clie
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tokenId")
 	}
 
-	protoReq.TokenId, err = runtime.String(val)
+	protoReq.TokenId, err = runtime.Bytes(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenId", err)
@@ -105,7 +105,7 @@ func local_request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tokenAddress")
 	}
 
-	protoReq.TokenAddress, err = runtime.String(val)
+	protoReq.TokenAddress, err = runtime.Bytes(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenAddress", err)
@@ -116,7 +116,7 @@ func local_request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tokenId")
 	}
 
-	protoReq.TokenId, err = runtime.String(val)
+	protoReq.TokenId, err = runtime.Bytes(val)
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenId", err)

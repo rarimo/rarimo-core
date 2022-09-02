@@ -1,70 +1,46 @@
 package crypto
 
 import (
-	"crypto/sha256"
-	"fmt"
+	"bytes"
 
-	"github.com/cbergoon/merkletree"
+	"github.com/ethereum/go-ethereum/crypto"
+	merkle "gitlab.com/rarify-protocol/go-merkle"
 )
 
-var _ merkletree.Content = HashContent{}
+var _ merkle.Content = HashContent{}
 
-type TokenType int32
-
-var (
-	Native      TokenType = 0
-	ERC20       TokenType = 1
-	ERC721      TokenType = 2
-	ERC1155     TokenType = 3
-	MetaplexNFT TokenType = 4
-	MetaplexFT  TokenType = 5
-)
-
-// HashContent implements the Content interface provided by merkletree and represents the content stored in the tree.
+// HashContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type HashContent struct {
 	// Hash of the deposit tx
-	TxHash string
-	// Collection address on current chain
-	CurrentAddress string
-	// TokenId on current chain
-	CurrentId string
-	// Collection address on target chain
-	TargetAddress string
-	// TokenId on target chain
-	TargetId string
-	// Receiver address on target network
-	Receiver       string
+	TxHash         string
 	CurrentNetwork string
-	TargetNetwork  string
-	Type           TokenType
+	EventId        string
+
+	// Collection address on target chain
+	TargetAddress []byte
+	// TokenId on target chain
+	TargetId []byte
+	// Receiver address on target network
+	Receiver      []byte
+	TargetNetwork string
+	// Memory representation of amount integer as a byte array in big-endian (with leading zeros if needed)
+	// Use binary.BigEndian.PutUint64(amount, c.Amount)
+	Amount    []byte
+	ProgramId []byte
 }
 
-func (c HashContent) String() string {
-	return c.TxHash + c.CurrentAddress + c.CurrentId +
-		c.TargetAddress + c.TargetId + c.Receiver + c.CurrentNetwork + c.TargetNetwork + fmt.Sprint(c.Type)
+func (c HashContent) OriginHash() []byte {
+	return crypto.Keccak256([]byte(c.TxHash), []byte(c.CurrentNetwork), []byte(c.EventId))
 }
 
-func (c HashContent) CalculateHash() ([]byte, error) {
-	h := sha256.New()
-	if _, err := h.Write([]byte(c.String())); err != nil {
-		return nil, err
-	}
-
-	return h.Sum(nil), nil
+func (c HashContent) CalculateHash() []byte {
+	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, crypto.Keccak256([]byte(c.TxHash), []byte(c.CurrentNetwork), []byte(c.EventId)), []byte(c.TargetNetwork), c.ProgramId)
 }
 
 //Equals tests for equality of two Contents
-func (c HashContent) Equals(other merkletree.Content) (bool, error) {
+func (c HashContent) Equals(other merkle.Content) bool {
 	if oc, ok := other.(HashContent); ok {
-		return c.TxHash == oc.TxHash &&
-			c.CurrentAddress == oc.CurrentAddress &&
-			c.TargetAddress == oc.TargetAddress &&
-			c.CurrentId == oc.CurrentId &&
-			c.TargetId == oc.TargetId &&
-			c.Receiver == oc.Receiver &&
-			c.CurrentNetwork == oc.CurrentNetwork &&
-			c.TargetNetwork == oc.TargetNetwork &&
-			c.Type == oc.Type, nil
+		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
 	}
-	return false, nil
+	return false
 }

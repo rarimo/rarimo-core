@@ -665,190 +665,6 @@ func (m *QueryAllChangeKeyECDSAResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-type QueryGetChangeKeyEdDSARequest struct {
-	NewKey string `protobuf:"bytes,1,opt,name=newKey,proto3" json:"newKey,omitempty"`
-}
-
-func (m *QueryGetChangeKeyEdDSARequest) Reset()         { *m = QueryGetChangeKeyEdDSARequest{} }
-func (m *QueryGetChangeKeyEdDSARequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetChangeKeyEdDSARequest) ProtoMessage()    {}
-func (*QueryGetChangeKeyEdDSARequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_11634ad12f474a6a, []int{14}
-}
-func (m *QueryGetChangeKeyEdDSARequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryGetChangeKeyEdDSARequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryGetChangeKeyEdDSARequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryGetChangeKeyEdDSARequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetChangeKeyEdDSARequest.Merge(m, src)
-}
-func (m *QueryGetChangeKeyEdDSARequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryGetChangeKeyEdDSARequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetChangeKeyEdDSARequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryGetChangeKeyEdDSARequest proto.InternalMessageInfo
-
-func (m *QueryGetChangeKeyEdDSARequest) GetNewKey() string {
-	if m != nil {
-		return m.NewKey
-	}
-	return ""
-}
-
-type QueryGetChangeKeyEdDSAResponse struct {
-	ChangeKeyEdDSA ChangeKeyEdDSA `protobuf:"bytes,1,opt,name=changeKeyEdDSA,proto3" json:"changeKeyEdDSA"`
-}
-
-func (m *QueryGetChangeKeyEdDSAResponse) Reset()         { *m = QueryGetChangeKeyEdDSAResponse{} }
-func (m *QueryGetChangeKeyEdDSAResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetChangeKeyEdDSAResponse) ProtoMessage()    {}
-func (*QueryGetChangeKeyEdDSAResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_11634ad12f474a6a, []int{15}
-}
-func (m *QueryGetChangeKeyEdDSAResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryGetChangeKeyEdDSAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryGetChangeKeyEdDSAResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryGetChangeKeyEdDSAResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetChangeKeyEdDSAResponse.Merge(m, src)
-}
-func (m *QueryGetChangeKeyEdDSAResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryGetChangeKeyEdDSAResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetChangeKeyEdDSAResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryGetChangeKeyEdDSAResponse proto.InternalMessageInfo
-
-func (m *QueryGetChangeKeyEdDSAResponse) GetChangeKeyEdDSA() ChangeKeyEdDSA {
-	if m != nil {
-		return m.ChangeKeyEdDSA
-	}
-	return ChangeKeyEdDSA{}
-}
-
-type QueryAllChangeKeyEdDSARequest struct {
-	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (m *QueryAllChangeKeyEdDSARequest) Reset()         { *m = QueryAllChangeKeyEdDSARequest{} }
-func (m *QueryAllChangeKeyEdDSARequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllChangeKeyEdDSARequest) ProtoMessage()    {}
-func (*QueryAllChangeKeyEdDSARequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_11634ad12f474a6a, []int{16}
-}
-func (m *QueryAllChangeKeyEdDSARequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryAllChangeKeyEdDSARequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryAllChangeKeyEdDSARequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryAllChangeKeyEdDSARequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllChangeKeyEdDSARequest.Merge(m, src)
-}
-func (m *QueryAllChangeKeyEdDSARequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryAllChangeKeyEdDSARequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllChangeKeyEdDSARequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryAllChangeKeyEdDSARequest proto.InternalMessageInfo
-
-func (m *QueryAllChangeKeyEdDSARequest) GetPagination() *query.PageRequest {
-	if m != nil {
-		return m.Pagination
-	}
-	return nil
-}
-
-type QueryAllChangeKeyEdDSAResponse struct {
-	ChangeKeyEdDSA []ChangeKeyEdDSA    `protobuf:"bytes,1,rep,name=changeKeyEdDSA,proto3" json:"changeKeyEdDSA"`
-	Pagination     *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) Reset()         { *m = QueryAllChangeKeyEdDSAResponse{} }
-func (m *QueryAllChangeKeyEdDSAResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllChangeKeyEdDSAResponse) ProtoMessage()    {}
-func (*QueryAllChangeKeyEdDSAResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_11634ad12f474a6a, []int{17}
-}
-func (m *QueryAllChangeKeyEdDSAResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryAllChangeKeyEdDSAResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryAllChangeKeyEdDSAResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryAllChangeKeyEdDSAResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllChangeKeyEdDSAResponse.Merge(m, src)
-}
-func (m *QueryAllChangeKeyEdDSAResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryAllChangeKeyEdDSAResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllChangeKeyEdDSAResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryAllChangeKeyEdDSAResponse proto.InternalMessageInfo
-
-func (m *QueryAllChangeKeyEdDSAResponse) GetChangeKeyEdDSA() []ChangeKeyEdDSA {
-	if m != nil {
-		return m.ChangeKeyEdDSA
-	}
-	return nil
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) GetPagination() *query.PageResponse {
-	if m != nil {
-		return m.Pagination
-	}
-	return nil
-}
-
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse")
@@ -864,73 +680,63 @@ func init() {
 	proto.RegisterType((*QueryGetChangeKeyECDSAResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetChangeKeyECDSAResponse")
 	proto.RegisterType((*QueryAllChangeKeyECDSARequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllChangeKeyECDSARequest")
 	proto.RegisterType((*QueryAllChangeKeyECDSAResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllChangeKeyECDSAResponse")
-	proto.RegisterType((*QueryGetChangeKeyEdDSARequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetChangeKeyEdDSARequest")
-	proto.RegisterType((*QueryGetChangeKeyEdDSAResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetChangeKeyEdDSAResponse")
-	proto.RegisterType((*QueryAllChangeKeyEdDSARequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllChangeKeyEdDSARequest")
-	proto.RegisterType((*QueryAllChangeKeyEdDSAResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllChangeKeyEdDSAResponse")
 }
 
 func init() { proto.RegisterFile("rarimocore/query.proto", fileDescriptor_11634ad12f474a6a) }
 
 var fileDescriptor_11634ad12f474a6a = []byte{
-	// 903 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x97, 0xdf, 0x4f, 0xdb, 0x56,
-	0x14, 0xc7, 0xe3, 0x64, 0x0b, 0xda, 0x1d, 0x02, 0xed, 0x0e, 0x01, 0xca, 0x20, 0xdb, 0xac, 0x69,
-	0x43, 0xd3, 0xb0, 0x07, 0x63, 0xfc, 0xd8, 0x40, 0xad, 0x93, 0x50, 0x54, 0x50, 0x25, 0x1a, 0xde,
-	0xaa, 0x4a, 0xd4, 0x89, 0x2f, 0x8e, 0x55, 0xc7, 0x37, 0xc4, 0xa6, 0x4d, 0x44, 0x79, 0xa9, 0xfa,
-	0x07, 0x54, 0xea, 0x73, 0xff, 0x88, 0x3e, 0xf4, 0x1f, 0xa8, 0x5a, 0x89, 0x97, 0x4a, 0x48, 0x95,
-	0xaa, 0x3e, 0x54, 0x15, 0x85, 0xaa, 0xfd, 0x37, 0xaa, 0x5c, 0x9f, 0xc0, 0x35, 0x71, 0xc0, 0x8e,
-	0xdd, 0xbe, 0xc5, 0xbe, 0xf7, 0x9e, 0xf3, 0xfd, 0x9c, 0xef, 0x55, 0xce, 0x31, 0x1a, 0xae, 0xab,
-	0x75, 0xa3, 0x4a, 0xcb, 0xb4, 0x4e, 0xe4, 0xed, 0x1d, 0x52, 0x6f, 0x4a, 0xb5, 0x3a, 0x75, 0x28,
-	0xfe, 0xad, 0xf5, 0x7e, 0xab, 0xc9, 0x1e, 0xca, 0xd4, 0x94, 0x4e, 0xb7, 0x71, 0x3f, 0x33, 0x43,
-	0x3a, 0xd5, 0x29, 0xdb, 0x23, 0xb7, 0x7e, 0xb9, 0x67, 0x33, 0x63, 0x3a, 0xa5, 0xba, 0x49, 0x64,
-	0xb5, 0x66, 0xc8, 0xaa, 0x65, 0x51, 0x47, 0x75, 0x0c, 0x6a, 0xd9, 0xb0, 0xfa, 0x67, 0x99, 0xda,
-	0x55, 0x6a, 0xcb, 0x25, 0xd5, 0x86, 0x94, 0xf2, 0x9d, 0xa9, 0x12, 0x71, 0xd4, 0x29, 0xb9, 0xa6,
-	0xea, 0x86, 0xc5, 0x36, 0xc3, 0xde, 0x11, 0x4e, 0x5d, 0x4d, 0xad, 0xab, 0xd5, 0x76, 0x90, 0x51,
-	0x6e, 0x41, 0x23, 0x35, 0x6a, 0x1b, 0x0e, 0xac, 0x8c, 0x73, 0x2b, 0x65, 0x6a, 0x6d, 0x19, 0xf5,
-	0x2a, 0x1f, 0xf1, 0x57, 0x7e, 0xb9, 0xa2, 0x5a, 0x3a, 0xd9, 0xbc, 0x4d, 0x9a, 0x9b, 0xa4, 0xac,
-	0xd9, 0x2a, 0x6c, 0x11, 0xbb, 0x6c, 0xd1, 0x36, 0x4f, 0xf6, 0x88, 0x43, 0x08, 0x5f, 0x6f, 0x49,
-	0x5f, 0x67, 0xa2, 0x8a, 0x64, 0x7b, 0x87, 0xd8, 0x8e, 0xa8, 0xa2, 0x1f, 0x3d, 0x6f, 0xed, 0x1a,
-	0xb5, 0x6c, 0x82, 0x57, 0x51, 0xda, 0x15, 0x3f, 0x2a, 0xfc, 0x22, 0x4c, 0x7c, 0x3f, 0xfd, 0x97,
-	0x14, 0xa4, 0xb8, 0x92, 0x1b, 0x25, 0xf7, 0xcd, 0xfe, 0xbb, 0x9f, 0x13, 0x45, 0x88, 0x20, 0x4e,
-	0xa0, 0x61, 0x96, 0x62, 0x85, 0x38, 0x05, 0x97, 0x1b, 0x92, 0xe3, 0x01, 0x94, 0x74, 0x1a, 0x2c,
-	0xc3, 0x77, 0xc5, 0xa4, 0xd3, 0x10, 0x2b, 0x68, 0xa4, 0x63, 0x27, 0x08, 0xba, 0x86, 0xfa, 0xa0,
-	0x68, 0xa0, 0x68, 0x32, 0x98, 0x22, 0x88, 0x03, 0x92, 0xda, 0x31, 0xc4, 0x5b, 0xa0, 0x49, 0x31,
-	0xcd, 0x33, 0x9a, 0xae, 0x20, 0x74, 0xea, 0x29, 0xe4, 0xfa, 0x5d, 0x72, 0x2f, 0x80, 0xd4, 0xba,
-	0x00, 0x92, 0x7b, 0xe7, 0xe0, 0x02, 0x48, 0xeb, 0xaa, 0x4e, 0xe0, 0x6c, 0x91, 0x3b, 0x29, 0x3e,
-	0x11, 0x00, 0x86, 0x4f, 0xe1, 0x07, 0x93, 0x8a, 0x0a, 0x83, 0x57, 0x3c, 0x92, 0x93, 0x4c, 0xf2,
-	0x1f, 0x17, 0x4a, 0x76, 0xb5, 0x78, 0x34, 0xff, 0x8b, 0x7e, 0x6a, 0xd7, 0x3f, 0xcf, 0xdd, 0xc3,
-	0x76, 0x69, 0x86, 0x51, 0xba, 0x42, 0x0c, 0xbd, 0xe2, 0x80, 0x65, 0xf0, 0x24, 0xde, 0x43, 0x63,
-	0xfe, 0xc7, 0x00, 0xf7, 0x26, 0xea, 0xe7, 0xaf, 0x35, 0x14, 0x75, 0x3a, 0x18, 0x33, 0x1f, 0x11,
-	0xc0, 0x3d, 0xd1, 0x44, 0x02, 0xa2, 0x15, 0xd3, 0xf4, 0x13, 0x1d, 0x97, 0x9f, 0x2f, 0x04, 0xa0,
-	0xec, 0xc8, 0xd3, 0x95, 0x32, 0x15, 0x1f, 0x65, 0x7c, 0x1e, 0xcf, 0xa1, 0xf1, 0x13, 0xb3, 0xd8,
-	0x3f, 0xc5, 0x1a, 0x69, 0x2e, 0xe7, 0x0b, 0x1b, 0x0a, 0xe7, 0xb2, 0x45, 0xee, 0xae, 0x91, 0x66,
-	0xdb, 0x65, 0xf7, 0x49, 0x7c, 0x20, 0xa0, 0x6c, 0xb7, 0x93, 0x50, 0x82, 0x12, 0x1a, 0x28, 0x7b,
-	0x56, 0xa0, 0xde, 0x33, 0x01, 0x8b, 0xe0, 0x39, 0x0b, 0x65, 0x38, 0x13, 0x51, 0xd4, 0x41, 0x7f,
-	0xcb, 0x06, 0x5f, 0xfd, 0x71, 0x19, 0xfe, 0xb2, 0xcd, 0xeb, 0x93, 0xe9, 0x1c, 0xde, 0x54, 0xbc,
-	0xbc, 0x5f, 0xd8, 0x78, 0xad, 0x67, 0xe3, 0xb5, 0xae, 0x85, 0xd0, 0x22, 0x18, 0xaf, 0xf9, 0x16,
-	0x42, 0xeb, 0x6a, 0xbc, 0xf6, 0xd5, 0x8c, 0xbf, 0x90, 0x37, 0x15, 0x2f, 0x6f, 0x6c, 0xc6, 0x4f,
-	0x3f, 0x1e, 0x44, 0xdf, 0x32, 0x1e, 0xfc, 0x54, 0x40, 0x69, 0xb7, 0x45, 0xe3, 0xf9, 0x60, 0x4a,
-	0x3b, 0x27, 0x86, 0xcc, 0x42, 0x0f, 0x27, 0x5d, 0x55, 0xe2, 0xec, 0xfd, 0x57, 0x1f, 0x1e, 0x25,
-	0xff, 0xc6, 0x92, 0xec, 0x86, 0x98, 0x6c, 0xc7, 0x90, 0xdd, 0x83, 0x93, 0x6c, 0x80, 0xe9, 0x18,
-	0xa0, 0xf0, 0x73, 0x01, 0xf5, 0x41, 0xef, 0xc3, 0x8b, 0x21, 0xd2, 0x77, 0x4c, 0x1c, 0x99, 0xa5,
-	0x1e, 0x4f, 0x03, 0xc0, 0x22, 0x03, 0x98, 0xc5, 0x33, 0x41, 0x01, 0xa0, 0x45, 0xcb, 0xbb, 0x4e,
-	0x63, 0x0f, 0x3f, 0x13, 0x10, 0x82, 0x88, 0x8a, 0x69, 0x86, 0x22, 0xe9, 0x98, 0x53, 0x42, 0x91,
-	0x74, 0x8e, 0x20, 0xe2, 0x1c, 0x23, 0x99, 0xc2, 0x72, 0x48, 0x12, 0xfc, 0x56, 0x40, 0xfd, 0x7c,
-	0xb7, 0xc2, 0x4a, 0xb8, 0x92, 0xfa, 0xf4, 0xe8, 0x4c, 0x2e, 0x4a, 0x08, 0x00, 0x5a, 0x66, 0x40,
-	0x97, 0xf0, 0x52, 0x50, 0x20, 0xbe, 0xbd, 0xca, 0xbb, 0xee, 0x28, 0xb3, 0x87, 0x5f, 0x0b, 0x68,
-	0x90, 0x8f, 0xdf, 0x32, 0x4a, 0x09, 0x57, 0xea, 0xa8, 0x84, 0x5d, 0x06, 0x8c, 0xf0, 0x97, 0xcf,
-	0x33, 0x40, 0x7c, 0x14, 0xd0, 0x80, 0xb7, 0xe1, 0xe0, 0x7c, 0xc8, 0xb2, 0xfb, 0xb5, 0xdb, 0x4c,
-	0x21, 0x5a, 0x10, 0x60, 0xbb, 0xca, 0xd8, 0xf2, 0x58, 0x09, 0xcc, 0x76, 0xe6, 0x43, 0x48, 0xde,
-	0x75, 0xbb, 0xd5, 0x1e, 0x3e, 0x14, 0xd0, 0x0f, 0xde, 0x2c, 0x2d, 0x0f, 0xf3, 0x21, 0x0d, 0x88,
-	0xcc, 0xda, 0x75, 0x6a, 0x10, 0x2f, 0x33, 0xd6, 0xff, 0xf0, 0x7c, 0xaf, 0xac, 0xf8, 0x93, 0xc7,
-	0x4b, 0x2d, 0x92, 0x97, 0x5a, 0x1c, 0x5e, 0xf2, 0xcd, 0x51, 0x5c, 0x65, 0x7c, 0x05, 0x9c, 0xeb,
-	0x85, 0x8f, 0x7d, 0xb1, 0x9e, 0x9a, 0xf9, 0xde, 0x63, 0xa6, 0x16, 0xd5, 0x4c, 0x2d, 0x0e, 0x33,
-	0x3d, 0xb0, 0x0a, 0x83, 0xfd, 0x1f, 0x2f, 0xf4, 0x0c, 0x9b, 0xdb, 0xd8, 0x3f, 0xca, 0x0a, 0x07,
-	0x47, 0x59, 0xe1, 0xf0, 0x28, 0x2b, 0x3c, 0x3c, 0xce, 0x26, 0x0e, 0x8e, 0xb3, 0x89, 0x37, 0xc7,
-	0xd9, 0xc4, 0x8d, 0x05, 0xdd, 0x70, 0x4c, 0xb5, 0x24, 0x95, 0x69, 0xf5, 0xdc, 0xf0, 0x0d, 0x3e,
-	0x81, 0xd3, 0xac, 0x11, 0xbb, 0x94, 0x66, 0x1b, 0xff, 0xf9, 0x1c, 0x00, 0x00, 0xff, 0xff, 0x19,
-	0xbb, 0xe8, 0xba, 0x2d, 0x11, 0x00, 0x00,
+	// 808 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0xdf, 0x4e, 0x13, 0x41,
+	0x14, 0xc6, 0x3b, 0x45, 0x4b, 0x1c, 0x08, 0xc6, 0x91, 0x00, 0xa9, 0x50, 0x75, 0x63, 0x94, 0x18,
+	0xd9, 0x15, 0x44, 0xfe, 0x18, 0x88, 0x96, 0x82, 0x44, 0x89, 0x09, 0x96, 0x3b, 0x63, 0x82, 0xd3,
+	0x32, 0x6c, 0x37, 0x6e, 0x77, 0x4a, 0x77, 0xd1, 0x36, 0xc8, 0x8d, 0xf1, 0x01, 0x4c, 0x7c, 0x12,
+	0x2f, 0x7c, 0x01, 0xa3, 0x09, 0x37, 0x46, 0x12, 0x13, 0xe3, 0x85, 0x31, 0x04, 0x8c, 0xcf, 0x61,
+	0x3a, 0x73, 0x2a, 0xb3, 0x74, 0x8b, 0xbb, 0xb4, 0x77, 0xdd, 0x9d, 0x39, 0xdf, 0xf9, 0x7e, 0xe7,
+	0x6c, 0xce, 0x29, 0xee, 0x2b, 0xd3, 0xb2, 0x55, 0xe4, 0x79, 0x5e, 0x66, 0xc6, 0xc6, 0x26, 0x2b,
+	0x57, 0xf5, 0x52, 0x99, 0x7b, 0x9c, 0x5c, 0xa9, 0xbd, 0x5f, 0xaf, 0x8a, 0x87, 0x3c, 0xb7, 0xf5,
+	0xc3, 0x6b, 0xca, 0xcf, 0x64, 0xaf, 0xc9, 0x4d, 0x2e, 0xee, 0x18, 0xb5, 0x5f, 0x32, 0x36, 0x39,
+	0x68, 0x72, 0x6e, 0xda, 0xcc, 0xa0, 0x25, 0xcb, 0xa0, 0x8e, 0xc3, 0x3d, 0xea, 0x59, 0xdc, 0x71,
+	0xe1, 0xf4, 0x7a, 0x9e, 0xbb, 0x45, 0xee, 0x1a, 0x39, 0xea, 0x42, 0x4a, 0xe3, 0xc5, 0x68, 0x8e,
+	0x79, 0x74, 0xd4, 0x28, 0x51, 0xd3, 0x72, 0xc4, 0x65, 0xb8, 0xdb, 0xaf, 0xb8, 0x2b, 0xd1, 0x32,
+	0x2d, 0xd6, 0x45, 0x06, 0x94, 0x83, 0x35, 0x56, 0xe2, 0xae, 0xe5, 0xc1, 0xc9, 0x90, 0x72, 0x92,
+	0xe7, 0xce, 0xba, 0x55, 0x2e, 0xaa, 0x8a, 0x97, 0xd5, 0xe3, 0x02, 0x75, 0x4c, 0xb6, 0xfa, 0x9c,
+	0x55, 0x57, 0x59, 0x7e, 0xcd, 0xa5, 0xf2, 0x8a, 0xd6, 0x8b, 0xc9, 0xe3, 0x9a, 0xad, 0x65, 0x91,
+	0x30, 0xcb, 0x36, 0x36, 0x99, 0xeb, 0x69, 0x14, 0x9f, 0xf7, 0xbd, 0x75, 0x4b, 0xdc, 0x71, 0x19,
+	0x79, 0x88, 0x13, 0xd2, 0xd8, 0x00, 0xba, 0x84, 0x86, 0xbb, 0xc6, 0x6e, 0xe8, 0x61, 0x0a, 0xa7,
+	0x4b, 0x95, 0xb9, 0x53, 0x3b, 0xbf, 0x2e, 0xc6, 0xb2, 0xa0, 0xa0, 0x0d, 0xe3, 0x3e, 0x91, 0x62,
+	0x91, 0x79, 0xf3, 0x92, 0x09, 0x92, 0x93, 0x1e, 0x1c, 0xf7, 0x2a, 0x22, 0xc3, 0x99, 0x6c, 0xdc,
+	0xab, 0x68, 0x05, 0xdc, 0xdf, 0x70, 0x13, 0x0c, 0x3d, 0xc2, 0x9d, 0x50, 0x10, 0x70, 0x34, 0x12,
+	0xce, 0x11, 0xe8, 0x80, 0xa5, 0xba, 0x86, 0xf6, 0x0c, 0x3c, 0xa5, 0x6d, 0xfb, 0x88, 0xa7, 0xfb,
+	0x18, 0x1f, 0xf6, 0x0b, 0x72, 0x5d, 0xd5, 0x65, 0x73, 0xf5, 0x5a, 0x73, 0x75, 0xf9, 0x3d, 0x41,
+	0x73, 0xf5, 0x65, 0x6a, 0x32, 0x88, 0xcd, 0x2a, 0x91, 0xda, 0x7b, 0x04, 0x30, 0x6a, 0x8a, 0x20,
+	0x98, 0x8e, 0x56, 0x61, 0xc8, 0xa2, 0xcf, 0x72, 0x5c, 0x58, 0xbe, 0xf6, 0x5f, 0xcb, 0xd2, 0x8b,
+	0xcf, 0xf3, 0x6d, 0x7c, 0xa1, 0x5e, 0xff, 0x8c, 0xf2, 0x8d, 0xd5, 0x4b, 0xd3, 0x87, 0x13, 0x05,
+	0x66, 0x99, 0x05, 0x0f, 0x5a, 0x06, 0x4f, 0xda, 0x2b, 0x3c, 0x18, 0x1c, 0x06, 0xb8, 0x4f, 0x71,
+	0xb7, 0xfa, 0xc9, 0x42, 0x51, 0xc7, 0xc2, 0x31, 0xab, 0x8a, 0x00, 0xee, 0x53, 0xd3, 0x18, 0x98,
+	0x4e, 0xdb, 0x76, 0x90, 0xe9, 0x76, 0xf5, 0xf3, 0x33, 0x02, 0xca, 0x86, 0x3c, 0x4d, 0x29, 0x3b,
+	0xda, 0x47, 0xd9, 0xbe, 0x1e, 0x4f, 0xe2, 0xa1, 0x7f, 0xcd, 0x12, 0x83, 0x62, 0x89, 0x55, 0x17,
+	0x32, 0xf3, 0x2b, 0x69, 0xa5, 0xcb, 0x0e, 0x7b, 0xb9, 0xc4, 0xaa, 0xf5, 0x2e, 0xcb, 0x27, 0xed,
+	0x0d, 0xc2, 0xa9, 0x66, 0x91, 0x50, 0x82, 0x1c, 0xee, 0xc9, 0xfb, 0x4e, 0xa0, 0xde, 0xe3, 0x21,
+	0x8b, 0xe0, 0x8b, 0x85, 0x32, 0x1c, 0x51, 0xd4, 0x4c, 0xf0, 0x5f, 0x6b, 0x43, 0xa0, 0xff, 0x76,
+	0x35, 0xfc, 0x4b, 0x9d, 0x37, 0x20, 0xd3, 0x31, 0xbc, 0x1d, 0xed, 0xe5, 0x6d, 0x5b, 0xe3, 0xc7,
+	0xbe, 0x76, 0xe1, 0xd3, 0x82, 0x87, 0x7c, 0x40, 0x38, 0x21, 0x27, 0x35, 0x99, 0x0a, 0xe7, 0xb4,
+	0x71, 0x71, 0x24, 0xa7, 0x4f, 0x10, 0x29, 0x5d, 0x69, 0x13, 0xaf, 0xbf, 0xfd, 0x7e, 0x17, 0xbf,
+	0x49, 0x74, 0x43, 0x4a, 0x8c, 0xd4, 0x35, 0x0c, 0x19, 0x38, 0x22, 0xd6, 0x58, 0xc3, 0x8e, 0x24,
+	0x9f, 0x10, 0xee, 0x84, 0x11, 0x48, 0x66, 0x22, 0xa4, 0x6f, 0x58, 0x3c, 0xc9, 0xd9, 0x13, 0x46,
+	0x03, 0xc0, 0x8c, 0x00, 0x98, 0x20, 0xe3, 0x61, 0x01, 0x60, 0x52, 0x1b, 0x5b, 0x5e, 0x65, 0x9b,
+	0x7c, 0x44, 0x18, 0x83, 0x62, 0xda, 0xb6, 0x23, 0x91, 0x34, 0xac, 0xab, 0x48, 0x24, 0x8d, 0x9b,
+	0x48, 0x9b, 0x14, 0x24, 0xa3, 0xc4, 0x88, 0x48, 0x42, 0x7e, 0x22, 0xdc, 0xad, 0x0e, 0x2d, 0x92,
+	0x8e, 0x56, 0xd2, 0x80, 0x51, 0x9d, 0x9c, 0x6b, 0x45, 0x02, 0x80, 0x16, 0x04, 0xd0, 0x5d, 0x32,
+	0x1b, 0x16, 0x48, 0x9d, 0xb2, 0xc6, 0x96, 0xdc, 0x68, 0xdb, 0xe4, 0x3b, 0xc2, 0x67, 0x55, 0xfd,
+	0x5a, 0xa3, 0xd2, 0xd1, 0x4a, 0xdd, 0x2a, 0x61, 0x93, 0x3d, 0x13, 0xfd, 0xe3, 0xf3, 0xed, 0x91,
+	0x3f, 0x08, 0xf7, 0xf8, 0xe7, 0x0e, 0xc9, 0x44, 0x2c, 0x7b, 0xd0, 0xd4, 0x4d, 0xce, 0xb7, 0x26,
+	0x02, 0x6c, 0x0f, 0x04, 0x5b, 0x86, 0xa4, 0x43, 0xb3, 0x1d, 0xf9, 0xaf, 0x6b, 0x6c, 0xc9, 0x6d,
+	0xb5, 0x4d, 0xf6, 0x10, 0x3e, 0xe7, 0xcf, 0x52, 0xeb, 0x61, 0x26, 0x62, 0x03, 0x5a, 0x66, 0x6d,
+	0xba, 0x3c, 0xb4, 0x7b, 0x82, 0xf5, 0x0e, 0x99, 0x3a, 0x29, 0xeb, 0xdc, 0xca, 0xce, 0x7e, 0x0a,
+	0xed, 0xee, 0xa7, 0xd0, 0xde, 0x7e, 0x0a, 0xbd, 0x3d, 0x48, 0xc5, 0x76, 0x0f, 0x52, 0xb1, 0x1f,
+	0x07, 0xa9, 0xd8, 0x93, 0x69, 0xd3, 0xf2, 0x6c, 0x9a, 0xd3, 0xf3, 0xbc, 0x78, 0xac, 0x7a, 0x45,
+	0xd5, 0xf7, 0xaa, 0x25, 0xe6, 0xe6, 0x12, 0xe2, 0xe2, 0xad, 0xbf, 0x01, 0x00, 0x00, 0xff, 0xff,
+	0x21, 0x57, 0xad, 0x67, 0x42, 0x0d, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -959,10 +765,6 @@ type QueryClient interface {
 	ChangeKeyECDSA(ctx context.Context, in *QueryGetChangeKeyECDSARequest, opts ...grpc.CallOption) (*QueryGetChangeKeyECDSAResponse, error)
 	// Queries a list of ChangeKeyECDSA items.
 	ChangeKeyECDSAAll(ctx context.Context, in *QueryAllChangeKeyECDSARequest, opts ...grpc.CallOption) (*QueryAllChangeKeyECDSAResponse, error)
-	// Queries a ChangeKeyEdDSA by index.
-	ChangeKeyEdDSA(ctx context.Context, in *QueryGetChangeKeyEdDSARequest, opts ...grpc.CallOption) (*QueryGetChangeKeyEdDSAResponse, error)
-	// Queries a list of ChangeKeyEdDSA items.
-	ChangeKeyEdDSAAll(ctx context.Context, in *QueryAllChangeKeyEdDSARequest, opts ...grpc.CallOption) (*QueryAllChangeKeyEdDSAResponse, error)
 }
 
 type queryClient struct {
@@ -1036,24 +838,6 @@ func (c *queryClient) ChangeKeyECDSAAll(ctx context.Context, in *QueryAllChangeK
 	return out, nil
 }
 
-func (c *queryClient) ChangeKeyEdDSA(ctx context.Context, in *QueryGetChangeKeyEdDSARequest, opts ...grpc.CallOption) (*QueryGetChangeKeyEdDSAResponse, error) {
-	out := new(QueryGetChangeKeyEdDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/ChangeKeyEdDSA", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) ChangeKeyEdDSAAll(ctx context.Context, in *QueryAllChangeKeyEdDSARequest, opts ...grpc.CallOption) (*QueryAllChangeKeyEdDSAResponse, error) {
-	out := new(QueryAllChangeKeyEdDSAResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/ChangeKeyEdDSAAll", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -1070,10 +854,6 @@ type QueryServer interface {
 	ChangeKeyECDSA(context.Context, *QueryGetChangeKeyECDSARequest) (*QueryGetChangeKeyECDSAResponse, error)
 	// Queries a list of ChangeKeyECDSA items.
 	ChangeKeyECDSAAll(context.Context, *QueryAllChangeKeyECDSARequest) (*QueryAllChangeKeyECDSAResponse, error)
-	// Queries a ChangeKeyEdDSA by index.
-	ChangeKeyEdDSA(context.Context, *QueryGetChangeKeyEdDSARequest) (*QueryGetChangeKeyEdDSAResponse, error)
-	// Queries a list of ChangeKeyEdDSA items.
-	ChangeKeyEdDSAAll(context.Context, *QueryAllChangeKeyEdDSARequest) (*QueryAllChangeKeyEdDSAResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -1100,12 +880,6 @@ func (*UnimplementedQueryServer) ChangeKeyECDSA(ctx context.Context, req *QueryG
 }
 func (*UnimplementedQueryServer) ChangeKeyECDSAAll(ctx context.Context, req *QueryAllChangeKeyECDSARequest) (*QueryAllChangeKeyECDSAResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeKeyECDSAAll not implemented")
-}
-func (*UnimplementedQueryServer) ChangeKeyEdDSA(ctx context.Context, req *QueryGetChangeKeyEdDSARequest) (*QueryGetChangeKeyEdDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangeKeyEdDSA not implemented")
-}
-func (*UnimplementedQueryServer) ChangeKeyEdDSAAll(ctx context.Context, req *QueryAllChangeKeyEdDSARequest) (*QueryAllChangeKeyEdDSAResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangeKeyEdDSAAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -1238,42 +1012,6 @@ func _Query_ChangeKeyECDSAAll_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_ChangeKeyEdDSA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetChangeKeyEdDSARequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).ChangeKeyEdDSA(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/ChangeKeyEdDSA",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ChangeKeyEdDSA(ctx, req.(*QueryGetChangeKeyEdDSARequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_ChangeKeyEdDSAAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllChangeKeyEdDSARequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).ChangeKeyEdDSAAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/ChangeKeyEdDSAAll",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ChangeKeyEdDSAAll(ctx, req.(*QueryAllChangeKeyEdDSARequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "rarifyprotocol.rarimocore.rarimocore.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -1305,14 +1043,6 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeKeyECDSAAll",
 			Handler:    _Query_ChangeKeyECDSAAll_Handler,
-		},
-		{
-			MethodName: "ChangeKeyEdDSA",
-			Handler:    _Query_ChangeKeyEdDSA_Handler,
-		},
-		{
-			MethodName: "ChangeKeyEdDSAAll",
-			Handler:    _Query_ChangeKeyEdDSAAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1816,153 +1546,6 @@ func (m *QueryAllChangeKeyECDSAResponse) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetChangeKeyEdDSARequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryGetChangeKeyEdDSARequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryGetChangeKeyEdDSARequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.NewKey) > 0 {
-		i -= len(m.NewKey)
-		copy(dAtA[i:], m.NewKey)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.NewKey)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryGetChangeKeyEdDSAResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryGetChangeKeyEdDSAResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryGetChangeKeyEdDSAResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	{
-		size, err := m.ChangeKeyEdDSA.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintQuery(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryAllChangeKeyEdDSARequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryAllChangeKeyEdDSARequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryAllChangeKeyEdDSARequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		{
-			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		{
-			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.ChangeKeyEdDSA) > 0 {
-		for iNdEx := len(m.ChangeKeyEdDSA) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChangeKeyEdDSA[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintQuery(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -2151,62 +1734,6 @@ func (m *QueryAllChangeKeyECDSAResponse) Size() (n int) {
 	_ = l
 	if len(m.ChangeKeyECDSA) > 0 {
 		for _, e := range m.ChangeKeyECDSA {
-			l = e.Size()
-			n += 1 + l + sovQuery(uint64(l))
-		}
-	}
-	if m.Pagination != nil {
-		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryGetChangeKeyEdDSARequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.NewKey)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryGetChangeKeyEdDSAResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = m.ChangeKeyEdDSA.Size()
-	n += 1 + l + sovQuery(uint64(l))
-	return n
-}
-
-func (m *QueryAllChangeKeyEdDSARequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Pagination != nil {
-		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryAllChangeKeyEdDSAResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.ChangeKeyEdDSA) > 0 {
-		for _, e := range m.ChangeKeyEdDSA {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -3410,377 +2937,6 @@ func (m *QueryAllChangeKeyECDSAResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.ChangeKeyECDSA = append(m.ChangeKeyECDSA, ChangeKeyECDSA{})
 			if err := m.ChangeKeyECDSA[len(m.ChangeKeyECDSA)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Pagination == nil {
-				m.Pagination = &query.PageResponse{}
-			}
-			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryGetChangeKeyEdDSARequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetChangeKeyEdDSARequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetChangeKeyEdDSARequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field NewKey", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.NewKey = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryGetChangeKeyEdDSAResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetChangeKeyEdDSAResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetChangeKeyEdDSAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChangeKeyEdDSA", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.ChangeKeyEdDSA.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryAllChangeKeyEdDSARequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllChangeKeyEdDSARequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllChangeKeyEdDSARequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Pagination == nil {
-				m.Pagination = &query.PageRequest{}
-			}
-			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryAllChangeKeyEdDSAResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllChangeKeyEdDSAResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllChangeKeyEdDSAResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChangeKeyEdDSA", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ChangeKeyEdDSA = append(m.ChangeKeyEdDSA, ChangeKeyEdDSA{})
-			if err := m.ChangeKeyEdDSA[len(m.ChangeKeyEdDSA)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

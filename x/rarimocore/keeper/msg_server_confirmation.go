@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cbergoon/merkletree"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
@@ -16,10 +16,6 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := crypto.VerifyECDSA(msg.SigECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
-		return nil, err
-	}
-
-	if err := crypto.VerifyEdDSA(msg.SigEdDSA, msg.Root, k.GetKeyEdDSA(ctx)); err != nil {
 		return nil, err
 	}
 
@@ -34,7 +30,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 	deposits := make([]types.Deposit, 0, len(msg.Hashes))
 	infos := make([]tokentypes.Info, 0, len(msg.Hashes))
-	content := make([]merkletree.Content, 0, len(msg.Hashes))
+	content := make([]merkle.Content, 0, len(msg.Hashes))
 
 	for _, hash := range msg.Hashes {
 		deposit, ok := k.GetDeposit(ctx, hash)
@@ -58,14 +54,13 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		content = append(content, crypto.HashContent{
 			TxHash:         hash,
-			CurrentAddress: deposit.TokenAddress,
-			CurrentId:      deposit.TokenId,
-			Receiver:       deposit.Receiver,
+			EventId:        deposit.EventId,
 			TargetNetwork:  deposit.ToChain,
 			CurrentNetwork: deposit.FromChain,
-			Type:           crypto.TokenType(deposit.TokenType),
-			TargetAddress:  info.Chains[deposit.ToChain].TokenAddress,
-			TargetId:       info.Chains[deposit.ToChain].TokenId,
+
+			Receiver:      deposit.Receiver,
+			TargetAddress: info.Chains[deposit.ToChain].TokenAddress,
+			TargetId:      info.Chains[deposit.ToChain].TokenId,
 		})
 
 	}
@@ -80,7 +75,6 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		Root:     msg.Root,
 		Hashes:   msg.Hashes,
 		SigECDSA: msg.SigECDSA,
-		SigEdDSA: msg.SigEdDSA,
 	}
 
 	for _, deposit := range deposits {
@@ -99,60 +93,4 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateConfirmationResponse{}, nil
-}
-
-func (k msgServer) UpdateConfirmation(goCtx context.Context, msg *types.MsgUpdateConfirmation) (*types.MsgUpdateConfirmationResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// Check if the value exists
-	valFound, isFound := k.GetConfirmation(
-		ctx,
-		msg.Height,
-	)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
-	var confirmation = types.Confirmation{
-		Creator:  msg.Creator,
-		Height:   msg.Height,
-		Root:     msg.Root,
-		Hashes:   msg.Hashes,
-		SigECDSA: msg.SigECDSA,
-		SigEdDSA: msg.SigEdDSA,
-	}
-
-	k.SetConfirmation(ctx, confirmation)
-
-	return &types.MsgUpdateConfirmationResponse{}, nil
-}
-
-func (k msgServer) DeleteConfirmation(goCtx context.Context, msg *types.MsgDeleteConfirmation) (*types.MsgDeleteConfirmationResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// Check if the value exists
-	valFound, isFound := k.GetConfirmation(
-		ctx,
-		msg.Height,
-	)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
-	k.RemoveConfirmation(
-		ctx,
-		msg.Height,
-	)
-
-	return &types.MsgDeleteConfirmationResponse{}, nil
 }

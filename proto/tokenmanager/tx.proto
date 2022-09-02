@@ -22,11 +22,10 @@ message MsgCreateInfo {
   string name = 3;
   string symbol = 4;
   string image = 5;
-  string description = 6;
-  string animationUrl = 7;
-  string externalUrl = 8;
-  string attributes = 9;
-  string currentChain = 10;
+
+  bytes currentAddress = 6;
+  bytes currentId = 7;
+  string currentChain = 8;
 }
 message MsgCreateInfoResponse {}
 
@@ -37,11 +36,6 @@ message MsgUpdateInfo {
   string name = 3;
   string symbol = 4;
   string image = 5;
-  string description = 6;
-  string animationUrl = 7;
-  string externalUrl = 8;
-  string attributes = 9;
-  string currentChain = 10;
 }
 message MsgUpdateInfoResponse {}
 
@@ -55,9 +49,9 @@ message MsgAddChain {
   string creator = 1;
   string index = 2;
 
-  string chain = 3;
-  string tokenAddress = 4;
-  string tokenId = 5;
+  string chainName = 3;
+  bytes tokenAddress = 4;
+  bytes tokenId = 5;
 }
 
 message MsgAddChainResponse {}

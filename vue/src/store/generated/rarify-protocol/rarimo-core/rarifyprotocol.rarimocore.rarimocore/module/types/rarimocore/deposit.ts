@@ -61,11 +61,12 @@ export function typeToJSON(object: type): string {
 
 export interface Deposit {
   tx: string;
+  eventId: string;
   fromChain: string;
   toChain: string;
-  receiver: string;
-  tokenAddress: string;
-  tokenId: string;
+  receiver: Uint8Array;
+  tokenAddress: Uint8Array;
+  tokenId: Uint8Array;
   creator: string;
   signed: boolean;
   tokenType: type;
@@ -73,11 +74,9 @@ export interface Deposit {
 
 const baseDeposit: object = {
   tx: "",
+  eventId: "",
   fromChain: "",
   toChain: "",
-  receiver: "",
-  tokenAddress: "",
-  tokenId: "",
   creator: "",
   signed: false,
   tokenType: 0,
@@ -88,29 +87,32 @@ export const Deposit = {
     if (message.tx !== "") {
       writer.uint32(10).string(message.tx);
     }
+    if (message.eventId !== "") {
+      writer.uint32(18).string(message.eventId);
+    }
     if (message.fromChain !== "") {
-      writer.uint32(18).string(message.fromChain);
+      writer.uint32(26).string(message.fromChain);
     }
     if (message.toChain !== "") {
-      writer.uint32(26).string(message.toChain);
+      writer.uint32(34).string(message.toChain);
     }
-    if (message.receiver !== "") {
-      writer.uint32(34).string(message.receiver);
+    if (message.receiver.length !== 0) {
+      writer.uint32(42).bytes(message.receiver);
     }
-    if (message.tokenAddress !== "") {
-      writer.uint32(42).string(message.tokenAddress);
+    if (message.tokenAddress.length !== 0) {
+      writer.uint32(50).bytes(message.tokenAddress);
     }
-    if (message.tokenId !== "") {
-      writer.uint32(50).string(message.tokenId);
+    if (message.tokenId.length !== 0) {
+      writer.uint32(58).bytes(message.tokenId);
     }
     if (message.creator !== "") {
-      writer.uint32(58).string(message.creator);
+      writer.uint32(66).string(message.creator);
     }
     if (message.signed === true) {
-      writer.uint32(64).bool(message.signed);
+      writer.uint32(72).bool(message.signed);
     }
     if (message.tokenType !== 0) {
-      writer.uint32(72).int32(message.tokenType);
+      writer.uint32(80).int32(message.tokenType);
     }
     return writer;
   },
@@ -126,27 +128,30 @@ export const Deposit = {
           message.tx = reader.string();
           break;
         case 2:
-          message.fromChain = reader.string();
+          message.eventId = reader.string();
           break;
         case 3:
-          message.toChain = reader.string();
+          message.fromChain = reader.string();
           break;
         case 4:
-          message.receiver = reader.string();
+          message.toChain = reader.string();
           break;
         case 5:
-          message.tokenAddress = reader.string();
+          message.receiver = reader.bytes();
           break;
         case 6:
-          message.tokenId = reader.string();
+          message.tokenAddress = reader.bytes();
           break;
         case 7:
-          message.creator = reader.string();
+          message.tokenId = reader.bytes();
           break;
         case 8:
-          message.signed = reader.bool();
+          message.creator = reader.string();
           break;
         case 9:
+          message.signed = reader.bool();
+          break;
+        case 10:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -164,6 +169,11 @@ export const Deposit = {
     } else {
       message.tx = "";
     }
+    if (object.eventId !== undefined && object.eventId !== null) {
+      message.eventId = String(object.eventId);
+    } else {
+      message.eventId = "";
+    }
     if (object.fromChain !== undefined && object.fromChain !== null) {
       message.fromChain = String(object.fromChain);
     } else {
@@ -175,19 +185,13 @@ export const Deposit = {
       message.toChain = "";
     }
     if (object.receiver !== undefined && object.receiver !== null) {
-      message.receiver = String(object.receiver);
-    } else {
-      message.receiver = "";
+      message.receiver = bytesFromBase64(object.receiver);
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = String(object.tokenAddress);
-    } else {
-      message.tokenAddress = "";
+      message.tokenAddress = bytesFromBase64(object.tokenAddress);
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = String(object.tokenId);
-    } else {
-      message.tokenId = "";
+      message.tokenId = bytesFromBase64(object.tokenId);
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -210,12 +214,23 @@ export const Deposit = {
   toJSON(message: Deposit): unknown {
     const obj: any = {};
     message.tx !== undefined && (obj.tx = message.tx);
+    message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
     message.toChain !== undefined && (obj.toChain = message.toChain);
-    message.receiver !== undefined && (obj.receiver = message.receiver);
+    message.receiver !== undefined &&
+      (obj.receiver = base64FromBytes(
+        message.receiver !== undefined ? message.receiver : new Uint8Array()
+      ));
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = message.tokenAddress);
-    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+      (obj.tokenAddress = base64FromBytes(
+        message.tokenAddress !== undefined
+          ? message.tokenAddress
+          : new Uint8Array()
+      ));
+    message.tokenId !== undefined &&
+      (obj.tokenId = base64FromBytes(
+        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
+      ));
     message.creator !== undefined && (obj.creator = message.creator);
     message.signed !== undefined && (obj.signed = message.signed);
     message.tokenType !== undefined &&
@@ -230,6 +245,11 @@ export const Deposit = {
     } else {
       message.tx = "";
     }
+    if (object.eventId !== undefined && object.eventId !== null) {
+      message.eventId = object.eventId;
+    } else {
+      message.eventId = "";
+    }
     if (object.fromChain !== undefined && object.fromChain !== null) {
       message.fromChain = object.fromChain;
     } else {
@@ -243,17 +263,17 @@ export const Deposit = {
     if (object.receiver !== undefined && object.receiver !== null) {
       message.receiver = object.receiver;
     } else {
-      message.receiver = "";
+      message.receiver = new Uint8Array();
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = "";
+      message.tokenAddress = new Uint8Array();
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = "";
+      message.tokenId = new Uint8Array();
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -273,6 +293,39 @@ export const Deposit = {
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
+const atob: (b64: string) => string =
+  globalThis.atob ||
+  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+function bytesFromBase64(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; ++i) {
+    arr[i] = bin.charCodeAt(i);
+  }
+  return arr;
+}
+
+const btoa: (bin: string) => string =
+  globalThis.btoa ||
+  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+function base64FromBytes(arr: Uint8Array): string {
+  const bin: string[] = [];
+  for (let i = 0; i < arr.byteLength; ++i) {
+    bin.push(String.fromCharCode(arr[i]));
+  }
+  return btoa(bin.join(""));
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin

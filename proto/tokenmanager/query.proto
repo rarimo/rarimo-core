@@ -18,26 +18,26 @@ service Query {
     option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/params";
   }
   // Queries a Item by index.
-	rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}";
-	}
+  rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}";
+  }
 
-	// Queries a list of Item items.
-	rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item";
-	}
+  // Queries a list of Item items.
+  rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item";
+  }
 
-// Queries a Info by index.
-	rpc Info(QueryGetInfoRequest) returns (QueryGetInfoResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info/{index}";
-	}
+  // Queries a Info by index.
+  rpc Info(QueryGetInfoRequest) returns (QueryGetInfoResponse) {
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info/{index}";
+  }
 
-	// Queries a list of Info items.
-	rpc InfoAll(QueryAllInfoRequest) returns (QueryAllInfoResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info";
-	}
+  // Queries a list of Info items.
+  rpc InfoAll(QueryAllInfoRequest) returns (QueryAllInfoResponse) {
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info";
+  }
 
-// this line is used by starport scaffolding # 2
+  // this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -50,40 +50,40 @@ message QueryParamsResponse {
 }
 
 message QueryGetItemRequest {
-	  string tokenAddress = 1;
-  string tokenId = 2;
+  bytes tokenAddress = 1;
+  bytes tokenId = 2;
 
 }
 
 message QueryGetItemResponse {
-	Item item = 1 [(gogoproto.nullable) = false];
+  Item item = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllItemRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryAllItemResponse {
-	repeated Item item = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+  repeated Item item = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetInfoRequest {
-	  string index = 1;
+  string index = 1;
 
 }
 
 message QueryGetInfoResponse {
-	Info info = 1 [(gogoproto.nullable) = false];
+  Info info = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllInfoRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryAllInfoResponse {
-	repeated Info info = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+  repeated Info info = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
