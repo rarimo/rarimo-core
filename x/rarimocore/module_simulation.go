@@ -60,11 +60,11 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		ConfirmationList: []types.Confirmation{
 			{
 				Creator: sample.AccAddress(),
-				Height:  "0",
+				Root:    "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Height:  "1",
+				Root:    "1",
 			},
 		},
 		ChangeKeyECDSAList: []types.ChangeKeyECDSA{

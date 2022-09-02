@@ -9,8 +9,10 @@ export interface MsgCreateInfo {
   name: string;
   symbol: string;
   image: string;
-  currentAddress: Uint8Array;
-  currentId: Uint8Array;
+  /** hex-encoded */
+  currentAddress: string;
+  /** hex-encoded */
+  currentId: string;
   currentChain: string;
 }
 
@@ -37,8 +39,10 @@ export interface MsgAddChain {
   creator: string;
   index: string;
   chainName: string;
-  tokenAddress: Uint8Array;
-  tokenId: Uint8Array;
+  /** hex-encoded */
+  tokenAddress: string;
+  /** hex-encoded */
+  tokenId: string;
 }
 
 export interface MsgAddChainResponse {}
@@ -49,6 +53,8 @@ const baseMsgCreateInfo: object = {
   name: "",
   symbol: "",
   image: "",
+  currentAddress: "",
+  currentId: "",
   currentChain: "",
 };
 
@@ -69,11 +75,11 @@ export const MsgCreateInfo = {
     if (message.image !== "") {
       writer.uint32(42).string(message.image);
     }
-    if (message.currentAddress.length !== 0) {
-      writer.uint32(50).bytes(message.currentAddress);
+    if (message.currentAddress !== "") {
+      writer.uint32(50).string(message.currentAddress);
     }
-    if (message.currentId.length !== 0) {
-      writer.uint32(58).bytes(message.currentId);
+    if (message.currentId !== "") {
+      writer.uint32(58).string(message.currentId);
     }
     if (message.currentChain !== "") {
       writer.uint32(66).string(message.currentChain);
@@ -104,10 +110,10 @@ export const MsgCreateInfo = {
           message.image = reader.string();
           break;
         case 6:
-          message.currentAddress = reader.bytes();
+          message.currentAddress = reader.string();
           break;
         case 7:
-          message.currentId = reader.bytes();
+          message.currentId = reader.string();
           break;
         case 8:
           message.currentChain = reader.string();
@@ -148,10 +154,14 @@ export const MsgCreateInfo = {
       message.image = "";
     }
     if (object.currentAddress !== undefined && object.currentAddress !== null) {
-      message.currentAddress = bytesFromBase64(object.currentAddress);
+      message.currentAddress = String(object.currentAddress);
+    } else {
+      message.currentAddress = "";
     }
     if (object.currentId !== undefined && object.currentId !== null) {
-      message.currentId = bytesFromBase64(object.currentId);
+      message.currentId = String(object.currentId);
+    } else {
+      message.currentId = "";
     }
     if (object.currentChain !== undefined && object.currentChain !== null) {
       message.currentChain = String(object.currentChain);
@@ -169,15 +179,8 @@ export const MsgCreateInfo = {
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.image !== undefined && (obj.image = message.image);
     message.currentAddress !== undefined &&
-      (obj.currentAddress = base64FromBytes(
-        message.currentAddress !== undefined
-          ? message.currentAddress
-          : new Uint8Array()
-      ));
-    message.currentId !== undefined &&
-      (obj.currentId = base64FromBytes(
-        message.currentId !== undefined ? message.currentId : new Uint8Array()
-      ));
+      (obj.currentAddress = message.currentAddress);
+    message.currentId !== undefined && (obj.currentId = message.currentId);
     message.currentChain !== undefined &&
       (obj.currentChain = message.currentChain);
     return obj;
@@ -213,12 +216,12 @@ export const MsgCreateInfo = {
     if (object.currentAddress !== undefined && object.currentAddress !== null) {
       message.currentAddress = object.currentAddress;
     } else {
-      message.currentAddress = new Uint8Array();
+      message.currentAddress = "";
     }
     if (object.currentId !== undefined && object.currentId !== null) {
       message.currentId = object.currentId;
     } else {
-      message.currentId = new Uint8Array();
+      message.currentId = "";
     }
     if (object.currentChain !== undefined && object.currentChain !== null) {
       message.currentChain = object.currentChain;
@@ -544,7 +547,13 @@ export const MsgDeleteInfoResponse = {
   },
 };
 
-const baseMsgAddChain: object = { creator: "", index: "", chainName: "" };
+const baseMsgAddChain: object = {
+  creator: "",
+  index: "",
+  chainName: "",
+  tokenAddress: "",
+  tokenId: "",
+};
 
 export const MsgAddChain = {
   encode(message: MsgAddChain, writer: Writer = Writer.create()): Writer {
@@ -557,11 +566,11 @@ export const MsgAddChain = {
     if (message.chainName !== "") {
       writer.uint32(26).string(message.chainName);
     }
-    if (message.tokenAddress.length !== 0) {
-      writer.uint32(34).bytes(message.tokenAddress);
+    if (message.tokenAddress !== "") {
+      writer.uint32(34).string(message.tokenAddress);
     }
-    if (message.tokenId.length !== 0) {
-      writer.uint32(42).bytes(message.tokenId);
+    if (message.tokenId !== "") {
+      writer.uint32(42).string(message.tokenId);
     }
     return writer;
   },
@@ -583,10 +592,10 @@ export const MsgAddChain = {
           message.chainName = reader.string();
           break;
         case 4:
-          message.tokenAddress = reader.bytes();
+          message.tokenAddress = reader.string();
           break;
         case 5:
-          message.tokenId = reader.bytes();
+          message.tokenId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -614,10 +623,14 @@ export const MsgAddChain = {
       message.chainName = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = bytesFromBase64(object.tokenAddress);
+      message.tokenAddress = String(object.tokenAddress);
+    } else {
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = bytesFromBase64(object.tokenId);
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
     }
     return message;
   },
@@ -628,15 +641,8 @@ export const MsgAddChain = {
     message.index !== undefined && (obj.index = message.index);
     message.chainName !== undefined && (obj.chainName = message.chainName);
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = base64FromBytes(
-        message.tokenAddress !== undefined
-          ? message.tokenAddress
-          : new Uint8Array()
-      ));
-    message.tokenId !== undefined &&
-      (obj.tokenId = base64FromBytes(
-        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
-      ));
+      (obj.tokenAddress = message.tokenAddress);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     return obj;
   },
 
@@ -660,12 +666,12 @@ export const MsgAddChain = {
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = new Uint8Array();
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = new Uint8Array();
+      message.tokenId = "";
     }
     return message;
   },
@@ -776,39 +782,6 @@ interface Rpc {
     method: string,
     data: Uint8Array
   ): Promise<Uint8Array>;
-}
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
-
-const atob: (b64: string) => string =
-  globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
-function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i);
-  }
-  return arr;
-}
-
-const btoa: (bin: string) => string =
-  globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
-function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = [];
-  for (let i = 0; i < arr.byteLength; ++i) {
-    bin.push(String.fromCharCode(arr[i]));
-  }
-  return btoa(bin.join(""));
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;

@@ -24,9 +24,12 @@ message MsgCreateDeposit {
   string fromChain = 4;
   string toChain = 5;
 
-  bytes receiver = 6;
-  bytes tokenAddress = 7;
-  bytes tokenId = 8;
+  // hex-encoded
+  string receiver = 6;
+  // hex-encoded
+  string tokenAddress = 7;
+  // hex-encoded
+  string tokenId = 8;
   type TokenType = 9;
 }
 
@@ -34,18 +37,22 @@ message MsgCreateDepositResponse {}
 
 message MsgCreateConfirmation {
   string creator = 1;
-  string height = 2;
 
-  string root = 3;
-  repeated string hashes = 4;
-  string sigECDSA = 5;
+  // hex-encoded
+  string root = 2;
+  // hex-encoded
+  repeated string hashes = 3;
+  // hex-encoded
+  string sigECDSA = 4;
 }
 message MsgCreateConfirmationResponse {}
 
 message MsgCreateChangeKeyECDSA {
   string creator = 1;
-  string newKey = 2;
 
+  // hex-encoded
+  string newKey = 2;
+  // hex-encoded
   string signature = 3;
 }
 message MsgCreateChangeKeyECDSAResponse {}

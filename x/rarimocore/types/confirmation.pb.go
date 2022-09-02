@@ -23,12 +23,13 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Confirmation struct {
-	Height   string   `protobuf:"bytes,1,opt,name=height,proto3" json:"height,omitempty"`
-	Root     string   `protobuf:"bytes,2,opt,name=root,proto3" json:"root,omitempty"`
-	Hashes   []string `protobuf:"bytes,3,rep,name=hashes,proto3" json:"hashes,omitempty"`
-	SigECDSA string   `protobuf:"bytes,4,opt,name=sigECDSA,proto3" json:"sigECDSA,omitempty"`
-	SigEdDSA string   `protobuf:"bytes,5,opt,name=sigEdDSA,proto3" json:"sigEdDSA,omitempty"`
-	Creator  string   `protobuf:"bytes,6,opt,name=creator,proto3" json:"creator,omitempty"`
+	// hex-encoded
+	Root string `protobuf:"bytes,1,opt,name=root,proto3" json:"root,omitempty"`
+	// hex-encoded
+	Hashes []string `protobuf:"bytes,2,rep,name=hashes,proto3" json:"hashes,omitempty"`
+	// hex-encoded
+	SigECDSA string `protobuf:"bytes,3,opt,name=sigECDSA,proto3" json:"sigECDSA,omitempty"`
+	Creator  string `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
 func (m *Confirmation) Reset()         { *m = Confirmation{} }
@@ -64,13 +65,6 @@ func (m *Confirmation) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Confirmation proto.InternalMessageInfo
 
-func (m *Confirmation) GetHeight() string {
-	if m != nil {
-		return m.Height
-	}
-	return ""
-}
-
 func (m *Confirmation) GetRoot() string {
 	if m != nil {
 		return m.Root
@@ -92,13 +86,6 @@ func (m *Confirmation) GetSigECDSA() string {
 	return ""
 }
 
-func (m *Confirmation) GetSigEdDSA() string {
-	if m != nil {
-		return m.SigEdDSA
-	}
-	return ""
-}
-
 func (m *Confirmation) GetCreator() string {
 	if m != nil {
 		return m.Creator
@@ -113,22 +100,21 @@ func init() {
 func init() { proto.RegisterFile("rarimocore/confirmation.proto", fileDescriptor_862d5195a2826b26) }
 
 var fileDescriptor_862d5195a2826b26 = []byte{
-	// 237 bytes of a gzipped FileDescriptorProto
+	// 214 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x2d, 0x4a, 0x2c, 0xca,
 	0xcc, 0xcd, 0x4f, 0xce, 0x2f, 0x4a, 0xd5, 0x4f, 0xce, 0xcf, 0x4b, 0xcb, 0x2c, 0xca, 0x4d, 0x2c,
 	0xc9, 0xcc, 0xcf, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x52, 0x01, 0x49, 0xa7, 0x55, 0x82,
-	0x39, 0xc9, 0xf9, 0x39, 0x7a, 0x08, 0xd5, 0x48, 0x4c, 0xa5, 0x25, 0x8c, 0x5c, 0x3c, 0xce, 0x48,
-	0x9a, 0x85, 0xc4, 0xb8, 0xd8, 0x32, 0x52, 0x33, 0xd3, 0x33, 0x4a, 0x24, 0x18, 0x15, 0x18, 0x35,
-	0x38, 0x83, 0xa0, 0x3c, 0x21, 0x21, 0x2e, 0x96, 0xa2, 0xfc, 0xfc, 0x12, 0x09, 0x26, 0xb0, 0x28,
-	0x98, 0x0d, 0x56, 0x9b, 0x58, 0x9c, 0x91, 0x5a, 0x2c, 0xc1, 0xac, 0xc0, 0x0c, 0x56, 0x0b, 0xe6,
-	0x09, 0x49, 0x71, 0x71, 0x14, 0x67, 0xa6, 0xbb, 0x3a, 0xbb, 0x04, 0x3b, 0x4a, 0xb0, 0x80, 0xd5,
-	0xc3, 0xf9, 0x30, 0xb9, 0x14, 0x90, 0x1c, 0x2b, 0x42, 0x0e, 0xc4, 0x17, 0x92, 0xe0, 0x62, 0x4f,
-	0x2e, 0x4a, 0x4d, 0x2c, 0xc9, 0x2f, 0x92, 0x60, 0x03, 0x4b, 0xc1, 0xb8, 0x4e, 0xc1, 0x27, 0x1e,
-	0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17,
-	0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0x65, 0x99, 0x9e, 0x59, 0x92, 0x93, 0x98, 0xa4,
-	0x97, 0x9c, 0x9f, 0xab, 0x0f, 0xf1, 0xb1, 0x2e, 0xcc, 0xcb, 0xfa, 0x10, 0x7f, 0xea, 0x82, 0x43,
-	0xa8, 0x42, 0x1f, 0x29, 0xb8, 0x4a, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x0a, 0x8d, 0x01,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0x65, 0xb2, 0xc2, 0x1b, 0x49, 0x01, 0x00, 0x00,
+	0x39, 0xc9, 0xf9, 0x39, 0x7a, 0x08, 0xd5, 0x48, 0x4c, 0xa5, 0x02, 0x2e, 0x1e, 0x67, 0x24, 0xbd,
+	0x42, 0x42, 0x5c, 0x2c, 0x45, 0xf9, 0xf9, 0x25, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x60,
+	0xb6, 0x90, 0x18, 0x17, 0x5b, 0x46, 0x62, 0x71, 0x46, 0x6a, 0xb1, 0x04, 0x93, 0x02, 0xb3, 0x06,
+	0x67, 0x10, 0x94, 0x27, 0x24, 0xc5, 0xc5, 0x51, 0x9c, 0x99, 0xee, 0xea, 0xec, 0x12, 0xec, 0x28,
+	0xc1, 0x0c, 0x56, 0x0f, 0xe7, 0x0b, 0x49, 0x70, 0xb1, 0x27, 0x17, 0xa5, 0x26, 0x96, 0xe4, 0x17,
+	0x49, 0xb0, 0x80, 0xa5, 0x60, 0x5c, 0xa7, 0xe0, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63,
+	0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96,
+	0x63, 0x88, 0xb2, 0x4c, 0xcf, 0x2c, 0xc9, 0x49, 0x4c, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x87, 0x38,
+	0x5e, 0x17, 0xe6, 0x7a, 0x7d, 0x88, 0x93, 0x75, 0xc1, 0x9e, 0xad, 0xd0, 0x47, 0xf2, 0x79, 0x49,
+	0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b, 0x58, 0xa1, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xef, 0x6e,
+	0xf1, 0x71, 0x14, 0x01, 0x00, 0x00,
 }
 
 func (m *Confirmation) Marshal() (dAtA []byte, err error) {
@@ -156,21 +142,14 @@ func (m *Confirmation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintConfirmation(dAtA, i, uint64(len(m.Creator)))
 		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.SigEdDSA) > 0 {
-		i -= len(m.SigEdDSA)
-		copy(dAtA[i:], m.SigEdDSA)
-		i = encodeVarintConfirmation(dAtA, i, uint64(len(m.SigEdDSA)))
-		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x22
 	}
 	if len(m.SigECDSA) > 0 {
 		i -= len(m.SigECDSA)
 		copy(dAtA[i:], m.SigECDSA)
 		i = encodeVarintConfirmation(dAtA, i, uint64(len(m.SigECDSA)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 	}
 	if len(m.Hashes) > 0 {
 		for iNdEx := len(m.Hashes) - 1; iNdEx >= 0; iNdEx-- {
@@ -178,20 +157,13 @@ func (m *Confirmation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			copy(dAtA[i:], m.Hashes[iNdEx])
 			i = encodeVarintConfirmation(dAtA, i, uint64(len(m.Hashes[iNdEx])))
 			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x12
 		}
 	}
 	if len(m.Root) > 0 {
 		i -= len(m.Root)
 		copy(dAtA[i:], m.Root)
 		i = encodeVarintConfirmation(dAtA, i, uint64(len(m.Root)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Height) > 0 {
-		i -= len(m.Height)
-		copy(dAtA[i:], m.Height)
-		i = encodeVarintConfirmation(dAtA, i, uint64(len(m.Height)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -215,10 +187,6 @@ func (m *Confirmation) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Height)
-	if l > 0 {
-		n += 1 + l + sovConfirmation(uint64(l))
-	}
 	l = len(m.Root)
 	if l > 0 {
 		n += 1 + l + sovConfirmation(uint64(l))
@@ -230,10 +198,6 @@ func (m *Confirmation) Size() (n int) {
 		}
 	}
 	l = len(m.SigECDSA)
-	if l > 0 {
-		n += 1 + l + sovConfirmation(uint64(l))
-	}
-	l = len(m.SigEdDSA)
 	if l > 0 {
 		n += 1 + l + sovConfirmation(uint64(l))
 	}
@@ -281,38 +245,6 @@ func (m *Confirmation) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Height", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowConfirmation
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthConfirmation
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthConfirmation
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Height = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Root", wireType)
 			}
 			var stringLen uint64
@@ -343,7 +275,7 @@ func (m *Confirmation) Unmarshal(dAtA []byte) error {
 			}
 			m.Root = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Hashes", wireType)
 			}
@@ -375,7 +307,7 @@ func (m *Confirmation) Unmarshal(dAtA []byte) error {
 			}
 			m.Hashes = append(m.Hashes, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
-		case 4:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field SigECDSA", wireType)
 			}
@@ -407,39 +339,7 @@ func (m *Confirmation) Unmarshal(dAtA []byte) error {
 			}
 			m.SigECDSA = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SigEdDSA", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowConfirmation
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthConfirmation
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthConfirmation
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.SigEdDSA = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}

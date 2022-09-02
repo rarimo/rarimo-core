@@ -4,42 +4,35 @@ import { Writer, Reader } from "protobufjs/minimal";
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 export interface Confirmation {
-  height: string;
+  /** hex-encoded */
   root: string;
+  /** hex-encoded */
   hashes: string[];
+  /** hex-encoded */
   sigECDSA: string;
-  sigEdDSA: string;
   creator: string;
 }
 
 const baseConfirmation: object = {
-  height: "",
   root: "",
   hashes: "",
   sigECDSA: "",
-  sigEdDSA: "",
   creator: "",
 };
 
 export const Confirmation = {
   encode(message: Confirmation, writer: Writer = Writer.create()): Writer {
-    if (message.height !== "") {
-      writer.uint32(10).string(message.height);
-    }
     if (message.root !== "") {
-      writer.uint32(18).string(message.root);
+      writer.uint32(10).string(message.root);
     }
     for (const v of message.hashes) {
-      writer.uint32(26).string(v!);
+      writer.uint32(18).string(v!);
     }
     if (message.sigECDSA !== "") {
-      writer.uint32(34).string(message.sigECDSA);
-    }
-    if (message.sigEdDSA !== "") {
-      writer.uint32(42).string(message.sigEdDSA);
+      writer.uint32(26).string(message.sigECDSA);
     }
     if (message.creator !== "") {
-      writer.uint32(50).string(message.creator);
+      writer.uint32(34).string(message.creator);
     }
     return writer;
   },
@@ -53,21 +46,15 @@ export const Confirmation = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = reader.string();
-          break;
-        case 2:
           message.root = reader.string();
           break;
-        case 3:
+        case 2:
           message.hashes.push(reader.string());
           break;
-        case 4:
+        case 3:
           message.sigECDSA = reader.string();
           break;
-        case 5:
-          message.sigEdDSA = reader.string();
-          break;
-        case 6:
+        case 4:
           message.creator = reader.string();
           break;
         default:
@@ -81,11 +68,6 @@ export const Confirmation = {
   fromJSON(object: any): Confirmation {
     const message = { ...baseConfirmation } as Confirmation;
     message.hashes = [];
-    if (object.height !== undefined && object.height !== null) {
-      message.height = String(object.height);
-    } else {
-      message.height = "";
-    }
     if (object.root !== undefined && object.root !== null) {
       message.root = String(object.root);
     } else {
@@ -101,11 +83,6 @@ export const Confirmation = {
     } else {
       message.sigECDSA = "";
     }
-    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
-      message.sigEdDSA = String(object.sigEdDSA);
-    } else {
-      message.sigEdDSA = "";
-    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
@@ -116,7 +93,6 @@ export const Confirmation = {
 
   toJSON(message: Confirmation): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = message.height);
     message.root !== undefined && (obj.root = message.root);
     if (message.hashes) {
       obj.hashes = message.hashes.map((e) => e);
@@ -124,7 +100,6 @@ export const Confirmation = {
       obj.hashes = [];
     }
     message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
-    message.sigEdDSA !== undefined && (obj.sigEdDSA = message.sigEdDSA);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
@@ -132,11 +107,6 @@ export const Confirmation = {
   fromPartial(object: DeepPartial<Confirmation>): Confirmation {
     const message = { ...baseConfirmation } as Confirmation;
     message.hashes = [];
-    if (object.height !== undefined && object.height !== null) {
-      message.height = object.height;
-    } else {
-      message.height = "";
-    }
     if (object.root !== undefined && object.root !== null) {
       message.root = object.root;
     } else {
@@ -151,11 +121,6 @@ export const Confirmation = {
       message.sigECDSA = object.sigECDSA;
     } else {
       message.sigECDSA = "";
-    }
-    if (object.sigEdDSA !== undefined && object.sigEdDSA !== null) {
-      message.sigEdDSA = object.sigEdDSA;
-    } else {
-      message.sigEdDSA = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;

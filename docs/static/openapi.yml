@@ -30350,18 +30350,17 @@ paths:
                 items:
                   type: object
                   properties:
-                    height:
-                      type: string
                     root:
                       type: string
+                      title: hex-encoded
                     hashes:
                       type: array
                       items:
                         type: string
+                      title: hex-encoded
                     sigECDSA:
                       type: string
-                    sigEdDSA:
-                      type: string
+                      title: hex-encoded
                     creator:
                       type: string
               pagination:
@@ -30471,18 +30470,17 @@ paths:
               confirmation:
                 type: object
                 properties:
-                  height:
-                    type: string
                   root:
                     type: string
+                    title: hex-encoded
                   hashes:
                     type: array
                     items:
                       type: string
+                    title: hex-encoded
                   sigECDSA:
                     type: string
-                  sigEdDSA:
-                    type: string
+                    title: hex-encoded
                   creator:
                     type: string
         default:
@@ -30535,13 +30533,13 @@ paths:
                       type: string
                     receiver:
                       type: string
-                      format: byte
+                      title: hex-encoded
                     tokenAddress:
                       type: string
-                      format: byte
+                      title: hex-encoded
                     tokenId:
                       type: string
-                      format: byte
+                      title: hex-encoded
                     creator:
                       type: string
                     signed:
@@ -30673,13 +30671,13 @@ paths:
                     type: string
                   receiver:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   tokenAddress:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   tokenId:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   creator:
                     type: string
                   signed:
@@ -30790,10 +30788,10 @@ paths:
                         properties:
                           tokenAddress:
                             type: string
-                            format: byte
+                            title: hex-encoded
                           tokenId:
                             type: string
-                            format: byte
+                            title: hex-encoded
                     creator:
                       type: string
               pagination:
@@ -30930,10 +30928,10 @@ paths:
                       properties:
                         tokenAddress:
                           type: string
-                          format: byte
+                          title: hex-encoded
                         tokenId:
                           type: string
-                          format: byte
+                          title: hex-encoded
                   creator:
                     type: string
         default:
@@ -30978,10 +30976,10 @@ paths:
                   properties:
                     tokenAddress:
                       type: string
-                      format: byte
+                      title: hex-encoded
                     tokenId:
                       type: string
-                      format: byte
+                      title: hex-encoded
                     index:
                       type: string
                     chain:
@@ -31105,10 +31103,10 @@ paths:
                 properties:
                   tokenAddress:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   tokenId:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   index:
                     type: string
                   chain:
@@ -31136,12 +31134,10 @@ paths:
           in: path
           required: true
           type: string
-          format: byte
         - name: tokenId
           in: path
           required: true
           type: string
-          format: byte
       tags:
         - Query
   /rarify-protocol/rarimo-core/tokenmanager/params:
@@ -52574,18 +52570,17 @@ definitions:
   rarifyprotocol.rarimocore.rarimocore.Confirmation:
     type: object
     properties:
-      height:
-        type: string
       root:
         type: string
+        title: hex-encoded
       hashes:
         type: array
         items:
           type: string
+        title: hex-encoded
       sigECDSA:
         type: string
-      sigEdDSA:
-        type: string
+        title: hex-encoded
       creator:
         type: string
   rarifyprotocol.rarimocore.rarimocore.Deposit:
@@ -52601,13 +52596,13 @@ definitions:
         type: string
       receiver:
         type: string
-        format: byte
+        title: hex-encoded
       tokenAddress:
         type: string
-        format: byte
+        title: hex-encoded
       tokenId:
         type: string
-        format: byte
+        title: hex-encoded
       creator:
         type: string
       signed:
@@ -52681,18 +52676,17 @@ definitions:
         items:
           type: object
           properties:
-            height:
-              type: string
             root:
               type: string
+              title: hex-encoded
             hashes:
               type: array
               items:
                 type: string
+              title: hex-encoded
             sigECDSA:
               type: string
-            sigEdDSA:
-              type: string
+              title: hex-encoded
             creator:
               type: string
       pagination:
@@ -52738,13 +52732,13 @@ definitions:
               type: string
             receiver:
               type: string
-              format: byte
+              title: hex-encoded
             tokenAddress:
               type: string
-              format: byte
+              title: hex-encoded
             tokenId:
               type: string
-              format: byte
+              title: hex-encoded
             creator:
               type: string
             signed:
@@ -52802,18 +52796,17 @@ definitions:
       confirmation:
         type: object
         properties:
-          height:
-            type: string
           root:
             type: string
+            title: hex-encoded
           hashes:
             type: array
             items:
               type: string
+            title: hex-encoded
           sigECDSA:
             type: string
-          sigEdDSA:
-            type: string
+            title: hex-encoded
           creator:
             type: string
   rarifyprotocol.rarimocore.rarimocore.QueryGetDepositResponse:
@@ -52832,13 +52825,13 @@ definitions:
             type: string
           receiver:
             type: string
-            format: byte
+            title: hex-encoded
           tokenAddress:
             type: string
-            format: byte
+            title: hex-encoded
           tokenId:
             type: string
-            format: byte
+            title: hex-encoded
           creator:
             type: string
           signed:
@@ -52878,10 +52871,10 @@ definitions:
     properties:
       tokenAddress:
         type: string
-        format: byte
+        title: hex-encoded
       tokenId:
         type: string
-        format: byte
+        title: hex-encoded
   rarifyprotocol.rarimocore.tokenmanager.Info:
     type: object
     properties:
@@ -52902,10 +52895,10 @@ definitions:
           properties:
             tokenAddress:
               type: string
-              format: byte
+              title: hex-encoded
             tokenId:
               type: string
-              format: byte
+              title: hex-encoded
       creator:
         type: string
   rarifyprotocol.rarimocore.tokenmanager.Item:
@@ -52913,10 +52906,10 @@ definitions:
     properties:
       tokenAddress:
         type: string
-        format: byte
+        title: hex-encoded
       tokenId:
         type: string
-        format: byte
+        title: hex-encoded
       index:
         type: string
       chain:
@@ -52957,10 +52950,10 @@ definitions:
                 properties:
                   tokenAddress:
                     type: string
-                    format: byte
+                    title: hex-encoded
                   tokenId:
                     type: string
-                    format: byte
+                    title: hex-encoded
             creator:
               type: string
       pagination:
@@ -52998,10 +52991,10 @@ definitions:
           properties:
             tokenAddress:
               type: string
-              format: byte
+              title: hex-encoded
             tokenId:
               type: string
-              format: byte
+              title: hex-encoded
             index:
               type: string
             chain:
@@ -53054,10 +53047,10 @@ definitions:
               properties:
                 tokenAddress:
                   type: string
-                  format: byte
+                  title: hex-encoded
                 tokenId:
                   type: string
-                  format: byte
+                  title: hex-encoded
           creator:
             type: string
   rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
@@ -53068,10 +53061,10 @@ definitions:
         properties:
           tokenAddress:
             type: string
-            format: byte
+            title: hex-encoded
           tokenId:
             type: string
-            format: byte
+            title: hex-encoded
           index:
             type: string
           chain:

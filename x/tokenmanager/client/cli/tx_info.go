@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"encoding/hex"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -14,7 +12,7 @@ func CmdCreateInfo() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-info [index] [name] [symbol] [image] [current-chain] [current-address-hex] [current-id-hex]",
 		Short: "Create a new info",
-		Args:  cobra.ExactArgs(10),
+		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIndex := args[0]
@@ -24,14 +22,8 @@ func CmdCreateInfo() *cobra.Command {
 			argSymbol := args[2]
 			argImage := args[3]
 			argCurrentChain := args[4]
-			argCurrentAddress, err := hex.DecodeString(args[5])
-			if err != nil {
-				return err
-			}
-			argCurrentId, err := hex.DecodeString(args[6])
-			if err != nil {
-				return err
-			}
+			argCurrentAddress := args[5]
+			argCurrentId := args[6]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -138,14 +130,8 @@ func CmdAddChain() *cobra.Command {
 
 			// Get value arguments
 			argChain := args[1]
-			argTokenAddress, err := hex.DecodeString(args[2])
-			if err != nil {
-				return err
-			}
-			argTokenId, err := hex.DecodeString(args[3])
-			if err != nil {
-				return err
-			}
+			argTokenAddress := args[2]
+			argTokenId := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

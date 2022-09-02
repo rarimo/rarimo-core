@@ -20,8 +20,8 @@ export interface QueryParamsResponse {
 }
 
 export interface QueryGetItemRequest {
-  tokenAddress: Uint8Array;
-  tokenId: Uint8Array;
+  tokenAddress: string;
+  tokenId: string;
 }
 
 export interface QueryGetItemResponse {
@@ -151,18 +151,18 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryGetItemRequest: object = {};
+const baseQueryGetItemRequest: object = { tokenAddress: "", tokenId: "" };
 
 export const QueryGetItemRequest = {
   encode(
     message: QueryGetItemRequest,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.tokenAddress.length !== 0) {
-      writer.uint32(10).bytes(message.tokenAddress);
+    if (message.tokenAddress !== "") {
+      writer.uint32(10).string(message.tokenAddress);
     }
-    if (message.tokenId.length !== 0) {
-      writer.uint32(18).bytes(message.tokenId);
+    if (message.tokenId !== "") {
+      writer.uint32(18).string(message.tokenId);
     }
     return writer;
   },
@@ -175,10 +175,10 @@ export const QueryGetItemRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.tokenAddress = reader.bytes();
+          message.tokenAddress = reader.string();
           break;
         case 2:
-          message.tokenId = reader.bytes();
+          message.tokenId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -191,10 +191,14 @@ export const QueryGetItemRequest = {
   fromJSON(object: any): QueryGetItemRequest {
     const message = { ...baseQueryGetItemRequest } as QueryGetItemRequest;
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = bytesFromBase64(object.tokenAddress);
+      message.tokenAddress = String(object.tokenAddress);
+    } else {
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = bytesFromBase64(object.tokenId);
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
     }
     return message;
   },
@@ -202,15 +206,8 @@ export const QueryGetItemRequest = {
   toJSON(message: QueryGetItemRequest): unknown {
     const obj: any = {};
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = base64FromBytes(
-        message.tokenAddress !== undefined
-          ? message.tokenAddress
-          : new Uint8Array()
-      ));
-    message.tokenId !== undefined &&
-      (obj.tokenId = base64FromBytes(
-        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
-      ));
+      (obj.tokenAddress = message.tokenAddress);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     return obj;
   },
 
@@ -219,12 +216,12 @@ export const QueryGetItemRequest = {
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = new Uint8Array();
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = new Uint8Array();
+      message.tokenId = "";
     }
     return message;
   },
@@ -788,39 +785,6 @@ interface Rpc {
     method: string,
     data: Uint8Array
   ): Promise<Uint8Array>;
-}
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
-
-const atob: (b64: string) => string =
-  globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
-function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i);
-  }
-  return arr;
-}
-
-const btoa: (bin: string) => string =
-  globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
-function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = [];
-  for (let i = 0; i < arr.byteLength; ++i) {
-    bin.push(String.fromCharCode(arr[i]));
-  }
-  return btoa(bin.join(""));
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;

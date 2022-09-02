@@ -1,6 +1,10 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+)
 
 var _ binary.ByteOrder
 
@@ -11,12 +15,9 @@ const (
 
 // ConfirmationKey returns the store key to retrieve a Confirmation from the index fields
 func ConfirmationKey(
-	height string,
+	root string,
 ) []byte {
-	var key []byte
-
-	heightBytes := []byte(height)
-	key = append(key, heightBytes...)
+	key := hexutil.MustDecode(root)
 	key = append(key, []byte("/")...)
 
 	return key

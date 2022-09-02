@@ -2,7 +2,6 @@ package cli
 
 import (
 	"context"
-	"encoding/hex"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -53,14 +52,8 @@ func CmdShowItem() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argTokenAddress, err := hex.DecodeString(args[0])
-			if err != nil {
-				return err
-			}
-			argTokenId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argTokenAddress := args[0]
+			argTokenId := args[1]
 
 			params := &types.QueryGetItemRequest{
 				TokenAddress: argTokenAddress,

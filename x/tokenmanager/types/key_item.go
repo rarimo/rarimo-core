@@ -1,6 +1,10 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+)
 
 var _ binary.ByteOrder
 
@@ -11,15 +15,15 @@ const (
 
 // ItemKey returns the store key to retrieve a Item from the index fields
 func ItemKey(
-	tokenAddress []byte,
-	tokenId []byte,
+	tokenAddress string,
+	tokenId string,
 ) []byte {
 	var key []byte
 
-	key = append(key, tokenAddress...)
+	key = append(key, hexutil.MustDecode(tokenAddress)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, tokenId...)
+	key = append(key, hexutil.MustDecode(tokenId)...)
 	key = append(key, []byte("/")...)
 
 	return key

@@ -20,7 +20,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	// TODO validate
+	// TODO validate on saver
 
 	var deposit = types.Deposit{
 		Creator:      msg.Creator,

@@ -19,8 +19,8 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 // GetItem returns a item from its index
 func (k Keeper) GetItem(
 	ctx sdk.Context,
-	tokenAddress []byte,
-	tokenId []byte,
+	tokenAddress string,
+	tokenId string,
 
 ) (val types.Item, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
@@ -40,8 +40,8 @@ func (k Keeper) GetItem(
 // RemoveItem removes a item from the store
 func (k Keeper) RemoveItem(
 	ctx sdk.Context,
-	tokenAddress []byte,
-	tokenId []byte,
+	tokenAddress string,
+	tokenId string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))

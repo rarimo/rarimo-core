@@ -35,7 +35,7 @@ func (gs GenesisState) Validate() error {
 	confirmationIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ConfirmationList {
-		index := string(ConfirmationKey(elem.Height))
+		index := string(ConfirmationKey(elem.Root))
 		if _, ok := confirmationIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for confirmation")
 		}

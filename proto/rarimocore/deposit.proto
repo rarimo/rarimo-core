@@ -18,9 +18,12 @@ message Deposit {
   string fromChain = 3;
   string toChain = 4;
 
-  bytes receiver = 5;
-  bytes tokenAddress = 6;
-  bytes tokenId = 7;
+  // hex-encoded
+  string receiver = 5;
+  // hex-encoded
+  string tokenAddress = 6;
+  // hex-encoded
+  string tokenId = 7;
 
   string creator = 8;
   bool signed = 9;

@@ -13,7 +13,6 @@ var _ sdk.Msg = &MsgCreateConfirmation{}
 
 func NewMsgCreateConfirmation(
 	creator string,
-	height string,
 	root string,
 	hashes []string,
 	sigECDSA string,
@@ -21,7 +20,6 @@ func NewMsgCreateConfirmation(
 ) *MsgCreateConfirmation {
 	return &MsgCreateConfirmation{
 		Creator:  creator,
-		Height:   height,
 		Root:     root,
 		Hashes:   hashes,
 		SigECDSA: sigECDSA,

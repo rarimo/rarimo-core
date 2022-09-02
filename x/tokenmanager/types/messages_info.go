@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 const (
@@ -20,10 +21,9 @@ func NewMsgCreateInfo(
 	name string,
 	symbol string,
 	image string,
-	currentId []byte,
-	currentAddress []byte,
+	currentId string,
+	currentAddress string,
 	currentChain string,
-
 ) *MsgCreateInfo {
 	return &MsgCreateInfo{
 		Creator:        creator,
@@ -63,6 +63,15 @@ func (msg *MsgCreateInfo) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if _, err = hexutil.Decode(msg.CurrentAddress); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token address (%s)", err)
+	}
+
+	if _, err = hexutil.Decode(msg.CurrentId); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token id (%s)", err)
+	}
+
 	return nil
 }
 
@@ -161,8 +170,8 @@ func NewMsgAddChain(
 	creator string,
 	index string,
 	chain string,
-	tokenAddress []byte,
-	tokenId []byte,
+	tokenAddress string,
+	tokenId string,
 ) *MsgAddChain {
 	return &MsgAddChain{
 		Creator:      creator,
@@ -199,5 +208,14 @@ func (msg *MsgAddChain) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if _, err = hexutil.Decode(msg.TokenAddress); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token address (%s)", err)
+	}
+
+	if _, err = hexutil.Decode(msg.TokenId); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token id (%s)", err)
+	}
+
 	return nil
 }

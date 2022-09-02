@@ -23,8 +23,10 @@ message MsgCreateInfo {
   string symbol = 4;
   string image = 5;
 
-  bytes currentAddress = 6;
-  bytes currentId = 7;
+  // hex-encoded
+  string currentAddress = 6;
+  // hex-encoded
+  string currentId = 7;
   string currentChain = 8;
 }
 message MsgCreateInfoResponse {}
@@ -50,8 +52,10 @@ message MsgAddChain {
   string index = 2;
 
   string chainName = 3;
-  bytes tokenAddress = 4;
-  bytes tokenId = 5;
+  // hex-encoded
+  string tokenAddress = 4;
+  // hex-encoded
+  string tokenId = 5;
 }
 
 message MsgAddChainResponse {}

@@ -64,9 +64,12 @@ export interface Deposit {
   eventId: string;
   fromChain: string;
   toChain: string;
-  receiver: Uint8Array;
-  tokenAddress: Uint8Array;
-  tokenId: Uint8Array;
+  /** hex-encoded */
+  receiver: string;
+  /** hex-encoded */
+  tokenAddress: string;
+  /** hex-encoded */
+  tokenId: string;
   creator: string;
   signed: boolean;
   tokenType: type;
@@ -77,6 +80,9 @@ const baseDeposit: object = {
   eventId: "",
   fromChain: "",
   toChain: "",
+  receiver: "",
+  tokenAddress: "",
+  tokenId: "",
   creator: "",
   signed: false,
   tokenType: 0,
@@ -96,14 +102,14 @@ export const Deposit = {
     if (message.toChain !== "") {
       writer.uint32(34).string(message.toChain);
     }
-    if (message.receiver.length !== 0) {
-      writer.uint32(42).bytes(message.receiver);
+    if (message.receiver !== "") {
+      writer.uint32(42).string(message.receiver);
     }
-    if (message.tokenAddress.length !== 0) {
-      writer.uint32(50).bytes(message.tokenAddress);
+    if (message.tokenAddress !== "") {
+      writer.uint32(50).string(message.tokenAddress);
     }
-    if (message.tokenId.length !== 0) {
-      writer.uint32(58).bytes(message.tokenId);
+    if (message.tokenId !== "") {
+      writer.uint32(58).string(message.tokenId);
     }
     if (message.creator !== "") {
       writer.uint32(66).string(message.creator);
@@ -137,13 +143,13 @@ export const Deposit = {
           message.toChain = reader.string();
           break;
         case 5:
-          message.receiver = reader.bytes();
+          message.receiver = reader.string();
           break;
         case 6:
-          message.tokenAddress = reader.bytes();
+          message.tokenAddress = reader.string();
           break;
         case 7:
-          message.tokenId = reader.bytes();
+          message.tokenId = reader.string();
           break;
         case 8:
           message.creator = reader.string();
@@ -185,13 +191,19 @@ export const Deposit = {
       message.toChain = "";
     }
     if (object.receiver !== undefined && object.receiver !== null) {
-      message.receiver = bytesFromBase64(object.receiver);
+      message.receiver = String(object.receiver);
+    } else {
+      message.receiver = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = bytesFromBase64(object.tokenAddress);
+      message.tokenAddress = String(object.tokenAddress);
+    } else {
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = bytesFromBase64(object.tokenId);
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -217,20 +229,10 @@ export const Deposit = {
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
     message.toChain !== undefined && (obj.toChain = message.toChain);
-    message.receiver !== undefined &&
-      (obj.receiver = base64FromBytes(
-        message.receiver !== undefined ? message.receiver : new Uint8Array()
-      ));
+    message.receiver !== undefined && (obj.receiver = message.receiver);
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = base64FromBytes(
-        message.tokenAddress !== undefined
-          ? message.tokenAddress
-          : new Uint8Array()
-      ));
-    message.tokenId !== undefined &&
-      (obj.tokenId = base64FromBytes(
-        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
-      ));
+      (obj.tokenAddress = message.tokenAddress);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     message.creator !== undefined && (obj.creator = message.creator);
     message.signed !== undefined && (obj.signed = message.signed);
     message.tokenType !== undefined &&
@@ -263,17 +265,17 @@ export const Deposit = {
     if (object.receiver !== undefined && object.receiver !== null) {
       message.receiver = object.receiver;
     } else {
-      message.receiver = new Uint8Array();
+      message.receiver = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = new Uint8Array();
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = new Uint8Array();
+      message.tokenId = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -293,39 +295,6 @@ export const Deposit = {
     return message;
   },
 };
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
-
-const atob: (b64: string) => string =
-  globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
-function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i);
-  }
-  return arr;
-}
-
-const btoa: (bin: string) => string =
-  globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
-function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = [];
-  for (let i = 0; i < arr.byteLength; ++i) {
-    bin.push(String.fromCharCode(arr[i]));
-  }
-  return btoa(bin.join(""));
-}
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin

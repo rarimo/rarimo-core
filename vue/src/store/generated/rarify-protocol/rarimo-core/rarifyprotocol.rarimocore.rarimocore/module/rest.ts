@@ -20,11 +20,9 @@ export interface RarimocoreChangeKeyECDSA {
 }
 
 export interface RarimocoreConfirmation {
-  height?: string;
   root?: string;
   hashes?: string[];
   sigECDSA?: string;
-  sigEdDSA?: string;
   creator?: string;
 }
 
@@ -33,14 +31,8 @@ export interface RarimocoreDeposit {
   eventId?: string;
   fromChain?: string;
   toChain?: string;
-
-  /** @format byte */
   receiver?: string;
-
-  /** @format byte */
   tokenAddress?: string;
-
-  /** @format byte */
   tokenId?: string;
   creator?: string;
   signed?: boolean;

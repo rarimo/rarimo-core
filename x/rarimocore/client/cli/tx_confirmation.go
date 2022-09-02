@@ -12,17 +12,16 @@ import (
 
 func CmdCreateConfirmation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-confirmation [height] [root] [hashes] [sig-ecdsa]",
+		Use:   "create-confirmation [root] [hashes] [sig-ecdsa]",
 		Short: "Create a new confirmation",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexHeight := args[0]
+			indexRoot := args[0]
 
 			// Get value arguments
-			argRoot := args[1]
-			argHashes := strings.Split(args[2], listSeparator)
-			argSigECDSA := args[3]
+			argHashes := strings.Split(args[1], listSeparator)
+			argSigECDSA := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -31,8 +30,7 @@ func CmdCreateConfirmation() *cobra.Command {
 
 			msg := types.NewMsgCreateConfirmation(
 				clientCtx.GetFromAddress().String(),
-				indexHeight,
-				argRoot,
+				indexRoot,
 				argHashes,
 				argSigECDSA,
 			)

@@ -11,7 +11,7 @@ func (k Keeper) SetConfirmation(ctx sdk.Context, confirmation types.Confirmation
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConfirmationKeyPrefix))
 	b := k.cdc.MustMarshal(&confirmation)
 	store.Set(types.ConfirmationKey(
-		confirmation.Height,
+		confirmation.Root,
 	), b)
 }
 

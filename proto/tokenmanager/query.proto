@@ -50,8 +50,8 @@ message QueryParamsResponse {
 }
 
 message QueryGetItemRequest {
-  bytes tokenAddress = 1;
-  bytes tokenId = 2;
+  string tokenAddress = 1;
+  string tokenId = 2;
 
 }
 

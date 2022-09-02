@@ -28,10 +28,10 @@ func SimulateMsgCreateConfirmation(
 		i := r.Int()
 		msg := &types.MsgCreateConfirmation{
 			Creator: simAccount.Address.String(),
-			Height:  strconv.Itoa(i),
+			Root:    strconv.Itoa(i),
 		}
 
-		_, found := k.GetConfirmation(ctx, msg.Height)
+		_, found := k.GetConfirmation(ctx, msg.Root)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Confirmation already exist"), nil, nil
 		}

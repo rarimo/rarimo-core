@@ -4,8 +4,10 @@ package rarifyprotocol.rarimocore.tokenmanager;
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
 message ChainInfo {
-  bytes tokenAddress = 1;
-  bytes tokenId = 2;
+  // hex-encoded
+  string tokenAddress = 1;
+  // hex-encoded
+  string tokenId = 2;
 }
 
 message Info {

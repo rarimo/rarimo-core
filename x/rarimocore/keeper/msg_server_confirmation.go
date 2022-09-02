@@ -6,6 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
@@ -22,7 +23,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	// Check if the value already exists
 	_, isFound := k.GetConfirmation(
 		ctx,
-		msg.Height,
+		msg.Root,
 	)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
@@ -36,6 +37,10 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		deposit, ok := k.GetDeposit(ctx, hash)
 		if !ok {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", hash))
+		}
+
+		if deposit.Signed {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", hash))
 		}
 
 		deposits = append(deposits, deposit)
@@ -58,9 +63,9 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			TargetNetwork:  deposit.ToChain,
 			CurrentNetwork: deposit.FromChain,
 
-			Receiver:      deposit.Receiver,
-			TargetAddress: info.Chains[deposit.ToChain].TokenAddress,
-			TargetId:      info.Chains[deposit.ToChain].TokenId,
+			Receiver:      hexutil.MustDecode(deposit.Receiver),
+			TargetAddress: hexutil.MustDecode(info.Chains[deposit.ToChain].TokenAddress),
+			TargetId:      hexutil.MustDecode(info.Chains[deposit.ToChain].TokenId),
 		})
 
 	}
@@ -71,7 +76,6 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 	var confirmation = types.Confirmation{
 		Creator:  msg.Creator,
-		Height:   msg.Height,
 		Root:     msg.Root,
 		Hashes:   msg.Hashes,
 		SigECDSA: msg.SigECDSA,

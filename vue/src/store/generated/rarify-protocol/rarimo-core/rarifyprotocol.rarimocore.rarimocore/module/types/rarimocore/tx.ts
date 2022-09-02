@@ -10,9 +10,12 @@ export interface MsgCreateDeposit {
   eventId: string;
   fromChain: string;
   toChain: string;
-  receiver: Uint8Array;
-  tokenAddress: Uint8Array;
-  tokenId: Uint8Array;
+  /** hex-encoded */
+  receiver: string;
+  /** hex-encoded */
+  tokenAddress: string;
+  /** hex-encoded */
+  tokenId: string;
   TokenType: type;
 }
 
@@ -20,9 +23,11 @@ export interface MsgCreateDepositResponse {}
 
 export interface MsgCreateConfirmation {
   creator: string;
-  height: string;
+  /** hex-encoded */
   root: string;
+  /** hex-encoded */
   hashes: string[];
+  /** hex-encoded */
   sigECDSA: string;
 }
 
@@ -30,7 +35,9 @@ export interface MsgCreateConfirmationResponse {}
 
 export interface MsgCreateChangeKeyECDSA {
   creator: string;
+  /** hex-encoded */
   newKey: string;
+  /** hex-encoded */
   signature: string;
 }
 
@@ -42,6 +49,9 @@ const baseMsgCreateDeposit: object = {
   eventId: "",
   fromChain: "",
   toChain: "",
+  receiver: "",
+  tokenAddress: "",
+  tokenId: "",
   TokenType: 0,
 };
 
@@ -62,14 +72,14 @@ export const MsgCreateDeposit = {
     if (message.toChain !== "") {
       writer.uint32(42).string(message.toChain);
     }
-    if (message.receiver.length !== 0) {
-      writer.uint32(50).bytes(message.receiver);
+    if (message.receiver !== "") {
+      writer.uint32(50).string(message.receiver);
     }
-    if (message.tokenAddress.length !== 0) {
-      writer.uint32(58).bytes(message.tokenAddress);
+    if (message.tokenAddress !== "") {
+      writer.uint32(58).string(message.tokenAddress);
     }
-    if (message.tokenId.length !== 0) {
-      writer.uint32(66).bytes(message.tokenId);
+    if (message.tokenId !== "") {
+      writer.uint32(66).string(message.tokenId);
     }
     if (message.TokenType !== 0) {
       writer.uint32(72).int32(message.TokenType);
@@ -100,13 +110,13 @@ export const MsgCreateDeposit = {
           message.toChain = reader.string();
           break;
         case 6:
-          message.receiver = reader.bytes();
+          message.receiver = reader.string();
           break;
         case 7:
-          message.tokenAddress = reader.bytes();
+          message.tokenAddress = reader.string();
           break;
         case 8:
-          message.tokenId = reader.bytes();
+          message.tokenId = reader.string();
           break;
         case 9:
           message.TokenType = reader.int32() as any;
@@ -147,13 +157,19 @@ export const MsgCreateDeposit = {
       message.toChain = "";
     }
     if (object.receiver !== undefined && object.receiver !== null) {
-      message.receiver = bytesFromBase64(object.receiver);
+      message.receiver = String(object.receiver);
+    } else {
+      message.receiver = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = bytesFromBase64(object.tokenAddress);
+      message.tokenAddress = String(object.tokenAddress);
+    } else {
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = bytesFromBase64(object.tokenId);
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
     }
     if (object.TokenType !== undefined && object.TokenType !== null) {
       message.TokenType = typeFromJSON(object.TokenType);
@@ -170,20 +186,10 @@ export const MsgCreateDeposit = {
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
     message.toChain !== undefined && (obj.toChain = message.toChain);
-    message.receiver !== undefined &&
-      (obj.receiver = base64FromBytes(
-        message.receiver !== undefined ? message.receiver : new Uint8Array()
-      ));
+    message.receiver !== undefined && (obj.receiver = message.receiver);
     message.tokenAddress !== undefined &&
-      (obj.tokenAddress = base64FromBytes(
-        message.tokenAddress !== undefined
-          ? message.tokenAddress
-          : new Uint8Array()
-      ));
-    message.tokenId !== undefined &&
-      (obj.tokenId = base64FromBytes(
-        message.tokenId !== undefined ? message.tokenId : new Uint8Array()
-      ));
+      (obj.tokenAddress = message.tokenAddress);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     message.TokenType !== undefined &&
       (obj.TokenType = typeToJSON(message.TokenType));
     return obj;
@@ -219,17 +225,17 @@ export const MsgCreateDeposit = {
     if (object.receiver !== undefined && object.receiver !== null) {
       message.receiver = object.receiver;
     } else {
-      message.receiver = new Uint8Array();
+      message.receiver = "";
     }
     if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
       message.tokenAddress = object.tokenAddress;
     } else {
-      message.tokenAddress = new Uint8Array();
+      message.tokenAddress = "";
     }
     if (object.tokenId !== undefined && object.tokenId !== null) {
       message.tokenId = object.tokenId;
     } else {
-      message.tokenId = new Uint8Array();
+      message.tokenId = "";
     }
     if (object.TokenType !== undefined && object.TokenType !== null) {
       message.TokenType = object.TokenType;
@@ -294,7 +300,6 @@ export const MsgCreateDepositResponse = {
 
 const baseMsgCreateConfirmation: object = {
   creator: "",
-  height: "",
   root: "",
   hashes: "",
   sigECDSA: "",
@@ -308,17 +313,14 @@ export const MsgCreateConfirmation = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.height !== "") {
-      writer.uint32(18).string(message.height);
-    }
     if (message.root !== "") {
-      writer.uint32(26).string(message.root);
+      writer.uint32(18).string(message.root);
     }
     for (const v of message.hashes) {
-      writer.uint32(34).string(v!);
+      writer.uint32(26).string(v!);
     }
     if (message.sigECDSA !== "") {
-      writer.uint32(42).string(message.sigECDSA);
+      writer.uint32(34).string(message.sigECDSA);
     }
     return writer;
   },
@@ -335,15 +337,12 @@ export const MsgCreateConfirmation = {
           message.creator = reader.string();
           break;
         case 2:
-          message.height = reader.string();
-          break;
-        case 3:
           message.root = reader.string();
           break;
-        case 4:
+        case 3:
           message.hashes.push(reader.string());
           break;
-        case 5:
+        case 4:
           message.sigECDSA = reader.string();
           break;
         default:
@@ -361,11 +360,6 @@ export const MsgCreateConfirmation = {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
-    }
-    if (object.height !== undefined && object.height !== null) {
-      message.height = String(object.height);
-    } else {
-      message.height = "";
     }
     if (object.root !== undefined && object.root !== null) {
       message.root = String(object.root);
@@ -388,7 +382,6 @@ export const MsgCreateConfirmation = {
   toJSON(message: MsgCreateConfirmation): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.height !== undefined && (obj.height = message.height);
     message.root !== undefined && (obj.root = message.root);
     if (message.hashes) {
       obj.hashes = message.hashes.map((e) => e);
@@ -408,11 +401,6 @@ export const MsgCreateConfirmation = {
       message.creator = object.creator;
     } else {
       message.creator = "";
-    }
-    if (object.height !== undefined && object.height !== null) {
-      message.height = object.height;
-    } else {
-      message.height = "";
     }
     if (object.root !== undefined && object.root !== null) {
       message.root = object.root;
@@ -705,39 +693,6 @@ interface Rpc {
     method: string,
     data: Uint8Array
   ): Promise<Uint8Array>;
-}
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
-
-const atob: (b64: string) => string =
-  globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
-function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i);
-  }
-  return arr;
-}
-
-const btoa: (bin: string) => string =
-  globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
-function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = [];
-  for (let i = 0; i < arr.byteLength; ++i) {
-    bin.push(String.fromCharCode(arr[i]));
-  }
-  return btoa(bin.join(""));
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;

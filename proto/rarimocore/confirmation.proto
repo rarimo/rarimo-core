@@ -4,11 +4,12 @@ package rarifyprotocol.rarimocore.rarimocore;
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
 message Confirmation {
-  string height = 1; 
-  string root = 2; 
-  repeated string hashes = 3; 
-  string sigECDSA = 4; 
-  string sigEdDSA = 5; 
-  string creator = 6;
+  // hex-encoded
+  string root = 1;
+  // hex-encoded
+  repeated string hashes = 2;
+  // hex-encoded
+  string sigECDSA = 3;
+  string creator = 4;
 }
 
