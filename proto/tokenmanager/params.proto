@@ -1,12 +1,16 @@
 syntax = "proto3";
 package rarifyprotocol.rarimocore.tokenmanager;
 
-import "gogoproto/gogo.proto";
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
+message Network {
+  string contract = 1;
+  string saver = 2;
+}
+
 // Params defines the parameters for the module.
 message Params {
-  option (gogoproto.goproto_stringer) = false;
+  map<string, Network> networks = 1;
   
 }

@@ -17,4 +17,11 @@ faucet:
 
 genesis:
   chain_id: "rarimo-core"
+  app_state:
+    tokenmanager:
+      params:
+        networks:
+          Solana:
+            contract: CqnDZ8hyRgaXdeZ9X4Exz9LzMEMipi1sTweXRXyoJHpS
+            saver: localhost:8080
   

@@ -19,7 +19,7 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(keyECDSA, keyEdDSA string) Params {
+func NewParams(keyECDSA string) Params {
 	return Params{
 		KeyECDSA: keyECDSA,
 	}
@@ -27,7 +27,7 @@ func NewParams(keyECDSA, keyEdDSA string) Params {
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams("", "")
+	return NewParams("")
 }
 
 // ParamSetPairs get the params.ParamSet

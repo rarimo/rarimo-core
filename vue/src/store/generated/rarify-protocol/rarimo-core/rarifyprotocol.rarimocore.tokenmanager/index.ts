@@ -3,10 +3,11 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 import { ChainInfo } from "./module/types/tokenmanager/info"
 import { Info } from "./module/types/tokenmanager/info"
 import { Item } from "./module/types/tokenmanager/item"
+import { Network } from "./module/types/tokenmanager/params"
 import { Params } from "./module/types/tokenmanager/params"
 
 
-export { ChainInfo, Info, Item, Params };
+export { ChainInfo, Info, Item, Network, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -54,6 +55,7 @@ const getDefaultState = () => {
 						ChainInfo: getStructure(ChainInfo.fromPartial({})),
 						Info: getStructure(Info.fromPartial({})),
 						Item: getStructure(Item.fromPartial({})),
+						Network: getStructure(Network.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},

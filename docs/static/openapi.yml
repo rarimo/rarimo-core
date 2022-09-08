@@ -31153,6 +31153,16 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  networks:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        contract:
+                          type: string
+                        saver:
+                          type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -52922,8 +52932,25 @@ definitions:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgUpdateInfoResponse:
     type: object
+  rarifyprotocol.rarimocore.tokenmanager.Network:
+    type: object
+    properties:
+      contract:
+        type: string
+      saver:
+        type: string
   rarifyprotocol.rarimocore.tokenmanager.Params:
     type: object
+    properties:
+      networks:
+        type: object
+        additionalProperties:
+          type: object
+          properties:
+            contract:
+              type: string
+            saver:
+              type: string
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
@@ -53075,6 +53102,16 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          networks:
+            type: object
+            additionalProperties:
+              type: object
+              properties:
+                contract:
+                  type: string
+                saver:
+                  type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object
