@@ -21,7 +21,5 @@ genesis:
     tokenmanager:
       params:
         networks:
-          Solana:
-            contract: CqnDZ8hyRgaXdeZ9X4Exz9LzMEMipi1sTweXRXyoJHpS
-            saver: localhost:8080
+          Solana: CqnDZ8hyRgaXdeZ9X4Exz9LzMEMipi1sTweXRXyoJHpS
   

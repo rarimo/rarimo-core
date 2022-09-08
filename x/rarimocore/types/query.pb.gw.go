@@ -62,15 +62,15 @@ func request_Query_Deposit_0(ctx context.Context, marshaler runtime.Marshaler, c
 		_   = err
 	)
 
-	val, ok = pathParams["tx"]
+	val, ok = pathParams["index"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
 	}
 
-	protoReq.Tx, err = runtime.String(val)
+	protoReq.Index, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
 	}
 
 	msg, err := client.Deposit(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -89,15 +89,15 @@ func local_request_Query_Deposit_0(ctx context.Context, marshaler runtime.Marsha
 		_   = err
 	)
 
-	val, ok = pathParams["tx"]
+	val, ok = pathParams["index"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tx")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
 	}
 
-	protoReq.Tx, err = runtime.String(val)
+	protoReq.Index, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tx", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
 	}
 
 	msg, err := server.Deposit(ctx, &protoReq)
@@ -152,15 +152,15 @@ func request_Query_Confirmation_0(ctx context.Context, marshaler runtime.Marshal
 		_   = err
 	)
 
-	val, ok = pathParams["height"]
+	val, ok = pathParams["root"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "height")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "root")
 	}
 
-	protoReq.Height, err = runtime.String(val)
+	protoReq.Root, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "height", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "root", err)
 	}
 
 	msg, err := client.Confirmation(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -179,15 +179,15 @@ func local_request_Query_Confirmation_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["height"]
+	val, ok = pathParams["root"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "height")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "root")
 	}
 
-	protoReq.Height, err = runtime.String(val)
+	protoReq.Root, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "height", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "root", err)
 	}
 
 	msg, err := server.Confirmation(ctx, &protoReq)
@@ -675,11 +675,11 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Deposit_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "deposit", "tx"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Deposit_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "deposit", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_DepositAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "deposit"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Confirmation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "confirmation", "height"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Confirmation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "confirmation", "root"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_ConfirmationAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "confirmation"}, "", runtime.AssumeColonVerbOpt(true)))
 

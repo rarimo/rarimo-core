@@ -8,13 +8,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
 func CmdCreateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [tx] [event-id] [from-chain] [to-chain] [receiver-hex] [token-address-hex] [token-id-hex] [token-type]",
+		Use:   "create-deposit [tx] [event-id] [from-chain] [to-chain] [receiver-hex] [token-type]",
 		Short: "Create a new deposit",
-		Args:  cobra.ExactArgs(8),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTx := args[0]
@@ -24,9 +25,7 @@ func CmdCreateDeposit() *cobra.Command {
 			argFromChain := args[2]
 			argToChain := args[3]
 			argReceiver := args[4]
-			argTokenAddress := args[5]
-			argTokenId := args[6]
-			argTokenType, err := strconv.Atoi(args[7])
+			argTokenType, err := strconv.Atoi(args[5])
 			if err != nil {
 				return err
 			}
@@ -43,9 +42,7 @@ func CmdCreateDeposit() *cobra.Command {
 				argFromChain,
 				argToChain,
 				argReceiver,
-				argTokenAddress,
-				argTokenId,
-				types.Type(argTokenType),
+				tokentypes.Type(argTokenType),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

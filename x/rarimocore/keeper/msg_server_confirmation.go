@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -10,17 +11,15 @@ import (
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
-	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if err := crypto.VerifyECDSA(msg.SigECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
+	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
 		return nil, err
 	}
 
-	// Check if the value already exists
 	_, isFound := k.GetConfirmation(
 		ctx,
 		msg.Root,
@@ -29,45 +28,43 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	deposits := make([]types.Deposit, 0, len(msg.Hashes))
-	infos := make([]tokentypes.Info, 0, len(msg.Hashes))
-	content := make([]merkle.Content, 0, len(msg.Hashes))
+	deposits := make([]types.Deposit, 0, len(msg.Indexes))
+	content := make([]merkle.Content, 0, len(msg.Indexes))
 
-	for _, hash := range msg.Hashes {
-		deposit, ok := k.GetDeposit(ctx, hash)
+	for _, index := range msg.Indexes {
+		deposit, ok := k.GetDeposit(ctx, index)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", hash))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", index))
 		}
 
 		if deposit.Signed {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", hash))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", index))
 		}
 
 		deposits = append(deposits, deposit)
 
-		item, ok := k.tm.GetItem(ctx, deposit.TokenAddress, deposit.TokenId)
+		info, ok := k.tm.GetInfo(ctx, deposit.Index)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token item %s %s not dound", deposit.TokenAddress, deposit.TokenId))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not dound", deposit.Index))
 		}
 
-		info, ok := k.tm.GetInfo(ctx, item.Index)
+		contract, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not dound", item.Index))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
 		}
 
-		infos = append(infos, info)
-
+		amount, _ := new(big.Int).SetString(deposit.Amount, 10)
 		content = append(content, crypto.HashContent{
-			TxHash:         hash,
+			TxHash:         deposit.Tx,
 			EventId:        deposit.EventId,
 			TargetNetwork:  deposit.ToChain,
 			CurrentNetwork: deposit.FromChain,
-
-			Receiver:      hexutil.MustDecode(deposit.Receiver),
-			TargetAddress: hexutil.MustDecode(info.Chains[deposit.ToChain].TokenAddress),
-			TargetId:      hexutil.MustDecode(info.Chains[deposit.ToChain].TokenId),
+			Receiver:       hexutil.MustDecode(deposit.Receiver),
+			TargetAddress:  hexutil.MustDecode(info.Chains[deposit.ToChain].TokenAddress),
+			TargetId:       hexutil.MustDecode(info.Chains[deposit.ToChain].TokenId),
+			Amount:         amount.Bytes(),
+			ProgramId:      hexutil.MustDecode(contract),
 		})
-
 	}
 
 	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
@@ -75,20 +72,15 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	var confirmation = types.Confirmation{
-		Creator:  msg.Creator,
-		Root:     msg.Root,
-		Hashes:   msg.Hashes,
-		SigECDSA: msg.SigECDSA,
+		Creator:        msg.Creator,
+		Root:           msg.Root,
+		Indexes:        msg.Indexes,
+		SignatureECDSA: msg.SignatureECDSA,
 	}
 
 	for _, deposit := range deposits {
 		deposit.Signed = true
 		k.SetDeposit(ctx, deposit)
-	}
-
-	for i, info := range infos {
-		info.CurrentChain = deposits[i].ToChain
-		k.tm.SetInfo(ctx, info)
 	}
 
 	k.SetConfirmation(

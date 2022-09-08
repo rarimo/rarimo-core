@@ -44,7 +44,7 @@ func CmdListConfirmation() *cobra.Command {
 
 func CmdShowConfirmation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-confirmation [height]",
+		Use:   "show-confirmation [root]",
 		Short: "shows a confirmation",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -52,10 +52,10 @@ func CmdShowConfirmation() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argHeight := args[0]
+			argRoot := args[0]
 
 			params := &types.QueryGetConfirmationRequest{
-				Height: argHeight,
+				Root: argRoot,
 			}
 
 			res, err := queryClient.Confirmation(context.Background(), params)

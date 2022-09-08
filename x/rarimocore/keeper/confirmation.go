@@ -18,13 +18,13 @@ func (k Keeper) SetConfirmation(ctx sdk.Context, confirmation types.Confirmation
 // GetConfirmation returns a confirmation from its index
 func (k Keeper) GetConfirmation(
 	ctx sdk.Context,
-	height string,
+	root string,
 
 ) (val types.Confirmation, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConfirmationKeyPrefix))
 
 	b := store.Get(types.ConfirmationKey(
-		height,
+		root,
 	))
 	if b == nil {
 		return val, false

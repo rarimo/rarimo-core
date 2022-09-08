@@ -7,16 +7,16 @@ export interface Confirmation {
   /** hex-encoded */
   root: string;
   /** hex-encoded */
-  hashes: string[];
+  indexes: string[];
   /** hex-encoded */
-  sigECDSA: string;
+  signatureECDSA: string;
   creator: string;
 }
 
 const baseConfirmation: object = {
   root: "",
-  hashes: "",
-  sigECDSA: "",
+  indexes: "",
+  signatureECDSA: "",
   creator: "",
 };
 
@@ -25,11 +25,11 @@ export const Confirmation = {
     if (message.root !== "") {
       writer.uint32(10).string(message.root);
     }
-    for (const v of message.hashes) {
+    for (const v of message.indexes) {
       writer.uint32(18).string(v!);
     }
-    if (message.sigECDSA !== "") {
-      writer.uint32(26).string(message.sigECDSA);
+    if (message.signatureECDSA !== "") {
+      writer.uint32(26).string(message.signatureECDSA);
     }
     if (message.creator !== "") {
       writer.uint32(34).string(message.creator);
@@ -41,7 +41,7 @@ export const Confirmation = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseConfirmation } as Confirmation;
-    message.hashes = [];
+    message.indexes = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -49,10 +49,10 @@ export const Confirmation = {
           message.root = reader.string();
           break;
         case 2:
-          message.hashes.push(reader.string());
+          message.indexes.push(reader.string());
           break;
         case 3:
-          message.sigECDSA = reader.string();
+          message.signatureECDSA = reader.string();
           break;
         case 4:
           message.creator = reader.string();
@@ -67,21 +67,21 @@ export const Confirmation = {
 
   fromJSON(object: any): Confirmation {
     const message = { ...baseConfirmation } as Confirmation;
-    message.hashes = [];
+    message.indexes = [];
     if (object.root !== undefined && object.root !== null) {
       message.root = String(object.root);
     } else {
       message.root = "";
     }
-    if (object.hashes !== undefined && object.hashes !== null) {
-      for (const e of object.hashes) {
-        message.hashes.push(String(e));
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(String(e));
       }
     }
-    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
-      message.sigECDSA = String(object.sigECDSA);
+    if (object.signatureECDSA !== undefined && object.signatureECDSA !== null) {
+      message.signatureECDSA = String(object.signatureECDSA);
     } else {
-      message.sigECDSA = "";
+      message.signatureECDSA = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -94,33 +94,34 @@ export const Confirmation = {
   toJSON(message: Confirmation): unknown {
     const obj: any = {};
     message.root !== undefined && (obj.root = message.root);
-    if (message.hashes) {
-      obj.hashes = message.hashes.map((e) => e);
+    if (message.indexes) {
+      obj.indexes = message.indexes.map((e) => e);
     } else {
-      obj.hashes = [];
+      obj.indexes = [];
     }
-    message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
+    message.signatureECDSA !== undefined &&
+      (obj.signatureECDSA = message.signatureECDSA);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
   fromPartial(object: DeepPartial<Confirmation>): Confirmation {
     const message = { ...baseConfirmation } as Confirmation;
-    message.hashes = [];
+    message.indexes = [];
     if (object.root !== undefined && object.root !== null) {
       message.root = object.root;
     } else {
       message.root = "";
     }
-    if (object.hashes !== undefined && object.hashes !== null) {
-      for (const e of object.hashes) {
-        message.hashes.push(e);
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(e);
       }
     }
-    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
-      message.sigECDSA = object.sigECDSA;
+    if (object.signatureECDSA !== undefined && object.signatureECDSA !== null) {
+      message.signatureECDSA = object.signatureECDSA;
     } else {
-      message.sigECDSA = "";
+      message.signatureECDSA = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;

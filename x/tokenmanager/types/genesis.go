@@ -24,7 +24,7 @@ func (gs GenesisState) Validate() error {
 	itemIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ItemList {
-		index := string(ItemKey(elem.TokenAddress, elem.TokenId))
+		index := string(ItemKey(elem.TokenAddress, elem.TokenId, elem.Chain))
 		if _, ok := itemIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for item")
 		}

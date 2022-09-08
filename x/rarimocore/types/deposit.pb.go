@@ -22,57 +22,20 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Type int32
-
-const (
-	Type_NATIVE       Type = 0
-	Type_ERC20        Type = 1
-	Type_ERC721       Type = 2
-	Type_ERC1155      Type = 3
-	Type_METAPLEX_NFT Type = 4
-	Type_METAPLEX_FT  Type = 5
-)
-
-var Type_name = map[int32]string{
-	0: "NATIVE",
-	1: "ERC20",
-	2: "ERC721",
-	3: "ERC1155",
-	4: "METAPLEX_NFT",
-	5: "METAPLEX_FT",
-}
-
-var Type_value = map[string]int32{
-	"NATIVE":       0,
-	"ERC20":        1,
-	"ERC721":       2,
-	"ERC1155":      3,
-	"METAPLEX_NFT": 4,
-	"METAPLEX_FT":  5,
-}
-
-func (x Type) String() string {
-	return proto.EnumName(Type_name, int32(x))
-}
-
-func (Type) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_24f8a86eafda8811, []int{0}
-}
-
 type Deposit struct {
-	Tx        string `protobuf:"bytes,1,opt,name=tx,proto3" json:"tx,omitempty"`
-	EventId   string `protobuf:"bytes,2,opt,name=eventId,proto3" json:"eventId,omitempty"`
-	FromChain string `protobuf:"bytes,3,opt,name=fromChain,proto3" json:"fromChain,omitempty"`
-	ToChain   string `protobuf:"bytes,4,opt,name=toChain,proto3" json:"toChain,omitempty"`
+	// hex-encoded keccak256 hash for tx||event||chain strings' bytes
+	Index     string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	Tx        string `protobuf:"bytes,2,opt,name=tx,proto3" json:"tx,omitempty"`
+	EventId   string `protobuf:"bytes,3,opt,name=eventId,proto3" json:"eventId,omitempty"`
+	FromChain string `protobuf:"bytes,4,opt,name=fromChain,proto3" json:"fromChain,omitempty"`
+	ToChain   string `protobuf:"bytes,5,opt,name=toChain,proto3" json:"toChain,omitempty"`
 	// hex-encoded
-	Receiver string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
-	// hex-encoded
-	TokenAddress string `protobuf:"bytes,6,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
-	// hex-encoded
-	TokenId   string `protobuf:"bytes,7,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
-	Creator   string `protobuf:"bytes,8,opt,name=creator,proto3" json:"creator,omitempty"`
-	Signed    bool   `protobuf:"varint,9,opt,name=signed,proto3" json:"signed,omitempty"`
-	TokenType Type   `protobuf:"varint,10,opt,name=tokenType,proto3,enum=rarifyprotocol.rarimocore.rarimocore.Type" json:"tokenType,omitempty"`
+	Receiver string `protobuf:"bytes,6,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	// dec-encoded
+	Amount     string `protobuf:"bytes,7,opt,name=amount,proto3" json:"amount,omitempty"`
+	Creator    string `protobuf:"bytes,8,opt,name=creator,proto3" json:"creator,omitempty"`
+	Signed     bool   `protobuf:"varint,9,opt,name=signed,proto3" json:"signed,omitempty"`
+	TokenIndex string `protobuf:"bytes,10,opt,name=tokenIndex,proto3" json:"tokenIndex,omitempty"`
 }
 
 func (m *Deposit) Reset()         { *m = Deposit{} }
@@ -107,6 +70,13 @@ func (m *Deposit) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_Deposit proto.InternalMessageInfo
+
+func (m *Deposit) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
 
 func (m *Deposit) GetTx() string {
 	if m != nil {
@@ -143,16 +113,9 @@ func (m *Deposit) GetReceiver() string {
 	return ""
 }
 
-func (m *Deposit) GetTokenAddress() string {
+func (m *Deposit) GetAmount() string {
 	if m != nil {
-		return m.TokenAddress
-	}
-	return ""
-}
-
-func (m *Deposit) GetTokenId() string {
-	if m != nil {
-		return m.TokenId
+		return m.Amount
 	}
 	return ""
 }
@@ -171,46 +134,39 @@ func (m *Deposit) GetSigned() bool {
 	return false
 }
 
-func (m *Deposit) GetTokenType() Type {
+func (m *Deposit) GetTokenIndex() string {
 	if m != nil {
-		return m.TokenType
+		return m.TokenIndex
 	}
-	return Type_NATIVE
+	return ""
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.rarimocore.Type", Type_name, Type_value)
 	proto.RegisterType((*Deposit)(nil), "rarifyprotocol.rarimocore.rarimocore.Deposit")
 }
 
 func init() { proto.RegisterFile("rarimocore/deposit.proto", fileDescriptor_24f8a86eafda8811) }
 
 var fileDescriptor_24f8a86eafda8811 = []byte{
-	// 383 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xcf, 0xca, 0xda, 0x40,
-	0x14, 0xc5, 0x33, 0x51, 0x13, 0x73, 0x15, 0x1b, 0x66, 0x51, 0x86, 0x52, 0x82, 0x48, 0x17, 0x22,
-	0x98, 0x54, 0x8b, 0x94, 0x2e, 0x6d, 0x1a, 0xa9, 0xd0, 0x4a, 0x49, 0x43, 0x69, 0xbb, 0x29, 0x31,
-	0x19, 0x6d, 0x50, 0x33, 0x61, 0x32, 0x88, 0xbe, 0x45, 0x5f, 0xa9, 0xbb, 0x2e, 0x5d, 0x76, 0x59,
-	0xf4, 0x45, 0x4a, 0x26, 0xfe, 0xfb, 0x76, 0xdf, 0x6e, 0xce, 0xf9, 0xdd, 0x73, 0x39, 0x0c, 0x17,
-	0x08, 0x0f, 0x79, 0xb2, 0x61, 0x11, 0xe3, 0xd4, 0x89, 0x69, 0xc6, 0xf2, 0x44, 0xd8, 0x19, 0x67,
-	0x82, 0xe1, 0x17, 0x05, 0x59, 0xec, 0xa5, 0x88, 0xd8, 0xda, 0xbe, 0x0d, 0xde, 0x3d, 0x3b, 0xbf,
-	0x55, 0xd0, 0xdf, 0x95, 0x39, 0xdc, 0x02, 0x55, 0xec, 0x08, 0x6a, 0xa3, 0xae, 0xe1, 0xab, 0x62,
-	0x87, 0x09, 0xe8, 0x74, 0x4b, 0x53, 0x31, 0x8d, 0x89, 0x2a, 0xcd, 0x8b, 0xc4, 0xcf, 0xc1, 0x58,
-	0x70, 0xb6, 0x71, 0x7f, 0x86, 0x49, 0x4a, 0x2a, 0x92, 0xdd, 0x8c, 0x22, 0x27, 0x58, 0xc9, 0xaa,
-	0x65, 0xee, 0x2c, 0xf1, 0x33, 0xa8, 0x73, 0x1a, 0xd1, 0x64, 0x4b, 0x39, 0xa9, 0x49, 0x74, 0xd5,
-	0xb8, 0x03, 0x4d, 0xc1, 0x56, 0x34, 0x1d, 0xc7, 0x31, 0xa7, 0x79, 0x4e, 0x34, 0xc9, 0x1f, 0x78,
-	0xe5, 0xe6, 0x15, 0x4d, 0xa7, 0x31, 0xd1, 0x2f, 0x9b, 0xa5, 0x2c, 0x48, 0xc4, 0x69, 0x28, 0x18,
-	0x27, 0xf5, 0x92, 0x9c, 0x25, 0x7e, 0x0a, 0x5a, 0x9e, 0x2c, 0x53, 0x1a, 0x13, 0xa3, 0x8d, 0xba,
-	0x75, 0xff, 0xac, 0xf0, 0x7b, 0x30, 0x64, 0x38, 0xd8, 0x67, 0x94, 0x40, 0x1b, 0x75, 0x5b, 0xc3,
-	0x9e, 0xfd, 0x98, 0x3f, 0xb3, 0xc5, 0x3e, 0xa3, 0xfe, 0x2d, 0xdc, 0xfb, 0x06, 0xd5, 0xc2, 0xc2,
-	0x00, 0xda, 0x6c, 0x1c, 0x4c, 0xbf, 0x78, 0xa6, 0x82, 0x0d, 0xa8, 0x79, 0xbe, 0x3b, 0x7c, 0x69,
-	0xa2, 0xc2, 0xf6, 0x7c, 0xf7, 0xf5, 0x70, 0x60, 0xaa, 0xb8, 0x01, 0xba, 0xe7, 0xbb, 0x83, 0xc1,
-	0x68, 0x64, 0x56, 0xb0, 0x09, 0xcd, 0x8f, 0x5e, 0x30, 0xfe, 0xf4, 0xc1, 0xfb, 0xfa, 0x63, 0x36,
-	0x09, 0xcc, 0x2a, 0x7e, 0x02, 0x8d, 0xab, 0x33, 0x09, 0xcc, 0xda, 0xdb, 0xcf, 0x7f, 0x8e, 0x16,
-	0x3a, 0x1c, 0x2d, 0xf4, 0xef, 0x68, 0xa1, 0x5f, 0x27, 0x4b, 0x39, 0x9c, 0x2c, 0xe5, 0xef, 0xc9,
-	0x52, 0xbe, 0xbf, 0x59, 0x26, 0x62, 0x1d, 0xce, 0xed, 0x88, 0x6d, 0x9c, 0xb2, 0x75, 0xff, 0x52,
-	0xdb, 0x29, 0xbb, 0xf6, 0xe5, 0x51, 0xec, 0x9c, 0xbb, 0x0b, 0x29, 0x6a, 0xe6, 0x73, 0x4d, 0x0e,
-	0xbe, 0xfa, 0x1f, 0x00, 0x00, 0xff, 0xff, 0x6d, 0xb7, 0x51, 0x43, 0x3c, 0x02, 0x00, 0x00,
+	// 288 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x91, 0x3f, 0x4f, 0xc3, 0x30,
+	0x10, 0xc5, 0xe3, 0x40, 0xf3, 0xc7, 0x03, 0x83, 0x85, 0x90, 0x85, 0x90, 0x55, 0x21, 0x86, 0x2e,
+	0x4d, 0x06, 0x26, 0x56, 0x60, 0xe9, 0x5a, 0x36, 0xb6, 0x34, 0xb9, 0x16, 0x8b, 0xc6, 0x17, 0x39,
+	0xa6, 0x4a, 0x3f, 0x01, 0x2b, 0x1f, 0x8b, 0xb1, 0x23, 0x23, 0x4a, 0xbe, 0x08, 0x8a, 0x9d, 0xd2,
+	0x6c, 0xfe, 0xbd, 0x77, 0xef, 0x24, 0xbf, 0xa3, 0x5c, 0x67, 0x5a, 0x96, 0x98, 0xa3, 0x86, 0xb4,
+	0x80, 0x0a, 0x6b, 0x69, 0x92, 0x4a, 0xa3, 0x41, 0x76, 0xd7, 0x3b, 0xeb, 0xbd, 0x85, 0x1c, 0xb7,
+	0xc9, 0x69, 0x70, 0xf4, 0xbc, 0xfd, 0xf4, 0x69, 0xf8, 0xec, 0x72, 0xec, 0x92, 0x4e, 0xa4, 0x2a,
+	0xa0, 0xe1, 0x64, 0x4a, 0x66, 0xf1, 0xd2, 0x01, 0xbb, 0xa0, 0xbe, 0x69, 0xb8, 0x6f, 0x25, 0xdf,
+	0x34, 0x8c, 0xd3, 0x10, 0x76, 0xa0, 0xcc, 0xa2, 0xe0, 0x67, 0x56, 0x3c, 0x22, 0xbb, 0xa1, 0xf1,
+	0x5a, 0x63, 0xf9, 0xf4, 0x96, 0x49, 0xc5, 0xcf, 0xad, 0x77, 0x12, 0xfa, 0x9c, 0x41, 0xe7, 0x4d,
+	0x5c, 0x6e, 0x40, 0x76, 0x4d, 0x23, 0x0d, 0x39, 0xc8, 0x1d, 0x68, 0x1e, 0x58, 0xeb, 0x9f, 0xd9,
+	0x15, 0x0d, 0xb2, 0x12, 0x3f, 0x94, 0xe1, 0xa1, 0x75, 0x06, 0xea, 0xb7, 0xe5, 0x1a, 0x32, 0x83,
+	0x9a, 0x47, 0x6e, 0xdb, 0x80, 0x7d, 0xa2, 0x96, 0x1b, 0x05, 0x05, 0x8f, 0xa7, 0x64, 0x16, 0x2d,
+	0x07, 0x62, 0x82, 0x52, 0x83, 0xef, 0xa0, 0x16, 0xf6, 0x8b, 0xd4, 0x86, 0x46, 0xca, 0xe3, 0xcb,
+	0x77, 0x2b, 0xc8, 0xa1, 0x15, 0xe4, 0xb7, 0x15, 0xe4, 0xab, 0x13, 0xde, 0xa1, 0x13, 0xde, 0x4f,
+	0x27, 0xbc, 0xd7, 0x87, 0x8d, 0x34, 0xdb, 0x6c, 0x95, 0xe4, 0x58, 0xa6, 0xae, 0xd4, 0xf9, 0xb1,
+	0xd5, 0xd4, 0x55, 0x39, 0xb7, 0xfd, 0x37, 0xe9, 0xe8, 0x18, 0x66, 0x5f, 0x41, 0xbd, 0x0a, 0xec,
+	0xe0, 0xfd, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x27, 0x17, 0x69, 0xf2, 0xa7, 0x01, 0x00, 0x00,
 }
 
 func (m *Deposit) Marshal() (dAtA []byte, err error) {
@@ -233,10 +189,12 @@ func (m *Deposit) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.TokenType != 0 {
-		i = encodeVarintDeposit(dAtA, i, uint64(m.TokenType))
+	if len(m.TokenIndex) > 0 {
+		i -= len(m.TokenIndex)
+		copy(dAtA[i:], m.TokenIndex)
+		i = encodeVarintDeposit(dAtA, i, uint64(len(m.TokenIndex)))
 		i--
-		dAtA[i] = 0x50
+		dAtA[i] = 0x52
 	}
 	if m.Signed {
 		i--
@@ -255,52 +213,52 @@ func (m *Deposit) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x42
 	}
-	if len(m.TokenId) > 0 {
-		i -= len(m.TokenId)
-		copy(dAtA[i:], m.TokenId)
-		i = encodeVarintDeposit(dAtA, i, uint64(len(m.TokenId)))
+	if len(m.Amount) > 0 {
+		i -= len(m.Amount)
+		copy(dAtA[i:], m.Amount)
+		i = encodeVarintDeposit(dAtA, i, uint64(len(m.Amount)))
 		i--
 		dAtA[i] = 0x3a
-	}
-	if len(m.TokenAddress) > 0 {
-		i -= len(m.TokenAddress)
-		copy(dAtA[i:], m.TokenAddress)
-		i = encodeVarintDeposit(dAtA, i, uint64(len(m.TokenAddress)))
-		i--
-		dAtA[i] = 0x32
 	}
 	if len(m.Receiver) > 0 {
 		i -= len(m.Receiver)
 		copy(dAtA[i:], m.Receiver)
 		i = encodeVarintDeposit(dAtA, i, uint64(len(m.Receiver)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.ToChain) > 0 {
 		i -= len(m.ToChain)
 		copy(dAtA[i:], m.ToChain)
 		i = encodeVarintDeposit(dAtA, i, uint64(len(m.ToChain)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
 	}
 	if len(m.FromChain) > 0 {
 		i -= len(m.FromChain)
 		copy(dAtA[i:], m.FromChain)
 		i = encodeVarintDeposit(dAtA, i, uint64(len(m.FromChain)))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x22
 	}
 	if len(m.EventId) > 0 {
 		i -= len(m.EventId)
 		copy(dAtA[i:], m.EventId)
 		i = encodeVarintDeposit(dAtA, i, uint64(len(m.EventId)))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x1a
 	}
 	if len(m.Tx) > 0 {
 		i -= len(m.Tx)
 		copy(dAtA[i:], m.Tx)
 		i = encodeVarintDeposit(dAtA, i, uint64(len(m.Tx)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintDeposit(dAtA, i, uint64(len(m.Index)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -324,6 +282,10 @@ func (m *Deposit) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovDeposit(uint64(l))
+	}
 	l = len(m.Tx)
 	if l > 0 {
 		n += 1 + l + sovDeposit(uint64(l))
@@ -344,11 +306,7 @@ func (m *Deposit) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovDeposit(uint64(l))
 	}
-	l = len(m.TokenAddress)
-	if l > 0 {
-		n += 1 + l + sovDeposit(uint64(l))
-	}
-	l = len(m.TokenId)
+	l = len(m.Amount)
 	if l > 0 {
 		n += 1 + l + sovDeposit(uint64(l))
 	}
@@ -359,8 +317,9 @@ func (m *Deposit) Size() (n int) {
 	if m.Signed {
 		n += 2
 	}
-	if m.TokenType != 0 {
-		n += 1 + sovDeposit(uint64(m.TokenType))
+	l = len(m.TokenIndex)
+	if l > 0 {
+		n += 1 + l + sovDeposit(uint64(l))
 	}
 	return n
 }
@@ -402,6 +361,38 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowDeposit
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthDeposit
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthDeposit
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Tx", wireType)
 			}
 			var stringLen uint64
@@ -432,7 +423,7 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.Tx = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 2:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field EventId", wireType)
 			}
@@ -464,7 +455,7 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.EventId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FromChain", wireType)
 			}
@@ -496,7 +487,7 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.FromChain = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ToChain", wireType)
 			}
@@ -528,7 +519,7 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.ToChain = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Receiver", wireType)
 			}
@@ -560,41 +551,9 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.Receiver = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TokenAddress", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowDeposit
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthDeposit
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthDeposit
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TokenAddress = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TokenId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -622,7 +581,7 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TokenId = string(dAtA[iNdEx:postIndex])
+			m.Amount = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -677,10 +636,10 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 			}
 			m.Signed = bool(v != 0)
 		case 10:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TokenType", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenIndex", wireType)
 			}
-			m.TokenType = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowDeposit
@@ -690,11 +649,24 @@ func (m *Deposit) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TokenType |= Type(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthDeposit
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthDeposit
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenIndex = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipDeposit(dAtA[iNdEx:])

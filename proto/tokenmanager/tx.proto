@@ -9,7 +9,6 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types
 // Msg defines the Msg service.
 service Msg {
   rpc CreateInfo(MsgCreateInfo) returns (MsgCreateInfoResponse);
-  rpc UpdateInfo(MsgUpdateInfo) returns (MsgUpdateInfoResponse);
   rpc DeleteInfo(MsgDeleteInfo) returns (MsgDeleteInfoResponse);
   rpc AddChain(MsgAddChain) returns (MsgAddChainResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
@@ -19,27 +18,14 @@ message MsgCreateInfo {
   string creator = 1;
   string index = 2;
 
-  string name = 3;
-  string symbol = 4;
-  string image = 5;
-
   // hex-encoded
-  string currentAddress = 6;
+  string currentAddress = 3;
   // hex-encoded
-  string currentId = 7;
-  string currentChain = 8;
+  string currentId = 4;
+  string currentChain = 5;
+  type currentType = 6;
 }
 message MsgCreateInfoResponse {}
-
-message MsgUpdateInfo {
-  string creator = 1;
-  string index = 2;
-
-  string name = 3;
-  string symbol = 4;
-  string image = 5;
-}
-message MsgUpdateInfoResponse {}
 
 message MsgDeleteInfo {
   string creator = 1;
@@ -56,6 +42,7 @@ message MsgAddChain {
   string tokenAddress = 4;
   // hex-encoded
   string tokenId = 5;
+  type tokenType = 6;
 }
 
 message MsgAddChainResponse {}

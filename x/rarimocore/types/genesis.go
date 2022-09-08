@@ -25,7 +25,7 @@ func (gs GenesisState) Validate() error {
 	depositIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.DepositList {
-		index := string(DepositKey(elem.Tx))
+		index := string(DepositKey(elem.Index))
 		if _, ok := depositIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for deposit")
 		}

@@ -8,7 +8,7 @@ message Item {
   string tokenAddress = 1;
   // hex-encoded
   string tokenId = 2;
-  string index = 3; 
-  string chain = 4;
+  string chain = 3;
+  string index = 4;
 }
 

@@ -21,7 +21,7 @@ export interface QueryParamsResponse {
 }
 
 export interface QueryGetDepositRequest {
-  tx: string;
+  index: string;
 }
 
 export interface QueryGetDepositResponse {
@@ -38,7 +38,7 @@ export interface QueryAllDepositResponse {
 }
 
 export interface QueryGetConfirmationRequest {
-  height: string;
+  root: string;
 }
 
 export interface QueryGetConfirmationResponse {
@@ -168,15 +168,15 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryGetDepositRequest: object = { tx: "" };
+const baseQueryGetDepositRequest: object = { index: "" };
 
 export const QueryGetDepositRequest = {
   encode(
     message: QueryGetDepositRequest,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.tx !== "") {
-      writer.uint32(10).string(message.tx);
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
     }
     return writer;
   },
@@ -189,7 +189,7 @@ export const QueryGetDepositRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.tx = reader.string();
+          message.index = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -201,17 +201,17 @@ export const QueryGetDepositRequest = {
 
   fromJSON(object: any): QueryGetDepositRequest {
     const message = { ...baseQueryGetDepositRequest } as QueryGetDepositRequest;
-    if (object.tx !== undefined && object.tx !== null) {
-      message.tx = String(object.tx);
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
     } else {
-      message.tx = "";
+      message.index = "";
     }
     return message;
   },
 
   toJSON(message: QueryGetDepositRequest): unknown {
     const obj: any = {};
-    message.tx !== undefined && (obj.tx = message.tx);
+    message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
@@ -219,10 +219,10 @@ export const QueryGetDepositRequest = {
     object: DeepPartial<QueryGetDepositRequest>
   ): QueryGetDepositRequest {
     const message = { ...baseQueryGetDepositRequest } as QueryGetDepositRequest;
-    if (object.tx !== undefined && object.tx !== null) {
-      message.tx = object.tx;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
     } else {
-      message.tx = "";
+      message.index = "";
     }
     return message;
   },
@@ -458,15 +458,15 @@ export const QueryAllDepositResponse = {
   },
 };
 
-const baseQueryGetConfirmationRequest: object = { height: "" };
+const baseQueryGetConfirmationRequest: object = { root: "" };
 
 export const QueryGetConfirmationRequest = {
   encode(
     message: QueryGetConfirmationRequest,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.height !== "") {
-      writer.uint32(10).string(message.height);
+    if (message.root !== "") {
+      writer.uint32(10).string(message.root);
     }
     return writer;
   },
@@ -484,7 +484,7 @@ export const QueryGetConfirmationRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = reader.string();
+          message.root = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -498,17 +498,17 @@ export const QueryGetConfirmationRequest = {
     const message = {
       ...baseQueryGetConfirmationRequest,
     } as QueryGetConfirmationRequest;
-    if (object.height !== undefined && object.height !== null) {
-      message.height = String(object.height);
+    if (object.root !== undefined && object.root !== null) {
+      message.root = String(object.root);
     } else {
-      message.height = "";
+      message.root = "";
     }
     return message;
   },
 
   toJSON(message: QueryGetConfirmationRequest): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = message.height);
+    message.root !== undefined && (obj.root = message.root);
     return obj;
   },
 
@@ -518,10 +518,10 @@ export const QueryGetConfirmationRequest = {
     const message = {
       ...baseQueryGetConfirmationRequest,
     } as QueryGetConfirmationRequest;
-    if (object.height !== undefined && object.height !== null) {
-      message.height = object.height;
+    if (object.root !== undefined && object.root !== null) {
+      message.root = object.root;
     } else {
-      message.height = "";
+      message.root = "";
     }
     return message;
   },

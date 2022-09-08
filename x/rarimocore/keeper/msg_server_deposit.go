@@ -11,7 +11,6 @@ import (
 func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDeposit) (*types.MsgCreateDepositResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if the value already exists
 	_, isFound := k.GetDeposit(
 		ctx,
 		msg.Tx,
@@ -20,18 +19,35 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	// TODO validate on saver
+	networks := k.tm.GetParams(ctx).Networks
+
+	if _, ok := networks[msg.FromChain]; !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
+	}
+
+	if _, ok := networks[msg.ToChain]; !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.ToChain)
+	}
+
+	// TODO validate with saver and fill
+	var tokenAddress, tokenId, tokenChain = "", "", ""
+
+	item, ok := k.tm.GetItem(ctx, tokenAddress, tokenId, tokenChain)
+	if !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "token not found")
+	}
 
 	var deposit = types.Deposit{
-		Creator:      msg.Creator,
-		Tx:           msg.Tx,
-		FromChain:    msg.FromChain,
-		ToChain:      msg.ToChain,
-		Receiver:     msg.Receiver,
-		TokenAddress: msg.TokenAddress,
-		TokenId:      msg.TokenId,
-		Signed:       false,
-		TokenType:    msg.TokenType,
+		Index:      msg.Index,
+		Creator:    msg.Creator,
+		Tx:         msg.Tx,
+		EventId:    msg.EventId,
+		FromChain:  msg.FromChain,
+		ToChain:    msg.ToChain,
+		Receiver:   msg.Receiver,
+		Amount:     msg.Amount,
+		Signed:     false,
+		TokenIndex: item.Index,
 	}
 
 	k.SetDeposit(

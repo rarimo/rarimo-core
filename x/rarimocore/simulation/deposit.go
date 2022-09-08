@@ -28,7 +28,7 @@ func SimulateMsgCreateDeposit(
 		i := r.Int()
 		msg := &types.MsgCreateDeposit{
 			Creator: simAccount.Address.String(),
-			Tx:      strconv.Itoa(i),
+			Index:   strconv.Itoa(i),
 		}
 
 		_, found := k.GetDeposit(ctx, msg.Tx)

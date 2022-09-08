@@ -22,6 +22,7 @@ export interface QueryParamsResponse {
 export interface QueryGetItemRequest {
   tokenAddress: string;
   tokenId: string;
+  chain: string;
 }
 
 export interface QueryGetItemResponse {
@@ -151,7 +152,11 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryGetItemRequest: object = { tokenAddress: "", tokenId: "" };
+const baseQueryGetItemRequest: object = {
+  tokenAddress: "",
+  tokenId: "",
+  chain: "",
+};
 
 export const QueryGetItemRequest = {
   encode(
@@ -163,6 +168,9 @@ export const QueryGetItemRequest = {
     }
     if (message.tokenId !== "") {
       writer.uint32(18).string(message.tokenId);
+    }
+    if (message.chain !== "") {
+      writer.uint32(26).string(message.chain);
     }
     return writer;
   },
@@ -179,6 +187,9 @@ export const QueryGetItemRequest = {
           break;
         case 2:
           message.tokenId = reader.string();
+          break;
+        case 3:
+          message.chain = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -200,6 +211,11 @@ export const QueryGetItemRequest = {
     } else {
       message.tokenId = "";
     }
+    if (object.chain !== undefined && object.chain !== null) {
+      message.chain = String(object.chain);
+    } else {
+      message.chain = "";
+    }
     return message;
   },
 
@@ -208,6 +224,7 @@ export const QueryGetItemRequest = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.chain !== undefined && (obj.chain = message.chain);
     return obj;
   },
 
@@ -222,6 +239,11 @@ export const QueryGetItemRequest = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
+    }
+    if (object.chain !== undefined && object.chain !== null) {
+      message.chain = object.chain;
+    } else {
+      message.chain = "";
     }
     return message;
   },

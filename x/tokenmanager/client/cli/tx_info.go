@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -10,20 +12,21 @@ import (
 
 func CmdCreateInfo() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-info [index] [name] [symbol] [image] [current-chain] [current-address-hex] [current-id-hex]",
+		Use:   "create-info [index] [current-address-hex] [current-id-hex] [current-chain] [token-type]",
 		Short: "Create a new info",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIndex := args[0]
 
 			// Get value arguments
-			argName := args[1]
-			argSymbol := args[2]
-			argImage := args[3]
-			argCurrentChain := args[4]
-			argCurrentAddress := args[5]
-			argCurrentId := args[6]
+			argCurrentAddress := args[1]
+			argCurrentId := args[2]
+			argChain := args[3]
+			argTokenType, err := strconv.Atoi(args[4])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -33,50 +36,10 @@ func CmdCreateInfo() *cobra.Command {
 			msg := types.NewMsgCreateInfo(
 				clientCtx.GetFromAddress().String(),
 				indexIndex,
-				argName,
-				argSymbol,
-				argImage,
 				argCurrentId,
 				argCurrentAddress,
-				argCurrentChain,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdUpdateInfo() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "update-info [index] [name] [symbol] [image]",
-		Short: "Update a info",
-		Args:  cobra.ExactArgs(10),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			// Get indexes
-			indexIndex := args[0]
-
-			// Get value arguments
-			argName := args[1]
-			argSymbol := args[2]
-			argImage := args[3]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgUpdateInfo(
-				clientCtx.GetFromAddress().String(),
-				indexIndex,
-				argName,
-				argSymbol,
-				argImage,
+				argChain,
+				types.Type(argTokenType),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -123,7 +86,7 @@ func CmdAddChain() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-chain [index] [chain] [token-address-hex] [token-id-hex]",
 		Short: "Add a chain to info",
-		Args:  cobra.ExactArgs(10),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIndex := args[0]
@@ -132,6 +95,10 @@ func CmdAddChain() *cobra.Command {
 			argChain := args[1]
 			argTokenAddress := args[2]
 			argTokenId := args[3]
+			argTokenType, err := strconv.Atoi(args[4])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -144,6 +111,7 @@ func CmdAddChain() *cobra.Command {
 				argChain,
 				argTokenAddress,
 				argTokenId,
+				types.Type(argTokenType),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

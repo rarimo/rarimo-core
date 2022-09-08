@@ -3,30 +3,20 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
-enum type {
-  NATIVE = 0;
-  ERC20 = 1;
-  ERC721 = 2;
-  ERC1155 = 3;
-  METAPLEX_NFT = 4;
-  METAPLEX_FT = 5;
-}
-
 message Deposit {
-  string tx = 1;
-  string eventId = 2;
-  string fromChain = 3;
-  string toChain = 4;
-
+  // hex-encoded keccak256 hash for tx||event||chain strings' bytes
+  string index = 1;
+  string tx = 2;
+  string eventId = 3;
+  string fromChain = 4;
+  string toChain = 5;
   // hex-encoded
-  string receiver = 5;
-  // hex-encoded
-  string tokenAddress = 6;
-  // hex-encoded
-  string tokenId = 7;
+  string receiver = 6;
+  // dec-encoded
+  string amount = 7;
 
   string creator = 8;
   bool signed = 9;
-  type tokenType = 10;
+  string tokenIndex = 10;
 }
 

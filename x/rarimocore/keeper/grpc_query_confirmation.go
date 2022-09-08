@@ -47,7 +47,7 @@ func (k Keeper) Confirmation(c context.Context, req *types.QueryGetConfirmationR
 
 	val, found := k.GetConfirmation(
 		ctx,
-		req.Height,
+		req.Root,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

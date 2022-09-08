@@ -20,17 +20,18 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
+	if _, ok := k.GetParams(ctx).Networks[msg.CurrentChain]; !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "network not found")
+	}
+
 	var info = types.Info{
-		Creator:      msg.Creator,
-		Index:        msg.Index,
-		Name:         msg.Name,
-		Symbol:       msg.Symbol,
-		Image:        msg.Image,
-		CurrentChain: msg.CurrentChain,
+		Creator: msg.Creator,
+		Index:   msg.Index,
 		Chains: map[string]*types.ChainInfo{
 			msg.CurrentChain: &types.ChainInfo{
 				TokenAddress: msg.CurrentAddress,
 				TokenId:      msg.CurrentId,
+				TokenType:    msg.CurrentType,
 			},
 		},
 	}
@@ -39,39 +40,17 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		ctx,
 		info,
 	)
-	return &types.MsgCreateInfoResponse{}, nil
-}
 
-func (k msgServer) UpdateInfo(goCtx context.Context, msg *types.MsgUpdateInfo) (*types.MsgUpdateInfoResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// Check if the value exists
-	valFound, isFound := k.GetInfo(
-		ctx,
-		msg.Index,
-	)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
-	}
-
-	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
-	}
-
-	var info = types.Info{
-		Creator:      msg.Creator,
+	var item = types.Item{
+		TokenAddress: msg.CurrentAddress,
+		TokenId:      msg.CurrentId,
+		Chain:        msg.CurrentChain,
 		Index:        msg.Index,
-		Name:         msg.Name,
-		Symbol:       msg.Symbol,
-		Image:        msg.Image,
-		CurrentChain: valFound.CurrentChain,
-		Chains:       valFound.Chains,
 	}
 
-	k.SetInfo(ctx, info)
+	k.SetItem(ctx, item)
 
-	return &types.MsgUpdateInfoResponse{}, nil
+	return &types.MsgCreateInfoResponse{}, nil
 }
 
 func (k msgServer) DeleteInfo(goCtx context.Context, msg *types.MsgDeleteInfo) (*types.MsgDeleteInfoResponse, error) {
@@ -102,31 +81,39 @@ func (k msgServer) DeleteInfo(goCtx context.Context, msg *types.MsgDeleteInfo) (
 func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*types.MsgAddChainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if the value exists
-	valFound, isFound := k.GetInfo(
+	info, ok := k.GetInfo(
 		ctx,
 		msg.Index,
 	)
-	if !isFound {
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
+	}
+
+	if _, ok := k.GetItem(ctx, msg.TokenAddress, msg.TokenId, msg.ChainName); !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "index not set")
 	}
 
 	// Checks if the the msg creator is the same as the current owner
-	if msg.Creator != valFound.Creator {
+	if msg.Creator != info.Creator {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	valFound.Chains[msg.ChainName] = &types.ChainInfo{
-		TokenAddress: msg.TokenAddress,
-		TokenId:      msg.TokenId,
+	if _, ok := k.GetParams(ctx).Networks[msg.ChainName]; !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "network not found")
 	}
 
-	k.SetInfo(ctx, valFound)
+	info.Chains[msg.ChainName] = &types.ChainInfo{
+		TokenAddress: msg.TokenAddress,
+		TokenId:      msg.TokenId,
+		TokenType:    msg.TokenType,
+	}
+
+	k.SetInfo(ctx, info)
 
 	k.SetItem(ctx, types.Item{
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
-		Index:        valFound.Index,
+		Index:        info.Index,
 		Chain:        msg.ChainName,
 	})
 

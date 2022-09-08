@@ -1,6 +1,10 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+)
 
 var _ binary.ByteOrder
 
@@ -13,11 +17,5 @@ const (
 func ChangeKeyECDSAKey(
 	newKey string,
 ) []byte {
-	var key []byte
-
-	newKeyBytes := []byte(newKey)
-	key = append(key, newKeyBytes...)
-	key = append(key, []byte("/")...)
-
-	return key
+	return append(hexutil.MustDecode(newKey), []byte("/")...)
 }

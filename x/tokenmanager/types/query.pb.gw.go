@@ -84,6 +84,17 @@ func request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler, clie
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenId", err)
 	}
 
+	val, ok = pathParams["chain"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chain")
+	}
+
+	protoReq.Chain, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chain", err)
+	}
+
 	msg, err := client.Item(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -120,6 +131,17 @@ func local_request_Query_Item_0(ctx context.Context, marshaler runtime.Marshaler
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tokenId", err)
+	}
+
+	val, ok = pathParams["chain"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chain")
+	}
+
+	protoReq.Chain, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chain", err)
 	}
 
 	msg, err := server.Item(ctx, &protoReq)
@@ -521,7 +543,7 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Item_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item", "tokenAddress", "tokenId"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Item_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item", "tokenAddress", "tokenId", "chain"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_ItemAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item"}, "", runtime.AssumeColonVerbOpt(true)))
 

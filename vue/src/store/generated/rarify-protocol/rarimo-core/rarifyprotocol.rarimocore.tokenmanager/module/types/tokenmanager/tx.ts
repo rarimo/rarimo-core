@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { type, typeFromJSON, typeToJSON } from "../tokenmanager/info";
 import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
@@ -6,27 +7,15 @@ export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 export interface MsgCreateInfo {
   creator: string;
   index: string;
-  name: string;
-  symbol: string;
-  image: string;
   /** hex-encoded */
   currentAddress: string;
   /** hex-encoded */
   currentId: string;
   currentChain: string;
+  currentType: type;
 }
 
 export interface MsgCreateInfoResponse {}
-
-export interface MsgUpdateInfo {
-  creator: string;
-  index: string;
-  name: string;
-  symbol: string;
-  image: string;
-}
-
-export interface MsgUpdateInfoResponse {}
 
 export interface MsgDeleteInfo {
   creator: string;
@@ -43,6 +32,7 @@ export interface MsgAddChain {
   tokenAddress: string;
   /** hex-encoded */
   tokenId: string;
+  tokenType: type;
 }
 
 export interface MsgAddChainResponse {}
@@ -50,12 +40,10 @@ export interface MsgAddChainResponse {}
 const baseMsgCreateInfo: object = {
   creator: "",
   index: "",
-  name: "",
-  symbol: "",
-  image: "",
   currentAddress: "",
   currentId: "",
   currentChain: "",
+  currentType: 0,
 };
 
 export const MsgCreateInfo = {
@@ -66,23 +54,17 @@ export const MsgCreateInfo = {
     if (message.index !== "") {
       writer.uint32(18).string(message.index);
     }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.symbol !== "") {
-      writer.uint32(34).string(message.symbol);
-    }
-    if (message.image !== "") {
-      writer.uint32(42).string(message.image);
-    }
     if (message.currentAddress !== "") {
-      writer.uint32(50).string(message.currentAddress);
+      writer.uint32(26).string(message.currentAddress);
     }
     if (message.currentId !== "") {
-      writer.uint32(58).string(message.currentId);
+      writer.uint32(34).string(message.currentId);
     }
     if (message.currentChain !== "") {
-      writer.uint32(66).string(message.currentChain);
+      writer.uint32(42).string(message.currentChain);
+    }
+    if (message.currentType !== 0) {
+      writer.uint32(48).int32(message.currentType);
     }
     return writer;
   },
@@ -101,22 +83,16 @@ export const MsgCreateInfo = {
           message.index = reader.string();
           break;
         case 3:
-          message.name = reader.string();
-          break;
-        case 4:
-          message.symbol = reader.string();
-          break;
-        case 5:
-          message.image = reader.string();
-          break;
-        case 6:
           message.currentAddress = reader.string();
           break;
-        case 7:
+        case 4:
           message.currentId = reader.string();
           break;
-        case 8:
+        case 5:
           message.currentChain = reader.string();
+          break;
+        case 6:
+          message.currentType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -138,21 +114,6 @@ export const MsgCreateInfo = {
     } else {
       message.index = "";
     }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = String(object.name);
-    } else {
-      message.name = "";
-    }
-    if (object.symbol !== undefined && object.symbol !== null) {
-      message.symbol = String(object.symbol);
-    } else {
-      message.symbol = "";
-    }
-    if (object.image !== undefined && object.image !== null) {
-      message.image = String(object.image);
-    } else {
-      message.image = "";
-    }
     if (object.currentAddress !== undefined && object.currentAddress !== null) {
       message.currentAddress = String(object.currentAddress);
     } else {
@@ -168,6 +129,11 @@ export const MsgCreateInfo = {
     } else {
       message.currentChain = "";
     }
+    if (object.currentType !== undefined && object.currentType !== null) {
+      message.currentType = typeFromJSON(object.currentType);
+    } else {
+      message.currentType = 0;
+    }
     return message;
   },
 
@@ -175,14 +141,13 @@ export const MsgCreateInfo = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.index !== undefined && (obj.index = message.index);
-    message.name !== undefined && (obj.name = message.name);
-    message.symbol !== undefined && (obj.symbol = message.symbol);
-    message.image !== undefined && (obj.image = message.image);
     message.currentAddress !== undefined &&
       (obj.currentAddress = message.currentAddress);
     message.currentId !== undefined && (obj.currentId = message.currentId);
     message.currentChain !== undefined &&
       (obj.currentChain = message.currentChain);
+    message.currentType !== undefined &&
+      (obj.currentType = typeToJSON(message.currentType));
     return obj;
   },
 
@@ -198,21 +163,6 @@ export const MsgCreateInfo = {
     } else {
       message.index = "";
     }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = object.name;
-    } else {
-      message.name = "";
-    }
-    if (object.symbol !== undefined && object.symbol !== null) {
-      message.symbol = object.symbol;
-    } else {
-      message.symbol = "";
-    }
-    if (object.image !== undefined && object.image !== null) {
-      message.image = object.image;
-    } else {
-      message.image = "";
-    }
     if (object.currentAddress !== undefined && object.currentAddress !== null) {
       message.currentAddress = object.currentAddress;
     } else {
@@ -227,6 +177,11 @@ export const MsgCreateInfo = {
       message.currentChain = object.currentChain;
     } else {
       message.currentChain = "";
+    }
+    if (object.currentType !== undefined && object.currentType !== null) {
+      message.currentType = object.currentType;
+    } else {
+      message.currentType = 0;
     }
     return message;
   },
@@ -266,173 +221,6 @@ export const MsgCreateInfoResponse = {
 
   fromPartial(_: DeepPartial<MsgCreateInfoResponse>): MsgCreateInfoResponse {
     const message = { ...baseMsgCreateInfoResponse } as MsgCreateInfoResponse;
-    return message;
-  },
-};
-
-const baseMsgUpdateInfo: object = {
-  creator: "",
-  index: "",
-  name: "",
-  symbol: "",
-  image: "",
-};
-
-export const MsgUpdateInfo = {
-  encode(message: MsgUpdateInfo, writer: Writer = Writer.create()): Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.index !== "") {
-      writer.uint32(18).string(message.index);
-    }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.symbol !== "") {
-      writer.uint32(34).string(message.symbol);
-    }
-    if (message.image !== "") {
-      writer.uint32(42).string(message.image);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): MsgUpdateInfo {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgUpdateInfo } as MsgUpdateInfo;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.index = reader.string();
-          break;
-        case 3:
-          message.name = reader.string();
-          break;
-        case 4:
-          message.symbol = reader.string();
-          break;
-        case 5:
-          message.image = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgUpdateInfo {
-    const message = { ...baseMsgUpdateInfo } as MsgUpdateInfo;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator);
-    } else {
-      message.creator = "";
-    }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index);
-    } else {
-      message.index = "";
-    }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = String(object.name);
-    } else {
-      message.name = "";
-    }
-    if (object.symbol !== undefined && object.symbol !== null) {
-      message.symbol = String(object.symbol);
-    } else {
-      message.symbol = "";
-    }
-    if (object.image !== undefined && object.image !== null) {
-      message.image = String(object.image);
-    } else {
-      message.image = "";
-    }
-    return message;
-  },
-
-  toJSON(message: MsgUpdateInfo): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.index !== undefined && (obj.index = message.index);
-    message.name !== undefined && (obj.name = message.name);
-    message.symbol !== undefined && (obj.symbol = message.symbol);
-    message.image !== undefined && (obj.image = message.image);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<MsgUpdateInfo>): MsgUpdateInfo {
-    const message = { ...baseMsgUpdateInfo } as MsgUpdateInfo;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    } else {
-      message.creator = "";
-    }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = object.index;
-    } else {
-      message.index = "";
-    }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = object.name;
-    } else {
-      message.name = "";
-    }
-    if (object.symbol !== undefined && object.symbol !== null) {
-      message.symbol = object.symbol;
-    } else {
-      message.symbol = "";
-    }
-    if (object.image !== undefined && object.image !== null) {
-      message.image = object.image;
-    } else {
-      message.image = "";
-    }
-    return message;
-  },
-};
-
-const baseMsgUpdateInfoResponse: object = {};
-
-export const MsgUpdateInfoResponse = {
-  encode(_: MsgUpdateInfoResponse, writer: Writer = Writer.create()): Writer {
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): MsgUpdateInfoResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgUpdateInfoResponse } as MsgUpdateInfoResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgUpdateInfoResponse {
-    const message = { ...baseMsgUpdateInfoResponse } as MsgUpdateInfoResponse;
-    return message;
-  },
-
-  toJSON(_: MsgUpdateInfoResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(_: DeepPartial<MsgUpdateInfoResponse>): MsgUpdateInfoResponse {
-    const message = { ...baseMsgUpdateInfoResponse } as MsgUpdateInfoResponse;
     return message;
   },
 };
@@ -553,6 +341,7 @@ const baseMsgAddChain: object = {
   chainName: "",
   tokenAddress: "",
   tokenId: "",
+  tokenType: 0,
 };
 
 export const MsgAddChain = {
@@ -571,6 +360,9 @@ export const MsgAddChain = {
     }
     if (message.tokenId !== "") {
       writer.uint32(42).string(message.tokenId);
+    }
+    if (message.tokenType !== 0) {
+      writer.uint32(48).int32(message.tokenType);
     }
     return writer;
   },
@@ -596,6 +388,9 @@ export const MsgAddChain = {
           break;
         case 5:
           message.tokenId = reader.string();
+          break;
+        case 6:
+          message.tokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -632,6 +427,11 @@ export const MsgAddChain = {
     } else {
       message.tokenId = "";
     }
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = typeFromJSON(object.tokenType);
+    } else {
+      message.tokenType = 0;
+    }
     return message;
   },
 
@@ -643,6 +443,8 @@ export const MsgAddChain = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.tokenType !== undefined &&
+      (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
   },
 
@@ -672,6 +474,11 @@ export const MsgAddChain = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
+    }
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = object.tokenType;
+    } else {
+      message.tokenType = 0;
     }
     return message;
   },
@@ -718,7 +525,6 @@ export const MsgAddChainResponse = {
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateInfo(request: MsgCreateInfo): Promise<MsgCreateInfoResponse>;
-  UpdateInfo(request: MsgUpdateInfo): Promise<MsgUpdateInfoResponse>;
   DeleteInfo(request: MsgDeleteInfo): Promise<MsgDeleteInfoResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   AddChain(request: MsgAddChain): Promise<MsgAddChainResponse>;
@@ -738,18 +544,6 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateInfoResponse.decode(new Reader(data))
-    );
-  }
-
-  UpdateInfo(request: MsgUpdateInfo): Promise<MsgUpdateInfoResponse> {
-    const data = MsgUpdateInfo.encode(request).finish();
-    const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.tokenmanager.Msg",
-      "UpdateInfo",
-      data
-    );
-    return promise.then((data) =>
-      MsgUpdateInfoResponse.decode(new Reader(data))
     );
   }
 

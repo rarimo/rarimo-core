@@ -4,6 +4,7 @@ package rarifyprotocol.rarimocore.rarimocore;
 import "rarimocore/deposit.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/change_key_ecdsa.proto";
+import "tokenmanager/info.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -18,38 +19,32 @@ service Msg {
 
 message MsgCreateDeposit {
   string creator = 1;
-  string tx = 2;
-
-  string eventId = 3;
-  string fromChain = 4;
-  string toChain = 5;
-
+  string index = 2;
+  string tx = 3;
+  string eventId = 4;
+  string fromChain = 5;
+  string toChain = 6;
   // hex-encoded
-  string receiver = 6;
-  // hex-encoded
-  string tokenAddress = 7;
-  // hex-encoded
-  string tokenId = 8;
-  type TokenType = 9;
+  string receiver = 7;
+  // dec-encoded
+  string amount = 8;
+  rarifyprotocol.rarimocore.tokenmanager.type tokenType = 9;
 }
 
 message MsgCreateDepositResponse {}
 
 message MsgCreateConfirmation {
   string creator = 1;
-
   // hex-encoded
   string root = 2;
+  repeated string indexes = 3;
   // hex-encoded
-  repeated string hashes = 3;
-  // hex-encoded
-  string sigECDSA = 4;
+  string signatureECDSA = 4;
 }
 message MsgCreateConfirmationResponse {}
 
 message MsgCreateChangeKeyECDSA {
   string creator = 1;
-
   // hex-encoded
   string newKey = 2;
   // hex-encoded

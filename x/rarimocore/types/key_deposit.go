@@ -1,6 +1,10 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+)
 
 var _ binary.ByteOrder
 
@@ -11,13 +15,7 @@ const (
 
 // DepositKey returns the store key to retrieve a Deposit from the index fields
 func DepositKey(
-	tx string,
+	index string,
 ) []byte {
-	var key []byte
-
-	txBytes := []byte(tx)
-	key = append(key, txBytes...)
-	key = append(key, []byte("/")...)
-
-	return key
+	return append(hexutil.MustDecode(index), []byte("/")...)
 }

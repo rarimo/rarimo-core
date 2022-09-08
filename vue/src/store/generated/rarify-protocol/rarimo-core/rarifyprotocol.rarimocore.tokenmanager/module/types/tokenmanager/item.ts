@@ -8,15 +8,15 @@ export interface Item {
   tokenAddress: string;
   /** hex-encoded */
   tokenId: string;
-  index: string;
   chain: string;
+  index: string;
 }
 
 const baseItem: object = {
   tokenAddress: "",
   tokenId: "",
-  index: "",
   chain: "",
+  index: "",
 };
 
 export const Item = {
@@ -27,11 +27,11 @@ export const Item = {
     if (message.tokenId !== "") {
       writer.uint32(18).string(message.tokenId);
     }
-    if (message.index !== "") {
-      writer.uint32(26).string(message.index);
-    }
     if (message.chain !== "") {
-      writer.uint32(34).string(message.chain);
+      writer.uint32(26).string(message.chain);
+    }
+    if (message.index !== "") {
+      writer.uint32(34).string(message.index);
     }
     return writer;
   },
@@ -50,10 +50,10 @@ export const Item = {
           message.tokenId = reader.string();
           break;
         case 3:
-          message.index = reader.string();
+          message.chain = reader.string();
           break;
         case 4:
-          message.chain = reader.string();
+          message.index = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -75,15 +75,15 @@ export const Item = {
     } else {
       message.tokenId = "";
     }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index);
-    } else {
-      message.index = "";
-    }
     if (object.chain !== undefined && object.chain !== null) {
       message.chain = String(object.chain);
     } else {
       message.chain = "";
+    }
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
     }
     return message;
   },
@@ -93,8 +93,8 @@ export const Item = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
-    message.index !== undefined && (obj.index = message.index);
     message.chain !== undefined && (obj.chain = message.chain);
+    message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
@@ -110,15 +110,15 @@ export const Item = {
     } else {
       message.tokenId = "";
     }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = object.index;
-    } else {
-      message.index = "";
-    }
     if (object.chain !== undefined && object.chain !== null) {
       message.chain = object.chain;
     } else {
       message.chain = "";
+    }
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
     }
     return message;
   },

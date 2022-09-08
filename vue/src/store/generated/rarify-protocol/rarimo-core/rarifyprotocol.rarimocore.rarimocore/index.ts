@@ -192,7 +192,7 @@ export default {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryDeposit( key.tx)).data
+				let value= (await queryClient.queryDeposit( key.index)).data
 				
 					
 				commit('QUERY', { query: 'Deposit', key: { params: {...key}, query}, value })
@@ -240,7 +240,7 @@ export default {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryConfirmation( key.height)).data
+				let value= (await queryClient.queryConfirmation( key.root)).data
 				
 					
 				commit('QUERY', { query: 'Confirmation', key: { params: {...key}, query}, value })
@@ -327,6 +327,21 @@ export default {
 		},
 		
 		
+		async sendMsgCreateDeposit({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateDeposit(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateDeposit:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateDeposit:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgCreateConfirmation({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -357,22 +372,20 @@ export default {
 				}
 			}
 		},
-		async sendMsgCreateDeposit({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		async MsgCreateDeposit({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgCreateDeposit(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCreateDeposit:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateDeposit:Send Could not broadcast Tx: '+ e.message)
+				} else{
+					throw new Error('TxClient:MsgCreateDeposit:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		
 		async MsgCreateConfirmation({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -396,19 +409,6 @@ export default {
 					throw new Error('TxClient:MsgCreateChangeKeyECDSA:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateChangeKeyECDSA:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCreateDeposit({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateDeposit(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateDeposit:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateDeposit:Create Could not create message: ' + e.message)
 				}
 			}
 		},

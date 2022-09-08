@@ -23,14 +23,11 @@ export interface RpcStatus {
 export interface TokenmanagerChainInfo {
   tokenAddress?: string;
   tokenId?: string;
+  tokenType?: Tokenmanagertype;
 }
 
 export interface TokenmanagerInfo {
   index?: string;
-  name?: string;
-  symbol?: string;
-  image?: string;
-  currentChain?: string;
   chains?: Record<string, TokenmanagerChainInfo>;
   creator?: string;
 }
@@ -38,8 +35,8 @@ export interface TokenmanagerInfo {
 export interface TokenmanagerItem {
   tokenAddress?: string;
   tokenId?: string;
-  index?: string;
   chain?: string;
+  index?: string;
 }
 
 export type TokenmanagerMsgAddChainResponse = object;
@@ -48,18 +45,11 @@ export type TokenmanagerMsgCreateInfoResponse = object;
 
 export type TokenmanagerMsgDeleteInfoResponse = object;
 
-export type TokenmanagerMsgUpdateInfoResponse = object;
-
-export interface TokenmanagerNetwork {
-  contract?: string;
-  saver?: string;
-}
-
 /**
  * Params defines the parameters for the module.
  */
 export interface TokenmanagerParams {
-  networks?: Record<string, TokenmanagerNetwork>;
+  networks?: Record<string, string>;
 }
 
 export interface TokenmanagerQueryAllInfoResponse {
@@ -108,6 +98,15 @@ export interface TokenmanagerQueryParamsResponse {
   params?: TokenmanagerParams;
 }
 
+export enum Tokenmanagertype {
+  NATIVE = "NATIVE",
+  ERC20 = "ERC20",
+  ERC721 = "ERC721",
+  ERC1155 = "ERC1155",
+  METAPLEX_NFT = "METAPLEX_NFT",
+  METAPLEX_FT = "METAPLEX_FT",
+}
+
 /**
 * message SomeRequest {
          Foo some_parameter = 1;
@@ -145,6 +144,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -374,6 +380,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -415,6 +422,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -432,11 +440,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryItem
    * @summary Queries a Item by index.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}/{chain}
    */
-  queryItem = (tokenAddress: string, tokenId: string, params: RequestParams = {}) =>
+  queryItem = (tokenAddress: string, tokenId: string, chain: string, params: RequestParams = {}) =>
     this.request<TokenmanagerQueryGetItemResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${tokenAddress}/${tokenId}`,
+      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${tokenAddress}/${tokenId}/${chain}`,
       method: "GET",
       format: "json",
       ...params,

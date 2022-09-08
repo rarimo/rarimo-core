@@ -13,6 +13,7 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 	store.Set(types.ItemKey(
 		item.TokenAddress,
 		item.TokenId,
+		item.Chain,
 	), b)
 }
 
@@ -21,13 +22,14 @@ func (k Keeper) GetItem(
 	ctx sdk.Context,
 	tokenAddress string,
 	tokenId string,
-
+	chain string,
 ) (val types.Item, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
 
 	b := store.Get(types.ItemKey(
 		tokenAddress,
 		tokenId,
+		chain,
 	))
 	if b == nil {
 		return val, false
@@ -42,12 +44,13 @@ func (k Keeper) RemoveItem(
 	ctx sdk.Context,
 	tokenAddress string,
 	tokenId string,
-
+	chain string,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
 	store.Delete(types.ItemKey(
 		tokenAddress,
 		tokenId,
+		chain,
 	))
 }
 

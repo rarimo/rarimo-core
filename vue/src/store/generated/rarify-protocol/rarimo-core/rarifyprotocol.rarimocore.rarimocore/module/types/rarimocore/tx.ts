@@ -1,22 +1,21 @@
 /* eslint-disable */
-import { type, typeFromJSON, typeToJSON } from "../rarimocore/deposit";
+import { type, typeFromJSON, typeToJSON } from "../tokenmanager/info";
 import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 export interface MsgCreateDeposit {
   creator: string;
+  index: string;
   tx: string;
   eventId: string;
   fromChain: string;
   toChain: string;
   /** hex-encoded */
   receiver: string;
-  /** hex-encoded */
-  tokenAddress: string;
-  /** hex-encoded */
-  tokenId: string;
-  TokenType: type;
+  /** dec-encoded */
+  amount: string;
+  tokenType: type;
 }
 
 export interface MsgCreateDepositResponse {}
@@ -25,10 +24,9 @@ export interface MsgCreateConfirmation {
   creator: string;
   /** hex-encoded */
   root: string;
+  indexes: string[];
   /** hex-encoded */
-  hashes: string[];
-  /** hex-encoded */
-  sigECDSA: string;
+  signatureECDSA: string;
 }
 
 export interface MsgCreateConfirmationResponse {}
@@ -45,14 +43,14 @@ export interface MsgCreateChangeKeyECDSAResponse {}
 
 const baseMsgCreateDeposit: object = {
   creator: "",
+  index: "",
   tx: "",
   eventId: "",
   fromChain: "",
   toChain: "",
   receiver: "",
-  tokenAddress: "",
-  tokenId: "",
-  TokenType: 0,
+  amount: "",
+  tokenType: 0,
 };
 
 export const MsgCreateDeposit = {
@@ -60,29 +58,29 @@ export const MsgCreateDeposit = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
+    if (message.index !== "") {
+      writer.uint32(18).string(message.index);
+    }
     if (message.tx !== "") {
-      writer.uint32(18).string(message.tx);
+      writer.uint32(26).string(message.tx);
     }
     if (message.eventId !== "") {
-      writer.uint32(26).string(message.eventId);
+      writer.uint32(34).string(message.eventId);
     }
     if (message.fromChain !== "") {
-      writer.uint32(34).string(message.fromChain);
+      writer.uint32(42).string(message.fromChain);
     }
     if (message.toChain !== "") {
-      writer.uint32(42).string(message.toChain);
+      writer.uint32(50).string(message.toChain);
     }
     if (message.receiver !== "") {
-      writer.uint32(50).string(message.receiver);
+      writer.uint32(58).string(message.receiver);
     }
-    if (message.tokenAddress !== "") {
-      writer.uint32(58).string(message.tokenAddress);
+    if (message.amount !== "") {
+      writer.uint32(66).string(message.amount);
     }
-    if (message.tokenId !== "") {
-      writer.uint32(66).string(message.tokenId);
-    }
-    if (message.TokenType !== 0) {
-      writer.uint32(72).int32(message.TokenType);
+    if (message.tokenType !== 0) {
+      writer.uint32(72).int32(message.tokenType);
     }
     return writer;
   },
@@ -98,28 +96,28 @@ export const MsgCreateDeposit = {
           message.creator = reader.string();
           break;
         case 2:
-          message.tx = reader.string();
+          message.index = reader.string();
           break;
         case 3:
-          message.eventId = reader.string();
+          message.tx = reader.string();
           break;
         case 4:
-          message.fromChain = reader.string();
+          message.eventId = reader.string();
           break;
         case 5:
-          message.toChain = reader.string();
+          message.fromChain = reader.string();
           break;
         case 6:
-          message.receiver = reader.string();
+          message.toChain = reader.string();
           break;
         case 7:
-          message.tokenAddress = reader.string();
+          message.receiver = reader.string();
           break;
         case 8:
-          message.tokenId = reader.string();
+          message.amount = reader.string();
           break;
         case 9:
-          message.TokenType = reader.int32() as any;
+          message.tokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -135,6 +133,11 @@ export const MsgCreateDeposit = {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
+    }
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = String(object.tx);
@@ -161,20 +164,15 @@ export const MsgCreateDeposit = {
     } else {
       message.receiver = "";
     }
-    if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = String(object.tokenAddress);
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = String(object.amount);
     } else {
-      message.tokenAddress = "";
+      message.amount = "";
     }
-    if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = String(object.tokenId);
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = typeFromJSON(object.tokenType);
     } else {
-      message.tokenId = "";
-    }
-    if (object.TokenType !== undefined && object.TokenType !== null) {
-      message.TokenType = typeFromJSON(object.TokenType);
-    } else {
-      message.TokenType = 0;
+      message.tokenType = 0;
     }
     return message;
   },
@@ -182,16 +180,15 @@ export const MsgCreateDeposit = {
   toJSON(message: MsgCreateDeposit): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
+    message.index !== undefined && (obj.index = message.index);
     message.tx !== undefined && (obj.tx = message.tx);
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
     message.toChain !== undefined && (obj.toChain = message.toChain);
     message.receiver !== undefined && (obj.receiver = message.receiver);
-    message.tokenAddress !== undefined &&
-      (obj.tokenAddress = message.tokenAddress);
-    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
-    message.TokenType !== undefined &&
-      (obj.TokenType = typeToJSON(message.TokenType));
+    message.amount !== undefined && (obj.amount = message.amount);
+    message.tokenType !== undefined &&
+      (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
   },
 
@@ -201,6 +198,11 @@ export const MsgCreateDeposit = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = object.tx;
@@ -227,20 +229,15 @@ export const MsgCreateDeposit = {
     } else {
       message.receiver = "";
     }
-    if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = object.tokenAddress;
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
     } else {
-      message.tokenAddress = "";
+      message.amount = "";
     }
-    if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = object.tokenId;
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = object.tokenType;
     } else {
-      message.tokenId = "";
-    }
-    if (object.TokenType !== undefined && object.TokenType !== null) {
-      message.TokenType = object.TokenType;
-    } else {
-      message.TokenType = 0;
+      message.tokenType = 0;
     }
     return message;
   },
@@ -301,8 +298,8 @@ export const MsgCreateDepositResponse = {
 const baseMsgCreateConfirmation: object = {
   creator: "",
   root: "",
-  hashes: "",
-  sigECDSA: "",
+  indexes: "",
+  signatureECDSA: "",
 };
 
 export const MsgCreateConfirmation = {
@@ -316,11 +313,11 @@ export const MsgCreateConfirmation = {
     if (message.root !== "") {
       writer.uint32(18).string(message.root);
     }
-    for (const v of message.hashes) {
+    for (const v of message.indexes) {
       writer.uint32(26).string(v!);
     }
-    if (message.sigECDSA !== "") {
-      writer.uint32(34).string(message.sigECDSA);
+    if (message.signatureECDSA !== "") {
+      writer.uint32(34).string(message.signatureECDSA);
     }
     return writer;
   },
@@ -329,7 +326,7 @@ export const MsgCreateConfirmation = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
-    message.hashes = [];
+    message.indexes = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -340,10 +337,10 @@ export const MsgCreateConfirmation = {
           message.root = reader.string();
           break;
         case 3:
-          message.hashes.push(reader.string());
+          message.indexes.push(reader.string());
           break;
         case 4:
-          message.sigECDSA = reader.string();
+          message.signatureECDSA = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -355,7 +352,7 @@ export const MsgCreateConfirmation = {
 
   fromJSON(object: any): MsgCreateConfirmation {
     const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
-    message.hashes = [];
+    message.indexes = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
@@ -366,15 +363,15 @@ export const MsgCreateConfirmation = {
     } else {
       message.root = "";
     }
-    if (object.hashes !== undefined && object.hashes !== null) {
-      for (const e of object.hashes) {
-        message.hashes.push(String(e));
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(String(e));
       }
     }
-    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
-      message.sigECDSA = String(object.sigECDSA);
+    if (object.signatureECDSA !== undefined && object.signatureECDSA !== null) {
+      message.signatureECDSA = String(object.signatureECDSA);
     } else {
-      message.sigECDSA = "";
+      message.signatureECDSA = "";
     }
     return message;
   },
@@ -383,12 +380,13 @@ export const MsgCreateConfirmation = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.root !== undefined && (obj.root = message.root);
-    if (message.hashes) {
-      obj.hashes = message.hashes.map((e) => e);
+    if (message.indexes) {
+      obj.indexes = message.indexes.map((e) => e);
     } else {
-      obj.hashes = [];
+      obj.indexes = [];
     }
-    message.sigECDSA !== undefined && (obj.sigECDSA = message.sigECDSA);
+    message.signatureECDSA !== undefined &&
+      (obj.signatureECDSA = message.signatureECDSA);
     return obj;
   },
 
@@ -396,7 +394,7 @@ export const MsgCreateConfirmation = {
     object: DeepPartial<MsgCreateConfirmation>
   ): MsgCreateConfirmation {
     const message = { ...baseMsgCreateConfirmation } as MsgCreateConfirmation;
-    message.hashes = [];
+    message.indexes = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
@@ -407,15 +405,15 @@ export const MsgCreateConfirmation = {
     } else {
       message.root = "";
     }
-    if (object.hashes !== undefined && object.hashes !== null) {
-      for (const e of object.hashes) {
-        message.hashes.push(e);
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(e);
       }
     }
-    if (object.sigECDSA !== undefined && object.sigECDSA !== null) {
-      message.sigECDSA = object.sigECDSA;
+    if (object.signatureECDSA !== undefined && object.signatureECDSA !== null) {
+      message.signatureECDSA = object.signatureECDSA;
     } else {
-      message.sigECDSA = "";
+      message.signatureECDSA = "";
     }
     return message;
   },

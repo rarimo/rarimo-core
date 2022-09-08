@@ -4,13 +4,7 @@ package rarifyprotocol.rarimocore.tokenmanager;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
-message Network {
-  string contract = 1;
-  string saver = 2;
-}
-
 // Params defines the parameters for the module.
 message Params {
-  map<string, Network> networks = 1;
-  
+  map<string, string> networks = 1;
 }

@@ -49,6 +49,7 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 		ctx,
 		req.TokenAddress,
 		req.TokenId,
+		req.Chain,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

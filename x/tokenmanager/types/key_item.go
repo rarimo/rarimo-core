@@ -17,6 +17,7 @@ const (
 func ItemKey(
 	tokenAddress string,
 	tokenId string,
+	chain string,
 ) []byte {
 	var key []byte
 
@@ -24,6 +25,9 @@ func ItemKey(
 	key = append(key, []byte("/")...)
 
 	key = append(key, hexutil.MustDecode(tokenId)...)
+	key = append(key, []byte("/")...)
+
+	key = append(key, []byte(chain)...)
 	key = append(key, []byte("/")...)
 
 	return key

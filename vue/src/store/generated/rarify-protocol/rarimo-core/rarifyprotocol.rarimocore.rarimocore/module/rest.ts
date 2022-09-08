@@ -21,22 +21,22 @@ export interface RarimocoreChangeKeyECDSA {
 
 export interface RarimocoreConfirmation {
   root?: string;
-  hashes?: string[];
-  sigECDSA?: string;
+  indexes?: string[];
+  signatureECDSA?: string;
   creator?: string;
 }
 
 export interface RarimocoreDeposit {
+  index?: string;
   tx?: string;
   eventId?: string;
   fromChain?: string;
   toChain?: string;
   receiver?: string;
-  tokenAddress?: string;
-  tokenId?: string;
+  amount?: string;
   creator?: string;
   signed?: boolean;
-  tokenType?: Rarimocoretype;
+  tokenIndex?: string;
 }
 
 export type RarimocoreMsgCreateChangeKeyECDSAResponse = object;
@@ -117,20 +117,20 @@ export interface RarimocoreQueryParamsResponse {
   params?: RarimocoreParams;
 }
 
-export enum Rarimocoretype {
+export interface RpcStatus {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: ProtobufAny[];
+}
+
+export enum Tokenmanagertype {
   NATIVE = "NATIVE",
   ERC20 = "ERC20",
   ERC721 = "ERC721",
   ERC1155 = "ERC1155",
   METAPLEX_NFT = "METAPLEX_NFT",
   METAPLEX_FT = "METAPLEX_FT",
-}
-
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
 }
 
 /**
@@ -457,11 +457,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryConfirmation
    * @summary Queries a Confirmation by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation/{height}
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}
    */
-  queryConfirmation = (height: string, params: RequestParams = {}) =>
+  queryConfirmation = (root: string, params: RequestParams = {}) =>
     this.request<RarimocoreQueryGetConfirmationResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation/${height}`,
+      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation/${root}`,
       method: "GET",
       format: "json",
       ...params,
@@ -498,11 +498,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryDeposit
    * @summary Queries a Deposit by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/deposit/{tx}
+   * @request GET:/rarify-protocol/rarimo-core/rarimocore/deposit/{index}
    */
-  queryDeposit = (tx: string, params: RequestParams = {}) =>
+  queryDeposit = (index: string, params: RequestParams = {}) =>
     this.request<RarimocoreQueryGetDepositResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/deposit/${tx}`,
+      path: `/rarify-protocol/rarimo-core/rarimocore/deposit/${index}`,
       method: "GET",
       format: "json",
       ...params,

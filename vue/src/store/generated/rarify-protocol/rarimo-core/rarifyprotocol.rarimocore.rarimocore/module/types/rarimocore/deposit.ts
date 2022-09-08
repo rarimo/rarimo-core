@@ -3,113 +3,57 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
-export enum type {
-  NATIVE = 0,
-  ERC20 = 1,
-  ERC721 = 2,
-  ERC1155 = 3,
-  METAPLEX_NFT = 4,
-  METAPLEX_FT = 5,
-  UNRECOGNIZED = -1,
-}
-
-export function typeFromJSON(object: any): type {
-  switch (object) {
-    case 0:
-    case "NATIVE":
-      return type.NATIVE;
-    case 1:
-    case "ERC20":
-      return type.ERC20;
-    case 2:
-    case "ERC721":
-      return type.ERC721;
-    case 3:
-    case "ERC1155":
-      return type.ERC1155;
-    case 4:
-    case "METAPLEX_NFT":
-      return type.METAPLEX_NFT;
-    case 5:
-    case "METAPLEX_FT":
-      return type.METAPLEX_FT;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return type.UNRECOGNIZED;
-  }
-}
-
-export function typeToJSON(object: type): string {
-  switch (object) {
-    case type.NATIVE:
-      return "NATIVE";
-    case type.ERC20:
-      return "ERC20";
-    case type.ERC721:
-      return "ERC721";
-    case type.ERC1155:
-      return "ERC1155";
-    case type.METAPLEX_NFT:
-      return "METAPLEX_NFT";
-    case type.METAPLEX_FT:
-      return "METAPLEX_FT";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export interface Deposit {
+  /** hex-encoded keccak256 hash for tx||event||chain strings' bytes */
+  index: string;
   tx: string;
   eventId: string;
   fromChain: string;
   toChain: string;
   /** hex-encoded */
   receiver: string;
-  /** hex-encoded */
-  tokenAddress: string;
-  /** hex-encoded */
-  tokenId: string;
+  /** dec-encoded */
+  amount: string;
   creator: string;
   signed: boolean;
-  tokenType: type;
+  tokenIndex: string;
 }
 
 const baseDeposit: object = {
+  index: "",
   tx: "",
   eventId: "",
   fromChain: "",
   toChain: "",
   receiver: "",
-  tokenAddress: "",
-  tokenId: "",
+  amount: "",
   creator: "",
   signed: false,
-  tokenType: 0,
+  tokenIndex: "",
 };
 
 export const Deposit = {
   encode(message: Deposit, writer: Writer = Writer.create()): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
     if (message.tx !== "") {
-      writer.uint32(10).string(message.tx);
+      writer.uint32(18).string(message.tx);
     }
     if (message.eventId !== "") {
-      writer.uint32(18).string(message.eventId);
+      writer.uint32(26).string(message.eventId);
     }
     if (message.fromChain !== "") {
-      writer.uint32(26).string(message.fromChain);
+      writer.uint32(34).string(message.fromChain);
     }
     if (message.toChain !== "") {
-      writer.uint32(34).string(message.toChain);
+      writer.uint32(42).string(message.toChain);
     }
     if (message.receiver !== "") {
-      writer.uint32(42).string(message.receiver);
+      writer.uint32(50).string(message.receiver);
     }
-    if (message.tokenAddress !== "") {
-      writer.uint32(50).string(message.tokenAddress);
-    }
-    if (message.tokenId !== "") {
-      writer.uint32(58).string(message.tokenId);
+    if (message.amount !== "") {
+      writer.uint32(58).string(message.amount);
     }
     if (message.creator !== "") {
       writer.uint32(66).string(message.creator);
@@ -117,8 +61,8 @@ export const Deposit = {
     if (message.signed === true) {
       writer.uint32(72).bool(message.signed);
     }
-    if (message.tokenType !== 0) {
-      writer.uint32(80).int32(message.tokenType);
+    if (message.tokenIndex !== "") {
+      writer.uint32(82).string(message.tokenIndex);
     }
     return writer;
   },
@@ -131,25 +75,25 @@ export const Deposit = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.tx = reader.string();
+          message.index = reader.string();
           break;
         case 2:
-          message.eventId = reader.string();
+          message.tx = reader.string();
           break;
         case 3:
-          message.fromChain = reader.string();
+          message.eventId = reader.string();
           break;
         case 4:
-          message.toChain = reader.string();
+          message.fromChain = reader.string();
           break;
         case 5:
-          message.receiver = reader.string();
+          message.toChain = reader.string();
           break;
         case 6:
-          message.tokenAddress = reader.string();
+          message.receiver = reader.string();
           break;
         case 7:
-          message.tokenId = reader.string();
+          message.amount = reader.string();
           break;
         case 8:
           message.creator = reader.string();
@@ -158,7 +102,7 @@ export const Deposit = {
           message.signed = reader.bool();
           break;
         case 10:
-          message.tokenType = reader.int32() as any;
+          message.tokenIndex = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -170,6 +114,11 @@ export const Deposit = {
 
   fromJSON(object: any): Deposit {
     const message = { ...baseDeposit } as Deposit;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = String(object.tx);
     } else {
@@ -195,15 +144,10 @@ export const Deposit = {
     } else {
       message.receiver = "";
     }
-    if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = String(object.tokenAddress);
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = String(object.amount);
     } else {
-      message.tokenAddress = "";
-    }
-    if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = String(object.tokenId);
-    } else {
-      message.tokenId = "";
+      message.amount = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -215,33 +159,36 @@ export const Deposit = {
     } else {
       message.signed = false;
     }
-    if (object.tokenType !== undefined && object.tokenType !== null) {
-      message.tokenType = typeFromJSON(object.tokenType);
+    if (object.tokenIndex !== undefined && object.tokenIndex !== null) {
+      message.tokenIndex = String(object.tokenIndex);
     } else {
-      message.tokenType = 0;
+      message.tokenIndex = "";
     }
     return message;
   },
 
   toJSON(message: Deposit): unknown {
     const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
     message.tx !== undefined && (obj.tx = message.tx);
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
     message.toChain !== undefined && (obj.toChain = message.toChain);
     message.receiver !== undefined && (obj.receiver = message.receiver);
-    message.tokenAddress !== undefined &&
-      (obj.tokenAddress = message.tokenAddress);
-    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.amount !== undefined && (obj.amount = message.amount);
     message.creator !== undefined && (obj.creator = message.creator);
     message.signed !== undefined && (obj.signed = message.signed);
-    message.tokenType !== undefined &&
-      (obj.tokenType = typeToJSON(message.tokenType));
+    message.tokenIndex !== undefined && (obj.tokenIndex = message.tokenIndex);
     return obj;
   },
 
   fromPartial(object: DeepPartial<Deposit>): Deposit {
     const message = { ...baseDeposit } as Deposit;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = object.tx;
     } else {
@@ -267,15 +214,10 @@ export const Deposit = {
     } else {
       message.receiver = "";
     }
-    if (object.tokenAddress !== undefined && object.tokenAddress !== null) {
-      message.tokenAddress = object.tokenAddress;
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
     } else {
-      message.tokenAddress = "";
-    }
-    if (object.tokenId !== undefined && object.tokenId !== null) {
-      message.tokenId = object.tokenId;
-    } else {
-      message.tokenId = "";
+      message.amount = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -287,10 +229,10 @@ export const Deposit = {
     } else {
       message.signed = false;
     }
-    if (object.tokenType !== undefined && object.tokenType !== null) {
-      message.tokenType = object.tokenType;
+    if (object.tokenIndex !== undefined && object.tokenIndex !== null) {
+      message.tokenIndex = object.tokenIndex;
     } else {
-      message.tokenType = 0;
+      message.tokenIndex = "";
     }
     return message;
   },

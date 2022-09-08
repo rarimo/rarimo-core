@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 const (
@@ -14,15 +15,15 @@ var _ sdk.Msg = &MsgCreateConfirmation{}
 func NewMsgCreateConfirmation(
 	creator string,
 	root string,
-	hashes []string,
+	indexes []string,
 	sigECDSA string,
 
 ) *MsgCreateConfirmation {
 	return &MsgCreateConfirmation{
-		Creator:  creator,
-		Root:     root,
-		Hashes:   hashes,
-		SigECDSA: sigECDSA,
+		Creator:        creator,
+		Root:           root,
+		Indexes:        indexes,
+		SignatureECDSA: sigECDSA,
 	}
 }
 
@@ -52,5 +53,14 @@ func (msg *MsgCreateConfirmation) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if _, err = hexutil.Decode(msg.SignatureECDSA); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex receiver address (%s)", err)
+	}
+
+	if _, err = hexutil.Decode(msg.Root); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex receiver address (%s)", err)
+	}
+
 	return nil
 }

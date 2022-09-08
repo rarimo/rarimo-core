@@ -17,8 +17,5 @@ const (
 func ConfirmationKey(
 	root string,
 ) []byte {
-	key := hexutil.MustDecode(root)
-	key = append(key, []byte("/")...)
-
-	return key
+	return append(hexutil.MustDecode(root), []byte("/")...)
 }

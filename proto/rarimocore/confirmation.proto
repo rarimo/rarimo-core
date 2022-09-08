@@ -7,9 +7,9 @@ message Confirmation {
   // hex-encoded
   string root = 1;
   // hex-encoded
-  repeated string hashes = 2;
+  repeated string indexes = 2;
   // hex-encoded
-  string sigECDSA = 3;
+  string signatureECDSA = 3;
   string creator = 4;
 }
 

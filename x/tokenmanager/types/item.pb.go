@@ -27,8 +27,8 @@ type Item struct {
 	TokenAddress string `protobuf:"bytes,1,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
 	// hex-encoded
 	TokenId string `protobuf:"bytes,2,opt,name=tokenId,proto3" json:"tokenId,omitempty"`
-	Index   string `protobuf:"bytes,3,opt,name=index,proto3" json:"index,omitempty"`
-	Chain   string `protobuf:"bytes,4,opt,name=chain,proto3" json:"chain,omitempty"`
+	Chain   string `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+	Index   string `protobuf:"bytes,4,opt,name=index,proto3" json:"index,omitempty"`
 }
 
 func (m *Item) Reset()         { *m = Item{} }
@@ -78,16 +78,16 @@ func (m *Item) GetTokenId() string {
 	return ""
 }
 
-func (m *Item) GetIndex() string {
+func (m *Item) GetChain() string {
 	if m != nil {
-		return m.Index
+		return m.Chain
 	}
 	return ""
 }
 
-func (m *Item) GetChain() string {
+func (m *Item) GetIndex() string {
 	if m != nil {
-		return m.Chain
+		return m.Index
 	}
 	return ""
 }
@@ -106,13 +106,13 @@ var fileDescriptor_e83fe9c71c21d068 = []byte{
 	0xf4, 0x40, 0xdc, 0xdc, 0xfc, 0xe4, 0xfc, 0xa2, 0x54, 0x3d, 0x64, 0x2d, 0x4a, 0x05, 0x5c, 0x2c,
 	0x9e, 0x25, 0xa9, 0xb9, 0x42, 0x4a, 0x5c, 0x3c, 0x60, 0x71, 0xc7, 0x94, 0x94, 0xa2, 0xd4, 0xe2,
 	0x62, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x14, 0x31, 0x21, 0x09, 0x2e, 0x76, 0x30, 0xdf,
-	0x33, 0x45, 0x82, 0x09, 0x2c, 0x0d, 0xe3, 0x0a, 0x89, 0x70, 0xb1, 0x66, 0xe6, 0xa5, 0xa4, 0x56,
-	0x48, 0x30, 0x83, 0xc5, 0x21, 0x1c, 0x90, 0x68, 0x72, 0x46, 0x62, 0x66, 0x9e, 0x04, 0x0b, 0x44,
+	0x33, 0x45, 0x82, 0x09, 0x2c, 0x0d, 0xe3, 0x0a, 0x89, 0x70, 0xb1, 0x26, 0x67, 0x24, 0x66, 0xe6,
+	0x49, 0x30, 0x83, 0xc5, 0x21, 0x1c, 0x90, 0x68, 0x66, 0x5e, 0x4a, 0x6a, 0x85, 0x04, 0x0b, 0x44,
 	0x14, 0xcc, 0x71, 0x0a, 0x3d, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4,
 	0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0xeb,
 	0xf4, 0xcc, 0x92, 0x9c, 0xc4, 0x24, 0xbd, 0xe4, 0xfc, 0x5c, 0x7d, 0x88, 0xf3, 0x75, 0x61, 0xee,
 	0xd7, 0x87, 0xb8, 0x5f, 0x17, 0xe4, 0x01, 0xfd, 0x0a, 0x7d, 0x14, 0x5f, 0x97, 0x54, 0x16, 0xa4,
-	0x16, 0x27, 0xb1, 0x81, 0x95, 0x1a, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x25, 0x37, 0xc7, 0x86,
+	0x16, 0x27, 0xb1, 0x81, 0x95, 0x1a, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x55, 0xd6, 0x8c, 0x09,
 	0x12, 0x01, 0x00, 0x00,
 }
 
@@ -136,17 +136,17 @@ func (m *Item) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Chain) > 0 {
-		i -= len(m.Chain)
-		copy(dAtA[i:], m.Chain)
-		i = encodeVarintItem(dAtA, i, uint64(len(m.Chain)))
-		i--
-		dAtA[i] = 0x22
-	}
 	if len(m.Index) > 0 {
 		i -= len(m.Index)
 		copy(dAtA[i:], m.Index)
 		i = encodeVarintItem(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintItem(dAtA, i, uint64(len(m.Chain)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -192,11 +192,11 @@ func (m *Item) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovItem(uint64(l))
 	}
-	l = len(m.Index)
+	l = len(m.Chain)
 	if l > 0 {
 		n += 1 + l + sovItem(uint64(l))
 	}
-	l = len(m.Chain)
+	l = len(m.Index)
 	if l > 0 {
 		n += 1 + l + sovItem(uint64(l))
 	}
@@ -304,38 +304,6 @@ func (m *Item) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowItem
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthItem
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthItem
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Index = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
 			}
 			var stringLen uint64
@@ -365,6 +333,38 @@ func (m *Item) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowItem
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthItem
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthItem
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

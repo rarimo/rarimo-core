@@ -3,92 +3,15 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
-export interface Network {
-  contract: string;
-  saver: string;
-}
-
 /** Params defines the parameters for the module. */
 export interface Params {
-  networks: { [key: string]: Network };
+  networks: { [key: string]: string };
 }
 
 export interface Params_NetworksEntry {
   key: string;
-  value: Network | undefined;
+  value: string;
 }
-
-const baseNetwork: object = { contract: "", saver: "" };
-
-export const Network = {
-  encode(message: Network, writer: Writer = Writer.create()): Writer {
-    if (message.contract !== "") {
-      writer.uint32(10).string(message.contract);
-    }
-    if (message.saver !== "") {
-      writer.uint32(18).string(message.saver);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): Network {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseNetwork } as Network;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.contract = reader.string();
-          break;
-        case 2:
-          message.saver = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Network {
-    const message = { ...baseNetwork } as Network;
-    if (object.contract !== undefined && object.contract !== null) {
-      message.contract = String(object.contract);
-    } else {
-      message.contract = "";
-    }
-    if (object.saver !== undefined && object.saver !== null) {
-      message.saver = String(object.saver);
-    } else {
-      message.saver = "";
-    }
-    return message;
-  },
-
-  toJSON(message: Network): unknown {
-    const obj: any = {};
-    message.contract !== undefined && (obj.contract = message.contract);
-    message.saver !== undefined && (obj.saver = message.saver);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<Network>): Network {
-    const message = { ...baseNetwork } as Network;
-    if (object.contract !== undefined && object.contract !== null) {
-      message.contract = object.contract;
-    } else {
-      message.contract = "";
-    }
-    if (object.saver !== undefined && object.saver !== null) {
-      message.saver = object.saver;
-    } else {
-      message.saver = "";
-    }
-    return message;
-  },
-};
 
 const baseParams: object = {};
 
@@ -130,7 +53,7 @@ export const Params = {
     message.networks = {};
     if (object.networks !== undefined && object.networks !== null) {
       Object.entries(object.networks).forEach(([key, value]) => {
-        message.networks[key] = Network.fromJSON(value);
+        message.networks[key] = String(value);
       });
     }
     return message;
@@ -141,7 +64,7 @@ export const Params = {
     obj.networks = {};
     if (message.networks) {
       Object.entries(message.networks).forEach(([k, v]) => {
-        obj.networks[k] = Network.toJSON(v);
+        obj.networks[k] = v;
       });
     }
     return obj;
@@ -153,7 +76,7 @@ export const Params = {
     if (object.networks !== undefined && object.networks !== null) {
       Object.entries(object.networks).forEach(([key, value]) => {
         if (value !== undefined) {
-          message.networks[key] = Network.fromPartial(value);
+          message.networks[key] = String(value);
         }
       });
     }
@@ -161,7 +84,7 @@ export const Params = {
   },
 };
 
-const baseParams_NetworksEntry: object = { key: "" };
+const baseParams_NetworksEntry: object = { key: "", value: "" };
 
 export const Params_NetworksEntry = {
   encode(
@@ -171,8 +94,8 @@ export const Params_NetworksEntry = {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
-    if (message.value !== undefined) {
-      Network.encode(message.value, writer.uint32(18).fork()).ldelim();
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
     }
     return writer;
   },
@@ -188,7 +111,7 @@ export const Params_NetworksEntry = {
           message.key = reader.string();
           break;
         case 2:
-          message.value = Network.decode(reader, reader.uint32());
+          message.value = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -206,9 +129,9 @@ export const Params_NetworksEntry = {
       message.key = "";
     }
     if (object.value !== undefined && object.value !== null) {
-      message.value = Network.fromJSON(object.value);
+      message.value = String(object.value);
     } else {
-      message.value = undefined;
+      message.value = "";
     }
     return message;
   },
@@ -216,8 +139,7 @@ export const Params_NetworksEntry = {
   toJSON(message: Params_NetworksEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined &&
-      (obj.value = message.value ? Network.toJSON(message.value) : undefined);
+    message.value !== undefined && (obj.value = message.value);
     return obj;
   },
 
@@ -229,9 +151,9 @@ export const Params_NetworksEntry = {
       message.key = "";
     }
     if (object.value !== undefined && object.value !== null) {
-      message.value = Network.fromPartial(object.value);
+      message.value = object.value;
     } else {
-      message.value = undefined;
+      message.value = "";
     }
     return message;
   },

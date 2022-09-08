@@ -3,11 +3,10 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 import { ChainInfo } from "./module/types/tokenmanager/info"
 import { Info } from "./module/types/tokenmanager/info"
 import { Item } from "./module/types/tokenmanager/item"
-import { Network } from "./module/types/tokenmanager/params"
 import { Params } from "./module/types/tokenmanager/params"
 
 
-export { ChainInfo, Info, Item, Network, Params };
+export { ChainInfo, Info, Item, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -55,7 +54,6 @@ const getDefaultState = () => {
 						ChainInfo: getStructure(ChainInfo.fromPartial({})),
 						Info: getStructure(Info.fromPartial({})),
 						Item: getStructure(Item.fromPartial({})),
-						Network: getStructure(Network.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -180,7 +178,7 @@ export default {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryItem( key.tokenAddress,  key.tokenId)).data
+				let value= (await queryClient.queryItem( key.tokenAddress,  key.tokenId,  key.chain)).data
 				
 					
 				commit('QUERY', { query: 'Item', key: { params: {...key}, query}, value })
@@ -267,21 +265,6 @@ export default {
 		},
 		
 		
-		async sendMsgAddChain({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgAddChain(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgAddChain:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgAddChain:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgCreateInfo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -294,21 +277,6 @@ export default {
 					throw new Error('TxClient:MsgCreateInfo:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgCreateInfo:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateInfo({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUpdateInfo(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateInfo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateInfo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -327,20 +295,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgAddChain({ rootGetters }, { value }) {
+		async sendMsgAddChain({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgAddChain(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgAddChain:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgAddChain:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgAddChain:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgCreateInfo({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -354,19 +324,6 @@ export default {
 				}
 			}
 		},
-		async MsgUpdateInfo({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUpdateInfo(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateInfo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateInfo:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgDeleteInfo({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -377,6 +334,19 @@ export default {
 					throw new Error('TxClient:MsgDeleteInfo:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgDeleteInfo:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgAddChain({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgAddChain(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAddChain:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgAddChain:Create Could not create message: ' + e.message)
 				}
 			}
 		},

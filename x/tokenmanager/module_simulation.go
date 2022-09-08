@@ -28,10 +28,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateInfo int = 100
 
-	opWeightMsgUpdateInfo = "op_weight_msg_info"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateInfo int = 100
-
 	opWeightMsgDeleteInfo = "op_weight_msg_info"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteInfo int = 100
@@ -89,17 +85,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateInfo,
 		tokenmanagersimulation.SimulateMsgCreateInfo(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUpdateInfo int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateInfo, &weightMsgUpdateInfo, nil,
-		func(_ *rand.Rand) {
-			weightMsgUpdateInfo = defaultWeightMsgUpdateInfo
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateInfo,
-		tokenmanagersimulation.SimulateMsgUpdateInfo(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgDeleteInfo int

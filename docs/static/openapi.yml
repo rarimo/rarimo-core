@@ -30353,12 +30353,12 @@ paths:
                     root:
                       type: string
                       title: hex-encoded
-                    hashes:
+                    indexes:
                       type: array
                       items:
                         type: string
                       title: hex-encoded
-                    sigECDSA:
+                    signatureECDSA:
                       type: string
                       title: hex-encoded
                     creator:
@@ -30457,7 +30457,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/rarimocore/confirmation/{height}':
+  '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
     get:
       summary: Queries a Confirmation by index.
       operationId: RarifyprotocolRarimocoreRarimocoreConfirmation
@@ -30473,12 +30473,12 @@ paths:
                   root:
                     type: string
                     title: hex-encoded
-                  hashes:
+                  indexes:
                     type: array
                     items:
                       type: string
                     title: hex-encoded
-                  sigECDSA:
+                  signatureECDSA:
                     type: string
                     title: hex-encoded
                   creator:
@@ -30502,7 +30502,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: height
+        - name: root
           in: path
           required: true
           type: string
@@ -30523,6 +30523,11 @@ paths:
                 items:
                   type: object
                   properties:
+                    index:
+                      type: string
+                      title: >-
+                        hex-encoded keccak256 hash for tx||event||chain strings'
+                        bytes
                     tx:
                       type: string
                     eventId:
@@ -30534,26 +30539,15 @@ paths:
                     receiver:
                       type: string
                       title: hex-encoded
-                    tokenAddress:
+                    amount:
                       type: string
-                      title: hex-encoded
-                    tokenId:
-                      type: string
-                      title: hex-encoded
+                      title: dec-encoded
                     creator:
                       type: string
                     signed:
                       type: boolean
-                    tokenType:
+                    tokenIndex:
                       type: string
-                      enum:
-                        - NATIVE
-                        - ERC20
-                        - ERC721
-                        - ERC1155
-                        - METAPLEX_NFT
-                        - METAPLEX_FT
-                      default: NATIVE
               pagination:
                 type: object
                 properties:
@@ -30648,7 +30642,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/rarimocore/deposit/{tx}':
+  '/rarify-protocol/rarimo-core/rarimocore/deposit/{index}':
     get:
       summary: Queries a Deposit by index.
       operationId: RarifyprotocolRarimocoreRarimocoreDeposit
@@ -30661,6 +30655,11 @@ paths:
               deposit:
                 type: object
                 properties:
+                  index:
+                    type: string
+                    title: >-
+                      hex-encoded keccak256 hash for tx||event||chain strings'
+                      bytes
                   tx:
                     type: string
                   eventId:
@@ -30672,26 +30671,15 @@ paths:
                   receiver:
                     type: string
                     title: hex-encoded
-                  tokenAddress:
+                  amount:
                     type: string
-                    title: hex-encoded
-                  tokenId:
-                    type: string
-                    title: hex-encoded
+                    title: dec-encoded
                   creator:
                     type: string
                   signed:
                     type: boolean
-                  tokenType:
+                  tokenIndex:
                     type: string
-                    enum:
-                      - NATIVE
-                      - ERC20
-                      - ERC721
-                      - ERC1155
-                      - METAPLEX_NFT
-                      - METAPLEX_FT
-                    default: NATIVE
         default:
           description: An unexpected error response.
           schema:
@@ -30711,7 +30699,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: tx
+        - name: index
           in: path
           required: true
           type: string
@@ -30773,14 +30761,6 @@ paths:
                   properties:
                     index:
                       type: string
-                    name:
-                      type: string
-                    symbol:
-                      type: string
-                    image:
-                      type: string
-                    currentChain:
-                      type: string
                     chains:
                       type: object
                       additionalProperties:
@@ -30792,6 +30772,16 @@ paths:
                           tokenId:
                             type: string
                             title: hex-encoded
+                          tokenType:
+                            type: string
+                            enum:
+                              - NATIVE
+                              - ERC20
+                              - ERC721
+                              - ERC1155
+                              - METAPLEX_NFT
+                              - METAPLEX_FT
+                            default: NATIVE
                     creator:
                       type: string
               pagination:
@@ -30913,14 +30903,6 @@ paths:
                 properties:
                   index:
                     type: string
-                  name:
-                    type: string
-                  symbol:
-                    type: string
-                  image:
-                    type: string
-                  currentChain:
-                    type: string
                   chains:
                     type: object
                     additionalProperties:
@@ -30932,6 +30914,16 @@ paths:
                         tokenId:
                           type: string
                           title: hex-encoded
+                        tokenType:
+                          type: string
+                          enum:
+                            - NATIVE
+                            - ERC20
+                            - ERC721
+                            - ERC1155
+                            - METAPLEX_NFT
+                            - METAPLEX_FT
+                          default: NATIVE
                   creator:
                     type: string
         default:
@@ -30980,9 +30972,9 @@ paths:
                     tokenId:
                       type: string
                       title: hex-encoded
-                    index:
-                      type: string
                     chain:
+                      type: string
+                    index:
                       type: string
               pagination:
                 type: object
@@ -31088,7 +31080,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}':
+  '/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}/{chain}':
     get:
       summary: Queries a Item by index.
       operationId: RarifyprotocolRarimocoreTokenmanagerItem
@@ -31107,9 +31099,9 @@ paths:
                   tokenId:
                     type: string
                     title: hex-encoded
-                  index:
-                    type: string
                   chain:
+                    type: string
+                  index:
                     type: string
         default:
           description: An unexpected error response.
@@ -31138,6 +31130,10 @@ paths:
           in: path
           required: true
           type: string
+        - name: chain
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /rarify-protocol/rarimo-core/tokenmanager/params:
@@ -31157,12 +31153,7 @@ paths:
                   networks:
                     type: object
                     additionalProperties:
-                      type: object
-                      properties:
-                        contract:
-                          type: string
-                        saver:
-                          type: string
+                      type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -52583,12 +52574,12 @@ definitions:
       root:
         type: string
         title: hex-encoded
-      hashes:
+      indexes:
         type: array
         items:
           type: string
         title: hex-encoded
-      sigECDSA:
+      signatureECDSA:
         type: string
         title: hex-encoded
       creator:
@@ -52596,6 +52587,9 @@ definitions:
   rarifyprotocol.rarimocore.rarimocore.Deposit:
     type: object
     properties:
+      index:
+        type: string
+        title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
       tx:
         type: string
       eventId:
@@ -52607,26 +52601,15 @@ definitions:
       receiver:
         type: string
         title: hex-encoded
-      tokenAddress:
+      amount:
         type: string
-        title: hex-encoded
-      tokenId:
-        type: string
-        title: hex-encoded
+        title: dec-encoded
       creator:
         type: string
       signed:
         type: boolean
-      tokenType:
+      tokenIndex:
         type: string
-        enum:
-          - NATIVE
-          - ERC20
-          - ERC721
-          - ERC1155
-          - METAPLEX_NFT
-          - METAPLEX_FT
-        default: NATIVE
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:
@@ -52689,12 +52672,12 @@ definitions:
             root:
               type: string
               title: hex-encoded
-            hashes:
+            indexes:
               type: array
               items:
                 type: string
               title: hex-encoded
-            sigECDSA:
+            signatureECDSA:
               type: string
               title: hex-encoded
             creator:
@@ -52732,6 +52715,9 @@ definitions:
         items:
           type: object
           properties:
+            index:
+              type: string
+              title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
             tx:
               type: string
             eventId:
@@ -52743,26 +52729,15 @@ definitions:
             receiver:
               type: string
               title: hex-encoded
-            tokenAddress:
+            amount:
               type: string
-              title: hex-encoded
-            tokenId:
-              type: string
-              title: hex-encoded
+              title: dec-encoded
             creator:
               type: string
             signed:
               type: boolean
-            tokenType:
+            tokenIndex:
               type: string
-              enum:
-                - NATIVE
-                - ERC20
-                - ERC721
-                - ERC1155
-                - METAPLEX_NFT
-                - METAPLEX_FT
-              default: NATIVE
       pagination:
         type: object
         properties:
@@ -52809,12 +52784,12 @@ definitions:
           root:
             type: string
             title: hex-encoded
-          hashes:
+          indexes:
             type: array
             items:
               type: string
             title: hex-encoded
-          sigECDSA:
+          signatureECDSA:
             type: string
             title: hex-encoded
           creator:
@@ -52825,6 +52800,9 @@ definitions:
       deposit:
         type: object
         properties:
+          index:
+            type: string
+            title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
           tx:
             type: string
           eventId:
@@ -52836,26 +52814,15 @@ definitions:
           receiver:
             type: string
             title: hex-encoded
-          tokenAddress:
+          amount:
             type: string
-            title: hex-encoded
-          tokenId:
-            type: string
-            title: hex-encoded
+            title: dec-encoded
           creator:
             type: string
           signed:
             type: boolean
-          tokenType:
+          tokenIndex:
             type: string
-            enum:
-              - NATIVE
-              - ERC20
-              - ERC721
-              - ERC1155
-              - METAPLEX_NFT
-              - METAPLEX_FT
-            default: NATIVE
   rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:
@@ -52866,7 +52833,7 @@ definitions:
           keyECDSA:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarifyprotocol.rarimocore.rarimocore.type:
+  rarifyprotocol.rarimocore.tokenmanager.type:
     type: string
     enum:
       - NATIVE
@@ -52885,18 +52852,20 @@ definitions:
       tokenId:
         type: string
         title: hex-encoded
+      tokenType:
+        type: string
+        enum:
+          - NATIVE
+          - ERC20
+          - ERC721
+          - ERC1155
+          - METAPLEX_NFT
+          - METAPLEX_FT
+        default: NATIVE
   rarifyprotocol.rarimocore.tokenmanager.Info:
     type: object
     properties:
       index:
-        type: string
-      name:
-        type: string
-      symbol:
-        type: string
-      image:
-        type: string
-      currentChain:
         type: string
       chains:
         type: object
@@ -52909,6 +52878,16 @@ definitions:
             tokenId:
               type: string
               title: hex-encoded
+            tokenType:
+              type: string
+              enum:
+                - NATIVE
+                - ERC20
+                - ERC721
+                - ERC1155
+                - METAPLEX_NFT
+                - METAPLEX_FT
+              default: NATIVE
       creator:
         type: string
   rarifyprotocol.rarimocore.tokenmanager.Item:
@@ -52920,9 +52899,9 @@ definitions:
       tokenId:
         type: string
         title: hex-encoded
-      index:
-        type: string
       chain:
+        type: string
+      index:
         type: string
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
@@ -52930,27 +52909,13 @@ definitions:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfoResponse:
     type: object
-  rarifyprotocol.rarimocore.tokenmanager.MsgUpdateInfoResponse:
-    type: object
-  rarifyprotocol.rarimocore.tokenmanager.Network:
-    type: object
-    properties:
-      contract:
-        type: string
-      saver:
-        type: string
   rarifyprotocol.rarimocore.tokenmanager.Params:
     type: object
     properties:
       networks:
         type: object
         additionalProperties:
-          type: object
-          properties:
-            contract:
-              type: string
-            saver:
-              type: string
+          type: string
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
@@ -52961,14 +52926,6 @@ definitions:
           type: object
           properties:
             index:
-              type: string
-            name:
-              type: string
-            symbol:
-              type: string
-            image:
-              type: string
-            currentChain:
               type: string
             chains:
               type: object
@@ -52981,6 +52938,16 @@ definitions:
                   tokenId:
                     type: string
                     title: hex-encoded
+                  tokenType:
+                    type: string
+                    enum:
+                      - NATIVE
+                      - ERC20
+                      - ERC721
+                      - ERC1155
+                      - METAPLEX_NFT
+                      - METAPLEX_FT
+                    default: NATIVE
             creator:
               type: string
       pagination:
@@ -53022,9 +52989,9 @@ definitions:
             tokenId:
               type: string
               title: hex-encoded
-            index:
-              type: string
             chain:
+              type: string
+            index:
               type: string
       pagination:
         type: object
@@ -53059,14 +53026,6 @@ definitions:
         properties:
           index:
             type: string
-          name:
-            type: string
-          symbol:
-            type: string
-          image:
-            type: string
-          currentChain:
-            type: string
           chains:
             type: object
             additionalProperties:
@@ -53078,6 +53037,16 @@ definitions:
                 tokenId:
                   type: string
                   title: hex-encoded
+                tokenType:
+                  type: string
+                  enum:
+                    - NATIVE
+                    - ERC20
+                    - ERC721
+                    - ERC1155
+                    - METAPLEX_NFT
+                    - METAPLEX_FT
+                  default: NATIVE
           creator:
             type: string
   rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
@@ -53092,9 +53061,9 @@ definitions:
           tokenId:
             type: string
             title: hex-encoded
-          index:
-            type: string
           chain:
+            type: string
+          index:
             type: string
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
@@ -53106,12 +53075,7 @@ definitions:
           networks:
             type: object
             additionalProperties:
-              type: object
-              properties:
-                contract:
-                  type: string
-                saver:
-                  type: string
+              type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

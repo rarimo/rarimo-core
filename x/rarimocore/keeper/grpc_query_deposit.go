@@ -47,7 +47,7 @@ func (k Keeper) Deposit(c context.Context, req *types.QueryGetDepositRequest) (*
 
 	val, found := k.GetDeposit(
 		ctx,
-		req.Tx,
+		req.Index,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

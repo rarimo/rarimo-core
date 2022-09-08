@@ -18,22 +18,18 @@ var _ sdk.Msg = &MsgCreateInfo{}
 func NewMsgCreateInfo(
 	creator string,
 	index string,
-	name string,
-	symbol string,
-	image string,
 	currentId string,
 	currentAddress string,
 	currentChain string,
+	currentType Type,
 ) *MsgCreateInfo {
 	return &MsgCreateInfo{
 		Creator:        creator,
 		Index:          index,
-		Name:           name,
-		Symbol:         symbol,
-		Image:          image,
 		CurrentChain:   currentChain,
 		CurrentId:      currentId,
 		CurrentAddress: currentAddress,
+		CurrentType:    currentType,
 	}
 }
 
@@ -75,60 +71,11 @@ func (msg *MsgCreateInfo) ValidateBasic() error {
 	return nil
 }
 
-var _ sdk.Msg = &MsgUpdateInfo{}
-
-func NewMsgUpdateInfo(
-	creator string,
-	index string,
-	name string,
-	symbol string,
-	image string,
-
-) *MsgUpdateInfo {
-	return &MsgUpdateInfo{
-		Creator: creator,
-		Index:   index,
-		Name:    name,
-		Symbol:  symbol,
-		Image:   image,
-	}
-}
-
-func (msg *MsgUpdateInfo) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgUpdateInfo) Type() string {
-	return TypeMsgUpdateInfo
-}
-
-func (msg *MsgUpdateInfo) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgUpdateInfo) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgUpdateInfo) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	return nil
-}
-
 var _ sdk.Msg = &MsgDeleteInfo{}
 
 func NewMsgDeleteInfo(
 	creator string,
 	index string,
-
 ) *MsgDeleteInfo {
 	return &MsgDeleteInfo{
 		Creator: creator,
@@ -172,6 +119,7 @@ func NewMsgAddChain(
 	chain string,
 	tokenAddress string,
 	tokenId string,
+	tokenType Type,
 ) *MsgAddChain {
 	return &MsgAddChain{
 		Creator:      creator,
@@ -179,6 +127,7 @@ func NewMsgAddChain(
 		ChainName:    chain,
 		TokenAddress: tokenAddress,
 		TokenId:      tokenId,
+		TokenType:    tokenType,
 	}
 }
 
