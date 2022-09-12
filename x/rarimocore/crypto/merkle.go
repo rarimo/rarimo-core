@@ -30,7 +30,7 @@ type HashContent struct {
 }
 
 func (c HashContent) OriginHash() []byte {
-	return crypto.Keccak256([]byte(c.TxHash), []byte(c.CurrentNetwork), []byte(c.EventId))
+	return crypto.Keccak256([]byte(c.TxHash), []byte(c.EventId), []byte(c.CurrentNetwork))
 }
 
 func (c HashContent) CalculateHash() []byte {

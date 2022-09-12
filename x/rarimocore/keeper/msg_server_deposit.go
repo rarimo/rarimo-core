@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -48,6 +49,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		Amount:     msg.Amount,
 		Signed:     false,
 		TokenIndex: item.Index,
+		Timestamp:  uint64(time.Now().UTC().UnixMilli()),
 	}
 
 	k.SetDeposit(

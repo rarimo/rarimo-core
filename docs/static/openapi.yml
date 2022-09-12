@@ -30548,6 +30548,9 @@ paths:
                       type: boolean
                     tokenIndex:
                       type: string
+                    timestamp:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -30680,6 +30683,9 @@ paths:
                     type: boolean
                   tokenIndex:
                     type: string
+                  timestamp:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -52610,6 +52616,9 @@ definitions:
         type: boolean
       tokenIndex:
         type: string
+      timestamp:
+        type: string
+        format: uint64
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:
@@ -52738,6 +52747,9 @@ definitions:
               type: boolean
             tokenIndex:
               type: string
+            timestamp:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -52823,6 +52835,9 @@ definitions:
             type: boolean
           tokenIndex:
             type: string
+          timestamp:
+            type: string
+            format: uint64
   rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:

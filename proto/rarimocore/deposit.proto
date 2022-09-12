@@ -18,5 +18,6 @@ message Deposit {
   string creator = 8;
   bool signed = 9;
   string tokenIndex = 10;
+  uint64 timestamp = 11;
 }
 
