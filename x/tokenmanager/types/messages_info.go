@@ -60,12 +60,14 @@ func (msg *MsgCreateInfo) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if _, err = hexutil.Decode(msg.CurrentAddress); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token address (%s)", err)
-	}
+	if msg.CurrentType != Type_NATIVE {
+		if _, err = hexutil.Decode(msg.CurrentAddress); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token address (%s)", err)
+		}
 
-	if _, err = hexutil.Decode(msg.CurrentId); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token id (%s)", err)
+		if _, err = hexutil.Decode(msg.CurrentId); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token id (%s)", err)
+		}
 	}
 
 	return nil

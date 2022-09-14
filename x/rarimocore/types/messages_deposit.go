@@ -23,6 +23,7 @@ func NewMsgCreateDeposit(
 ) *MsgCreateDeposit {
 	return &MsgCreateDeposit{
 		Creator:   creator,
+		Index:     hexutil.Encode(crypto.Keccak256([]byte(tx), []byte(eventId), []byte(fromChain))),
 		Tx:        tx,
 		EventId:   eventId,
 		FromChain: fromChain,

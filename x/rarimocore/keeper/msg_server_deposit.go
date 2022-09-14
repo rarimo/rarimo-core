@@ -17,7 +17,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 
 	_, isFound := k.GetDeposit(
 		ctx,
-		msg.Tx,
+		msg.Index,
 	)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
