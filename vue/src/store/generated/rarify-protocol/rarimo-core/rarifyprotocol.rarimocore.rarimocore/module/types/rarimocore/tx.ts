@@ -10,11 +10,6 @@ export interface MsgCreateDeposit {
   tx: string;
   eventId: string;
   fromChain: string;
-  toChain: string;
-  /** hex-encoded */
-  receiver: string;
-  /** dec-encoded */
-  amount: string;
   tokenType: type;
 }
 
@@ -47,9 +42,6 @@ const baseMsgCreateDeposit: object = {
   tx: "",
   eventId: "",
   fromChain: "",
-  toChain: "",
-  receiver: "",
-  amount: "",
   tokenType: 0,
 };
 
@@ -70,17 +62,8 @@ export const MsgCreateDeposit = {
     if (message.fromChain !== "") {
       writer.uint32(42).string(message.fromChain);
     }
-    if (message.toChain !== "") {
-      writer.uint32(50).string(message.toChain);
-    }
-    if (message.receiver !== "") {
-      writer.uint32(58).string(message.receiver);
-    }
-    if (message.amount !== "") {
-      writer.uint32(66).string(message.amount);
-    }
     if (message.tokenType !== 0) {
-      writer.uint32(72).int32(message.tokenType);
+      writer.uint32(48).int32(message.tokenType);
     }
     return writer;
   },
@@ -108,15 +91,6 @@ export const MsgCreateDeposit = {
           message.fromChain = reader.string();
           break;
         case 6:
-          message.toChain = reader.string();
-          break;
-        case 7:
-          message.receiver = reader.string();
-          break;
-        case 8:
-          message.amount = reader.string();
-          break;
-        case 9:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -154,21 +128,6 @@ export const MsgCreateDeposit = {
     } else {
       message.fromChain = "";
     }
-    if (object.toChain !== undefined && object.toChain !== null) {
-      message.toChain = String(object.toChain);
-    } else {
-      message.toChain = "";
-    }
-    if (object.receiver !== undefined && object.receiver !== null) {
-      message.receiver = String(object.receiver);
-    } else {
-      message.receiver = "";
-    }
-    if (object.amount !== undefined && object.amount !== null) {
-      message.amount = String(object.amount);
-    } else {
-      message.amount = "";
-    }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = typeFromJSON(object.tokenType);
     } else {
@@ -184,9 +143,6 @@ export const MsgCreateDeposit = {
     message.tx !== undefined && (obj.tx = message.tx);
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
-    message.toChain !== undefined && (obj.toChain = message.toChain);
-    message.receiver !== undefined && (obj.receiver = message.receiver);
-    message.amount !== undefined && (obj.amount = message.amount);
     message.tokenType !== undefined &&
       (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
@@ -218,21 +174,6 @@ export const MsgCreateDeposit = {
       message.fromChain = object.fromChain;
     } else {
       message.fromChain = "";
-    }
-    if (object.toChain !== undefined && object.toChain !== null) {
-      message.toChain = object.toChain;
-    } else {
-      message.toChain = "";
-    }
-    if (object.receiver !== undefined && object.receiver !== null) {
-      message.receiver = object.receiver;
-    } else {
-      message.receiver = "";
-    }
-    if (object.amount !== undefined && object.amount !== null) {
-      message.amount = object.amount;
-    } else {
-      message.amount = "";
     }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = object.tokenType;

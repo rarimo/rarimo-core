@@ -30289,6 +30289,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}':
@@ -30452,6 +30462,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30640,6 +30660,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31159,7 +31189,15 @@ paths:
                   networks:
                     type: object
                     additionalProperties:
-                      type: string
+                      type: object
+                      properties:
+                        contract:
+                          type: string
+                        types:
+                          type: object
+                          additionalProperties:
+                            type: integer
+                            format: int64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -52877,6 +52915,16 @@ definitions:
           - METAPLEX_NFT
           - METAPLEX_FT
         default: NATIVE
+  rarifyprotocol.rarimocore.tokenmanager.ChainParams:
+    type: object
+    properties:
+      contract:
+        type: string
+      types:
+        type: object
+        additionalProperties:
+          type: integer
+          format: int64
   rarifyprotocol.rarimocore.tokenmanager.Info:
     type: object
     properties:
@@ -52930,7 +52978,15 @@ definitions:
       networks:
         type: object
         additionalProperties:
-          type: string
+          type: object
+          properties:
+            contract:
+              type: string
+            types:
+              type: object
+              additionalProperties:
+                type: integer
+                format: int64
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
@@ -53090,7 +53146,15 @@ definitions:
           networks:
             type: object
             additionalProperties:
-              type: string
+              type: object
+              properties:
+                contract:
+                  type: string
+                types:
+                  type: object
+                  additionalProperties:
+                    type: integer
+                    format: int64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

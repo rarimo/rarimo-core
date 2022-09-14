@@ -13,9 +13,9 @@ import (
 
 func CmdCreateDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [tx] [event-id] [from-chain] [to-chain] [receiver-hex] [token-type]",
+		Use:   "create-deposit [tx] [event-id] [from-chain] [token-type]",
 		Short: "Create a new deposit",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexTx := args[0]
@@ -23,9 +23,7 @@ func CmdCreateDeposit() *cobra.Command {
 
 			// Get value arguments
 			argFromChain := args[2]
-			argToChain := args[3]
-			argReceiver := args[4]
-			argTokenType, err := strconv.Atoi(args[5])
+			argTokenType, err := strconv.Atoi(args[3])
 			if err != nil {
 				return err
 			}
@@ -40,8 +38,6 @@ func CmdCreateDeposit() *cobra.Command {
 				indexTx,
 				eventId,
 				argFromChain,
-				argToChain,
-				argReceiver,
 				tokentypes.Type(argTokenType),
 			)
 			if err := msg.ValidateBasic(); err != nil {

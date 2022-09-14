@@ -23,12 +23,7 @@ message MsgCreateDeposit {
   string tx = 3;
   string eventId = 4;
   string fromChain = 5;
-  string toChain = 6;
-  // hex-encoded
-  string receiver = 7;
-  // dec-encoded
-  string amount = 8;
-  rarifyprotocol.rarimocore.tokenmanager.type tokenType = 9;
+  rarifyprotocol.rarimocore.tokenmanager.type tokenType = 6;
 }
 
 message MsgCreateDepositResponse {}

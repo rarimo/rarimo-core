@@ -21,5 +21,10 @@ genesis:
     tokenmanager:
       params:
         networks:
-          Solana: CqnDZ8hyRgaXdeZ9X4Exz9LzMEMipi1sTweXRXyoJHpS
+          Solana:
+            contract: CqnDZ8hyRgaXdeZ9X4Exz9LzMEMipi1sTweXRXyoJHpS
+            types:
+              0: 0
+              5: 1
+              4: 2
   

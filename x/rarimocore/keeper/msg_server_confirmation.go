@@ -48,7 +48,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not dound", deposit.Index))
 		}
 
-		contract, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
+		chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
 		if !ok {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
 		}
@@ -63,7 +63,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			TargetAddress:  hexutil.MustDecode(info.Chains[deposit.ToChain].TokenAddress),
 			TargetId:       hexutil.MustDecode(info.Chains[deposit.ToChain].TokenId),
 			Amount:         amount.Bytes(),
-			ProgramId:      hexutil.MustDecode(contract),
+			ProgramId:      hexutil.MustDecode(chainParams.Contract),
 		})
 	}
 

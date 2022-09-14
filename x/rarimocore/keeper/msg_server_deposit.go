@@ -7,6 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
+	savermsg "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"
 )
 
 func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDeposit) (*types.MsgCreateDepositResponse, error) {
@@ -26,14 +28,23 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
 	}
 
-	if _, ok := networks[msg.ToChain]; !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.ToChain)
+	infoRequest := &savermsg.MsgTransactionInfoRequest{
+		Hash:    msg.Tx,
+		EventId: msg.EventId,
+		Type:    networks[msg.FromChain].Types[uint32(msg.TokenType)],
 	}
 
-	// TODO validate with saver and fill
-	var tokenAddress, tokenId, tokenChain = "", "", ""
+	infoResp, err := saver.GetClient(msg.FromChain).GetDepositInfo(goCtx, infoRequest)
+	if err != nil {
+		k.Logger(ctx).Error("error calling saver service", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
+	}
 
-	item, ok := k.tm.GetItem(ctx, tokenAddress, tokenId, tokenChain)
+	if _, ok := networks[infoResp.TargetNetwork]; !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", infoResp.TargetNetwork)
+	}
+
+	item, ok := k.tm.GetItem(ctx, infoResp.TokenAddress, infoResp.TokenId, msg.FromChain)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "token not found")
 	}
@@ -44,9 +55,9 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
 		FromChain:  msg.FromChain,
-		ToChain:    msg.ToChain,
-		Receiver:   msg.Receiver,
-		Amount:     msg.Amount,
+		ToChain:    infoResp.TargetNetwork,
+		Receiver:   infoResp.Receiver,
+		Amount:     infoResp.Amount,
 		Signed:     false,
 		TokenIndex: item.Index,
 		Timestamp:  uint64(time.Now().UTC().UnixMilli()),
