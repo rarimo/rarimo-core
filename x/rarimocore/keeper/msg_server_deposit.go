@@ -23,16 +23,15 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	networks := k.tm.GetParams(ctx).Networks
-
-	if _, ok := networks[msg.FromChain]; !ok {
+	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
+	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
 	}
 
 	infoRequest := &savermsg.MsgTransactionInfoRequest{
 		Hash:    msg.Tx,
 		EventId: msg.EventId,
-		Type:    networks[msg.FromChain].Types[fmt.Sprint(msg.TokenType)],
+		Type:    network.Types[fmt.Sprint(msg.TokenType)],
 	}
 
 	infoResp, err := saver.GetClient(msg.FromChain).GetDepositInfo(goCtx, infoRequest)
@@ -41,7 +40,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
 	}
 
-	if _, ok := networks[infoResp.TargetNetwork]; !ok {
+	if _, ok := k.tm.GetNetwork(ctx, infoResp.TargetNetwork); !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", infoResp.TargetNetwork)
 	}
 

@@ -17,3 +17,10 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	saver.Set(params.Networks)
 	k.paramstore.SetParamSet(ctx, &params)
 }
+
+func (k Keeper) GetNetwork(ctx sdk.Context, network string) (param *types.ChainParams, ok bool) {
+	var params types.Params
+	k.paramstore.GetParamSet(ctx, &params)
+	param, ok = params.Networks[network]
+	return param, ok
+}
