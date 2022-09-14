@@ -5,11 +5,11 @@ export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
 export interface ChainParams {
   contract: string;
-  types: { [key: number]: number };
+  types: { [key: string]: number };
 }
 
 export interface ChainParams_TypesEntry {
-  key: number;
+  key: string;
   value: number;
 }
 
@@ -74,7 +74,7 @@ export const ChainParams = {
     }
     if (object.types !== undefined && object.types !== null) {
       Object.entries(object.types).forEach(([key, value]) => {
-        message.types[Number(key)] = Number(value);
+        message.types[key] = Number(value);
       });
     }
     return message;
@@ -103,7 +103,7 @@ export const ChainParams = {
     if (object.types !== undefined && object.types !== null) {
       Object.entries(object.types).forEach(([key, value]) => {
         if (value !== undefined) {
-          message.types[Number(key)] = Number(value);
+          message.types[key] = Number(value);
         }
       });
     }
@@ -111,15 +111,15 @@ export const ChainParams = {
   },
 };
 
-const baseChainParams_TypesEntry: object = { key: 0, value: 0 };
+const baseChainParams_TypesEntry: object = { key: "", value: 0 };
 
 export const ChainParams_TypesEntry = {
   encode(
     message: ChainParams_TypesEntry,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.key !== 0) {
-      writer.uint32(8).uint32(message.key);
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
     }
     if (message.value !== 0) {
       writer.uint32(16).uint32(message.value);
@@ -135,7 +135,7 @@ export const ChainParams_TypesEntry = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.key = reader.uint32();
+          message.key = reader.string();
           break;
         case 2:
           message.value = reader.uint32();
@@ -151,9 +151,9 @@ export const ChainParams_TypesEntry = {
   fromJSON(object: any): ChainParams_TypesEntry {
     const message = { ...baseChainParams_TypesEntry } as ChainParams_TypesEntry;
     if (object.key !== undefined && object.key !== null) {
-      message.key = Number(object.key);
+      message.key = String(object.key);
     } else {
-      message.key = 0;
+      message.key = "";
     }
     if (object.value !== undefined && object.value !== null) {
       message.value = Number(object.value);
@@ -177,7 +177,7 @@ export const ChainParams_TypesEntry = {
     if (object.key !== undefined && object.key !== null) {
       message.key = object.key;
     } else {
-      message.key = 0;
+      message.key = "";
     }
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value;

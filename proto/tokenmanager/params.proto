@@ -7,7 +7,7 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types
 
 message ChainParams {
   string contract = 1;
-  map<uint32, uint32> types = 2;
+  map<string, uint32> types = 2;
 }
 
 // Params defines the parameters for the module.

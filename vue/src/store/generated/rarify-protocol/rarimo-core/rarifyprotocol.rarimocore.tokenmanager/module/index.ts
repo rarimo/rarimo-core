@@ -5,14 +5,14 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgCreateInfo } from "./types/tokenmanager/tx";
-import { MsgAddChain } from "./types/tokenmanager/tx";
 import { MsgDeleteInfo } from "./types/tokenmanager/tx";
+import { MsgAddChain } from "./types/tokenmanager/tx";
 
 
 const types = [
   ["/rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfo", MsgCreateInfo],
-  ["/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", MsgAddChain],
   ["/rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfo", MsgDeleteInfo],
+  ["/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", MsgAddChain],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -46,8 +46,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgCreateInfo: (data: MsgCreateInfo): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfo", value: MsgCreateInfo.fromPartial( data ) }),
-    msgAddChain: (data: MsgAddChain): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", value: MsgAddChain.fromPartial( data ) }),
     msgDeleteInfo: (data: MsgDeleteInfo): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfo", value: MsgDeleteInfo.fromPartial( data ) }),
+    msgAddChain: (data: MsgAddChain): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", value: MsgAddChain.fromPartial( data ) }),
     
   };
 };

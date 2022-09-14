@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -31,7 +32,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 	infoRequest := &savermsg.MsgTransactionInfoRequest{
 		Hash:    msg.Tx,
 		EventId: msg.EventId,
-		Type:    networks[msg.FromChain].Types[uint32(msg.TokenType)],
+		Type:    networks[msg.FromChain].Types[fmt.Sprint(msg.TokenType)],
 	}
 
 	infoResp, err := saver.GetClient(msg.FromChain).GetDepositInfo(goCtx, infoRequest)

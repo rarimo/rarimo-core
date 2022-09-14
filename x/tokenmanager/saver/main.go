@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const UrlSuffix = ".ADDR.ENV"
+const UrlSuffix = "_ADDR_ENV"
 
 // Storage for saver clients connections
 var connections = make(map[string]*grpc.ClientConn)
