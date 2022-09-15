@@ -30289,6 +30289,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}':
@@ -30452,6 +30462,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30640,6 +30660,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31066,7 +31096,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}/{chain}':
+  '/rarify-protocol/rarimo-core/tokenmanager/item/{chain}':
     get:
       summary: Queries a Item by index.
       operationId: RarifyprotocolRarimocoreTokenmanagerItem
@@ -31108,17 +31138,17 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: tokenAddress
-          in: path
-          required: true
-          type: string
-        - name: tokenId
-          in: path
-          required: true
-          type: string
         - name: chain
           in: path
           required: true
+          type: string
+        - name: tokenAddress
+          in: query
+          required: false
+          type: string
+        - name: tokenId
+          in: query
+          required: false
           type: string
       tags:
         - Query

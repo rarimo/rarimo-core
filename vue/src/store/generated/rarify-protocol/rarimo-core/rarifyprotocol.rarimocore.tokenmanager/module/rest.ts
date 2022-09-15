@@ -436,12 +436,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryItem
    * @summary Queries a Item by index.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}/{chain}
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{chain}
    */
-  queryItem = (tokenAddress: string, tokenId: string, chain: string, params: RequestParams = {}) =>
+  queryItem = (chain: string, query?: { tokenAddress?: string; tokenId?: string }, params: RequestParams = {}) =>
     this.request<TokenmanagerQueryGetItemResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${tokenAddress}/${tokenId}/${chain}`,
+      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${chain}`,
       method: "GET",
+      query: query,
       format: "json",
       ...params,
     });

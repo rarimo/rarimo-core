@@ -22,9 +22,9 @@ genesis:
       params:
         networks:
           Solana:
-            contract: 0xe8983a5b763cf562ecd69484de73b86eff5e3e610fa836502e9f2dbf5694862c
+            contract: "0xe8983a5b763cf562ecd69484de73b86eff5e3e610fa836502e9f2dbf5694862c"
             types:
               0: 0
               5: 1
               4: 2
-  
+

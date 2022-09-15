@@ -19,7 +19,7 @@ service Query {
   }
   // Queries a Item by index.
   rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{tokenAddress}/{tokenId}/{chain}";
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{chain}";
   }
 
   // Queries a list of Item items.
