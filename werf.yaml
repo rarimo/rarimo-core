@@ -1,0 +1,39 @@
+configVersion: 1
+project: "backend"
+---
+image: builder # Название собираемого образа.
+from: golang:1.18-alpine # Базовый образ.
+docker:
+  WORKDIR: /go/src/gitlab.com/rarify-protocol/rarimo-core
+git: # Секция с директивами для добавления исходных файлов из git-репозитория.
+  - add: / # Исходный путь в репозитории.
+    to: /go/src/gitlab.com/rarify-protocol/rarimo-core # Путь назначения в образе.
+    stageDependencies: # Настройка перевыполнения сборочных инструкций при изменениях определённых файлов в репозитории.
+      setup: # Для стадии Setup.
+        - "**/*"
+shell: # Shell сборочные инструкции.
+  install:
+    - apk add git build-base
+  setup: # Для стадии Setup.
+    - export CGO_ENABLED=1
+    - export GO111MODULE=on
+    - export GOOS=linux
+    - ls /go/src/gitlab.com/rarify-protocol/rarimo-core
+    - ls
+    - ls /go/src/gitlab.com/rarify-protocol/rarimo-core/cmd/rarimo-cored
+    - cd /go/src/gitlab.com/rarify-protocol/rarimo-core
+    - go build -o /usr/local/bin/rarimo-core /go/src/gitlab.com/rarify-protocol/rarimo-core/cmd/rarimo-cored
+
+---
+image: service # Название собираемого образа.
+from: alpine:3.9 # Базовый образ.
+docker:
+  ENTRYPOINT: rarimo-core
+shell: # Shell сборочные инструкции.
+  setup: # Для стадии Setup.
+    - apk add --no-cache ca-certificates
+import:
+  - image: builder
+    add: /usr/local/bin/rarimo-core
+    to: /usr/local/bin/rarimo-core
+    after: setup

@@ -43,9 +43,9 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		deposits = append(deposits, deposit)
 
-		info, ok := k.tm.GetInfo(ctx, deposit.Index)
+		info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not dound", deposit.Index))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
 		}
 
 		chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
@@ -53,15 +53,20 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
 		}
 
-		amount, _ := new(big.Int).SetString(deposit.Amount, 10)
+		amount, ok := new(big.Int).SetString(deposit.Amount, 10)
+		if !ok {
+			// NFT
+			amount = new(big.Int).SetInt64(1)
+		}
+
 		content = append(content, crypto.HashContent{
 			TxHash:         deposit.Tx,
 			EventId:        deposit.EventId,
 			TargetNetwork:  deposit.ToChain,
 			CurrentNetwork: deposit.FromChain,
 			Receiver:       hexutil.MustDecode(deposit.Receiver),
-			TargetAddress:  hexutil.MustDecode(info.Chains[deposit.ToChain].TokenAddress),
-			TargetId:       hexutil.MustDecode(info.Chains[deposit.ToChain].TokenId),
+			TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
+			TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
 			Amount:         amount.Bytes(),
 			ProgramId:      hexutil.MustDecode(chainParams.Contract),
 		})
@@ -89,4 +94,13 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateConfirmationResponse{}, nil
+}
+
+func tryHexDecode(hexStr string, defResp []byte) []byte {
+	resp, err := hexutil.Decode(hexStr)
+	if err != nil {
+		return defResp
+	}
+
+	return resp
 }
