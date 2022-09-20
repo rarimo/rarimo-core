@@ -7,11 +7,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 )
 
-const ECDSAPublicKeySize = 33
+const ECDSAPublicKeySize = 65
+const ECDSASignatureSize = 64
 
 func ValidateECDSAKey(hexKey string) error {
 	if hexKey == "" {
@@ -64,12 +64,16 @@ func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) er
 		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
 	}
 
+	if len(sigBytes) < ECDSASignatureSize {
+		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
+	}
+
 	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
 	if err != nil {
 		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA target key format", err)
 	}
 
-	if !secp256k1.VerifySignature(targetKeyBytes, rootBytes, sigBytes) {
+	if !crypto.VerifySignature(targetKeyBytes, rootBytes, sigBytes[:ECDSASignatureSize]) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "signed ECDSA key does not match", err)
 	}
 

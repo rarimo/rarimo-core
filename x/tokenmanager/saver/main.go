@@ -1,9 +1,9 @@
 package saver
 
 import (
-	"errors"
 	"os"
 
+	"github.com/pkg/errors"
 	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 	saver "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"
 	"google.golang.org/grpc"
@@ -36,10 +36,25 @@ func Set(networks map[string]*types.ChainParams) {
 	}
 }
 
-func GetClient(network string) saver.SaverClient {
+func GetClient(network string) (saver.SaverClient, error) {
 	if con, ok := connections[network]; ok {
-		return saver.NewSaverClient(con)
+		return saver.NewSaverClient(con), nil
 	}
 
-	return nil
+	con, err := getClient(network)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get saver connection")
+	}
+
+	connections[network] = con
+	return saver.NewSaverClient(con), nil
+}
+
+func getClient(network string) (*grpc.ClientConn, error) {
+	addr := os.Getenv(network + UrlSuffix)
+	if addr == "" {
+		panic(errors.New("address for " + network + " saver not found."))
+	}
+
+	return grpc.Dial(addr, grpc.WithInsecure())
 }

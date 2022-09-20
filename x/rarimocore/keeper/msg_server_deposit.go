@@ -34,9 +34,14 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		Type:    network.Types[fmt.Sprint(msg.TokenType)],
 	}
 
-	infoResp, err := saver.GetClient(msg.FromChain).GetDepositInfo(goCtx, infoRequest)
+	saverClient, err := saver.GetClient(msg.FromChain)
 	if err != nil {
-		k.Logger(ctx).Error("error calling saver service", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error getting saver connection", err.Error())
+	}
+
+	infoResp, err := saverClient.GetDepositInfo(goCtx, infoRequest)
+	if err != nil {
+		k.Logger(ctx).Error("error calling saver service" + err.Error())
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
 	}
 
