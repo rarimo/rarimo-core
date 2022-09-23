@@ -563,6 +563,8 @@ github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/types
+# github.com/golang/glog v1.0.0
+## explicit; go 1.11
 # github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
 ## explicit
 github.com/golang/groupcache/lru
@@ -608,6 +610,8 @@ github.com/grpc-ecosystem/go-grpc-middleware/recovery
 github.com/grpc-ecosystem/grpc-gateway/internal
 github.com/grpc-ecosystem/grpc-gateway/runtime
 github.com/grpc-ecosystem/grpc-gateway/utilities
+# github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
+## explicit; go 1.17
 # github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c
 ## explicit
 github.com/gsterjov/go-libsecret
@@ -849,7 +853,7 @@ github.com/rakyll/statik/fs
 # github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0
 ## explicit
 github.com/rcrowley/go-metrics
-# github.com/regen-network/cosmos-proto v0.3.1
+# github.com/regen-network/cosmos-proto v0.3.2-0.20220331214436-e10da2374134
 ## explicit; go 1.13
 github.com/regen-network/cosmos-proto
 # github.com/rs/cors v1.8.2

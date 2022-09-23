@@ -34,7 +34,7 @@ func (c HashContent) OriginHash() []byte {
 }
 
 func (c HashContent) CalculateHash() []byte {
-	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, crypto.Keccak256([]byte(c.TxHash), []byte(c.CurrentNetwork), []byte(c.EventId)), []byte(c.TargetNetwork), c.ProgramId)
+	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, crypto.Keccak256([]byte(c.TxHash), []byte(c.EventId), []byte(c.CurrentNetwork)), []byte(c.TargetNetwork), c.ProgramId)
 }
 
 //Equals tests for equality of two Contents

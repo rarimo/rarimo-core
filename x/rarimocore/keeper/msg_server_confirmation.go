@@ -53,12 +53,6 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
 		}
 
-		amount, ok := new(big.Int).SetString(deposit.Amount, 10)
-		if !ok {
-			// NFT
-			amount = new(big.Int).SetInt64(1)
-		}
-
 		content = append(content, crypto.HashContent{
 			TxHash:         deposit.Tx,
 			EventId:        deposit.EventId,
@@ -67,7 +61,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			Receiver:       hexutil.MustDecode(deposit.Receiver),
 			TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
 			TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
-			Amount:         amount.Bytes(),
+			Amount:         amountBytes(deposit.Amount),
 			ProgramId:      hexutil.MustDecode(chainParams.Contract),
 		})
 	}
@@ -94,6 +88,22 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateConfirmationResponse{}, nil
+}
+
+func amountBytes(amount string) []byte {
+	am, ok := new(big.Int).SetString(amount, 10)
+	if !ok {
+		// it is NFT
+		am = new(big.Int).SetInt64(1)
+	}
+
+	amBytes := am.Bytes()
+	result := make([]byte, 256)
+
+	for i := range amBytes {
+		result[255-i] = amBytes[len(amBytes)-1-i]
+	}
+	return result
 }
 
 func tryHexDecode(hexStr string, defResp []byte) []byte {
