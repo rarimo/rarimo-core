@@ -116,7 +116,7 @@ func VerifyMerkleRoot(hashes []merkle.Content, hexRoot string) error {
 	}
 
 	if !bytes.Equal(t.Root(), root) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "wrong Merkle root hash", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "wrong Merkle root hash - required %s got %s", hexutil.Encode(t.Root()), hexRoot)
 	}
 
 	return nil

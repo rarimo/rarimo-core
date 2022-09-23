@@ -98,10 +98,10 @@ func amountBytes(amount string) []byte {
 	}
 
 	amBytes := am.Bytes()
-	result := make([]byte, 256)
+	result := make([]byte, 32)
 
 	for i := range amBytes {
-		result[255-i] = amBytes[len(amBytes)-1-i]
+		result[31-i] = amBytes[len(amBytes)-1-i]
 	}
 	return result
 }
