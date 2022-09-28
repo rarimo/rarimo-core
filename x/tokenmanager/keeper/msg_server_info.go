@@ -27,6 +27,9 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 	var info = types.Info{
 		Creator: msg.Creator,
 		Index:   msg.Index,
+		Name:    msg.Name,
+		Symbol:  msg.Symbol,
+		Uri:     msg.Uri,
 		Chains: map[string]*types.ChainInfo{
 			msg.CurrentChain: &types.ChainInfo{
 				TokenAddress: msg.CurrentAddress,

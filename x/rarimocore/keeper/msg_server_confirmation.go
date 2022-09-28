@@ -63,6 +63,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
 			Amount:         amountBytes(deposit.Amount),
 			ProgramId:      hexutil.MustDecode(chainParams.Contract),
+			Data:           append([]byte(info.Name), append([]byte(info.Symbol), []byte(info.Uri)...)...),
 		})
 	}
 

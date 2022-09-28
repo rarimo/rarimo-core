@@ -7,15 +7,12 @@ import (
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 )
 
-var _ merkle.Content = HashContent{}
-
 // HashContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type HashContent struct {
 	// Hash of the deposit tx
 	TxHash         string
 	CurrentNetwork string
 	EventId        string
-
 	// Collection address on target chain
 	TargetAddress []byte
 	// TokenId on target chain
@@ -27,14 +24,18 @@ type HashContent struct {
 	// Use binary.BigEndian.PutUint64(amount, c.Amount)
 	Amount    []byte
 	ProgramId []byte
+	// Can contain any specific data for target chain to validate.
+	Data []byte
 }
 
 func (c HashContent) OriginHash() []byte {
 	return crypto.Keccak256([]byte(c.TxHash), []byte(c.EventId), []byte(c.CurrentNetwork))
 }
 
+var _ merkle.Content = HashContent{}
+
 func (c HashContent) CalculateHash() []byte {
-	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, crypto.Keccak256([]byte(c.TxHash), []byte(c.EventId), []byte(c.CurrentNetwork)), []byte(c.TargetNetwork), c.ProgramId)
+	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, c.OriginHash(), []byte(c.TargetNetwork), c.ProgramId)
 }
 
 //Equals tests for equality of two Contents

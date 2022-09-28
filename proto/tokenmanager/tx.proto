@@ -23,7 +23,10 @@ message MsgCreateInfo {
   // hex-encoded
   string currentId = 4;
   string currentChain = 5;
-  type currentType = 6;
+  string name = 6;
+  string symbol = 7;
+  string uri = 8;
+  type currentType = 9;
 }
 message MsgCreateInfoResponse {}
 

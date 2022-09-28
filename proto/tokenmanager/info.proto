@@ -22,7 +22,10 @@ message ChainInfo {
 
 message Info {
   string index = 1;
-  map<string, ChainInfo> chains = 2;
-  string creator = 3;
+  string name = 2;
+  string symbol = 3;
+  string uri = 4;
+  map<string, ChainInfo> chains = 5;
+  string creator = 6;
 }
 
