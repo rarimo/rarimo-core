@@ -10,5 +10,8 @@ message Item {
   string tokenId = 2;
   string chain = 3;
   string index = 4;
+  string name = 5;
+  string symbol = 6;
+  string uri = 7;
 }
 

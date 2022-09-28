@@ -35,7 +35,7 @@ func (c HashContent) OriginHash() []byte {
 var _ merkle.Content = HashContent{}
 
 func (c HashContent) CalculateHash() []byte {
-	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, c.OriginHash(), []byte(c.TargetNetwork), c.ProgramId)
+	return crypto.Keccak256(c.TargetAddress, c.TargetId, c.Amount, c.Receiver, c.OriginHash(), []byte(c.TargetNetwork), c.ProgramId, c.Data)
 }
 
 //Equals tests for equality of two Contents

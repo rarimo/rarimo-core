@@ -43,28 +43,12 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		deposits = append(deposits, deposit)
 
-		info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
-		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
+		depositContent, err := k.contentFromDeposit(ctx, deposit)
+		if err != nil {
+			return nil, err
 		}
 
-		chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
-		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
-		}
-
-		content = append(content, crypto.HashContent{
-			TxHash:         deposit.Tx,
-			EventId:        deposit.EventId,
-			TargetNetwork:  deposit.ToChain,
-			CurrentNetwork: deposit.FromChain,
-			Receiver:       hexutil.MustDecode(deposit.Receiver),
-			TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
-			TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
-			Amount:         amountBytes(deposit.Amount),
-			ProgramId:      hexutil.MustDecode(chainParams.Contract),
-			Data:           append([]byte(info.Name), append([]byte(info.Symbol), []byte(info.Uri)...)...),
-		})
+		content = append(content, depositContent)
 	}
 
 	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
@@ -89,6 +73,36 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateConfirmationResponse{}, nil
+}
+
+func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (crypto.HashContent, error) {
+	info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
+	if !ok {
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
+	}
+
+	item, ok := k.tm.GetItem(ctx, info.Chains[deposit.ToChain].TokenAddress, info.Chains[deposit.ToChain].TokenId, deposit.ToChain)
+	if !ok {
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token idem %s not found", deposit.Index))
+	}
+
+	chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
+	if !ok {
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
+	}
+
+	return crypto.HashContent{
+		TxHash:         deposit.Tx,
+		EventId:        deposit.EventId,
+		TargetNetwork:  deposit.ToChain,
+		CurrentNetwork: deposit.FromChain,
+		Receiver:       hexutil.MustDecode(deposit.Receiver),
+		TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
+		TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
+		Amount:         amountBytes(deposit.Amount),
+		ProgramId:      hexutil.MustDecode(chainParams.Contract),
+		Data:           append([]byte(item.Name), append([]byte(item.Symbol), []byte(item.Uri)...)...),
+	}, nil
 }
 
 func amountBytes(amount string) []byte {
