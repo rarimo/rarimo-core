@@ -10,6 +10,7 @@ import (
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operations"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
@@ -92,11 +93,9 @@ func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (cry
 	}
 
 	return crypto.HashContent{
-		TxHash:         deposit.Tx,
-		OperationId:    deposit.EventId,
-		TargetNetwork:  deposit.ToChain,
-		CurrentNetwork: deposit.FromChain,
-		Receiver:       hexutil.MustDecode(deposit.Receiver),
+		Origin:        origin.NewDefaultOrigin(deposit.Tx, deposit.EventId, deposit.FromChain).GetOrigin(),
+		TargetNetwork: deposit.ToChain,
+		Receiver:      hexutil.MustDecode(deposit.Receiver),
 		Data: operations.NewTransferOperation(
 			info.Chains[deposit.ToChain].TokenAddress,
 			info.Chains[deposit.ToChain].TokenId,
