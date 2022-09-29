@@ -3,13 +3,13 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operations"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
@@ -93,39 +93,14 @@ func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (cry
 
 	return crypto.HashContent{
 		TxHash:         deposit.Tx,
-		EventId:        deposit.EventId,
+		OperationId:    deposit.EventId,
 		TargetNetwork:  deposit.ToChain,
 		CurrentNetwork: deposit.FromChain,
 		Receiver:       hexutil.MustDecode(deposit.Receiver),
-		TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
-		TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
-		Amount:         amountBytes(deposit.Amount),
-		ProgramId:      hexutil.MustDecode(chainParams.Contract),
-		Data:           append([]byte(item.Name), append([]byte(item.Symbol), []byte(item.Uri)...)...),
+		Data: operations.NewTransferOperation(
+			info.Chains[deposit.ToChain].TokenAddress,
+			info.Chains[deposit.ToChain].TokenId,
+			deposit.Amount, item.Name, item.Symbol, item.Uri).GetContent(),
+		TargetContract: hexutil.MustDecode(chainParams.Contract),
 	}, nil
-}
-
-func amountBytes(amount string) []byte {
-	am, ok := new(big.Int).SetString(amount, 10)
-	if !ok {
-		// it is NFT
-		am = new(big.Int).SetInt64(1)
-	}
-
-	amBytes := am.Bytes()
-	result := make([]byte, 32)
-
-	for i := range amBytes {
-		result[31-i] = amBytes[len(amBytes)-1-i]
-	}
-	return result
-}
-
-func tryHexDecode(hexStr string, defResp []byte) []byte {
-	resp, err := hexutil.Decode(hexStr)
-	if err != nil {
-		return defResp
-	}
-
-	return resp
 }
