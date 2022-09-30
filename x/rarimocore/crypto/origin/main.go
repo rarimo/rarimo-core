@@ -26,6 +26,8 @@ func NewDefaultOrigin(tx, op, network string) *DefaultOrigin {
 
 var _ Origin = &DefaultOrigin{}
 
-func (d DefaultOrigin) GetOrigin() xcrypto.OriginData {
-	return crypto.Keccak256([]byte(d.TxHash), []byte(d.OperationId), []byte(d.CurrentNetwork))
+func (d DefaultOrigin) GetOrigin() (res xcrypto.OriginData) {
+	h := crypto.Keccak256([]byte(d.TxHash), []byte(d.OperationId), []byte(d.CurrentNetwork))
+	copy(res[:], h[:])
+	return res
 }
