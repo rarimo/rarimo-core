@@ -46,6 +46,9 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		TokenId:      msg.CurrentId,
 		Chain:        msg.CurrentChain,
 		Index:        msg.Index,
+		Name:         msg.CurrentName,
+		Symbol:       msg.CurrentSymbol,
+		Uri:          msg.CurrentURI,
 	}
 
 	k.SetItem(ctx, item)

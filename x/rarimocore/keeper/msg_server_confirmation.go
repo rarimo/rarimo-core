@@ -3,13 +3,14 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operations"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
@@ -43,27 +44,12 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		deposits = append(deposits, deposit)
 
-		info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
-		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
+		depositContent, err := k.contentFromDeposit(ctx, deposit)
+		if err != nil {
+			return nil, err
 		}
 
-		chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
-		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
-		}
-
-		content = append(content, crypto.HashContent{
-			TxHash:         deposit.Tx,
-			EventId:        deposit.EventId,
-			TargetNetwork:  deposit.ToChain,
-			CurrentNetwork: deposit.FromChain,
-			Receiver:       hexutil.MustDecode(deposit.Receiver),
-			TargetAddress:  tryHexDecode(info.Chains[deposit.ToChain].TokenAddress, []byte{}),
-			TargetId:       tryHexDecode(info.Chains[deposit.ToChain].TokenId, []byte{}),
-			Amount:         amountBytes(deposit.Amount),
-			ProgramId:      hexutil.MustDecode(chainParams.Contract),
-		})
+		content = append(content, depositContent)
 	}
 
 	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
@@ -90,27 +76,30 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func amountBytes(amount string) []byte {
-	am, ok := new(big.Int).SetString(amount, 10)
+func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (crypto.HashContent, error) {
+	info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
 	if !ok {
-		// it is NFT
-		am = new(big.Int).SetInt64(1)
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
 	}
 
-	amBytes := am.Bytes()
-	result := make([]byte, 32)
-
-	for i := range amBytes {
-		result[31-i] = amBytes[len(amBytes)-1-i]
-	}
-	return result
-}
-
-func tryHexDecode(hexStr string, defResp []byte) []byte {
-	resp, err := hexutil.Decode(hexStr)
-	if err != nil {
-		return defResp
+	item, ok := k.tm.GetItem(ctx, info.Chains[deposit.ToChain].TokenAddress, info.Chains[deposit.ToChain].TokenId, deposit.ToChain)
+	if !ok {
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token idem %s not found", deposit.Index))
 	}
 
-	return resp
+	chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
+	if !ok {
+		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
+	}
+
+	return crypto.HashContent{
+		Origin:        origin.NewDefaultOrigin(deposit.Tx, deposit.EventId, deposit.FromChain).GetOrigin(),
+		TargetNetwork: deposit.ToChain,
+		Receiver:      hexutil.MustDecode(deposit.Receiver),
+		Data: operations.NewTransferOperation(
+			info.Chains[deposit.ToChain].TokenAddress,
+			info.Chains[deposit.ToChain].TokenId,
+			deposit.Amount, item.Name, item.Symbol, item.Uri).GetContent(),
+		TargetContract: hexutil.MustDecode(chainParams.Contract),
+	}, nil
 }
