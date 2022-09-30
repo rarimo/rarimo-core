@@ -10,6 +10,9 @@ export interface Item {
   tokenId: string;
   chain: string;
   index: string;
+  name: string;
+  symbol: string;
+  uri: string;
 }
 
 const baseItem: object = {
@@ -17,6 +20,9 @@ const baseItem: object = {
   tokenId: "",
   chain: "",
   index: "",
+  name: "",
+  symbol: "",
+  uri: "",
 };
 
 export const Item = {
@@ -32,6 +38,15 @@ export const Item = {
     }
     if (message.index !== "") {
       writer.uint32(34).string(message.index);
+    }
+    if (message.name !== "") {
+      writer.uint32(42).string(message.name);
+    }
+    if (message.symbol !== "") {
+      writer.uint32(50).string(message.symbol);
+    }
+    if (message.uri !== "") {
+      writer.uint32(58).string(message.uri);
     }
     return writer;
   },
@@ -54,6 +69,15 @@ export const Item = {
           break;
         case 4:
           message.index = reader.string();
+          break;
+        case 5:
+          message.name = reader.string();
+          break;
+        case 6:
+          message.symbol = reader.string();
+          break;
+        case 7:
+          message.uri = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -85,6 +109,21 @@ export const Item = {
     } else {
       message.index = "";
     }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    if (object.symbol !== undefined && object.symbol !== null) {
+      message.symbol = String(object.symbol);
+    } else {
+      message.symbol = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
     return message;
   },
 
@@ -95,6 +134,9 @@ export const Item = {
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     message.chain !== undefined && (obj.chain = message.chain);
     message.index !== undefined && (obj.index = message.index);
+    message.name !== undefined && (obj.name = message.name);
+    message.symbol !== undefined && (obj.symbol = message.symbol);
+    message.uri !== undefined && (obj.uri = message.uri);
     return obj;
   },
 
@@ -119,6 +161,21 @@ export const Item = {
       message.index = object.index;
     } else {
       message.index = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.symbol !== undefined && object.symbol !== null) {
+      message.symbol = object.symbol;
+    } else {
+      message.symbol = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
     }
     return message;
   },

@@ -179,11 +179,11 @@ export const Info = {
     Object.entries(message.chains).forEach(([key, value]) => {
       Info_ChainsEntry.encode(
         { key: key as any, value },
-        writer.uint32(18).fork()
+        writer.uint32(26).fork()
       ).ldelim();
     });
     if (message.creator !== "") {
-      writer.uint32(26).string(message.creator);
+      writer.uint32(34).string(message.creator);
     }
     return writer;
   },
@@ -199,13 +199,13 @@ export const Info = {
         case 1:
           message.index = reader.string();
           break;
-        case 2:
-          const entry2 = Info_ChainsEntry.decode(reader, reader.uint32());
-          if (entry2.value !== undefined) {
-            message.chains[entry2.key] = entry2.value;
+        case 3:
+          const entry3 = Info_ChainsEntry.decode(reader, reader.uint32());
+          if (entry3.value !== undefined) {
+            message.chains[entry3.key] = entry3.value;
           }
           break;
-        case 3:
+        case 4:
           message.creator = reader.string();
           break;
         default:

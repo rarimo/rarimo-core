@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -31,7 +31,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 	infoRequest := &savermsg.MsgTransactionInfoRequest{
 		Hash:    msg.Tx,
 		EventId: msg.EventId,
-		Type:    network.Types[fmt.Sprint(msg.TokenType)],
+		Type:    network.Types[strconv.Itoa(int(msg.TokenType))],
 	}
 
 	saverClient, err := saver.GetClient(msg.FromChain)
@@ -41,7 +41,7 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 
 	infoResp, err := saverClient.GetDepositInfo(goCtx, infoRequest)
 	if err != nil {
-		k.Logger(ctx).Error("error calling saver service" + err.Error())
+		k.Logger(ctx).Error("error calling saver service " + err.Error())
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
 	}
 

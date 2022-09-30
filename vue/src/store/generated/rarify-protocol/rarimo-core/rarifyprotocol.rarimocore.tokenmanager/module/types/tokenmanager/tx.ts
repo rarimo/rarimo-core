@@ -12,6 +12,9 @@ export interface MsgCreateInfo {
   /** hex-encoded */
   currentId: string;
   currentChain: string;
+  currentName: string;
+  currentSymbol: string;
+  currentURI: string;
   currentType: type;
 }
 
@@ -43,6 +46,9 @@ const baseMsgCreateInfo: object = {
   currentAddress: "",
   currentId: "",
   currentChain: "",
+  currentName: "",
+  currentSymbol: "",
+  currentURI: "",
   currentType: 0,
 };
 
@@ -63,8 +69,17 @@ export const MsgCreateInfo = {
     if (message.currentChain !== "") {
       writer.uint32(42).string(message.currentChain);
     }
+    if (message.currentName !== "") {
+      writer.uint32(50).string(message.currentName);
+    }
+    if (message.currentSymbol !== "") {
+      writer.uint32(58).string(message.currentSymbol);
+    }
+    if (message.currentURI !== "") {
+      writer.uint32(66).string(message.currentURI);
+    }
     if (message.currentType !== 0) {
-      writer.uint32(48).int32(message.currentType);
+      writer.uint32(72).int32(message.currentType);
     }
     return writer;
   },
@@ -92,6 +107,15 @@ export const MsgCreateInfo = {
           message.currentChain = reader.string();
           break;
         case 6:
+          message.currentName = reader.string();
+          break;
+        case 7:
+          message.currentSymbol = reader.string();
+          break;
+        case 8:
+          message.currentURI = reader.string();
+          break;
+        case 9:
           message.currentType = reader.int32() as any;
           break;
         default:
@@ -129,6 +153,21 @@ export const MsgCreateInfo = {
     } else {
       message.currentChain = "";
     }
+    if (object.currentName !== undefined && object.currentName !== null) {
+      message.currentName = String(object.currentName);
+    } else {
+      message.currentName = "";
+    }
+    if (object.currentSymbol !== undefined && object.currentSymbol !== null) {
+      message.currentSymbol = String(object.currentSymbol);
+    } else {
+      message.currentSymbol = "";
+    }
+    if (object.currentURI !== undefined && object.currentURI !== null) {
+      message.currentURI = String(object.currentURI);
+    } else {
+      message.currentURI = "";
+    }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = typeFromJSON(object.currentType);
     } else {
@@ -146,6 +185,11 @@ export const MsgCreateInfo = {
     message.currentId !== undefined && (obj.currentId = message.currentId);
     message.currentChain !== undefined &&
       (obj.currentChain = message.currentChain);
+    message.currentName !== undefined &&
+      (obj.currentName = message.currentName);
+    message.currentSymbol !== undefined &&
+      (obj.currentSymbol = message.currentSymbol);
+    message.currentURI !== undefined && (obj.currentURI = message.currentURI);
     message.currentType !== undefined &&
       (obj.currentType = typeToJSON(message.currentType));
     return obj;
@@ -177,6 +221,21 @@ export const MsgCreateInfo = {
       message.currentChain = object.currentChain;
     } else {
       message.currentChain = "";
+    }
+    if (object.currentName !== undefined && object.currentName !== null) {
+      message.currentName = object.currentName;
+    } else {
+      message.currentName = "";
+    }
+    if (object.currentSymbol !== undefined && object.currentSymbol !== null) {
+      message.currentSymbol = object.currentSymbol;
+    } else {
+      message.currentSymbol = "";
+    }
+    if (object.currentURI !== undefined && object.currentURI !== null) {
+      message.currentURI = object.currentURI;
+    } else {
+      message.currentURI = "";
     }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = object.currentType;

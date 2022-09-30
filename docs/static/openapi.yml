@@ -31002,6 +31002,12 @@ paths:
                       type: string
                     index:
                       type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    uri:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -31118,6 +31124,12 @@ paths:
                   chain:
                     type: string
                   index:
+                    type: string
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  uri:
                     type: string
         default:
           description: An unexpected error response.
@@ -52946,6 +52958,12 @@ definitions:
         type: string
       index:
         type: string
+      name:
+        type: string
+      symbol:
+        type: string
+      uri:
+        type: string
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
@@ -53044,6 +53062,12 @@ definitions:
               type: string
             index:
               type: string
+            name:
+              type: string
+            symbol:
+              type: string
+            uri:
+              type: string
       pagination:
         type: object
         properties:
@@ -53115,6 +53139,12 @@ definitions:
           chain:
             type: string
           index:
+            type: string
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
             type: string
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object

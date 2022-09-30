@@ -42,6 +42,9 @@ export interface TokenmanagerItem {
   tokenId?: string;
   chain?: string;
   index?: string;
+  name?: string;
+  symbol?: string;
+  uri?: string;
 }
 
 export type TokenmanagerMsgAddChainResponse = object;
