@@ -23,7 +23,6 @@ export interface RpcStatus {
 export interface TokenmanagerChainInfo {
   tokenAddress?: string;
   tokenId?: string;
-  tokenType?: Tokenmanagertype;
 }
 
 export interface TokenmanagerChainParams {
@@ -49,6 +48,7 @@ export interface TokenmanagerItem {
   /** @format int64 */
   decimals?: number;
   seed?: string;
+  tokenType?: Tokenmanagertype;
 }
 
 export type TokenmanagerMsgAddChainResponse = object;

@@ -3,6 +3,15 @@ package rarifyprotocol.rarimocore.tokenmanager;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
+enum type {
+  NATIVE = 0;
+  ERC20 = 1;
+  ERC721 = 2;
+  ERC1155 = 3;
+  METAPLEX_NFT = 4;
+  METAPLEX_FT = 5;
+}
+
 message Item {
   // hex-encoded
   string tokenAddress = 1;
@@ -16,5 +25,6 @@ message Item {
   uint32 decimals = 8;
   // Seed for deriving address for Solana networks. Encoded into hex string
   string seed = 9;
+  type tokenType = 10;
 }
 

@@ -95,7 +95,7 @@ func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (cry
 
 	var operation operations.Operation
 
-	switch info.Chains[deposit.ToChain].TokenType {
+	switch item.TokenType {
 	case tokentypes.Type_METAPLEX_FT | tokentypes.Type_METAPLEX_NFT:
 		operation = operations.NewTransferFullMetaOperation(
 			info.Chains[deposit.ToChain].TokenAddress,

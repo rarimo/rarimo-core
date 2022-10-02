@@ -30808,16 +30808,6 @@ paths:
                           tokenId:
                             type: string
                             title: hex-encoded
-                          tokenType:
-                            type: string
-                            enum:
-                              - NATIVE
-                              - ERC20
-                              - ERC721
-                              - ERC1155
-                              - METAPLEX_NFT
-                              - METAPLEX_FT
-                            default: NATIVE
                     creator:
                       type: string
               pagination:
@@ -30940,16 +30930,6 @@ paths:
                         tokenId:
                           type: string
                           title: hex-encoded
-                        tokenType:
-                          type: string
-                          enum:
-                            - NATIVE
-                            - ERC20
-                            - ERC721
-                            - ERC1155
-                            - METAPLEX_NFT
-                            - METAPLEX_FT
-                          default: NATIVE
                   creator:
                     type: string
         default:
@@ -31016,6 +30996,16 @@ paths:
                       title: >-
                         Seed for deriving address for Solana networks. Encoded
                         into hex string
+                    tokenType:
+                      type: string
+                      enum:
+                        - NATIVE
+                        - ERC20
+                        - ERC721
+                        - ERC1155
+                        - METAPLEX_NFT
+                        - METAPLEX_FT
+                      default: NATIVE
               pagination:
                 type: object
                 properties:
@@ -31147,6 +31137,16 @@ paths:
                     title: >-
                       Seed for deriving address for Solana networks. Encoded
                       into hex string
+                  tokenType:
+                    type: string
+                    enum:
+                      - NATIVE
+                      - ERC20
+                      - ERC721
+                      - ERC1155
+                      - METAPLEX_NFT
+                      - METAPLEX_FT
+                    default: NATIVE
         default:
           description: An unexpected error response.
           schema:
@@ -52913,16 +52913,6 @@ definitions:
       tokenId:
         type: string
         title: hex-encoded
-      tokenType:
-        type: string
-        enum:
-          - NATIVE
-          - ERC20
-          - ERC721
-          - ERC1155
-          - METAPLEX_NFT
-          - METAPLEX_FT
-        default: NATIVE
   rarifyprotocol.rarimocore.tokenmanager.ChainParams:
     type: object
     properties:
@@ -52949,16 +52939,6 @@ definitions:
             tokenId:
               type: string
               title: hex-encoded
-            tokenType:
-              type: string
-              enum:
-                - NATIVE
-                - ERC20
-                - ERC721
-                - ERC1155
-                - METAPLEX_NFT
-                - METAPLEX_FT
-              default: NATIVE
       creator:
         type: string
   rarifyprotocol.rarimocore.tokenmanager.Item:
@@ -52986,6 +52966,16 @@ definitions:
       seed:
         type: string
         title: Seed for deriving address for Solana networks. Encoded into hex string
+      tokenType:
+        type: string
+        enum:
+          - NATIVE
+          - ERC20
+          - ERC721
+          - ERC1155
+          - METAPLEX_NFT
+          - METAPLEX_FT
+        default: NATIVE
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
@@ -53029,16 +53019,6 @@ definitions:
                   tokenId:
                     type: string
                     title: hex-encoded
-                  tokenType:
-                    type: string
-                    enum:
-                      - NATIVE
-                      - ERC20
-                      - ERC721
-                      - ERC1155
-                      - METAPLEX_NFT
-                      - METAPLEX_FT
-                    default: NATIVE
             creator:
               type: string
       pagination:
@@ -53098,6 +53078,16 @@ definitions:
               title: >-
                 Seed for deriving address for Solana networks. Encoded into hex
                 string
+            tokenType:
+              type: string
+              enum:
+                - NATIVE
+                - ERC20
+                - ERC721
+                - ERC1155
+                - METAPLEX_NFT
+                - METAPLEX_FT
+              default: NATIVE
       pagination:
         type: object
         properties:
@@ -53142,16 +53132,6 @@ definitions:
                 tokenId:
                   type: string
                   title: hex-encoded
-                tokenType:
-                  type: string
-                  enum:
-                    - NATIVE
-                    - ERC20
-                    - ERC721
-                    - ERC1155
-                    - METAPLEX_NFT
-                    - METAPLEX_FT
-                  default: NATIVE
           creator:
             type: string
   rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
@@ -53184,6 +53164,16 @@ definitions:
             title: >-
               Seed for deriving address for Solana networks. Encoded into hex
               string
+          tokenType:
+            type: string
+            enum:
+              - NATIVE
+              - ERC20
+              - ERC721
+              - ERC1155
+              - METAPLEX_NFT
+              - METAPLEX_FT
+            default: NATIVE
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:

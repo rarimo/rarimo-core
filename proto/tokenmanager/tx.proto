@@ -1,7 +1,7 @@
 syntax = "proto3";
 package rarifyprotocol.rarimocore.tokenmanager;
 
-import "tokenmanager/info.proto";
+import "tokenmanager/item.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";

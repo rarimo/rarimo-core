@@ -31,7 +31,6 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 			msg.CurrentChain: &types.ChainInfo{
 				TokenAddress: msg.CurrentAddress,
 				TokenId:      msg.CurrentId,
-				TokenType:    msg.CurrentType,
 			},
 		},
 	}
@@ -51,6 +50,7 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		Uri:          msg.CurrentURI,
 		Decimals:     msg.CurrentDecimals,
 		Seed:         msg.CurrentSeed,
+		TokenType:    msg.CurrentType,
 	}
 
 	k.SetItem(ctx, item)
@@ -110,7 +110,6 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 	info.Chains[msg.ChainName] = &types.ChainInfo{
 		TokenAddress: msg.TokenAddress,
 		TokenId:      msg.TokenId,
-		TokenType:    msg.TokenType,
 	}
 
 	k.SetInfo(ctx, info)
@@ -125,6 +124,7 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 		Uri:          msg.Uri,
 		Decimals:     msg.Decimals,
 		Seed:         msg.Seed,
+		TokenType:    msg.TokenType,
 	})
 
 	return &types.MsgAddChainResponse{}, nil

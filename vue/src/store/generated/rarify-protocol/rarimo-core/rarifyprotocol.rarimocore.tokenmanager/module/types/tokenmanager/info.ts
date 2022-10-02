@@ -3,68 +3,11 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
-export enum type {
-  NATIVE = 0,
-  ERC20 = 1,
-  ERC721 = 2,
-  ERC1155 = 3,
-  METAPLEX_NFT = 4,
-  METAPLEX_FT = 5,
-  UNRECOGNIZED = -1,
-}
-
-export function typeFromJSON(object: any): type {
-  switch (object) {
-    case 0:
-    case "NATIVE":
-      return type.NATIVE;
-    case 1:
-    case "ERC20":
-      return type.ERC20;
-    case 2:
-    case "ERC721":
-      return type.ERC721;
-    case 3:
-    case "ERC1155":
-      return type.ERC1155;
-    case 4:
-    case "METAPLEX_NFT":
-      return type.METAPLEX_NFT;
-    case 5:
-    case "METAPLEX_FT":
-      return type.METAPLEX_FT;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return type.UNRECOGNIZED;
-  }
-}
-
-export function typeToJSON(object: type): string {
-  switch (object) {
-    case type.NATIVE:
-      return "NATIVE";
-    case type.ERC20:
-      return "ERC20";
-    case type.ERC721:
-      return "ERC721";
-    case type.ERC1155:
-      return "ERC1155";
-    case type.METAPLEX_NFT:
-      return "METAPLEX_NFT";
-    case type.METAPLEX_FT:
-      return "METAPLEX_FT";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export interface ChainInfo {
   /** hex-encoded */
   tokenAddress: string;
   /** hex-encoded */
   tokenId: string;
-  tokenType: type;
 }
 
 export interface Info {
@@ -78,7 +21,7 @@ export interface Info_ChainsEntry {
   value: ChainInfo | undefined;
 }
 
-const baseChainInfo: object = { tokenAddress: "", tokenId: "", tokenType: 0 };
+const baseChainInfo: object = { tokenAddress: "", tokenId: "" };
 
 export const ChainInfo = {
   encode(message: ChainInfo, writer: Writer = Writer.create()): Writer {
@@ -87,9 +30,6 @@ export const ChainInfo = {
     }
     if (message.tokenId !== "") {
       writer.uint32(18).string(message.tokenId);
-    }
-    if (message.tokenType !== 0) {
-      writer.uint32(24).int32(message.tokenType);
     }
     return writer;
   },
@@ -106,9 +46,6 @@ export const ChainInfo = {
           break;
         case 2:
           message.tokenId = reader.string();
-          break;
-        case 3:
-          message.tokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -130,11 +67,6 @@ export const ChainInfo = {
     } else {
       message.tokenId = "";
     }
-    if (object.tokenType !== undefined && object.tokenType !== null) {
-      message.tokenType = typeFromJSON(object.tokenType);
-    } else {
-      message.tokenType = 0;
-    }
     return message;
   },
 
@@ -143,8 +75,6 @@ export const ChainInfo = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
-    message.tokenType !== undefined &&
-      (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
   },
 
@@ -159,11 +89,6 @@ export const ChainInfo = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
-    }
-    if (object.tokenType !== undefined && object.tokenType !== null) {
-      message.tokenType = object.tokenType;
-    } else {
-      message.tokenType = 0;
     }
     return message;
   },

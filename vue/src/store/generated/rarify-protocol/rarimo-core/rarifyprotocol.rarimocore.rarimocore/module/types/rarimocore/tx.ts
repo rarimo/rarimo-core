@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { type, typeFromJSON, typeToJSON } from "../tokenmanager/info";
+import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
 import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";

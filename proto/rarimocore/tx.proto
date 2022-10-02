@@ -4,7 +4,7 @@ package rarifyprotocol.rarimocore.rarimocore;
 import "rarimocore/deposit.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/change_key_ecdsa.proto";
-import "tokenmanager/info.proto";
+import "tokenmanager/item.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";

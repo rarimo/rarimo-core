@@ -3,6 +3,62 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
+export enum type {
+  NATIVE = 0,
+  ERC20 = 1,
+  ERC721 = 2,
+  ERC1155 = 3,
+  METAPLEX_NFT = 4,
+  METAPLEX_FT = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function typeFromJSON(object: any): type {
+  switch (object) {
+    case 0:
+    case "NATIVE":
+      return type.NATIVE;
+    case 1:
+    case "ERC20":
+      return type.ERC20;
+    case 2:
+    case "ERC721":
+      return type.ERC721;
+    case 3:
+    case "ERC1155":
+      return type.ERC1155;
+    case 4:
+    case "METAPLEX_NFT":
+      return type.METAPLEX_NFT;
+    case 5:
+    case "METAPLEX_FT":
+      return type.METAPLEX_FT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return type.UNRECOGNIZED;
+  }
+}
+
+export function typeToJSON(object: type): string {
+  switch (object) {
+    case type.NATIVE:
+      return "NATIVE";
+    case type.ERC20:
+      return "ERC20";
+    case type.ERC721:
+      return "ERC721";
+    case type.ERC1155:
+      return "ERC1155";
+    case type.METAPLEX_NFT:
+      return "METAPLEX_NFT";
+    case type.METAPLEX_FT:
+      return "METAPLEX_FT";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface Item {
   /** hex-encoded */
   tokenAddress: string;
@@ -16,6 +72,7 @@ export interface Item {
   decimals: number;
   /** Seed for deriving address for Solana networks. Encoded into hex string */
   seed: string;
+  tokenType: type;
 }
 
 const baseItem: object = {
@@ -28,6 +85,7 @@ const baseItem: object = {
   uri: "",
   decimals: 0,
   seed: "",
+  tokenType: 0,
 };
 
 export const Item = {
@@ -58,6 +116,9 @@ export const Item = {
     }
     if (message.seed !== "") {
       writer.uint32(74).string(message.seed);
+    }
+    if (message.tokenType !== 0) {
+      writer.uint32(80).int32(message.tokenType);
     }
     return writer;
   },
@@ -95,6 +156,9 @@ export const Item = {
           break;
         case 9:
           message.seed = reader.string();
+          break;
+        case 10:
+          message.tokenType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -151,6 +215,11 @@ export const Item = {
     } else {
       message.seed = "";
     }
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = typeFromJSON(object.tokenType);
+    } else {
+      message.tokenType = 0;
+    }
     return message;
   },
 
@@ -166,6 +235,8 @@ export const Item = {
     message.uri !== undefined && (obj.uri = message.uri);
     message.decimals !== undefined && (obj.decimals = message.decimals);
     message.seed !== undefined && (obj.seed = message.seed);
+    message.tokenType !== undefined &&
+      (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
   },
 
@@ -215,6 +286,11 @@ export const Item = {
       message.seed = object.seed;
     } else {
       message.seed = "";
+    }
+    if (object.tokenType !== undefined && object.tokenType !== null) {
+      message.tokenType = object.tokenType;
+    } else {
+      message.tokenType = 0;
     }
     return message;
   },
