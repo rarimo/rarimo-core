@@ -63,6 +63,8 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		ToChain:    infoResp.TargetNetwork,
 		Receiver:   infoResp.Receiver,
 		Amount:     infoResp.Amount,
+		BundleData: infoResp.BundleData,
+		BundleSalt: infoResp.BundleSalt,
 		Signed:     false,
 		TokenIndex: item.Index,
 		Timestamp:  uint64(time.Now().UTC().UnixMilli()),

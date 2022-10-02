@@ -15,9 +15,12 @@ message Deposit {
   // dec-encoded
   string amount = 7;
 
-  string creator = 8;
-  bool signed = 9;
-  string tokenIndex = 10;
-  uint64 timestamp = 11;
+  string bundleData = 8;
+  string bundleSalt = 9;
+
+  string creator = 10;
+  bool signed = 11;
+  string tokenIndex = 12;
+  uint64 timestamp = 13;
 }
 
