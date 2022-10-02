@@ -12,6 +12,7 @@ import (
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operations"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
@@ -92,14 +93,28 @@ func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (cry
 		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
 	}
 
-	return crypto.HashContent{
-		Origin:        origin.NewDefaultOrigin(deposit.Tx, deposit.EventId, deposit.FromChain).GetOrigin(),
-		TargetNetwork: deposit.ToChain,
-		Receiver:      hexutil.MustDecode(deposit.Receiver),
-		Data: operations.NewTransferOperation(
+	var operation operations.Operation
+
+	switch info.Chains[deposit.ToChain].TokenType {
+	case tokentypes.Type_METAPLEX_FT | tokentypes.Type_METAPLEX_NFT:
+		operation = operations.NewTransferFullMetaOperation(
 			info.Chains[deposit.ToChain].TokenAddress,
 			info.Chains[deposit.ToChain].TokenId,
-			deposit.Amount, item.Name, item.Symbol, item.Uri, uint8(item.Decimals)).GetContent(),
+			deposit.Amount, item.Name, item.Symbol, item.Uri, uint8(item.Decimals),
+		)
+	default:
+		operation = operations.NewTransferOperation(
+			info.Chains[deposit.ToChain].TokenAddress,
+			info.Chains[deposit.ToChain].TokenId,
+			deposit.Amount, item.Uri,
+		)
+	}
+
+	return crypto.HashContent{
+		Origin:         origin.NewDefaultOrigin(deposit.Tx, deposit.EventId, deposit.FromChain).GetOrigin(),
+		TargetNetwork:  deposit.ToChain,
+		Receiver:       hexutil.MustDecode(deposit.Receiver),
+		Data:           operation.GetContent(),
 		TargetContract: hexutil.MustDecode(chainParams.Contract),
 	}, nil
 }

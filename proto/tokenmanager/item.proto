@@ -14,5 +14,7 @@ message Item {
   string symbol = 6;
   string uri = 7;
   uint32 decimals = 8;
+  // Seed for deriving address for Solana networks. Encoded into hex string
+  string seed = 9;
 }
 

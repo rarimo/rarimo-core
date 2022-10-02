@@ -13,6 +13,9 @@ export interface Item {
   name: string;
   symbol: string;
   uri: string;
+  decimals: number;
+  /** Seed for deriving address for Solana networks. Encoded into hex string */
+  seed: string;
 }
 
 const baseItem: object = {
@@ -23,6 +26,8 @@ const baseItem: object = {
   name: "",
   symbol: "",
   uri: "",
+  decimals: 0,
+  seed: "",
 };
 
 export const Item = {
@@ -47,6 +52,12 @@ export const Item = {
     }
     if (message.uri !== "") {
       writer.uint32(58).string(message.uri);
+    }
+    if (message.decimals !== 0) {
+      writer.uint32(64).uint32(message.decimals);
+    }
+    if (message.seed !== "") {
+      writer.uint32(74).string(message.seed);
     }
     return writer;
   },
@@ -78,6 +89,12 @@ export const Item = {
           break;
         case 7:
           message.uri = reader.string();
+          break;
+        case 8:
+          message.decimals = reader.uint32();
+          break;
+        case 9:
+          message.seed = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -124,6 +141,16 @@ export const Item = {
     } else {
       message.uri = "";
     }
+    if (object.decimals !== undefined && object.decimals !== null) {
+      message.decimals = Number(object.decimals);
+    } else {
+      message.decimals = 0;
+    }
+    if (object.seed !== undefined && object.seed !== null) {
+      message.seed = String(object.seed);
+    } else {
+      message.seed = "";
+    }
     return message;
   },
 
@@ -137,6 +164,8 @@ export const Item = {
     message.name !== undefined && (obj.name = message.name);
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.uri !== undefined && (obj.uri = message.uri);
+    message.decimals !== undefined && (obj.decimals = message.decimals);
+    message.seed !== undefined && (obj.seed = message.seed);
     return obj;
   },
 
@@ -176,6 +205,16 @@ export const Item = {
       message.uri = object.uri;
     } else {
       message.uri = "";
+    }
+    if (object.decimals !== undefined && object.decimals !== null) {
+      message.decimals = object.decimals;
+    } else {
+      message.decimals = 0;
+    }
+    if (object.seed !== undefined && object.seed !== null) {
+      message.seed = object.seed;
+    } else {
+      message.seed = "";
     }
     return message;
   },

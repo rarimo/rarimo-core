@@ -70,6 +70,12 @@ func (msg *MsgCreateInfo) ValidateBasic() error {
 		}
 	}
 
+	if msg.CurrentSeed != "" {
+		if _, err = hexutil.Decode(msg.CurrentSeed); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex token seed (%s)", err)
+		}
+	}
+
 	return nil
 }
 

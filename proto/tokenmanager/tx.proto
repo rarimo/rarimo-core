@@ -27,7 +27,9 @@ message MsgCreateInfo {
   string currentSymbol = 7;
   string currentURI = 8;
   uint32 currentDecimals = 9;
-  type currentType = 10;
+  // Seed for deriving address for Solana networks. Encoded into hex string
+  string currentSeed = 10;
+  type currentType = 11;
 }
 message MsgCreateInfoResponse {}
 
@@ -50,7 +52,9 @@ message MsgAddChain {
   string symbol = 7;
   string uri = 8;
   uint32 decimals = 9;
-  type tokenType = 10;
+  // Seed for deriving address for Solana networks. Encoded into hex string
+  string seed = 10;
+  type tokenType = 11;
 }
 
 message MsgAddChainResponse {}

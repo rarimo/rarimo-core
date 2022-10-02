@@ -15,6 +15,9 @@ export interface MsgCreateInfo {
   currentName: string;
   currentSymbol: string;
   currentURI: string;
+  currentDecimals: number;
+  /** Seed for deriving address for Solana networks. Encoded into hex string */
+  currentSeed: string;
   currentType: type;
 }
 
@@ -35,6 +38,12 @@ export interface MsgAddChain {
   tokenAddress: string;
   /** hex-encoded */
   tokenId: string;
+  name: string;
+  symbol: string;
+  uri: string;
+  decimals: number;
+  /** Seed for deriving address for Solana networks. Encoded into hex string */
+  seed: string;
   tokenType: type;
 }
 
@@ -49,6 +58,8 @@ const baseMsgCreateInfo: object = {
   currentName: "",
   currentSymbol: "",
   currentURI: "",
+  currentDecimals: 0,
+  currentSeed: "",
   currentType: 0,
 };
 
@@ -78,8 +89,14 @@ export const MsgCreateInfo = {
     if (message.currentURI !== "") {
       writer.uint32(66).string(message.currentURI);
     }
+    if (message.currentDecimals !== 0) {
+      writer.uint32(72).uint32(message.currentDecimals);
+    }
+    if (message.currentSeed !== "") {
+      writer.uint32(82).string(message.currentSeed);
+    }
     if (message.currentType !== 0) {
-      writer.uint32(72).int32(message.currentType);
+      writer.uint32(88).int32(message.currentType);
     }
     return writer;
   },
@@ -116,6 +133,12 @@ export const MsgCreateInfo = {
           message.currentURI = reader.string();
           break;
         case 9:
+          message.currentDecimals = reader.uint32();
+          break;
+        case 10:
+          message.currentSeed = reader.string();
+          break;
+        case 11:
           message.currentType = reader.int32() as any;
           break;
         default:
@@ -168,6 +191,19 @@ export const MsgCreateInfo = {
     } else {
       message.currentURI = "";
     }
+    if (
+      object.currentDecimals !== undefined &&
+      object.currentDecimals !== null
+    ) {
+      message.currentDecimals = Number(object.currentDecimals);
+    } else {
+      message.currentDecimals = 0;
+    }
+    if (object.currentSeed !== undefined && object.currentSeed !== null) {
+      message.currentSeed = String(object.currentSeed);
+    } else {
+      message.currentSeed = "";
+    }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = typeFromJSON(object.currentType);
     } else {
@@ -190,6 +226,10 @@ export const MsgCreateInfo = {
     message.currentSymbol !== undefined &&
       (obj.currentSymbol = message.currentSymbol);
     message.currentURI !== undefined && (obj.currentURI = message.currentURI);
+    message.currentDecimals !== undefined &&
+      (obj.currentDecimals = message.currentDecimals);
+    message.currentSeed !== undefined &&
+      (obj.currentSeed = message.currentSeed);
     message.currentType !== undefined &&
       (obj.currentType = typeToJSON(message.currentType));
     return obj;
@@ -236,6 +276,19 @@ export const MsgCreateInfo = {
       message.currentURI = object.currentURI;
     } else {
       message.currentURI = "";
+    }
+    if (
+      object.currentDecimals !== undefined &&
+      object.currentDecimals !== null
+    ) {
+      message.currentDecimals = object.currentDecimals;
+    } else {
+      message.currentDecimals = 0;
+    }
+    if (object.currentSeed !== undefined && object.currentSeed !== null) {
+      message.currentSeed = object.currentSeed;
+    } else {
+      message.currentSeed = "";
     }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = object.currentType;
@@ -400,6 +453,11 @@ const baseMsgAddChain: object = {
   chainName: "",
   tokenAddress: "",
   tokenId: "",
+  name: "",
+  symbol: "",
+  uri: "",
+  decimals: 0,
+  seed: "",
   tokenType: 0,
 };
 
@@ -420,8 +478,23 @@ export const MsgAddChain = {
     if (message.tokenId !== "") {
       writer.uint32(42).string(message.tokenId);
     }
+    if (message.name !== "") {
+      writer.uint32(50).string(message.name);
+    }
+    if (message.symbol !== "") {
+      writer.uint32(58).string(message.symbol);
+    }
+    if (message.uri !== "") {
+      writer.uint32(66).string(message.uri);
+    }
+    if (message.decimals !== 0) {
+      writer.uint32(72).uint32(message.decimals);
+    }
+    if (message.seed !== "") {
+      writer.uint32(82).string(message.seed);
+    }
     if (message.tokenType !== 0) {
-      writer.uint32(48).int32(message.tokenType);
+      writer.uint32(88).int32(message.tokenType);
     }
     return writer;
   },
@@ -449,6 +522,21 @@ export const MsgAddChain = {
           message.tokenId = reader.string();
           break;
         case 6:
+          message.name = reader.string();
+          break;
+        case 7:
+          message.symbol = reader.string();
+          break;
+        case 8:
+          message.uri = reader.string();
+          break;
+        case 9:
+          message.decimals = reader.uint32();
+          break;
+        case 10:
+          message.seed = reader.string();
+          break;
+        case 11:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -486,6 +574,31 @@ export const MsgAddChain = {
     } else {
       message.tokenId = "";
     }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    if (object.symbol !== undefined && object.symbol !== null) {
+      message.symbol = String(object.symbol);
+    } else {
+      message.symbol = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.decimals !== undefined && object.decimals !== null) {
+      message.decimals = Number(object.decimals);
+    } else {
+      message.decimals = 0;
+    }
+    if (object.seed !== undefined && object.seed !== null) {
+      message.seed = String(object.seed);
+    } else {
+      message.seed = "";
+    }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = typeFromJSON(object.tokenType);
     } else {
@@ -502,6 +615,11 @@ export const MsgAddChain = {
     message.tokenAddress !== undefined &&
       (obj.tokenAddress = message.tokenAddress);
     message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.name !== undefined && (obj.name = message.name);
+    message.symbol !== undefined && (obj.symbol = message.symbol);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.decimals !== undefined && (obj.decimals = message.decimals);
+    message.seed !== undefined && (obj.seed = message.seed);
     message.tokenType !== undefined &&
       (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
@@ -533,6 +651,31 @@ export const MsgAddChain = {
       message.tokenId = object.tokenId;
     } else {
       message.tokenId = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.symbol !== undefined && object.symbol !== null) {
+      message.symbol = object.symbol;
+    } else {
+      message.symbol = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.decimals !== undefined && object.decimals !== null) {
+      message.decimals = object.decimals;
+    } else {
+      message.decimals = 0;
+    }
+    if (object.seed !== undefined && object.seed !== null) {
+      message.seed = object.seed;
+    } else {
+      message.seed = "";
     }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = object.tokenType;

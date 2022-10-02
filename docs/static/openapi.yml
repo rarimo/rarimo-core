@@ -31008,6 +31008,14 @@ paths:
                       type: string
                     uri:
                       type: string
+                    decimals:
+                      type: integer
+                      format: int64
+                    seed:
+                      type: string
+                      title: >-
+                        Seed for deriving address for Solana networks. Encoded
+                        into hex string
               pagination:
                 type: object
                 properties:
@@ -31131,6 +31139,14 @@ paths:
                     type: string
                   uri:
                     type: string
+                  decimals:
+                    type: integer
+                    format: int64
+                  seed:
+                    type: string
+                    title: >-
+                      Seed for deriving address for Solana networks. Encoded
+                      into hex string
         default:
           description: An unexpected error response.
           schema:
@@ -52964,6 +52980,12 @@ definitions:
         type: string
       uri:
         type: string
+      decimals:
+        type: integer
+        format: int64
+      seed:
+        type: string
+        title: Seed for deriving address for Solana networks. Encoded into hex string
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
@@ -53068,6 +53090,14 @@ definitions:
               type: string
             uri:
               type: string
+            decimals:
+              type: integer
+              format: int64
+            seed:
+              type: string
+              title: >-
+                Seed for deriving address for Solana networks. Encoded into hex
+                string
       pagination:
         type: object
         properties:
@@ -53146,6 +53176,14 @@ definitions:
             type: string
           uri:
             type: string
+          decimals:
+            type: integer
+            format: int64
+          seed:
+            type: string
+            title: >-
+              Seed for deriving address for Solana networks. Encoded into hex
+              string
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:
