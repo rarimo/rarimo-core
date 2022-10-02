@@ -30289,16 +30289,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}':
@@ -30465,16 +30455,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -30562,6 +30542,10 @@ paths:
                     amount:
                       type: string
                       title: dec-encoded
+                    bundleData:
+                      type: string
+                    bundleSalt:
+                      type: string
                     creator:
                       type: string
                     signed:
@@ -30663,16 +30647,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/deposit/{index}':
@@ -30707,6 +30681,10 @@ paths:
                   amount:
                     type: string
                     title: dec-encoded
+                  bundleData:
+                    type: string
+                  bundleSalt:
+                    type: string
                   creator:
                     type: string
                   signed:
@@ -52656,6 +52634,10 @@ definitions:
       amount:
         type: string
         title: dec-encoded
+      bundleData:
+        type: string
+      bundleSalt:
+        type: string
       creator:
         type: string
       signed:
@@ -52787,6 +52769,10 @@ definitions:
             amount:
               type: string
               title: dec-encoded
+            bundleData:
+              type: string
+            bundleSalt:
+              type: string
             creator:
               type: string
             signed:
@@ -52875,6 +52861,10 @@ definitions:
           amount:
             type: string
             title: dec-encoded
+          bundleData:
+            type: string
+          bundleSalt:
+            type: string
           creator:
             type: string
           signed:

@@ -15,6 +15,8 @@ export interface Deposit {
   receiver: string;
   /** dec-encoded */
   amount: string;
+  bundleData: string;
+  bundleSalt: string;
   creator: string;
   signed: boolean;
   tokenIndex: string;
@@ -29,6 +31,8 @@ const baseDeposit: object = {
   toChain: "",
   receiver: "",
   amount: "",
+  bundleData: "",
+  bundleSalt: "",
   creator: "",
   signed: false,
   tokenIndex: "",
@@ -58,17 +62,23 @@ export const Deposit = {
     if (message.amount !== "") {
       writer.uint32(58).string(message.amount);
     }
+    if (message.bundleData !== "") {
+      writer.uint32(66).string(message.bundleData);
+    }
+    if (message.bundleSalt !== "") {
+      writer.uint32(74).string(message.bundleSalt);
+    }
     if (message.creator !== "") {
-      writer.uint32(66).string(message.creator);
+      writer.uint32(82).string(message.creator);
     }
     if (message.signed === true) {
-      writer.uint32(72).bool(message.signed);
+      writer.uint32(88).bool(message.signed);
     }
     if (message.tokenIndex !== "") {
-      writer.uint32(82).string(message.tokenIndex);
+      writer.uint32(98).string(message.tokenIndex);
     }
     if (message.timestamp !== 0) {
-      writer.uint32(88).uint64(message.timestamp);
+      writer.uint32(104).uint64(message.timestamp);
     }
     return writer;
   },
@@ -102,15 +112,21 @@ export const Deposit = {
           message.amount = reader.string();
           break;
         case 8:
-          message.creator = reader.string();
+          message.bundleData = reader.string();
           break;
         case 9:
-          message.signed = reader.bool();
+          message.bundleSalt = reader.string();
           break;
         case 10:
-          message.tokenIndex = reader.string();
+          message.creator = reader.string();
           break;
         case 11:
+          message.signed = reader.bool();
+          break;
+        case 12:
+          message.tokenIndex = reader.string();
+          break;
+        case 13:
           message.timestamp = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -158,6 +174,16 @@ export const Deposit = {
     } else {
       message.amount = "";
     }
+    if (object.bundleData !== undefined && object.bundleData !== null) {
+      message.bundleData = String(object.bundleData);
+    } else {
+      message.bundleData = "";
+    }
+    if (object.bundleSalt !== undefined && object.bundleSalt !== null) {
+      message.bundleSalt = String(object.bundleSalt);
+    } else {
+      message.bundleSalt = "";
+    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
@@ -190,6 +216,8 @@ export const Deposit = {
     message.toChain !== undefined && (obj.toChain = message.toChain);
     message.receiver !== undefined && (obj.receiver = message.receiver);
     message.amount !== undefined && (obj.amount = message.amount);
+    message.bundleData !== undefined && (obj.bundleData = message.bundleData);
+    message.bundleSalt !== undefined && (obj.bundleSalt = message.bundleSalt);
     message.creator !== undefined && (obj.creator = message.creator);
     message.signed !== undefined && (obj.signed = message.signed);
     message.tokenIndex !== undefined && (obj.tokenIndex = message.tokenIndex);
@@ -233,6 +261,16 @@ export const Deposit = {
       message.amount = object.amount;
     } else {
       message.amount = "";
+    }
+    if (object.bundleData !== undefined && object.bundleData !== null) {
+      message.bundleData = object.bundleData;
+    } else {
+      message.bundleData = "";
+    }
+    if (object.bundleSalt !== undefined && object.bundleSalt !== null) {
+      message.bundleSalt = object.bundleSalt;
+    } else {
+      message.bundleSalt = "";
     }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
