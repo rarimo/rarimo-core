@@ -16,24 +16,26 @@ type TransferOperation struct {
 	// Use binary.BigEndian.PutUint64(amount, c.Amount)
 	Amount []byte
 	// Target metadata information
-	TargetName   string
-	TargetSymbol string
-	TargetURI    string
+	TargetName     string
+	TargetSymbol   string
+	TargetURI      string
+	TargetDecimals []byte
 }
 
-func NewTransferOperation(addHex, idHex, amount, name, symbol, uri string) *TransferOperation {
+func NewTransferOperation(addHex, idHex, amount, name, symbol, uri string, decimals uint8) *TransferOperation {
 	return &TransferOperation{
-		TargetAddress: tryHexDecode(addHex),
-		TargetId:      tryHexDecode(idHex),
-		Amount:        amountBytes(amount),
-		TargetName:    name,
-		TargetSymbol:  symbol,
-		TargetURI:     uri,
+		TargetAddress:  tryHexDecode(addHex),
+		TargetId:       tryHexDecode(idHex),
+		Amount:         amountBytes(amount),
+		TargetName:     name,
+		TargetSymbol:   symbol,
+		TargetURI:      uri,
+		TargetDecimals: decimalsBytes(decimals),
 	}
 }
 
 var _ Operation = &TransferOperation{}
 
 func (t TransferOperation) GetContent() crypto.ContentData {
-	return bytes.Join([][]byte{t.TargetAddress, t.TargetId, t.Amount, []byte(t.TargetName), []byte(t.TargetSymbol), []byte(t.TargetURI)}, []byte{})
+	return bytes.Join([][]byte{t.TargetAddress, t.TargetId, t.Amount, []byte(t.TargetName), []byte(t.TargetSymbol), []byte(t.TargetURI), t.TargetDecimals}, []byte{})
 }

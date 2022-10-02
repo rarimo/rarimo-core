@@ -22,11 +22,20 @@ func amountBytes(amount string) []byte {
 		am = new(big.Int).SetInt64(1)
 	}
 
-	amBytes := am.Bytes()
+	return bigInt256Bytes(am)
+}
+
+func decimalsBytes(decimals uint8) []byte {
+	dm := new(big.Int).SetUint64(uint64(decimals))
+	return bigInt256Bytes(dm)
+}
+
+func bigInt256Bytes(i *big.Int) []byte {
+	iBytes := i.Bytes()
 	result := make([]byte, 32)
 
-	for i := range amBytes {
-		result[31-i] = amBytes[len(amBytes)-1-i]
+	for i := range iBytes {
+		result[31-i] = iBytes[len(iBytes)-1-i]
 	}
 	return result
 }

@@ -99,7 +99,7 @@ func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (cry
 		Data: operations.NewTransferOperation(
 			info.Chains[deposit.ToChain].TokenAddress,
 			info.Chains[deposit.ToChain].TokenId,
-			deposit.Amount, item.Name, item.Symbol, item.Uri).GetContent(),
+			deposit.Amount, item.Name, item.Symbol, item.Uri, uint8(item.Decimals)).GetContent(),
 		TargetContract: hexutil.MustDecode(chainParams.Contract),
 	}, nil
 }

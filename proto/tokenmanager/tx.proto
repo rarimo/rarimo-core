@@ -26,7 +26,8 @@ message MsgCreateInfo {
   string currentName = 6;
   string currentSymbol = 7;
   string currentURI = 8;
-  type currentType = 9;
+  uint32 currentDecimals = 9;
+  type currentType = 10;
 }
 message MsgCreateInfoResponse {}
 
@@ -45,7 +46,11 @@ message MsgAddChain {
   string tokenAddress = 4;
   // hex-encoded
   string tokenId = 5;
-  type tokenType = 6;
+  string name = 6;
+  string symbol = 7;
+  string uri = 8;
+  uint32 decimals = 9;
+  type tokenType = 10;
 }
 
 message MsgAddChainResponse {}

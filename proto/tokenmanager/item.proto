@@ -13,5 +13,6 @@ message Item {
   string name = 5;
   string symbol = 6;
   string uri = 7;
+  uint32 decimals = 8;
 }
 
