@@ -16,7 +16,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func SimulateMsgCreateDeposit(
+func SimulateMsgCreateTransfer(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -26,12 +26,12 @@ func SimulateMsgCreateDeposit(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
 		i := r.Int()
-		msg := &types.MsgCreateDeposit{
+		msg := &types.MsgCreateTransferOp{
 			Creator: simAccount.Address.String(),
-			Index:   strconv.Itoa(i),
+			Tx:      strconv.Itoa(i),
 		}
 
-		_, found := k.GetDeposit(ctx, msg.Tx)
+		_, found := k.GetOperation(ctx, msg.Tx)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Deposit already exist"), nil, nil
 		}

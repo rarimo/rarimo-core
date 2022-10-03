@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../rarimocore/params";
-import { Deposit } from "../rarimocore/deposit";
+import { Operation } from "../rarimocore/operation";
 import {
   PageRequest,
   PageResponse,
@@ -20,20 +20,20 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QueryGetDepositRequest {
+export interface QueryGetOperationRequest {
   index: string;
 }
 
-export interface QueryGetDepositResponse {
-  deposit: Deposit | undefined;
+export interface QueryGetOperationResponse {
+  operation: Operation | undefined;
 }
 
-export interface QueryAllDepositRequest {
+export interface QueryAllOperationRequest {
   pagination: PageRequest | undefined;
 }
 
-export interface QueryAllDepositResponse {
-  deposit: Deposit[];
+export interface QueryAllOperationResponse {
+  operation: Operation[];
   pagination: PageResponse | undefined;
 }
 
@@ -168,11 +168,11 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryGetDepositRequest: object = { index: "" };
+const baseQueryGetOperationRequest: object = { index: "" };
 
-export const QueryGetDepositRequest = {
+export const QueryGetOperationRequest = {
   encode(
-    message: QueryGetDepositRequest,
+    message: QueryGetOperationRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.index !== "") {
@@ -181,10 +181,15 @@ export const QueryGetDepositRequest = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryGetDepositRequest {
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetOperationRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseQueryGetDepositRequest } as QueryGetDepositRequest;
+    const message = {
+      ...baseQueryGetOperationRequest,
+    } as QueryGetOperationRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -199,8 +204,10 @@ export const QueryGetDepositRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetDepositRequest {
-    const message = { ...baseQueryGetDepositRequest } as QueryGetDepositRequest;
+  fromJSON(object: any): QueryGetOperationRequest {
+    const message = {
+      ...baseQueryGetOperationRequest,
+    } as QueryGetOperationRequest;
     if (object.index !== undefined && object.index !== null) {
       message.index = String(object.index);
     } else {
@@ -209,16 +216,18 @@ export const QueryGetDepositRequest = {
     return message;
   },
 
-  toJSON(message: QueryGetDepositRequest): unknown {
+  toJSON(message: QueryGetOperationRequest): unknown {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetDepositRequest>
-  ): QueryGetDepositRequest {
-    const message = { ...baseQueryGetDepositRequest } as QueryGetDepositRequest;
+    object: DeepPartial<QueryGetOperationRequest>
+  ): QueryGetOperationRequest {
+    const message = {
+      ...baseQueryGetOperationRequest,
+    } as QueryGetOperationRequest;
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {
@@ -228,30 +237,33 @@ export const QueryGetDepositRequest = {
   },
 };
 
-const baseQueryGetDepositResponse: object = {};
+const baseQueryGetOperationResponse: object = {};
 
-export const QueryGetDepositResponse = {
+export const QueryGetOperationResponse = {
   encode(
-    message: QueryGetDepositResponse,
+    message: QueryGetOperationResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.deposit !== undefined) {
-      Deposit.encode(message.deposit, writer.uint32(10).fork()).ldelim();
+    if (message.operation !== undefined) {
+      Operation.encode(message.operation, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryGetDepositResponse {
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetOperationResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetDepositResponse,
-    } as QueryGetDepositResponse;
+      ...baseQueryGetOperationResponse,
+    } as QueryGetOperationResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deposit = Deposit.decode(reader, reader.uint32());
+          message.operation = Operation.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -261,47 +273,47 @@ export const QueryGetDepositResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetDepositResponse {
+  fromJSON(object: any): QueryGetOperationResponse {
     const message = {
-      ...baseQueryGetDepositResponse,
-    } as QueryGetDepositResponse;
-    if (object.deposit !== undefined && object.deposit !== null) {
-      message.deposit = Deposit.fromJSON(object.deposit);
+      ...baseQueryGetOperationResponse,
+    } as QueryGetOperationResponse;
+    if (object.operation !== undefined && object.operation !== null) {
+      message.operation = Operation.fromJSON(object.operation);
     } else {
-      message.deposit = undefined;
+      message.operation = undefined;
     }
     return message;
   },
 
-  toJSON(message: QueryGetDepositResponse): unknown {
+  toJSON(message: QueryGetOperationResponse): unknown {
     const obj: any = {};
-    message.deposit !== undefined &&
-      (obj.deposit = message.deposit
-        ? Deposit.toJSON(message.deposit)
+    message.operation !== undefined &&
+      (obj.operation = message.operation
+        ? Operation.toJSON(message.operation)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetDepositResponse>
-  ): QueryGetDepositResponse {
+    object: DeepPartial<QueryGetOperationResponse>
+  ): QueryGetOperationResponse {
     const message = {
-      ...baseQueryGetDepositResponse,
-    } as QueryGetDepositResponse;
-    if (object.deposit !== undefined && object.deposit !== null) {
-      message.deposit = Deposit.fromPartial(object.deposit);
+      ...baseQueryGetOperationResponse,
+    } as QueryGetOperationResponse;
+    if (object.operation !== undefined && object.operation !== null) {
+      message.operation = Operation.fromPartial(object.operation);
     } else {
-      message.deposit = undefined;
+      message.operation = undefined;
     }
     return message;
   },
 };
 
-const baseQueryAllDepositRequest: object = {};
+const baseQueryAllOperationRequest: object = {};
 
-export const QueryAllDepositRequest = {
+export const QueryAllOperationRequest = {
   encode(
-    message: QueryAllDepositRequest,
+    message: QueryAllOperationRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.pagination !== undefined) {
@@ -310,10 +322,15 @@ export const QueryAllDepositRequest = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryAllDepositRequest {
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllOperationRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseQueryAllDepositRequest } as QueryAllDepositRequest;
+    const message = {
+      ...baseQueryAllOperationRequest,
+    } as QueryAllOperationRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -328,8 +345,10 @@ export const QueryAllDepositRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllDepositRequest {
-    const message = { ...baseQueryAllDepositRequest } as QueryAllDepositRequest;
+  fromJSON(object: any): QueryAllOperationRequest {
+    const message = {
+      ...baseQueryAllOperationRequest,
+    } as QueryAllOperationRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromJSON(object.pagination);
     } else {
@@ -338,7 +357,7 @@ export const QueryAllDepositRequest = {
     return message;
   },
 
-  toJSON(message: QueryAllDepositRequest): unknown {
+  toJSON(message: QueryAllOperationRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -348,9 +367,11 @@ export const QueryAllDepositRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllDepositRequest>
-  ): QueryAllDepositRequest {
-    const message = { ...baseQueryAllDepositRequest } as QueryAllDepositRequest;
+    object: DeepPartial<QueryAllOperationRequest>
+  ): QueryAllOperationRequest {
+    const message = {
+      ...baseQueryAllOperationRequest,
+    } as QueryAllOperationRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromPartial(object.pagination);
     } else {
@@ -360,15 +381,15 @@ export const QueryAllDepositRequest = {
   },
 };
 
-const baseQueryAllDepositResponse: object = {};
+const baseQueryAllOperationResponse: object = {};
 
-export const QueryAllDepositResponse = {
+export const QueryAllOperationResponse = {
   encode(
-    message: QueryAllDepositResponse,
+    message: QueryAllOperationResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    for (const v of message.deposit) {
-      Deposit.encode(v!, writer.uint32(10).fork()).ldelim();
+    for (const v of message.operation) {
+      Operation.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -379,18 +400,21 @@ export const QueryAllDepositResponse = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryAllDepositResponse {
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllOperationResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryAllDepositResponse,
-    } as QueryAllDepositResponse;
-    message.deposit = [];
+      ...baseQueryAllOperationResponse,
+    } as QueryAllOperationResponse;
+    message.operation = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deposit.push(Deposit.decode(reader, reader.uint32()));
+          message.operation.push(Operation.decode(reader, reader.uint32()));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -403,14 +427,14 @@ export const QueryAllDepositResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllDepositResponse {
+  fromJSON(object: any): QueryAllOperationResponse {
     const message = {
-      ...baseQueryAllDepositResponse,
-    } as QueryAllDepositResponse;
-    message.deposit = [];
-    if (object.deposit !== undefined && object.deposit !== null) {
-      for (const e of object.deposit) {
-        message.deposit.push(Deposit.fromJSON(e));
+      ...baseQueryAllOperationResponse,
+    } as QueryAllOperationResponse;
+    message.operation = [];
+    if (object.operation !== undefined && object.operation !== null) {
+      for (const e of object.operation) {
+        message.operation.push(Operation.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -421,14 +445,14 @@ export const QueryAllDepositResponse = {
     return message;
   },
 
-  toJSON(message: QueryAllDepositResponse): unknown {
+  toJSON(message: QueryAllOperationResponse): unknown {
     const obj: any = {};
-    if (message.deposit) {
-      obj.deposit = message.deposit.map((e) =>
-        e ? Deposit.toJSON(e) : undefined
+    if (message.operation) {
+      obj.operation = message.operation.map((e) =>
+        e ? Operation.toJSON(e) : undefined
       );
     } else {
-      obj.deposit = [];
+      obj.operation = [];
     }
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -438,15 +462,15 @@ export const QueryAllDepositResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllDepositResponse>
-  ): QueryAllDepositResponse {
+    object: DeepPartial<QueryAllOperationResponse>
+  ): QueryAllOperationResponse {
     const message = {
-      ...baseQueryAllDepositResponse,
-    } as QueryAllDepositResponse;
-    message.deposit = [];
-    if (object.deposit !== undefined && object.deposit !== null) {
-      for (const e of object.deposit) {
-        message.deposit.push(Deposit.fromPartial(e));
+      ...baseQueryAllOperationResponse,
+    } as QueryAllOperationResponse;
+    message.operation = [];
+    if (object.operation !== undefined && object.operation !== null) {
+      for (const e of object.operation) {
+        message.operation.push(Operation.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1106,9 +1130,13 @@ export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a Deposit by index. */
-  Deposit(request: QueryGetDepositRequest): Promise<QueryGetDepositResponse>;
+  Operation(
+    request: QueryGetOperationRequest
+  ): Promise<QueryGetOperationResponse>;
   /** Queries a list of Deposit items. */
-  DepositAll(request: QueryAllDepositRequest): Promise<QueryAllDepositResponse>;
+  OperationAll(
+    request: QueryAllOperationRequest
+  ): Promise<QueryAllOperationResponse>;
   /** Queries a Confirmation by index. */
   Confirmation(
     request: QueryGetConfirmationRequest
@@ -1142,29 +1170,31 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryParamsResponse.decode(new Reader(data)));
   }
 
-  Deposit(request: QueryGetDepositRequest): Promise<QueryGetDepositResponse> {
-    const data = QueryGetDepositRequest.encode(request).finish();
+  Operation(
+    request: QueryGetOperationRequest
+  ): Promise<QueryGetOperationResponse> {
+    const data = QueryGetOperationRequest.encode(request).finish();
     const promise = this.rpc.request(
       "rarifyprotocol.rarimocore.rarimocore.Query",
-      "Deposit",
+      "Operation",
       data
     );
     return promise.then((data) =>
-      QueryGetDepositResponse.decode(new Reader(data))
+      QueryGetOperationResponse.decode(new Reader(data))
     );
   }
 
-  DepositAll(
-    request: QueryAllDepositRequest
-  ): Promise<QueryAllDepositResponse> {
-    const data = QueryAllDepositRequest.encode(request).finish();
+  OperationAll(
+    request: QueryAllOperationRequest
+  ): Promise<QueryAllOperationResponse> {
+    const data = QueryAllOperationRequest.encode(request).finish();
     const promise = this.rpc.request(
       "rarifyprotocol.rarimocore.rarimocore.Query",
-      "DepositAll",
+      "OperationAll",
       data
     );
     return promise.then((data) =>
-      QueryAllDepositResponse.decode(new Reader(data))
+      QueryAllOperationResponse.decode(new Reader(data))
     );
   }
 

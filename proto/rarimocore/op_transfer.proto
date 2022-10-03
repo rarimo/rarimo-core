@@ -3,24 +3,26 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
-message Deposit {
+message Transfer {
   // hex-encoded keccak256 hash for tx||event||chain strings' bytes
-  string index = 1;
+  string origin = 1;
+
+  // Deposit transaction data
   string tx = 2;
   string eventId = 3;
   string fromChain = 4;
+
   string toChain = 5;
   // hex-encoded
   string receiver = 6;
   // dec-encoded
   string amount = 7;
 
+  // hex-encoded
   string bundleData = 8;
+  // hex-encoded
   string bundleSalt = 9;
 
-  string creator = 10;
-  bool signed = 11;
   string tokenIndex = 12;
-  uint64 timestamp = 13;
 }
 

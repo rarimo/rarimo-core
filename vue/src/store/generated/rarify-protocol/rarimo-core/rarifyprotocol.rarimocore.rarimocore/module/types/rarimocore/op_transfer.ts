@@ -1,12 +1,12 @@
 /* eslint-disable */
-import * as Long from "long";
-import { util, configure, Writer, Reader } from "protobufjs/minimal";
+import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
-export interface Deposit {
+export interface Transfer {
   /** hex-encoded keccak256 hash for tx||event||chain strings' bytes */
-  index: string;
+  origin: string;
+  /** Deposit transaction data */
   tx: string;
   eventId: string;
   fromChain: string;
@@ -15,16 +15,15 @@ export interface Deposit {
   receiver: string;
   /** dec-encoded */
   amount: string;
+  /** hex-encoded */
   bundleData: string;
+  /** hex-encoded */
   bundleSalt: string;
-  creator: string;
-  signed: boolean;
   tokenIndex: string;
-  timestamp: number;
 }
 
-const baseDeposit: object = {
-  index: "",
+const baseTransfer: object = {
+  origin: "",
   tx: "",
   eventId: "",
   fromChain: "",
@@ -33,16 +32,13 @@ const baseDeposit: object = {
   amount: "",
   bundleData: "",
   bundleSalt: "",
-  creator: "",
-  signed: false,
   tokenIndex: "",
-  timestamp: 0,
 };
 
-export const Deposit = {
-  encode(message: Deposit, writer: Writer = Writer.create()): Writer {
-    if (message.index !== "") {
-      writer.uint32(10).string(message.index);
+export const Transfer = {
+  encode(message: Transfer, writer: Writer = Writer.create()): Writer {
+    if (message.origin !== "") {
+      writer.uint32(10).string(message.origin);
     }
     if (message.tx !== "") {
       writer.uint32(18).string(message.tx);
@@ -68,30 +64,21 @@ export const Deposit = {
     if (message.bundleSalt !== "") {
       writer.uint32(74).string(message.bundleSalt);
     }
-    if (message.creator !== "") {
-      writer.uint32(82).string(message.creator);
-    }
-    if (message.signed === true) {
-      writer.uint32(88).bool(message.signed);
-    }
     if (message.tokenIndex !== "") {
       writer.uint32(98).string(message.tokenIndex);
-    }
-    if (message.timestamp !== 0) {
-      writer.uint32(104).uint64(message.timestamp);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): Deposit {
+  decode(input: Reader | Uint8Array, length?: number): Transfer {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseDeposit } as Deposit;
+    const message = { ...baseTransfer } as Transfer;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.index = reader.string();
+          message.origin = reader.string();
           break;
         case 2:
           message.tx = reader.string();
@@ -117,17 +104,8 @@ export const Deposit = {
         case 9:
           message.bundleSalt = reader.string();
           break;
-        case 10:
-          message.creator = reader.string();
-          break;
-        case 11:
-          message.signed = reader.bool();
-          break;
         case 12:
           message.tokenIndex = reader.string();
-          break;
-        case 13:
-          message.timestamp = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -137,12 +115,12 @@ export const Deposit = {
     return message;
   },
 
-  fromJSON(object: any): Deposit {
-    const message = { ...baseDeposit } as Deposit;
-    if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index);
+  fromJSON(object: any): Transfer {
+    const message = { ...baseTransfer } as Transfer;
+    if (object.origin !== undefined && object.origin !== null) {
+      message.origin = String(object.origin);
     } else {
-      message.index = "";
+      message.origin = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = String(object.tx);
@@ -184,32 +162,17 @@ export const Deposit = {
     } else {
       message.bundleSalt = "";
     }
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator);
-    } else {
-      message.creator = "";
-    }
-    if (object.signed !== undefined && object.signed !== null) {
-      message.signed = Boolean(object.signed);
-    } else {
-      message.signed = false;
-    }
     if (object.tokenIndex !== undefined && object.tokenIndex !== null) {
       message.tokenIndex = String(object.tokenIndex);
     } else {
       message.tokenIndex = "";
     }
-    if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = Number(object.timestamp);
-    } else {
-      message.timestamp = 0;
-    }
     return message;
   },
 
-  toJSON(message: Deposit): unknown {
+  toJSON(message: Transfer): unknown {
     const obj: any = {};
-    message.index !== undefined && (obj.index = message.index);
+    message.origin !== undefined && (obj.origin = message.origin);
     message.tx !== undefined && (obj.tx = message.tx);
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
@@ -218,19 +181,16 @@ export const Deposit = {
     message.amount !== undefined && (obj.amount = message.amount);
     message.bundleData !== undefined && (obj.bundleData = message.bundleData);
     message.bundleSalt !== undefined && (obj.bundleSalt = message.bundleSalt);
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.signed !== undefined && (obj.signed = message.signed);
     message.tokenIndex !== undefined && (obj.tokenIndex = message.tokenIndex);
-    message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Deposit>): Deposit {
-    const message = { ...baseDeposit } as Deposit;
-    if (object.index !== undefined && object.index !== null) {
-      message.index = object.index;
+  fromPartial(object: DeepPartial<Transfer>): Transfer {
+    const message = { ...baseTransfer } as Transfer;
+    if (object.origin !== undefined && object.origin !== null) {
+      message.origin = object.origin;
     } else {
-      message.index = "";
+      message.origin = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = object.tx;
@@ -272,39 +232,14 @@ export const Deposit = {
     } else {
       message.bundleSalt = "";
     }
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    } else {
-      message.creator = "";
-    }
-    if (object.signed !== undefined && object.signed !== null) {
-      message.signed = object.signed;
-    } else {
-      message.signed = false;
-    }
     if (object.tokenIndex !== undefined && object.tokenIndex !== null) {
       message.tokenIndex = object.tokenIndex;
     } else {
       message.tokenIndex = "";
     }
-    if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = object.timestamp;
-    } else {
-      message.timestamp = 0;
-    }
     return message;
   },
 };
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -316,15 +251,3 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-if (util.Long !== Long) {
-  util.Long = Long as any;
-  configure();
-}

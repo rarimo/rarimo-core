@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreateDeposit{}, "rarimocore/CreateDeposit", nil)
+	cdc.RegisterConcrete(&MsgCreateTransferOp{}, "rarimocore/CreateTransfer", nil)
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
 	cdc.RegisterConcrete(&MsgCreateChangeKeyECDSA{}, "rarimocore/CreateChangeKeyECDSA", nil)
 	// this line is used by starport scaffolding # 2
@@ -16,7 +16,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateDeposit{},
+		&MsgCreateTransferOp{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateConfirmation{},

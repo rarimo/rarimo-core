@@ -5,19 +5,25 @@ import (
 	"strconv"
 	"time"
 
+	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	origin2 "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
 	savermsg "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"
 )
 
-func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDeposit) (*types.MsgCreateDepositResponse, error) {
+func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, isFound := k.GetDeposit(
+	origin := origin2.NewDefaultOrigin(msg.Tx, msg.EventId, msg.FromChain).GetOrigin()
+	index := hexutil.Encode(origin[:])
+
+	_, isFound := k.GetOperation(
 		ctx,
-		msg.Index,
+		index,
 	)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
@@ -41,7 +47,6 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 
 	infoResp, err := saverClient.GetDepositInfo(goCtx, infoRequest)
 	if err != nil {
-		k.Logger(ctx).Error("error calling saver service " + err.Error())
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
 	}
 
@@ -54,9 +59,9 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "token not found")
 	}
 
-	var deposit = types.Deposit{
-		Index:      msg.Index,
-		Creator:    msg.Creator,
+	var transferOp = types.Transfer{
+		Origin: index,
+
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
 		FromChain:  msg.FromChain,
@@ -65,14 +70,27 @@ func (k msgServer) CreateDeposit(goCtx context.Context, msg *types.MsgCreateDepo
 		Amount:     infoResp.Amount,
 		BundleData: infoResp.BundleData,
 		BundleSalt: infoResp.BundleSalt,
-		Signed:     false,
+
 		TokenIndex: item.Index,
-		Timestamp:  uint64(time.Now().UTC().UnixMilli()),
 	}
 
-	k.SetDeposit(
+	details, err := cosmostypes.NewAnyWithValue(&transferOp)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
+	}
+
+	var operation = types.Operation{
+		Index:         index,
+		OperationType: types.OpType_TRANSFER,
+		Details:       details,
+		Signed:        false,
+		Timestamp:     uint64(time.Now().UTC().UnixMilli()),
+		Creator:       msg.Creator,
+	}
+
+	k.SetOperation(
 		ctx,
-		deposit,
+		operation,
 	)
-	return &types.MsgCreateDepositResponse{}, nil
+	return &types.MsgCreateTransferOpResponse{}, nil
 }

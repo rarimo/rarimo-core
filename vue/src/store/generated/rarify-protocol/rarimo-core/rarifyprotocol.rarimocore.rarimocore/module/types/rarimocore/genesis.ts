@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Params } from "../rarimocore/params";
-import { Deposit } from "../rarimocore/deposit";
+import { Operation } from "../rarimocore/operation";
 import { Confirmation } from "../rarimocore/confirmation";
 import { ChangeKeyECDSA } from "../rarimocore/change_key_ecdsa";
 import { Writer, Reader } from "protobufjs/minimal";
@@ -10,7 +10,7 @@ export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 /** GenesisState defines the rarimocore module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
-  depositList: Deposit[];
+  operationList: Operation[];
   confirmationList: Confirmation[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   changeKeyECDSAList: ChangeKeyECDSA[];
@@ -23,8 +23,8 @@ export const GenesisState = {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.depositList) {
-      Deposit.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.operationList) {
+      Operation.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.confirmationList) {
       Confirmation.encode(v!, writer.uint32(26).fork()).ldelim();
@@ -39,7 +39,7 @@ export const GenesisState = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
-    message.depositList = [];
+    message.operationList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
     while (reader.pos < end) {
@@ -49,7 +49,7 @@ export const GenesisState = {
           message.params = Params.decode(reader, reader.uint32());
           break;
         case 2:
-          message.depositList.push(Deposit.decode(reader, reader.uint32()));
+          message.operationList.push(Operation.decode(reader, reader.uint32()));
           break;
         case 3:
           message.confirmationList.push(
@@ -71,7 +71,7 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
-    message.depositList = [];
+    message.operationList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
     if (object.params !== undefined && object.params !== null) {
@@ -79,9 +79,9 @@ export const GenesisState = {
     } else {
       message.params = undefined;
     }
-    if (object.depositList !== undefined && object.depositList !== null) {
-      for (const e of object.depositList) {
-        message.depositList.push(Deposit.fromJSON(e));
+    if (object.operationList !== undefined && object.operationList !== null) {
+      for (const e of object.operationList) {
+        message.operationList.push(Operation.fromJSON(e));
       }
     }
     if (
@@ -107,12 +107,12 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    if (message.depositList) {
-      obj.depositList = message.depositList.map((e) =>
-        e ? Deposit.toJSON(e) : undefined
+    if (message.operationList) {
+      obj.operationList = message.operationList.map((e) =>
+        e ? Operation.toJSON(e) : undefined
       );
     } else {
-      obj.depositList = [];
+      obj.operationList = [];
     }
     if (message.confirmationList) {
       obj.confirmationList = message.confirmationList.map((e) =>
@@ -133,7 +133,7 @@ export const GenesisState = {
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
-    message.depositList = [];
+    message.operationList = [];
     message.confirmationList = [];
     message.changeKeyECDSAList = [];
     if (object.params !== undefined && object.params !== null) {
@@ -141,9 +141,9 @@ export const GenesisState = {
     } else {
       message.params = undefined;
     }
-    if (object.depositList !== undefined && object.depositList !== null) {
-      for (const e of object.depositList) {
-        message.depositList.push(Deposit.fromPartial(e));
+    if (object.operationList !== undefined && object.operationList !== null) {
+      for (const e of object.operationList) {
+        message.operationList.push(Operation.fromPartial(e));
       }
     }
     if (

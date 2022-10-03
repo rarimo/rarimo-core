@@ -11,10 +11,10 @@ import (
 	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
-func CmdCreateDeposit() *cobra.Command {
+func CmdCreateTransferOp() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-deposit [tx] [event-id] [from-chain] [token-type]",
-		Short: "Create a new deposit",
+		Use:   "create-transfer [tx] [event-id] [from-chain] [token-type]",
+		Short: "Create a new transfer operation",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
@@ -33,7 +33,7 @@ func CmdCreateDeposit() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateDeposit(
+			msg := types.NewMsgCreateTransferOp(
 				clientCtx.GetFromAddress().String(),
 				indexTx,
 				eventId,

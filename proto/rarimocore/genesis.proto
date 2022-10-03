@@ -3,7 +3,7 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 import "gogoproto/gogo.proto";
 import "rarimocore/params.proto";
-import "rarimocore/deposit.proto";
+import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/change_key_ecdsa.proto";
 // this line is used by starport scaffolding # genesis/proto/import
@@ -13,7 +13,7 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 // GenesisState defines the rarimocore module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated Deposit depositList = 2 [(gogoproto.nullable) = false];
+  repeated Operation operationList = 2 [(gogoproto.nullable) = false];
   repeated Confirmation confirmationList = 3 [(gogoproto.nullable) = false];
   repeated ChangeKeyECDSA changeKeyECDSAList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
