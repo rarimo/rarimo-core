@@ -121,3 +121,12 @@ func VerifyMerkleRoot(hashes []merkle.Content, hexRoot string) error {
 
 	return nil
 }
+
+func TryHexDecode(hexStr string) []byte {
+	resp, err := hexutil.Decode(hexStr)
+	if err != nil {
+		return []byte{}
+	}
+
+	return resp
+}

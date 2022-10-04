@@ -1,19 +1,8 @@
-package operations
+package operation
 
 import (
 	"math/big"
-
-	"github.com/ethereum/go-ethereum/common/hexutil"
 )
-
-func tryHexDecode(hexStr string) []byte {
-	resp, err := hexutil.Decode(hexStr)
-	if err != nil {
-		return []byte{}
-	}
-
-	return resp
-}
 
 func amountBytes(amount string) []byte {
 	am, ok := new(big.Int).SetString(amount, 10)

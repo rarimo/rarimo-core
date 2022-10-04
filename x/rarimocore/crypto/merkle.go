@@ -20,6 +20,12 @@ func NewEmptyOrigin() OriginData {
 	return OriginData{}
 }
 
+type BundleData []byte
+
+func NewEmptyBundle() BundleData {
+	return BundleData{}
+}
+
 // HashContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type HashContent struct {
 	// Hash of the deposit tx info
@@ -31,12 +37,14 @@ type HashContent struct {
 	TargetContract []byte
 	// Can contain any specific data for target chain to validate.
 	Data ContentData
+	// Bundle calls data
+	Bundle BundleData
 }
 
 var _ merkle.Content = HashContent{}
 
 func (c HashContent) CalculateHash() []byte {
-	return crypto.Keccak256(c.Origin[:], []byte(c.TargetNetwork), c.Receiver, c.TargetContract, c.Data)
+	return crypto.Keccak256(c.Data, c.Bundle, c.Origin[:], []byte(c.TargetNetwork), c.Receiver, c.TargetContract)
 }
 
 //Equals tests for equality of two Contents
