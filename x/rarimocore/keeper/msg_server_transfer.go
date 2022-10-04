@@ -93,6 +93,9 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		operation,
 	)
 
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation, sdk.NewAttribute(types.AttributeKeyOperationId, index)))
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
+	))
 	return &types.MsgCreateTransferOpResponse{}, nil
 }
