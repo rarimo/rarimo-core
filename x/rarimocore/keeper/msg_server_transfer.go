@@ -9,6 +9,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	origin2 "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
@@ -60,8 +61,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	}
 
 	var transferOp = types.Transfer{
-		Origin: index,
-
+		Origin:     index,
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
 		FromChain:  msg.FromChain,
@@ -69,8 +69,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Receiver:   infoResp.Receiver,
 		Amount:     infoResp.Amount,
 		BundleData: infoResp.BundleData,
-		BundleSalt: infoResp.BundleSalt,
-
+		BundleSalt: hexutil.Encode(crypto.Keccak256(hexutil.MustDecode(infoResp.BundleSalt), hexutil.MustDecode(infoResp.Receiver))),
 		TokenIndex: item.Index,
 	}
 
