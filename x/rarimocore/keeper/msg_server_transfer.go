@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"strconv"
-	"time"
 
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -83,7 +82,6 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		OperationType: types.OpType_TRANSFER,
 		Details:       details,
 		Signed:        false,
-		Timestamp:     uint64(time.Now().UTC().UnixMilli()),
 		Creator:       msg.Creator,
 	}
 

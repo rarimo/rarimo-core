@@ -15,9 +15,6 @@ message Operation {
   op_type operationType = 2;
   // Corresponding to type details
   google.protobuf.Any details = 3;
-
   bool signed = 4;
-  uint64 timestamp = 5;
-
-  string creator = 6;
+  string creator = 5;
 }
