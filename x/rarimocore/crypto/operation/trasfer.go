@@ -4,6 +4,7 @@ import (
 	"bytes"
 
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
 )
 
 // TransferOperation defines the token transfer operation - from one network to another with full token metadata
@@ -26,7 +27,7 @@ type TransferOperation struct {
 
 var _ Operation = &TransferOperation{}
 
-func (t TransferOperation) GetContent() crypto.ContentData {
+func (t TransferOperation) GetContent() content.ContentData {
 	return bytes.Join([][]byte{
 		t.TargetAddress,
 		[]byte(t.TargetName),

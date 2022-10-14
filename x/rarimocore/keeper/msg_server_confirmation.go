@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
@@ -74,7 +75,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (*crypto.HashContent, error) {
+func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (*content.TransferContent, error) {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, err := pkg.GetTransfer(op)
@@ -88,7 +89,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (*crypto.HashCo
 	}
 }
 
-func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*crypto.HashContent, error) {
+func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*content.TransferContent, error) {
 	info, ok := k.tm.GetInfo(ctx, transfer.TokenIndex)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token info not found")
