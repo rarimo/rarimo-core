@@ -32,11 +32,11 @@ func (t TransferData) GetContent() operation.ContentData {
 		t.TargetAddress,
 		[]byte(t.TargetName),
 		t.TargetId,
-		[]byte(t.TargetSymbol),
-		t.Amount,
 		[]byte(t.TargetURI),
+		t.Amount,
 		[]byte(t.ImageURI),
 		t.ImageHash,
+		[]byte(t.TargetSymbol),
 		t.TargetDecimals,
 	}, []byte{})
 }
