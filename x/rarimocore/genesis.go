@@ -17,10 +17,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ConfirmationList {
 		k.SetConfirmation(ctx, elem)
 	}
-	// Set all the changeKeyECDSA
-	for _, elem := range genState.ChangeKeyECDSAList {
-		k.SetChangeKeyECDSA(ctx, elem)
-	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -32,7 +28,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.OperationList = k.GetAllOperation(ctx)
 	genesis.ConfirmationList = k.GetAllConfirmation(ctx)
-	genesis.ChangeKeyECDSAList = k.GetAllChangeKeyECDSA(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

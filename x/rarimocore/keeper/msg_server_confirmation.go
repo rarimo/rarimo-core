@@ -75,7 +75,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (*content.TransferContent, error) {
+func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, err := pkg.GetTransfer(op)
@@ -84,8 +84,15 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (*content.Trans
 		}
 
 		return k.transferOperationContent(ctx, transfer)
+	case types.OpType_CHANGE_KEY:
+		change, err := pkg.GetChangeKey(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+
+		return k.changeKeyOperationContent(ctx, change)
 	default:
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "undefined details")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
 }
 
@@ -106,4 +113,8 @@ func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Trans
 	}
 
 	return pkg.GetTransferContent(&info, &item, chainParams, transfer)
+}
+
+func (k *Keeper) changeKeyOperationContent(ctx sdk.Context, change *types.ChangeKey) (*content.ChangeKeyContent, error) {
+	return pkg.GetChangeKeyContent(change)
 }

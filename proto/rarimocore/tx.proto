@@ -3,7 +3,6 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
-import "rarimocore/change_key_ecdsa.proto";
 import "tokenmanager/item.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -41,8 +40,6 @@ message MsgCreateChangeKeyECDSA {
   string creator = 1;
   // hex-encoded
   string newKey = 2;
-  // hex-encoded
-  string signature = 3;
 }
 message MsgCreateChangeKeyECDSAResponse {}
 

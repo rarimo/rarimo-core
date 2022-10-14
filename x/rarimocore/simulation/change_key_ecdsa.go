@@ -31,9 +31,8 @@ func SimulateMsgCreateChangeKeyECDSA(
 			NewKey:  strconv.Itoa(i),
 		}
 
-		_, found := k.GetChangeKeyECDSA(ctx, msg.NewKey)
-		if found {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "ChangeKeyECDSA already exist"), nil, nil
+		if k.GetKeyECDSA(ctx) == msg.NewKey {
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "key already set"), nil, nil
 		}
 
 		txCtx := simulation.OperationInput{

@@ -3,43 +3,47 @@ package keeper
 import (
 	"context"
 
+	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"github.com/google/uuid"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) CreateChangeKeyECDSA(goCtx context.Context, msg *types.MsgCreateChangeKeyECDSA) (*types.MsgCreateChangeKeyECDSAResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if err := crypto.VerifyECDSA(msg.Signature, msg.NewKey, k.GetKeyECDSA(ctx)); err != nil {
-		return nil, err
+	if msg.NewKey == k.GetKeyECDSA(ctx) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "key already set")
 	}
 
-	// Check if the value already exists
-	_, isFound := k.GetChangeKeyECDSA(
-		ctx,
-		msg.NewKey,
-	)
-	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+	var changeOp = types.ChangeKey{
+		NewKey: msg.NewKey,
 	}
 
-	var changeKeyECDSA = types.ChangeKeyECDSA{
-		Creator:   msg.Creator,
-		NewKey:    msg.NewKey,
-		Signature: msg.Signature,
+	details, err := cosmostypes.NewAnyWithValue(&changeOp)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
 	}
 
-	k.SetChangeKeyECDSA(
+	var operation = types.Operation{
+		Index:         uuid.NewString(),
+		OperationType: types.OpType_CHANGE_KEY,
+		Details:       details,
+		Signed:        false,
+		Creator:       msg.Creator,
+		Timestamp:     ctx.BlockTime().Unix(),
+	}
+
+	k.SetOperation(
 		ctx,
-		changeKeyECDSA,
+		operation,
 	)
 
-	k.UpdateKeyECDSA(
-		ctx,
-		msg.NewKey,
-	)
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_CHANGE_KEY.String()),
+	))
 
 	return &types.MsgCreateChangeKeyECDSAResponse{}, nil
 }
