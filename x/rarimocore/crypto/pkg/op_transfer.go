@@ -46,7 +46,6 @@ func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *to
 		builder.
 			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
 			SetId(info.Chains[transfer.ToChain].TokenId).
-			SetAmount(transfer.Amount).
 			SetURI(item.Uri)
 	case tokentypes.Type_ERC1155:
 		builder.
