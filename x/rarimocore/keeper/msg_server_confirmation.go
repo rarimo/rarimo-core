@@ -8,7 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
@@ -96,7 +96,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 	}
 }
 
-func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*content.TransferContent, error) {
+func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
 	info, ok := k.tm.GetInfo(ctx, transfer.TokenIndex)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token info not found")
@@ -115,6 +115,6 @@ func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Trans
 	return pkg.GetTransferContent(&info, &item, chainParams, transfer)
 }
 
-func (k *Keeper) changeKeyOperationContent(ctx sdk.Context, change *types.ChangeKey) (*content.ChangeKeyContent, error) {
+func (k *Keeper) changeKeyOperationContent(ctx sdk.Context, change *types.ChangeKey) (*operation.ChangeKeyContent, error) {
 	return pkg.GetChangeKeyContent(change)
 }

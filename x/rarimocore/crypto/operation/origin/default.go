@@ -2,7 +2,7 @@ package origin
 
 import (
 	"github.com/ethereum/go-ethereum/crypto"
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
+	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 type DefaultOrigin struct {

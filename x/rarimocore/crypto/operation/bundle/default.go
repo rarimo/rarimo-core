@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 type DefaultBundle struct {
@@ -14,7 +14,7 @@ type DefaultBundle struct {
 
 var _ Bundle = &DefaultBundle{}
 
-func (d DefaultBundle) GetBundle() (res content.BundleData) {
+func (d DefaultBundle) GetBundle() (res operation.BundleData) {
 	return bytes.Join([][]byte{d.Salt, d.Bundle}, []byte{})
 }
 

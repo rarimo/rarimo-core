@@ -9,7 +9,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
 	savermsg "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"

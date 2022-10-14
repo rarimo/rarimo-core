@@ -1,14 +1,14 @@
-package operation
+package data
 
 import (
 	"bytes"
 
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/content"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
 )
 
-// TransferOperation defines the token transfer operation - from one network to another with full token metadata
-type TransferOperation struct {
+// TransferData defines the token transfer operation - from one network to another with full token metadata
+type TransferData struct {
 	// Collection address on target chain
 	TargetAddress []byte
 	// TokenId on target chain
@@ -25,9 +25,9 @@ type TransferOperation struct {
 	TargetDecimals []byte
 }
 
-var _ Operation = &TransferOperation{}
+var _ Data = &TransferData{}
 
-func (t TransferOperation) GetContent() content.ContentData {
+func (t TransferData) GetContent() operation.ContentData {
 	return bytes.Join([][]byte{
 		t.TargetAddress,
 		[]byte(t.TargetName),
@@ -41,7 +41,7 @@ func (t TransferOperation) GetContent() content.ContentData {
 	}, []byte{})
 }
 
-type TransferOperationBuilder struct {
+type TransferDataBuilder struct {
 	address   string
 	id        string
 	amount    string
@@ -53,12 +53,12 @@ type TransferOperationBuilder struct {
 	decimals  uint8
 }
 
-func NewTransferOperationBuilder() *TransferOperationBuilder {
-	return &TransferOperationBuilder{}
+func NewTransferDataBuilder() *TransferDataBuilder {
+	return &TransferDataBuilder{}
 }
 
-func (b *TransferOperationBuilder) Build() *TransferOperation {
-	return &TransferOperation{
+func (b *TransferDataBuilder) Build() *TransferData {
+	return &TransferData{
 		TargetAddress:  crypto.TryHexDecode(b.address),
 		TargetId:       crypto.TryHexDecode(b.id),
 		Amount:         amountBytes(b.amount),
@@ -71,47 +71,47 @@ func (b *TransferOperationBuilder) Build() *TransferOperation {
 	}
 }
 
-func (b *TransferOperationBuilder) SetAddress(addr string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
 	b.address = addr
 	return b
 }
 
-func (b *TransferOperationBuilder) SetId(id string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
 	b.id = id
 	return b
 }
 
-func (b *TransferOperationBuilder) SetAmount(amount string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
 	b.amount = amount
 	return b
 }
 
-func (b *TransferOperationBuilder) SetName(name string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetName(name string) *TransferDataBuilder {
 	b.name = name
 	return b
 }
 
-func (b *TransferOperationBuilder) SetURI(uri string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetURI(uri string) *TransferDataBuilder {
 	b.uri = uri
 	return b
 }
 
-func (b *TransferOperationBuilder) SetSymbol(symbol string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetSymbol(symbol string) *TransferDataBuilder {
 	b.symbol = symbol
 	return b
 }
 
-func (b *TransferOperationBuilder) SetImageURI(uri string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetImageURI(uri string) *TransferDataBuilder {
 	b.imageUri = uri
 	return b
 }
 
-func (b *TransferOperationBuilder) SetImageHash(hash string) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetImageHash(hash string) *TransferDataBuilder {
 	b.imageHash = hash
 	return b
 }
 
-func (b *TransferOperationBuilder) SetDecimals(d uint8) *TransferOperationBuilder {
+func (b *TransferDataBuilder) SetDecimals(d uint8) *TransferDataBuilder {
 	b.decimals = d
 	return b
 }
