@@ -10,6 +10,8 @@ enum type {
   ERC1155 = 3;
   METAPLEX_NFT = 4;
   METAPLEX_FT = 5;
+  NEAR_FT = 6;
+  NEAR_NFT = 7;
 }
 
 message Item {
@@ -23,8 +25,11 @@ message Item {
   string symbol = 6;
   string uri = 7;
   uint32 decimals = 8;
-  // Seed for deriving address for Solana networks. Encoded into hex string
+  // Seed for deriving address for Solana networks. Encoded into hex string. (optional)
   string seed = 9;
-  type tokenType = 10;
+  string imageUri = 10;
+  // Hash of the token image. Encoded into hex string. (optional)
+  string imageHash = 11;
+  type tokenType = 12;
 }
 

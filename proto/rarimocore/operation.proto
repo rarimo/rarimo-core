@@ -17,4 +17,5 @@ message Operation {
   google.protobuf.Any details = 3;
   bool signed = 4;
   string creator = 5;
+  int64 timestamp = 6;
 }

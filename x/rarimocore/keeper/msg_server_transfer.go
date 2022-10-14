@@ -9,7 +9,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	origin2 "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
 	savermsg "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"
@@ -18,7 +18,13 @@ import (
 func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	origin := origin2.NewDefaultOrigin(msg.Tx, msg.EventId, msg.FromChain).GetOrigin()
+	origin := origin.NewDefaultOriginBuilder().
+		SetTxHash(msg.Tx).
+		SetOpId(msg.EventId).
+		SetCurrentNetwork(msg.FromChain).
+		Build().
+		GetOrigin()
+
 	index := hexutil.Encode(origin[:])
 
 	_, isFound := k.GetOperation(
@@ -83,6 +89,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Details:       details,
 		Signed:        false,
 		Creator:       msg.Creator,
+		Timestamp:     ctx.BlockTime().Unix(),
 	}
 
 	k.SetOperation(

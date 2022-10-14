@@ -51,6 +51,8 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 		Decimals:     msg.CurrentDecimals,
 		Seed:         msg.CurrentSeed,
 		TokenType:    msg.CurrentType,
+		ImageHash:    msg.CurrentImageHash,
+		ImageUri:     msg.CurrentImageUri,
 	}
 
 	k.SetItem(ctx, item)
@@ -125,6 +127,8 @@ func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*typ
 		Decimals:     msg.Decimals,
 		Seed:         msg.Seed,
 		TokenType:    msg.TokenType,
+		ImageHash:    msg.ImageHash,
+		ImageUri:     msg.ImageUri,
 	})
 
 	return &types.MsgAddChainResponse{}, nil
