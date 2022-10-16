@@ -15,8 +15,7 @@ func amountBytes(amount string) []byte {
 }
 
 func decimalsBytes(decimals uint8) []byte {
-	dm := new(big.Int).SetUint64(uint64(decimals))
-	return bigInt256Bytes(dm)
+	return []byte{decimals}
 }
 
 func bigInt256Bytes(i *big.Int) []byte {

@@ -56,7 +56,6 @@ func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *to
 	case tokentypes.Type_METAPLEX_FT:
 		builder.
 			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
-			SetId(info.Chains[transfer.ToChain].TokenId).
 			SetAmount(transfer.Amount).
 			SetName(item.Name).
 			SetSymbol(item.Symbol).
