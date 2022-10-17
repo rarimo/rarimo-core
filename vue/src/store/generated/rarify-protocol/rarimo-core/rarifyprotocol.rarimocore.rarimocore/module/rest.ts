@@ -126,12 +126,6 @@ export interface ProtobufAny {
   "@type"?: string;
 }
 
-export interface RarimocoreChangeKeyECDSA {
-  newKey?: string;
-  signature?: string;
-  creator?: string;
-}
-
 export interface RarimocoreConfirmation {
   root?: string;
   indexes?: string[];
@@ -236,10 +230,10 @@ export interface RarimocoreOperation {
    */
   details?: ProtobufAny;
   signed?: boolean;
-
-  /** @format uint64 */
-  timestamp?: string;
   creator?: string;
+
+  /** @format int64 */
+  timestamp?: string;
 }
 
 /**
@@ -247,21 +241,6 @@ export interface RarimocoreOperation {
  */
 export interface RarimocoreParams {
   keyECDSA?: string;
-}
-
-export interface RarimocoreQueryAllChangeKeyECDSAResponse {
-  changeKeyECDSA?: RarimocoreChangeKeyECDSA[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
 }
 
 export interface RarimocoreQueryAllConfirmationResponse {
@@ -294,10 +273,6 @@ export interface RarimocoreQueryAllOperationResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface RarimocoreQueryGetChangeKeyECDSAResponse {
-  changeKeyECDSA?: RarimocoreChangeKeyECDSA;
-}
-
 export interface RarimocoreQueryGetConfirmationResponse {
   confirmation?: RarimocoreConfirmation;
 }
@@ -316,6 +291,7 @@ export interface RarimocoreQueryParamsResponse {
 
 export enum RarimocoreopType {
   TRANSFER = "TRANSFER",
+  CHANGE_KEY = "CHANGE_KEY",
 }
 
 export interface RpcStatus {
@@ -332,6 +308,8 @@ export enum Tokenmanagertype {
   ERC1155 = "ERC1155",
   METAPLEX_NFT = "METAPLEX_NFT",
   METAPLEX_FT = "METAPLEX_FT",
+  NEAR_FT = "NEAR_FT",
+  NEAR_NFT = "NEAR_NFT",
 }
 
 /**
@@ -589,52 +567,10 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title rarimocore/change_key_ecdsa.proto
+ * @title rarimocore/confirmation.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryChangeKeyEcdsaAll
-   * @summary Queries a list of ChangeKeyECDSA items.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa
-   */
-  queryChangeKeyEcdsaAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<RarimocoreQueryAllChangeKeyECDSAResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryChangeKeyEcdsa
-   * @summary Queries a ChangeKeyECDSA by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}
-   */
-  queryChangeKeyEcdsa = (newKey: string, params: RequestParams = {}) =>
-    this.request<RarimocoreQueryGetChangeKeyECDSAResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/${newKey}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
   /**
    * No description
    *

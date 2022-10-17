@@ -29,8 +29,6 @@ export interface MsgCreateChangeKeyECDSA {
   creator: string;
   /** hex-encoded */
   newKey: string;
-  /** hex-encoded */
-  signature: string;
 }
 
 export interface MsgCreateChangeKeyECDSAResponse {}
@@ -396,11 +394,7 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangeKeyECDSA: object = {
-  creator: "",
-  newKey: "",
-  signature: "",
-};
+const baseMsgCreateChangeKeyECDSA: object = { creator: "", newKey: "" };
 
 export const MsgCreateChangeKeyECDSA = {
   encode(
@@ -412,9 +406,6 @@ export const MsgCreateChangeKeyECDSA = {
     }
     if (message.newKey !== "") {
       writer.uint32(18).string(message.newKey);
-    }
-    if (message.signature !== "") {
-      writer.uint32(26).string(message.signature);
     }
     return writer;
   },
@@ -433,9 +424,6 @@ export const MsgCreateChangeKeyECDSA = {
           break;
         case 2:
           message.newKey = reader.string();
-          break;
-        case 3:
-          message.signature = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -459,11 +447,6 @@ export const MsgCreateChangeKeyECDSA = {
     } else {
       message.newKey = "";
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
-    } else {
-      message.signature = "";
-    }
     return message;
   },
 
@@ -471,7 +454,6 @@ export const MsgCreateChangeKeyECDSA = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.newKey !== undefined && (obj.newKey = message.newKey);
-    message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
 
@@ -490,11 +472,6 @@ export const MsgCreateChangeKeyECDSA = {
       message.newKey = object.newKey;
     } else {
       message.newKey = "";
-    }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
-    } else {
-      message.signature = "";
     }
     return message;
   },

@@ -7,6 +7,7 @@ export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 export enum op_type {
   TRANSFER = 0,
+  CHANGE_KEY = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -15,6 +16,9 @@ export function op_typeFromJSON(object: any): op_type {
     case 0:
     case "TRANSFER":
       return op_type.TRANSFER;
+    case 1:
+    case "CHANGE_KEY":
+      return op_type.CHANGE_KEY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -26,6 +30,8 @@ export function op_typeToJSON(object: op_type): string {
   switch (object) {
     case op_type.TRANSFER:
       return "TRANSFER";
+    case op_type.CHANGE_KEY:
+      return "CHANGE_KEY";
     default:
       return "UNKNOWN";
   }
@@ -38,16 +44,16 @@ export interface Operation {
   /** Corresponding to type details */
   details: Any | undefined;
   signed: boolean;
-  timestamp: number;
   creator: string;
+  timestamp: number;
 }
 
 const baseOperation: object = {
   index: "",
   operationType: 0,
   signed: false,
-  timestamp: 0,
   creator: "",
+  timestamp: 0,
 };
 
 export const Operation = {
@@ -64,11 +70,11 @@ export const Operation = {
     if (message.signed === true) {
       writer.uint32(32).bool(message.signed);
     }
-    if (message.timestamp !== 0) {
-      writer.uint32(40).uint64(message.timestamp);
-    }
     if (message.creator !== "") {
-      writer.uint32(50).string(message.creator);
+      writer.uint32(42).string(message.creator);
+    }
+    if (message.timestamp !== 0) {
+      writer.uint32(48).int64(message.timestamp);
     }
     return writer;
   },
@@ -93,10 +99,10 @@ export const Operation = {
           message.signed = reader.bool();
           break;
         case 5:
-          message.timestamp = longToNumber(reader.uint64() as Long);
+          message.creator = reader.string();
           break;
         case 6:
-          message.creator = reader.string();
+          message.timestamp = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -128,15 +134,15 @@ export const Operation = {
     } else {
       message.signed = false;
     }
-    if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = Number(object.timestamp);
-    } else {
-      message.timestamp = 0;
-    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
+    }
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = Number(object.timestamp);
+    } else {
+      message.timestamp = 0;
     }
     return message;
   },
@@ -149,8 +155,8 @@ export const Operation = {
     message.details !== undefined &&
       (obj.details = message.details ? Any.toJSON(message.details) : undefined);
     message.signed !== undefined && (obj.signed = message.signed);
-    message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     return obj;
   },
 
@@ -176,15 +182,15 @@ export const Operation = {
     } else {
       message.signed = false;
     }
-    if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = object.timestamp;
-    } else {
-      message.timestamp = 0;
-    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = object.timestamp;
+    } else {
+      message.timestamp = 0;
     }
     return message;
   },

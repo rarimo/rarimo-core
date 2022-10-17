@@ -10,6 +10,8 @@ export enum type {
   ERC1155 = 3,
   METAPLEX_NFT = 4,
   METAPLEX_FT = 5,
+  NEAR_FT = 6,
+  NEAR_NFT = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -33,6 +35,12 @@ export function typeFromJSON(object: any): type {
     case 5:
     case "METAPLEX_FT":
       return type.METAPLEX_FT;
+    case 6:
+    case "NEAR_FT":
+      return type.NEAR_FT;
+    case 7:
+    case "NEAR_NFT":
+      return type.NEAR_NFT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -54,6 +62,10 @@ export function typeToJSON(object: type): string {
       return "METAPLEX_NFT";
     case type.METAPLEX_FT:
       return "METAPLEX_FT";
+    case type.NEAR_FT:
+      return "NEAR_FT";
+    case type.NEAR_NFT:
+      return "NEAR_NFT";
     default:
       return "UNKNOWN";
   }
@@ -70,8 +82,11 @@ export interface Item {
   symbol: string;
   uri: string;
   decimals: number;
-  /** Seed for deriving address for Solana networks. Encoded into hex string */
+  /** Seed for deriving address for Solana networks. Encoded into hex string. (optional) */
   seed: string;
+  imageUri: string;
+  /** Hash of the token image. Encoded into hex string. (optional) */
+  imageHash: string;
   tokenType: type;
 }
 
@@ -85,6 +100,8 @@ const baseItem: object = {
   uri: "",
   decimals: 0,
   seed: "",
+  imageUri: "",
+  imageHash: "",
   tokenType: 0,
 };
 
@@ -117,8 +134,14 @@ export const Item = {
     if (message.seed !== "") {
       writer.uint32(74).string(message.seed);
     }
+    if (message.imageUri !== "") {
+      writer.uint32(82).string(message.imageUri);
+    }
+    if (message.imageHash !== "") {
+      writer.uint32(90).string(message.imageHash);
+    }
     if (message.tokenType !== 0) {
-      writer.uint32(80).int32(message.tokenType);
+      writer.uint32(96).int32(message.tokenType);
     }
     return writer;
   },
@@ -158,6 +181,12 @@ export const Item = {
           message.seed = reader.string();
           break;
         case 10:
+          message.imageUri = reader.string();
+          break;
+        case 11:
+          message.imageHash = reader.string();
+          break;
+        case 12:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -215,6 +244,16 @@ export const Item = {
     } else {
       message.seed = "";
     }
+    if (object.imageUri !== undefined && object.imageUri !== null) {
+      message.imageUri = String(object.imageUri);
+    } else {
+      message.imageUri = "";
+    }
+    if (object.imageHash !== undefined && object.imageHash !== null) {
+      message.imageHash = String(object.imageHash);
+    } else {
+      message.imageHash = "";
+    }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = typeFromJSON(object.tokenType);
     } else {
@@ -235,6 +274,8 @@ export const Item = {
     message.uri !== undefined && (obj.uri = message.uri);
     message.decimals !== undefined && (obj.decimals = message.decimals);
     message.seed !== undefined && (obj.seed = message.seed);
+    message.imageUri !== undefined && (obj.imageUri = message.imageUri);
+    message.imageHash !== undefined && (obj.imageHash = message.imageHash);
     message.tokenType !== undefined &&
       (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
@@ -286,6 +327,16 @@ export const Item = {
       message.seed = object.seed;
     } else {
       message.seed = "";
+    }
+    if (object.imageUri !== undefined && object.imageUri !== null) {
+      message.imageUri = object.imageUri;
+    } else {
+      message.imageUri = "";
+    }
+    if (object.imageHash !== undefined && object.imageHash !== null) {
+      message.imageHash = object.imageHash;
+    } else {
+      message.imageHash = "";
     }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = object.tokenType;

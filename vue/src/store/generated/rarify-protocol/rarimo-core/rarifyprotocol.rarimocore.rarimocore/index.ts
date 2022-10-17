@@ -1,13 +1,13 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
-import { ChangeKeyECDSA } from "./module/types/rarimocore/change_key_ecdsa"
 import { Confirmation } from "./module/types/rarimocore/confirmation"
+import { ChangeKey } from "./module/types/rarimocore/op_change_key"
 import { Transfer } from "./module/types/rarimocore/op_transfer"
 import { Operation } from "./module/types/rarimocore/operation"
 import { Params } from "./module/types/rarimocore/params"
 
 
-export { ChangeKeyECDSA, Confirmation, Transfer, Operation, Params };
+export { Confirmation, ChangeKey, Transfer, Operation, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -50,12 +50,10 @@ const getDefaultState = () => {
 				OperationAll: {},
 				Confirmation: {},
 				ConfirmationAll: {},
-				ChangeKeyECDSA: {},
-				ChangeKeyECDSAAll: {},
 				
 				_Structure: {
-						ChangeKeyECDSA: getStructure(ChangeKeyECDSA.fromPartial({})),
 						Confirmation: getStructure(Confirmation.fromPartial({})),
+						ChangeKey: getStructure(ChangeKey.fromPartial({})),
 						Transfer: getStructure(Transfer.fromPartial({})),
 						Operation: getStructure(Operation.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -116,18 +114,6 @@ export default {
 						(<any> params).query=null
 					}
 			return state.ConfirmationAll[JSON.stringify(params)] ?? {}
-		},
-				getChangeKeyECDSA: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.ChangeKeyECDSA[JSON.stringify(params)] ?? {}
-		},
-				getChangeKeyECDSAAll: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.ChangeKeyECDSAAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -281,54 +267,6 @@ export default {
 		},
 		
 		
-		
-		
-		 		
-		
-		
-		async QueryChangeKeyECDSA({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
-			try {
-				const key = params ?? {};
-				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryChangeKeyECDSA( key.newKey)).data
-				
-					
-				commit('QUERY', { query: 'ChangeKeyECDSA', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryChangeKeyECDSA', payload: { options: { all }, params: {...key},query }})
-				return getters['getChangeKeyECDSA']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new Error('QueryClient:QueryChangeKeyECDSA API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
-		
-		
-		 		
-		
-		
-		async QueryChangeKeyECDSAAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
-			try {
-				const key = params ?? {};
-				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryChangeKeyECDSAAll(query)).data
-				
-					
-				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
-					let next_values=(await queryClient.queryChangeKeyECDSAAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
-					value = mergeResults(value, next_values);
-				}
-				commit('QUERY', { query: 'ChangeKeyECDSAAll', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryChangeKeyECDSAAll', payload: { options: { all }, params: {...key},query }})
-				return getters['getChangeKeyECDSAAll']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new Error('QueryClient:QueryChangeKeyECDSAAll API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
 		async sendMsgCreateChangeKeyECDSA({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -341,21 +279,6 @@ export default {
 					throw new Error('TxClient:MsgCreateChangeKeyECDSA:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgCreateChangeKeyECDSA:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCreateTransferOp({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateTransferOp(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateTransferOp:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateTransferOp:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -374,6 +297,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgCreateTransferOp({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateTransferOp(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateTransferOp:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateTransferOp:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgCreateChangeKeyECDSA({ rootGetters }, { value }) {
 			try {
@@ -388,19 +326,6 @@ export default {
 				}
 			}
 		},
-		async MsgCreateTransferOp({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateTransferOp(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateTransferOp:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateTransferOp:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgCreateConfirmation({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -411,6 +336,19 @@ export default {
 					throw new Error('TxClient:MsgCreateConfirmation:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateConfirmation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateTransferOp({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateTransferOp(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateTransferOp:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateTransferOp:Create Could not create message: ' + e.message)
 				}
 			}
 		},
