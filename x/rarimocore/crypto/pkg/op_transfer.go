@@ -32,7 +32,6 @@ func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *to
 		builder.
 			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
 			SetId(info.Chains[transfer.ToChain].TokenId).
-			SetAmount(transfer.Amount).
 			SetName(item.Name).
 			SetImageURI(item.ImageUri).
 			SetImageHash(item.ImageHash)
