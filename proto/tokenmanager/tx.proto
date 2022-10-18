@@ -17,7 +17,6 @@ service Msg {
 message MsgCreateInfo {
   string creator = 1;
   string index = 2;
-
   // hex-encoded
   string currentAddress = 3;
   // hex-encoded
@@ -29,7 +28,10 @@ message MsgCreateInfo {
   uint32 currentDecimals = 9;
   // Seed for deriving address for Solana networks. Encoded into hex string
   string currentSeed = 10;
-  type currentType = 11;
+  string currentImageUri = 11;
+  // hex-encoded
+  string currentImageHash = 12;
+  type currentType = 13;
 }
 message MsgCreateInfoResponse {}
 
@@ -54,7 +56,10 @@ message MsgAddChain {
   uint32 decimals = 9;
   // Seed for deriving address for Solana networks. Encoded into hex string
   string seed = 10;
-  type tokenType = 11;
+  string imageUri = 11;
+  // hex-encoded
+  string imageHash = 12;
+  type tokenType = 13;
 }
 
 message MsgAddChainResponse {}

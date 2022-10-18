@@ -10,16 +10,12 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the deposit
-	for _, elem := range genState.DepositList {
-		k.SetDeposit(ctx, elem)
+	for _, elem := range genState.OperationList {
+		k.SetOperation(ctx, elem)
 	}
 	// Set all the confirmation
 	for _, elem := range genState.ConfirmationList {
 		k.SetConfirmation(ctx, elem)
-	}
-	// Set all the changeKeyECDSA
-	for _, elem := range genState.ChangeKeyECDSAList {
-		k.SetChangeKeyECDSA(ctx, elem)
 	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
@@ -30,9 +26,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.DepositList = k.GetAllDeposit(ctx)
+	genesis.OperationList = k.GetAllOperation(ctx)
 	genesis.ConfirmationList = k.GetAllConfirmation(ctx)
-	genesis.ChangeKeyECDSAList = k.GetAllChangeKeyECDSA(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

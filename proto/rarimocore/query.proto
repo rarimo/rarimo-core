@@ -5,9 +5,8 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "rarimocore/params.proto";
-import "rarimocore/deposit.proto";
+import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
-import "rarimocore/change_key_ecdsa.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -19,13 +18,13 @@ service Query {
     option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/params";
   }
   // Queries a Deposit by index.
-	rpc Deposit(QueryGetDepositRequest) returns (QueryGetDepositResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/deposit/{index}";
+	rpc Operation(QueryGetOperationRequest) returns (QueryGetOperationResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/operation/{index}";
 	}
 
 	// Queries a list of Deposit items.
-	rpc DepositAll(QueryAllDepositRequest) returns (QueryAllDepositResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/deposit";
+	rpc OperationAll(QueryAllOperationRequest) returns (QueryAllOperationResponse) {
+		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/operation";
 	}
 
 // Queries a Confirmation by index.
@@ -38,15 +37,6 @@ service Query {
 		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/confirmation";
 	}
 
-// Queries a ChangeKeyECDSA by index.
-	rpc ChangeKeyECDSA(QueryGetChangeKeyECDSARequest) returns (QueryGetChangeKeyECDSAResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa/{newKey}";
-	}
-
-	// Queries a list of ChangeKeyECDSA items.
-	rpc ChangeKeyECDSAAll(QueryAllChangeKeyECDSARequest) returns (QueryAllChangeKeyECDSAResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/change_key_ecdsa";
-	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -59,20 +49,20 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetDepositRequest {
+message QueryGetOperationRequest {
 	  string index = 1;
 }
 
-message QueryGetDepositResponse {
-	Deposit deposit = 1 [(gogoproto.nullable) = false];
+message QueryGetOperationResponse {
+	Operation operation = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllDepositRequest {
+message QueryAllOperationRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllDepositResponse {
-	repeated Deposit deposit = 1 [(gogoproto.nullable) = false];
+message QueryAllOperationResponse {
+	repeated Operation operation = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -90,23 +80,6 @@ message QueryAllConfirmationRequest {
 
 message QueryAllConfirmationResponse {
 	repeated Confirmation confirmation = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetChangeKeyECDSARequest {
-	  string newKey = 1;
-}
-
-message QueryGetChangeKeyECDSAResponse {
-	ChangeKeyECDSA changeKeyECDSA = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllChangeKeyECDSARequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllChangeKeyECDSAResponse {
-	repeated ChangeKeyECDSA changeKeyECDSA = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -11,24 +11,24 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) DepositAll(c context.Context, req *types.QueryAllDepositRequest) (*types.QueryAllDepositResponse, error) {
+func (k Keeper) OperationAll(c context.Context, req *types.QueryAllOperationRequest) (*types.QueryAllOperationResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var deposits []types.Deposit
+	var operations []types.Operation
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	depositStore := prefix.NewStore(store, types.KeyPrefix(types.DepositKeyPrefix))
+	depositStore := prefix.NewStore(store, types.KeyPrefix(types.OperationKeyPrefix))
 
 	pageRes, err := query.Paginate(depositStore, req.Pagination, func(key []byte, value []byte) error {
-		var deposit types.Deposit
-		if err := k.cdc.Unmarshal(value, &deposit); err != nil {
+		var operation types.Operation
+		if err := k.cdc.Unmarshal(value, &operation); err != nil {
 			return err
 		}
 
-		deposits = append(deposits, deposit)
+		operations = append(operations, operation)
 		return nil
 	})
 
@@ -36,16 +36,16 @@ func (k Keeper) DepositAll(c context.Context, req *types.QueryAllDepositRequest)
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllDepositResponse{Deposit: deposits, Pagination: pageRes}, nil
+	return &types.QueryAllOperationResponse{Operation: operations, Pagination: pageRes}, nil
 }
 
-func (k Keeper) Deposit(c context.Context, req *types.QueryGetDepositRequest) (*types.QueryGetDepositResponse, error) {
+func (k Keeper) Operation(c context.Context, req *types.QueryGetOperationRequest) (*types.QueryGetOperationResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
-	val, found := k.GetDeposit(
+	val, found := k.GetOperation(
 		ctx,
 		req.Index,
 	)
@@ -53,5 +53,5 @@ func (k Keeper) Deposit(c context.Context, req *types.QueryGetDepositRequest) (*
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetDepositResponse{Deposit: val}, nil
+	return &types.QueryGetOperationResponse{Operation: val}, nil
 }

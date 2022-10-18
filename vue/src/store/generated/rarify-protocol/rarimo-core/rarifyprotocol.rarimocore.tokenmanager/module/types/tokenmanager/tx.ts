@@ -18,6 +18,9 @@ export interface MsgCreateInfo {
   currentDecimals: number;
   /** Seed for deriving address for Solana networks. Encoded into hex string */
   currentSeed: string;
+  currentImageUri: string;
+  /** hex-encoded */
+  currentImageHash: string;
   currentType: type;
 }
 
@@ -44,6 +47,9 @@ export interface MsgAddChain {
   decimals: number;
   /** Seed for deriving address for Solana networks. Encoded into hex string */
   seed: string;
+  imageUri: string;
+  /** hex-encoded */
+  imageHash: string;
   tokenType: type;
 }
 
@@ -60,6 +66,8 @@ const baseMsgCreateInfo: object = {
   currentURI: "",
   currentDecimals: 0,
   currentSeed: "",
+  currentImageUri: "",
+  currentImageHash: "",
   currentType: 0,
 };
 
@@ -95,8 +103,14 @@ export const MsgCreateInfo = {
     if (message.currentSeed !== "") {
       writer.uint32(82).string(message.currentSeed);
     }
+    if (message.currentImageUri !== "") {
+      writer.uint32(90).string(message.currentImageUri);
+    }
+    if (message.currentImageHash !== "") {
+      writer.uint32(98).string(message.currentImageHash);
+    }
     if (message.currentType !== 0) {
-      writer.uint32(88).int32(message.currentType);
+      writer.uint32(104).int32(message.currentType);
     }
     return writer;
   },
@@ -139,6 +153,12 @@ export const MsgCreateInfo = {
           message.currentSeed = reader.string();
           break;
         case 11:
+          message.currentImageUri = reader.string();
+          break;
+        case 12:
+          message.currentImageHash = reader.string();
+          break;
+        case 13:
           message.currentType = reader.int32() as any;
           break;
         default:
@@ -204,6 +224,22 @@ export const MsgCreateInfo = {
     } else {
       message.currentSeed = "";
     }
+    if (
+      object.currentImageUri !== undefined &&
+      object.currentImageUri !== null
+    ) {
+      message.currentImageUri = String(object.currentImageUri);
+    } else {
+      message.currentImageUri = "";
+    }
+    if (
+      object.currentImageHash !== undefined &&
+      object.currentImageHash !== null
+    ) {
+      message.currentImageHash = String(object.currentImageHash);
+    } else {
+      message.currentImageHash = "";
+    }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = typeFromJSON(object.currentType);
     } else {
@@ -230,6 +266,10 @@ export const MsgCreateInfo = {
       (obj.currentDecimals = message.currentDecimals);
     message.currentSeed !== undefined &&
       (obj.currentSeed = message.currentSeed);
+    message.currentImageUri !== undefined &&
+      (obj.currentImageUri = message.currentImageUri);
+    message.currentImageHash !== undefined &&
+      (obj.currentImageHash = message.currentImageHash);
     message.currentType !== undefined &&
       (obj.currentType = typeToJSON(message.currentType));
     return obj;
@@ -289,6 +329,22 @@ export const MsgCreateInfo = {
       message.currentSeed = object.currentSeed;
     } else {
       message.currentSeed = "";
+    }
+    if (
+      object.currentImageUri !== undefined &&
+      object.currentImageUri !== null
+    ) {
+      message.currentImageUri = object.currentImageUri;
+    } else {
+      message.currentImageUri = "";
+    }
+    if (
+      object.currentImageHash !== undefined &&
+      object.currentImageHash !== null
+    ) {
+      message.currentImageHash = object.currentImageHash;
+    } else {
+      message.currentImageHash = "";
     }
     if (object.currentType !== undefined && object.currentType !== null) {
       message.currentType = object.currentType;
@@ -458,6 +514,8 @@ const baseMsgAddChain: object = {
   uri: "",
   decimals: 0,
   seed: "",
+  imageUri: "",
+  imageHash: "",
   tokenType: 0,
 };
 
@@ -493,8 +551,14 @@ export const MsgAddChain = {
     if (message.seed !== "") {
       writer.uint32(82).string(message.seed);
     }
+    if (message.imageUri !== "") {
+      writer.uint32(90).string(message.imageUri);
+    }
+    if (message.imageHash !== "") {
+      writer.uint32(98).string(message.imageHash);
+    }
     if (message.tokenType !== 0) {
-      writer.uint32(88).int32(message.tokenType);
+      writer.uint32(104).int32(message.tokenType);
     }
     return writer;
   },
@@ -537,6 +601,12 @@ export const MsgAddChain = {
           message.seed = reader.string();
           break;
         case 11:
+          message.imageUri = reader.string();
+          break;
+        case 12:
+          message.imageHash = reader.string();
+          break;
+        case 13:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -599,6 +669,16 @@ export const MsgAddChain = {
     } else {
       message.seed = "";
     }
+    if (object.imageUri !== undefined && object.imageUri !== null) {
+      message.imageUri = String(object.imageUri);
+    } else {
+      message.imageUri = "";
+    }
+    if (object.imageHash !== undefined && object.imageHash !== null) {
+      message.imageHash = String(object.imageHash);
+    } else {
+      message.imageHash = "";
+    }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = typeFromJSON(object.tokenType);
     } else {
@@ -620,6 +700,8 @@ export const MsgAddChain = {
     message.uri !== undefined && (obj.uri = message.uri);
     message.decimals !== undefined && (obj.decimals = message.decimals);
     message.seed !== undefined && (obj.seed = message.seed);
+    message.imageUri !== undefined && (obj.imageUri = message.imageUri);
+    message.imageHash !== undefined && (obj.imageHash = message.imageHash);
     message.tokenType !== undefined &&
       (obj.tokenType = typeToJSON(message.tokenType));
     return obj;
@@ -676,6 +758,16 @@ export const MsgAddChain = {
       message.seed = object.seed;
     } else {
       message.seed = "";
+    }
+    if (object.imageUri !== undefined && object.imageUri !== null) {
+      message.imageUri = object.imageUri;
+    } else {
+      message.imageUri = "";
+    }
+    if (object.imageHash !== undefined && object.imageHash !== null) {
+      message.imageHash = object.imageHash;
+    } else {
+      message.imageHash = "";
     }
     if (object.tokenType !== undefined && object.tokenType !== null) {
       message.tokenType = object.tokenType;

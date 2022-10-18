@@ -9,10 +9,10 @@ import (
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
-func CmdListDeposit() *cobra.Command {
+func CmdListOperation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-deposit",
-		Short: "list all deposit",
+		Use:   "list-operation",
+		Short: "list all operation",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -23,11 +23,11 @@ func CmdListDeposit() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllDepositRequest{
+			params := &types.QueryAllOperationRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.DepositAll(context.Background(), params)
+			res, err := queryClient.OperationAll(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -42,10 +42,10 @@ func CmdListDeposit() *cobra.Command {
 	return cmd
 }
 
-func CmdShowDeposit() *cobra.Command {
+func CmdShowOperation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-deposit [index]",
-		Short: "shows a deposit",
+		Use:   "show-operation [index]",
+		Short: "shows a operation",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -54,11 +54,11 @@ func CmdShowDeposit() *cobra.Command {
 
 			argIndex := args[0]
 
-			params := &types.QueryGetDepositRequest{
+			params := &types.QueryGetOperationRequest{
 				Index: argIndex,
 			}
 
-			res, err := queryClient.Deposit(context.Background(), params)
+			res, err := queryClient.Operation(context.Background(), params)
 			if err != nil {
 				return err
 			}

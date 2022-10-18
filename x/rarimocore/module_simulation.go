@@ -47,14 +47,14 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	rarimocoreGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		DepositList: []types.Deposit{
+		OperationList: []types.Operation{
 			{
 				Creator: sample.AccAddress(),
-				Tx:      "0",
+				Index:   "0",
 			},
 			{
 				Creator: sample.AccAddress(),
-				Tx:      "1",
+				Index:   "1",
 			},
 		},
 		ConfirmationList: []types.Confirmation{
@@ -65,16 +65,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			{
 				Creator: sample.AccAddress(),
 				Root:    "1",
-			},
-		},
-		ChangeKeyECDSAList: []types.ChangeKeyECDSA{
-			{
-				Creator: sample.AccAddress(),
-				NewKey:  "0",
-			},
-			{
-				Creator: sample.AccAddress(),
-				NewKey:  "1",
 			},
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
@@ -108,7 +98,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateDeposit,
-		rarimocoresimulation.SimulateMsgCreateDeposit(am.accountKeeper, am.bankKeeper, am.keeper),
+		rarimocoresimulation.SimulateMsgCreateTransfer(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgCreateConfirmation int

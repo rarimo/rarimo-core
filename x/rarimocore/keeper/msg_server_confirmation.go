@@ -6,13 +6,11 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operations"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/origin"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
-	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
@@ -30,30 +28,30 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	deposits := make([]types.Deposit, 0, len(msg.Indexes))
-	content := make([]merkle.Content, 0, len(msg.Indexes))
+	operations := make([]types.Operation, 0, len(msg.Indexes))
+	contents := make([]merkle.Content, 0, len(msg.Indexes))
 
 	for _, index := range msg.Indexes {
-		deposit, ok := k.GetDeposit(ctx, index)
+		operation, ok := k.GetOperation(ctx, index)
 		if !ok {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", index))
 		}
 
-		if deposit.Signed {
+		if operation.Signed {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", index))
 		}
 
-		deposits = append(deposits, deposit)
+		operations = append(operations, operation)
 
-		depositContent, err := k.contentFromDeposit(ctx, deposit)
+		content, err := k.getContent(ctx, operation)
 		if err != nil {
 			return nil, err
 		}
 
-		content = append(content, depositContent)
+		contents = append(contents, content)
 	}
 
-	if err := crypto.VerifyMerkleRoot(content, msg.Root); err != nil {
+	if err := crypto.VerifyMerkleRoot(contents, msg.Root); err != nil {
 		return nil, err
 	}
 
@@ -64,9 +62,9 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		SignatureECDSA: msg.SignatureECDSA,
 	}
 
-	for _, deposit := range deposits {
-		deposit.Signed = true
-		k.SetDeposit(ctx, deposit)
+	for _, op := range operations {
+		op.Signed = true
+		k.SetOperation(ctx, op)
 	}
 
 	k.SetConfirmation(
@@ -77,44 +75,46 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *Keeper) contentFromDeposit(ctx sdk.Context, deposit types.Deposit) (crypto.HashContent, error) {
-	info, ok := k.tm.GetInfo(ctx, deposit.TokenIndex)
-	if !ok {
-		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token info %s not found", deposit.Index))
-	}
+func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
+	switch op.OperationType {
+	case types.OpType_TRANSFER:
+		transfer, err := pkg.GetTransfer(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
 
-	item, ok := k.tm.GetItem(ctx, info.Chains[deposit.ToChain].TokenAddress, info.Chains[deposit.ToChain].TokenId, deposit.ToChain)
-	if !ok {
-		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("token idem %s not found", deposit.Index))
-	}
+		return k.transferOperationContent(ctx, transfer)
+	case types.OpType_CHANGE_KEY:
+		change, err := pkg.GetChangeKey(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
 
-	chainParams, ok := k.tm.GetParams(ctx).Networks[deposit.ToChain]
-	if !ok {
-		return crypto.HashContent{}, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit network not found: %s", deposit.ToChain))
-	}
-
-	var operation operations.Operation
-
-	switch item.TokenType {
-	case tokentypes.Type_METAPLEX_FT | tokentypes.Type_METAPLEX_NFT:
-		operation = operations.NewTransferFullMetaOperation(
-			info.Chains[deposit.ToChain].TokenAddress,
-			info.Chains[deposit.ToChain].TokenId,
-			deposit.Amount, item.Name, item.Symbol, item.Uri, uint8(item.Decimals),
-		)
+		return k.changeKeyOperationContent(ctx, change)
 	default:
-		operation = operations.NewTransferOperation(
-			info.Chains[deposit.ToChain].TokenAddress,
-			info.Chains[deposit.ToChain].TokenId,
-			deposit.Amount, item.Uri,
-		)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
+	}
+}
+
+func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
+	info, ok := k.tm.GetInfo(ctx, transfer.TokenIndex)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token info not found")
 	}
 
-	return crypto.HashContent{
-		Origin:         origin.NewDefaultOrigin(deposit.Tx, deposit.EventId, deposit.FromChain).GetOrigin(),
-		TargetNetwork:  deposit.ToChain,
-		Receiver:       hexutil.MustDecode(deposit.Receiver),
-		Data:           operation.GetContent(),
-		TargetContract: hexutil.MustDecode(chainParams.Contract),
-	}, nil
+	item, ok := k.tm.GetItem(ctx, info.Chains[transfer.ToChain].TokenAddress, info.Chains[transfer.ToChain].TokenId, transfer.ToChain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
+	}
+
+	chainParams, ok := k.tm.GetParams(ctx).Networks[transfer.ToChain]
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("requested network not found: %s", transfer.ToChain))
+	}
+
+	return pkg.GetTransferContent(&info, &item, chainParams, transfer)
+}
+
+func (k *Keeper) changeKeyOperationContent(ctx sdk.Context, change *types.ChangeKey) (*operation.ChangeKeyContent, error) {
+	return pkg.GetChangeKeyContent(change)
 }

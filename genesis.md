@@ -7,7 +7,7 @@ rarimo-cored keys add validator_key --keyring-backend test --home=./genesis
 
 ### Exporting validator address
 ```shell
-export MY_VALIDATOR_ADDRESS=rarimo1lhnl44d45k69qgyuklcmzas0cdvvqxga6usmt7
+export MY_VALIDATOR_ADDRESS=rarimo10efu3md78z8qhlzjsx8u0kq3p7j3uhhf80yp5u
 ```
 
 ### Init chain

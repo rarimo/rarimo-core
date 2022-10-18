@@ -10,15 +10,12 @@ import (
 
 func CmdCreateChangeKeyECDSA() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-change-key-ecdsa [new-key] [signature]",
+		Use:   "create-change-key-ecdsa [new-key]",
 		Short: "Create a new changeKeyECDSA",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexNewKey := args[0]
-
-			// Get value arguments
-			argSignature := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,7 +25,6 @@ func CmdCreateChangeKeyECDSA() *cobra.Command {
 			msg := types.NewMsgCreateChangeKeyECDSA(
 				clientCtx.GetFromAddress().String(),
 				indexNewKey,
-				argSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

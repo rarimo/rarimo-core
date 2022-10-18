@@ -9,12 +9,12 @@ import (
 var _ binary.ByteOrder
 
 const (
-	// DepositKeyPrefix is the prefix to retrieve all Deposit
-	DepositKeyPrefix = "Deposit/value/"
+	// OperationKeyPrefix is the prefix to retrieve all Operation
+	OperationKeyPrefix = "Operation/value/"
 )
 
-// DepositKey returns the store key to retrieve a Deposit from the index fields
-func DepositKey(
+// OperationKey returns the store key to retrieve an Operation from the index fields
+func OperationKey(
 	index string,
 ) []byte {
 	return append(hexutil.MustDecode(index), []byte("/")...)

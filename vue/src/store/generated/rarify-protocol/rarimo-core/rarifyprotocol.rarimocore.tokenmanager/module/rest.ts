@@ -48,6 +48,8 @@ export interface TokenmanagerItem {
   /** @format int64 */
   decimals?: number;
   seed?: string;
+  imageUri?: string;
+  imageHash?: string;
   tokenType?: Tokenmanagertype;
 }
 
@@ -117,6 +119,8 @@ export enum Tokenmanagertype {
   ERC1155 = "ERC1155",
   METAPLEX_NFT = "METAPLEX_NFT",
   METAPLEX_FT = "METAPLEX_FT",
+  NEAR_FT = "NEAR_FT",
+  NEAR_NFT = "NEAR_NFT",
 }
 
 /**

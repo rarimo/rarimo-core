@@ -4,16 +4,15 @@ import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
-export interface MsgCreateDeposit {
+export interface MsgCreateTransferOp {
   creator: string;
-  index: string;
   tx: string;
   eventId: string;
   fromChain: string;
   tokenType: type;
 }
 
-export interface MsgCreateDepositResponse {}
+export interface MsgCreateTransferOpResponse {}
 
 export interface MsgCreateConfirmation {
   creator: string;
@@ -30,48 +29,45 @@ export interface MsgCreateChangeKeyECDSA {
   creator: string;
   /** hex-encoded */
   newKey: string;
-  /** hex-encoded */
-  signature: string;
 }
 
 export interface MsgCreateChangeKeyECDSAResponse {}
 
-const baseMsgCreateDeposit: object = {
+const baseMsgCreateTransferOp: object = {
   creator: "",
-  index: "",
   tx: "",
   eventId: "",
   fromChain: "",
   tokenType: 0,
 };
 
-export const MsgCreateDeposit = {
-  encode(message: MsgCreateDeposit, writer: Writer = Writer.create()): Writer {
+export const MsgCreateTransferOp = {
+  encode(
+    message: MsgCreateTransferOp,
+    writer: Writer = Writer.create()
+  ): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.index !== "") {
-      writer.uint32(18).string(message.index);
-    }
     if (message.tx !== "") {
-      writer.uint32(26).string(message.tx);
+      writer.uint32(18).string(message.tx);
     }
     if (message.eventId !== "") {
-      writer.uint32(34).string(message.eventId);
+      writer.uint32(26).string(message.eventId);
     }
     if (message.fromChain !== "") {
-      writer.uint32(42).string(message.fromChain);
+      writer.uint32(34).string(message.fromChain);
     }
     if (message.tokenType !== 0) {
-      writer.uint32(48).int32(message.tokenType);
+      writer.uint32(40).int32(message.tokenType);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgCreateDeposit {
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateTransferOp {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgCreateDeposit } as MsgCreateDeposit;
+    const message = { ...baseMsgCreateTransferOp } as MsgCreateTransferOp;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -79,18 +75,15 @@ export const MsgCreateDeposit = {
           message.creator = reader.string();
           break;
         case 2:
-          message.index = reader.string();
-          break;
-        case 3:
           message.tx = reader.string();
           break;
-        case 4:
+        case 3:
           message.eventId = reader.string();
           break;
-        case 5:
+        case 4:
           message.fromChain = reader.string();
           break;
-        case 6:
+        case 5:
           message.tokenType = reader.int32() as any;
           break;
         default:
@@ -101,17 +94,12 @@ export const MsgCreateDeposit = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreateDeposit {
-    const message = { ...baseMsgCreateDeposit } as MsgCreateDeposit;
+  fromJSON(object: any): MsgCreateTransferOp {
+    const message = { ...baseMsgCreateTransferOp } as MsgCreateTransferOp;
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
-    }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index);
-    } else {
-      message.index = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = String(object.tx);
@@ -136,10 +124,9 @@ export const MsgCreateDeposit = {
     return message;
   },
 
-  toJSON(message: MsgCreateDeposit): unknown {
+  toJSON(message: MsgCreateTransferOp): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.index !== undefined && (obj.index = message.index);
     message.tx !== undefined && (obj.tx = message.tx);
     message.eventId !== undefined && (obj.eventId = message.eventId);
     message.fromChain !== undefined && (obj.fromChain = message.fromChain);
@@ -148,17 +135,12 @@ export const MsgCreateDeposit = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgCreateDeposit>): MsgCreateDeposit {
-    const message = { ...baseMsgCreateDeposit } as MsgCreateDeposit;
+  fromPartial(object: DeepPartial<MsgCreateTransferOp>): MsgCreateTransferOp {
+    const message = { ...baseMsgCreateTransferOp } as MsgCreateTransferOp;
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
       message.creator = "";
-    }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = object.index;
-    } else {
-      message.index = "";
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = object.tx;
@@ -184,11 +166,11 @@ export const MsgCreateDeposit = {
   },
 };
 
-const baseMsgCreateDepositResponse: object = {};
+const baseMsgCreateTransferOpResponse: object = {};
 
-export const MsgCreateDepositResponse = {
+export const MsgCreateTransferOpResponse = {
   encode(
-    _: MsgCreateDepositResponse,
+    _: MsgCreateTransferOpResponse,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -197,12 +179,12 @@ export const MsgCreateDepositResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): MsgCreateDepositResponse {
+  ): MsgCreateTransferOpResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgCreateDepositResponse,
-    } as MsgCreateDepositResponse;
+      ...baseMsgCreateTransferOpResponse,
+    } as MsgCreateTransferOpResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -214,24 +196,24 @@ export const MsgCreateDepositResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateDepositResponse {
+  fromJSON(_: any): MsgCreateTransferOpResponse {
     const message = {
-      ...baseMsgCreateDepositResponse,
-    } as MsgCreateDepositResponse;
+      ...baseMsgCreateTransferOpResponse,
+    } as MsgCreateTransferOpResponse;
     return message;
   },
 
-  toJSON(_: MsgCreateDepositResponse): unknown {
+  toJSON(_: MsgCreateTransferOpResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateDepositResponse>
-  ): MsgCreateDepositResponse {
+    _: DeepPartial<MsgCreateTransferOpResponse>
+  ): MsgCreateTransferOpResponse {
     const message = {
-      ...baseMsgCreateDepositResponse,
-    } as MsgCreateDepositResponse;
+      ...baseMsgCreateTransferOpResponse,
+    } as MsgCreateTransferOpResponse;
     return message;
   },
 };
@@ -412,11 +394,7 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangeKeyECDSA: object = {
-  creator: "",
-  newKey: "",
-  signature: "",
-};
+const baseMsgCreateChangeKeyECDSA: object = { creator: "", newKey: "" };
 
 export const MsgCreateChangeKeyECDSA = {
   encode(
@@ -428,9 +406,6 @@ export const MsgCreateChangeKeyECDSA = {
     }
     if (message.newKey !== "") {
       writer.uint32(18).string(message.newKey);
-    }
-    if (message.signature !== "") {
-      writer.uint32(26).string(message.signature);
     }
     return writer;
   },
@@ -449,9 +424,6 @@ export const MsgCreateChangeKeyECDSA = {
           break;
         case 2:
           message.newKey = reader.string();
-          break;
-        case 3:
-          message.signature = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -475,11 +447,6 @@ export const MsgCreateChangeKeyECDSA = {
     } else {
       message.newKey = "";
     }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
-    } else {
-      message.signature = "";
-    }
     return message;
   },
 
@@ -487,7 +454,6 @@ export const MsgCreateChangeKeyECDSA = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.newKey !== undefined && (obj.newKey = message.newKey);
-    message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
 
@@ -506,11 +472,6 @@ export const MsgCreateChangeKeyECDSA = {
       message.newKey = object.newKey;
     } else {
       message.newKey = "";
-    }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
-    } else {
-      message.signature = "";
     }
     return message;
   },
@@ -570,7 +531,9 @@ export const MsgCreateChangeKeyECDSAResponse = {
 
 /** Msg defines the Msg service. */
 export interface Msg {
-  CreateDeposit(request: MsgCreateDeposit): Promise<MsgCreateDepositResponse>;
+  CreateTransferOperation(
+    request: MsgCreateTransferOp
+  ): Promise<MsgCreateTransferOpResponse>;
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse>;
@@ -585,15 +548,17 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  CreateDeposit(request: MsgCreateDeposit): Promise<MsgCreateDepositResponse> {
-    const data = MsgCreateDeposit.encode(request).finish();
+  CreateTransferOperation(
+    request: MsgCreateTransferOp
+  ): Promise<MsgCreateTransferOpResponse> {
+    const data = MsgCreateTransferOp.encode(request).finish();
     const promise = this.rpc.request(
       "rarifyprotocol.rarimocore.rarimocore.Msg",
-      "CreateDeposit",
+      "CreateTransferOperation",
       data
     );
     return promise.then((data) =>
-      MsgCreateDepositResponse.decode(new Reader(data))
+      MsgCreateTransferOpResponse.decode(new Reader(data))
     );
   }
 

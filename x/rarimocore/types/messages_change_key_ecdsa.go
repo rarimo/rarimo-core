@@ -15,13 +15,10 @@ var _ sdk.Msg = &MsgCreateChangeKeyECDSA{}
 func NewMsgCreateChangeKeyECDSA(
 	creator string,
 	newKey string,
-	signature string,
-
 ) *MsgCreateChangeKeyECDSA {
 	return &MsgCreateChangeKeyECDSA{
-		Creator:   creator,
-		NewKey:    newKey,
-		Signature: signature,
+		Creator: creator,
+		NewKey:  newKey,
 	}
 }
 
@@ -50,10 +47,6 @@ func (msg *MsgCreateChangeKeyECDSA) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-
-	if _, err = hexutil.Decode(msg.Signature); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex receiver address (%s)", err)
 	}
 
 	if _, err = hexutil.Decode(msg.NewKey); err != nil {
