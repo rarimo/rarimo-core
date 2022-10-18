@@ -90,19 +90,14 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 
-		return k.changeKeyOperationContent(ctx, change)
+		return pkg.GetChangeKeyContent(change)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
 }
 
 func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	info, ok := k.tm.GetInfo(ctx, transfer.TokenIndex)
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token info not found")
-	}
-
-	item, ok := k.tm.GetItem(ctx, info.Chains[transfer.ToChain].TokenAddress, info.Chains[transfer.ToChain].TokenId, transfer.ToChain)
+	item, ok := k.tm.GetItemByNetwork(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
 	}
@@ -112,9 +107,5 @@ func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Trans
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("requested network not found: %s", transfer.ToChain))
 	}
 
-	return pkg.GetTransferContent(&info, &item, chainParams, transfer)
-}
-
-func (k *Keeper) changeKeyOperationContent(ctx sdk.Context, change *types.ChangeKey) (*operation.ChangeKeyContent, error) {
-	return pkg.GetChangeKeyContent(change)
+	return pkg.GetTransferContent(&item, chainParams, transfer)
 }

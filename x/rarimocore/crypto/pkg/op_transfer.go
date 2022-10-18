@@ -20,18 +20,18 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *tokentypes.ChainParams, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(item *tokentypes.Item, params *tokentypes.ChainParams, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
 	switch item.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
+			SetAddress(item.TokenAddress).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
-			SetId(info.Chains[transfer.ToChain].TokenId).
+			SetAddress(item.TokenAddress).
+			SetId(item.TokenId).
 			SetName(item.Name).
 			SetImageURI(item.ImageUri).
 			SetImageHash(item.ImageHash)
@@ -39,22 +39,22 @@ func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *to
 		builder.SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC20:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
+			SetAddress(item.TokenAddress).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC721:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
-			SetId(info.Chains[transfer.ToChain].TokenId).
+			SetAddress(item.TokenAddress).
+			SetId(item.TokenId).
 			SetURI(item.Uri)
 	case tokentypes.Type_ERC1155:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
-			SetId(info.Chains[transfer.ToChain].TokenId).
+			SetAddress(item.TokenAddress).
+			SetId(item.TokenId).
 			SetAmount(transfer.Amount).
 			SetURI(item.Uri)
 	case tokentypes.Type_METAPLEX_FT:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
+			SetAddress(item.TokenAddress).
 			SetAmount(transfer.Amount).
 			SetName(item.Name).
 			SetSymbol(item.Symbol).
@@ -62,8 +62,8 @@ func GetTransferContent(info *tokentypes.Info, item *tokentypes.Item, params *to
 			SetDecimals(uint8(item.Decimals))
 	case tokentypes.Type_METAPLEX_NFT:
 		builder.
-			SetAddress(info.Chains[transfer.ToChain].TokenAddress).
-			SetId(info.Chains[transfer.ToChain].TokenId).
+			SetAddress(item.TokenAddress).
+			SetId(item.TokenId).
 			SetName(item.Name).
 			SetSymbol(item.Symbol).
 			SetURI(item.Uri)

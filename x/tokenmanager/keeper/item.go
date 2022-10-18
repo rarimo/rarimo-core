@@ -17,7 +17,7 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 	), b)
 }
 
-// GetItem returns a item from its index
+// GetItem returns an item from its index
 func (k Keeper) GetItem(
 	ctx sdk.Context,
 	tokenAddress string,
@@ -39,7 +39,32 @@ func (k Keeper) GetItem(
 	return val, true
 }
 
-// RemoveItem removes a item from the store
+// GetItem returns an item from its index
+func (k Keeper) GetItemByNetwork(
+	ctx sdk.Context,
+	infoIndex string,
+	chain string,
+) (val types.Item, found bool) {
+	info, ok := k.GetInfo(ctx, infoIndex)
+	if !ok {
+		return val, false
+	}
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
+	b := store.Get(types.ItemKey(
+		info.Chains[chain].TokenAddress,
+		info.Chains[chain].TokenId,
+		chain,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// RemoveItem removes an item from the store
 func (k Keeper) RemoveItem(
 	ctx sdk.Context,
 	tokenAddress string,

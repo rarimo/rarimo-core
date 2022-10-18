@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"math/big"
 	"strconv"
 
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -44,9 +45,14 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", infoResp.TargetNetwork)
 	}
 
-	item, ok := k.tm.GetItem(ctx, infoResp.TokenAddress, infoResp.TokenId, msg.FromChain)
+	currentItem, ok := k.tm.GetItem(ctx, infoResp.TokenAddress, infoResp.TokenId, msg.FromChain)
 	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "token not found")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "current token not found")
+	}
+
+	targetItem, ok := k.tm.GetItemByNetwork(ctx, currentItem.Index, infoResp.TargetNetwork)
+	if !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
 	}
 
 	var transferOp = types.Transfer{
@@ -56,10 +62,10 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		FromChain:  msg.FromChain,
 		ToChain:    infoResp.TargetNetwork,
 		Receiver:   infoResp.Receiver,
-		Amount:     infoResp.Amount,
+		Amount:     castAmount(infoResp.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
 		BundleData: infoResp.BundleData,
 		BundleSalt: getSalt(infoResp),
-		TokenIndex: item.Index,
+		TokenIndex: currentItem.Index,
 	}
 
 	details, err := cosmostypes.NewAnyWithValue(&transferOp)
@@ -86,6 +92,28 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 	return &types.MsgCreateTransferOpResponse{}, nil
+}
+
+func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint8) string {
+	if currentDecimals == targetDecimals {
+		return currentAmount
+	}
+
+	value, _ := new(big.Int).SetString(currentAmount, 10)
+
+	if currentDecimals < targetDecimals {
+		for i := uint8(0); i < targetDecimals-currentDecimals; i++ {
+			value.Mul(value, new(big.Int).SetInt64(10))
+		}
+
+		return value.String()
+	}
+
+	for i := uint8(0); i < targetDecimals-currentDecimals; i++ {
+		value.Div(value, new(big.Int).SetInt64(10))
+	}
+
+	return value.String()
 }
 
 func (k *Keeper) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
