@@ -7,8 +7,7 @@ import (
 func amountBytes(amount string) []byte {
 	am, ok := new(big.Int).SetString(amount, 10)
 	if !ok {
-		// it is NFT
-		am = new(big.Int).SetInt64(1)
+		return []byte{}
 	}
 
 	return bigInt256Bytes(am)
