@@ -35,25 +35,9 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
-	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
-	}
-
-	infoRequest := &savermsg.MsgTransactionInfoRequest{
-		Hash:    msg.Tx,
-		EventId: msg.EventId,
-		Type:    network.Types[strconv.Itoa(int(msg.TokenType))],
-	}
-
-	saverClient, err := saver.GetClient(msg.FromChain)
+	infoResp, err := k.getDepositInfo(ctx, msg)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error getting saver connection", err.Error())
-	}
-
-	infoResp, err := saverClient.GetDepositInfo(goCtx, infoRequest)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
+		return nil, err
 	}
 
 	if _, ok := k.tm.GetNetwork(ctx, infoResp.TargetNetwork); !ok {
@@ -74,7 +58,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Receiver:   infoResp.Receiver,
 		Amount:     infoResp.Amount,
 		BundleData: infoResp.BundleData,
-		BundleSalt: hexutil.Encode(crypto.Keccak256(hexutil.MustDecode(infoResp.BundleSalt), hexutil.MustDecode(infoResp.Receiver))),
+		BundleSalt: getSalt(infoResp),
 		TokenIndex: item.Index,
 	}
 
@@ -102,4 +86,37 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 	return &types.MsgCreateTransferOpResponse{}, nil
+}
+
+func (k *Keeper) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
+	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
+	if !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
+	}
+
+	infoRequest := &savermsg.MsgTransactionInfoRequest{
+		Hash:    msg.Tx,
+		EventId: msg.EventId,
+		Type:    network.Types[strconv.Itoa(int(msg.TokenType))],
+	}
+
+	saverClient, err := saver.GetClient(msg.FromChain)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error getting saver connection", err.Error())
+	}
+
+	infoResp, err := saverClient.GetDepositInfo(ctx.Context(), infoRequest)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
+	}
+
+	return infoResp, nil
+}
+
+func getSalt(response *savermsg.MsgDepositResponse) string {
+	if response.BundleData == "" || response.BundleSalt == "" {
+		return ""
+	}
+
+	return hexutil.Encode(crypto.Keccak256(hexutil.MustDecode(response.BundleSalt), hexutil.MustDecode(response.Receiver)))
 }

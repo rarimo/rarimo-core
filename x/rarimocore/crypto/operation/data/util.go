@@ -15,6 +15,10 @@ func amountBytes(amount string) []byte {
 }
 
 func decimalsBytes(decimals uint8) []byte {
+	if decimals == 0 {
+		return []byte{}
+	}
+
 	return []byte{decimals}
 }
 
