@@ -55,6 +55,10 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
 	}
 
+	if _, err := hexutil.Decode(infoResp.Receiver); err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver format")
+	}
+
 	var transferOp = types.Transfer{
 		Origin:     index,
 		Tx:         msg.Tx,
