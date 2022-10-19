@@ -23,5 +23,10 @@ func (c ChangeKeyContent) Equals(other merkle.Content) bool {
 	if oc, ok := other.(ChangeKeyContent); ok {
 		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
 	}
+
+	if oc, ok := other.(*ChangeKeyContent); ok {
+		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
+	}
+
 	return false
 }
