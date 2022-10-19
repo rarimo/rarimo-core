@@ -63,7 +63,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		ToChain:    infoResp.TargetNetwork,
 		Receiver:   infoResp.Receiver,
 		Amount:     castAmount(infoResp.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
-		BundleData: infoResp.BundleData,
+		BundleData: getBundle(infoResp),
 		BundleSalt: getSalt(infoResp),
 		TokenIndex: currentItem.Index,
 	}
@@ -109,7 +109,7 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 		return value.String()
 	}
 
-	for i := uint8(0); i < targetDecimals-currentDecimals; i++ {
+	for i := uint8(0); i < currentDecimals-targetDecimals; i++ {
 		value.Div(value, new(big.Int).SetInt64(10))
 	}
 
@@ -147,4 +147,12 @@ func getSalt(response *savermsg.MsgDepositResponse) string {
 	}
 
 	return hexutil.Encode(crypto.Keccak256(hexutil.MustDecode(response.BundleSalt), hexutil.MustDecode(response.Receiver)))
+}
+
+func getBundle(response *savermsg.MsgDepositResponse) string {
+	if response.BundleSalt == "" {
+		return ""
+	}
+
+	return response.BundleData
 }
