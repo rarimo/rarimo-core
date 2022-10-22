@@ -3,7 +3,31 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
+message Party {
+  // PublicKey in hex format
+  string pubKey = 1;
+  // Server address connect to
+  string address = 2;
+  // Rarimo core account
+  string account = 3;
+}
+
+enum StepType {
+  Proposing = 0;
+  Accepting = 1;
+  Signing = 2;
+}
+
+message Step {
+  // Duration in blocks
+  string duration = 1;
+  StepType type = 2;
+}
+
 // Params defines the parameters for the module.
 message Params {
   string keyECDSA = 1;
+  uint64 initialBlock = 2;
+  repeated Party parties = 3;
+  repeated Step steps = 4;
 }
