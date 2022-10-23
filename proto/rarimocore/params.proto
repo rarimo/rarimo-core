@@ -20,7 +20,7 @@ enum StepType {
 
 message Step {
   // Duration in blocks
-  string duration = 1;
+  uint64 duration = 1;
   StepType type = 2;
 }
 
