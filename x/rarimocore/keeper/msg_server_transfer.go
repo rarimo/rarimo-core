@@ -36,26 +36,26 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	infoResp, err := k.getDepositInfo(ctx, msg)
+	depositInfo, err := k.getDepositInfo(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, ok := k.tm.GetNetwork(ctx, infoResp.TargetNetwork); !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", infoResp.TargetNetwork)
+	if _, ok := k.tm.GetNetwork(ctx, depositInfo.TargetNetwork); !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", depositInfo.TargetNetwork)
 	}
 
-	currentItem, ok := k.tm.GetItem(ctx, infoResp.TokenAddress, infoResp.TokenId, msg.FromChain)
+	currentItem, ok := k.tm.GetItem(ctx, depositInfo.TokenAddress, depositInfo.TokenId, msg.FromChain)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "current token not found")
 	}
 
-	targetItem, ok := k.tm.GetItemByNetwork(ctx, currentItem.Index, infoResp.TargetNetwork)
+	targetItem, ok := k.tm.GetItemByNetwork(ctx, currentItem.Index, depositInfo.TargetNetwork)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
 	}
 
-	if _, err := hexutil.Decode(infoResp.Receiver); err != nil {
+	if _, err := hexutil.Decode(depositInfo.Receiver); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver format")
 	}
 
@@ -64,11 +64,11 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
 		FromChain:  msg.FromChain,
-		ToChain:    infoResp.TargetNetwork,
-		Receiver:   infoResp.Receiver,
-		Amount:     castAmount(infoResp.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
-		BundleData: getBundle(infoResp),
-		BundleSalt: getSalt(infoResp),
+		ToChain:    depositInfo.TargetNetwork,
+		Receiver:   depositInfo.Receiver,
+		Amount:     castAmount(depositInfo.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
+		BundleData: getBundle(depositInfo),
+		BundleSalt: getSalt(depositInfo),
 		TokenIndex: currentItem.Index,
 	}
 
@@ -137,12 +137,12 @@ func (k *Keeper) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error getting saver connection", err.Error())
 	}
 
-	infoResp, err := saverClient.GetDepositInfo(ctx.Context(), infoRequest)
+	depositInfo, err := saverClient.GetDepositInfo(ctx.Context(), infoRequest)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
 	}
 
-	return infoResp, nil
+	return depositInfo, nil
 }
 
 func getSalt(response *savermsg.MsgDepositResponse) string {

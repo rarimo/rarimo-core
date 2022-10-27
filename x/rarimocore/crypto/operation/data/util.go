@@ -10,7 +10,7 @@ func amountBytes(amount string) []byte {
 		return []byte{}
 	}
 
-	return bigInt256Bytes(am)
+	return bigInt32Bytes(am)
 }
 
 func decimalsBytes(decimals uint8) []byte {
@@ -21,12 +21,16 @@ func decimalsBytes(decimals uint8) []byte {
 	return []byte{decimals}
 }
 
-func bigInt256Bytes(i *big.Int) []byte {
+func bigInt32Bytes(i *big.Int) []byte {
 	iBytes := i.Bytes()
-	result := make([]byte, 32)
+	return to32Bytes(iBytes)
+}
 
-	for i := range iBytes {
-		result[31-i] = iBytes[len(iBytes)-1-i]
+func to32Bytes(arr []byte) []byte {
+	if len(arr) >= 32 || len(arr) == 0 {
+		return arr
 	}
-	return result
+
+	res := make([]byte, 32-len(arr))
+	return append(res, arr...)
 }

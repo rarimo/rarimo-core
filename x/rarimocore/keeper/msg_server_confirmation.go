@@ -75,6 +75,24 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
+func (k *Keeper) applyOperation(ctx sdk.Context, op types.Operation) {
+	switch op.OperationType {
+	case types.OpType_TRANSFER:
+		// Nothing to do
+	case types.OpType_CHANGE_KEY:
+		// Changing key in params
+		change, _ := pkg.GetChangeKey(op)
+		params := k.GetParams(ctx)
+		params.KeyECDSA = change.NewKey
+		k.SetParams(ctx, params)
+	default:
+		// Nothing to do
+	}
+
+	op.Signed = true
+	k.SetOperation(ctx, op)
+}
+
 func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
@@ -83,7 +101,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 
-		return k.transferOperationContent(ctx, transfer)
+		return k.getTransferOperationContent(ctx, transfer)
 	case types.OpType_CHANGE_KEY:
 		change, err := pkg.GetChangeKey(op)
 		if err != nil {
@@ -96,7 +114,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 	}
 }
 
-func (k *Keeper) transferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
+func (k *Keeper) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
 	item, ok := k.tm.GetItemByNetwork(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")

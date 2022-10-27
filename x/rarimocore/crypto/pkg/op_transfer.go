@@ -77,6 +77,6 @@ func GetTransferContent(item *tokentypes.Item, params *tokentypes.ChainParams, t
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
 		Data:           builder.Build().GetContent(),
 		TargetContract: hexutil.MustDecode(params.Contract),
-		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.GetBundleData()).SetSalt(transfer.BundleSalt).Build().GetBundle(),
+		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.BundleData).SetSalt(transfer.BundleSalt).Build().GetBundle(),
 	}, nil
 }
