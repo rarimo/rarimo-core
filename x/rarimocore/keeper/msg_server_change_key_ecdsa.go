@@ -13,12 +13,10 @@ import (
 func (k msgServer) CreateChangeKeyECDSA(goCtx context.Context, msg *types.MsgCreateChangeKeyECDSA) (*types.MsgCreateChangeKeyECDSAResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if msg.NewKey == k.GetKeyECDSA(ctx) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "key already set")
-	}
-
 	var changeOp = types.ChangeKey{
-		NewKey: msg.NewKey,
+		NewKey:    msg.NewKey,
+		Parties:   msg.Parties,
+		Threshold: msg.Threshold,
 	}
 
 	details, err := cosmostypes.NewAnyWithValue(&changeOp)

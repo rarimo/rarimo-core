@@ -80,10 +80,12 @@ func (k *Keeper) applyOperation(ctx sdk.Context, op types.Operation) {
 	case types.OpType_TRANSFER:
 		// Nothing to do
 	case types.OpType_CHANGE_KEY:
-		// Changing key in params
+		// Change params
 		change, _ := pkg.GetChangeKey(op)
 		params := k.GetParams(ctx)
 		params.KeyECDSA = change.NewKey
+		params.Parties = change.Parties
+		params.Threshold = change.Threshold
 		k.SetParams(ctx, params)
 	default:
 		// Nothing to do
