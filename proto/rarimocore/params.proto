@@ -27,8 +27,7 @@ message Step {
 // Params defines the parameters for the module.
 message Params {
   string keyECDSA = 1;
-  uint64 initialBlock = 2;
-  uint64 threshold = 3;
-  repeated Party parties = 4;
-  repeated Step steps = 5;
+  uint64 threshold = 2;
+  repeated Party parties = 3;
+  repeated Step steps = 4;
 }
