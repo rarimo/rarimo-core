@@ -42,9 +42,9 @@ func (t TransferData) GetContent() operation.ContentData {
 }
 
 type TransferDataBuilder struct {
-	address   string
-	id        string
-	amount    string
+	address   []byte
+	id        []byte
+	amount    []byte
 	name      string
 	symbol    string
 	uri       string
@@ -59,9 +59,9 @@ func NewTransferDataBuilder() *TransferDataBuilder {
 
 func (b *TransferDataBuilder) Build() *TransferData {
 	return &TransferData{
-		TargetAddress:  crypto.TryHexDecode(b.address),
-		TargetId:       crypto.TryHexDecode(b.id),
-		Amount:         amountBytes(b.amount),
+		TargetAddress:  b.address,
+		TargetId:       b.id,
+		Amount:         b.amount,
 		TargetName:     b.name,
 		TargetSymbol:   b.symbol,
 		TargetURI:      b.uri,
@@ -72,17 +72,17 @@ func (b *TransferDataBuilder) Build() *TransferData {
 }
 
 func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
-	b.address = addr
+	b.address = to32Bytes(crypto.TryHexDecode(addr))
 	return b
 }
 
 func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
-	b.id = id
+	b.id = to32Bytes(crypto.TryHexDecode(id))
 	return b
 }
 
 func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
-	b.amount = amount
+	b.amount = amountBytes(amount)
 	return b
 }
 

@@ -49,7 +49,7 @@ func (c TransferContent) CalculateHash() []byte {
 	return crypto.Keccak256(c.Data, c.Bundle, c.Origin[:], []byte(c.TargetNetwork), c.Receiver, c.TargetContract)
 }
 
-//Equals tests for equality of two Contents
+// Equals tests for equality of two Contents
 func (c TransferContent) Equals(other merkle.Content) bool {
 	if oc, ok := other.(TransferContent); ok {
 		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
