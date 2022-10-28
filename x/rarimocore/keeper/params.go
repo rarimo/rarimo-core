@@ -16,10 +16,6 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	k.paramstore.SetParamSet(ctx, &params)
 }
 
-func (k Keeper) UpdateKeyECDSA(ctx sdk.Context, newKey string) {
-	k.paramstore.Set(ctx, types.KeyECDSA, newKey)
-}
-
 func (k Keeper) GetKeyECDSA(ctx sdk.Context) string {
 	params := k.GetParams(ctx)
 	return params.GetKeyECDSA()

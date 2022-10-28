@@ -28,11 +28,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 
 	index := hexutil.Encode(origin[:])
 
-	_, isFound := k.GetOperation(
-		ctx,
-		index,
-	)
-	if isFound {
+	if _, isFound := k.GetOperation(ctx, index); isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 

@@ -20,11 +20,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, err
 	}
 
-	_, isFound := k.GetConfirmation(
-		ctx,
-		msg.Root,
-	)
-	if isFound {
+	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
+		return nil, err
+	}
+
+	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
@@ -63,8 +63,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		op.Signed = true
-		k.SetOperation(ctx, op)
+		k.applyOperation(ctx, op)
 	}
 
 	k.SetConfirmation(
@@ -73,6 +72,16 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateConfirmationResponse{}, nil
+}
+
+func (k *Keeper) checkSenderIsAParty(ctx sdk.Context, sender string) error {
+	for _, party := range k.GetParams(ctx).Parties {
+		if party.Account == sender {
+			return nil
+		}
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a party")
 }
 
 func (k *Keeper) applyOperation(ctx sdk.Context, op types.Operation) {
