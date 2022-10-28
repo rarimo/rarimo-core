@@ -63,8 +63,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		op.Signed = true
-		k.SetOperation(ctx, op)
+		k.applyOperation(ctx, op)
 	}
 
 	k.SetConfirmation(
