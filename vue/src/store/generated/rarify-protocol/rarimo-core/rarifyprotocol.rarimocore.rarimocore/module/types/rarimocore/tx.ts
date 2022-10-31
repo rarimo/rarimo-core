@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
+import { Party } from "../rarimocore/params";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -29,6 +31,8 @@ export interface MsgCreateChangeKeyECDSA {
   creator: string;
   /** hex-encoded */
   newKey: string;
+  parties: Party[];
+  threshold: number;
 }
 
 export interface MsgCreateChangeKeyECDSAResponse {}
@@ -394,7 +398,11 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangeKeyECDSA: object = { creator: "", newKey: "" };
+const baseMsgCreateChangeKeyECDSA: object = {
+  creator: "",
+  newKey: "",
+  threshold: 0,
+};
 
 export const MsgCreateChangeKeyECDSA = {
   encode(
@@ -407,6 +415,12 @@ export const MsgCreateChangeKeyECDSA = {
     if (message.newKey !== "") {
       writer.uint32(18).string(message.newKey);
     }
+    for (const v of message.parties) {
+      Party.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.threshold !== 0) {
+      writer.uint32(32).uint64(message.threshold);
+    }
     return writer;
   },
 
@@ -416,6 +430,7 @@ export const MsgCreateChangeKeyECDSA = {
     const message = {
       ...baseMsgCreateChangeKeyECDSA,
     } as MsgCreateChangeKeyECDSA;
+    message.parties = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -424,6 +439,12 @@ export const MsgCreateChangeKeyECDSA = {
           break;
         case 2:
           message.newKey = reader.string();
+          break;
+        case 3:
+          message.parties.push(Party.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.threshold = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -437,6 +458,7 @@ export const MsgCreateChangeKeyECDSA = {
     const message = {
       ...baseMsgCreateChangeKeyECDSA,
     } as MsgCreateChangeKeyECDSA;
+    message.parties = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
@@ -447,6 +469,16 @@ export const MsgCreateChangeKeyECDSA = {
     } else {
       message.newKey = "";
     }
+    if (object.parties !== undefined && object.parties !== null) {
+      for (const e of object.parties) {
+        message.parties.push(Party.fromJSON(e));
+      }
+    }
+    if (object.threshold !== undefined && object.threshold !== null) {
+      message.threshold = Number(object.threshold);
+    } else {
+      message.threshold = 0;
+    }
     return message;
   },
 
@@ -454,6 +486,14 @@ export const MsgCreateChangeKeyECDSA = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.newKey !== undefined && (obj.newKey = message.newKey);
+    if (message.parties) {
+      obj.parties = message.parties.map((e) =>
+        e ? Party.toJSON(e) : undefined
+      );
+    } else {
+      obj.parties = [];
+    }
+    message.threshold !== undefined && (obj.threshold = message.threshold);
     return obj;
   },
 
@@ -463,6 +503,7 @@ export const MsgCreateChangeKeyECDSA = {
     const message = {
       ...baseMsgCreateChangeKeyECDSA,
     } as MsgCreateChangeKeyECDSA;
+    message.parties = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
@@ -472,6 +513,16 @@ export const MsgCreateChangeKeyECDSA = {
       message.newKey = object.newKey;
     } else {
       message.newKey = "";
+    }
+    if (object.parties !== undefined && object.parties !== null) {
+      for (const e of object.parties) {
+        message.parties.push(Party.fromPartial(e));
+      }
+    }
+    if (object.threshold !== undefined && object.threshold !== null) {
+      message.threshold = object.threshold;
+    } else {
+      message.threshold = 0;
     }
     return message;
   },
@@ -599,6 +650,16 @@ interface Rpc {
   ): Promise<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
   ? T
@@ -609,3 +670,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

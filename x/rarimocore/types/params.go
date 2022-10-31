@@ -1,6 +1,7 @@
 package types
 
 import (
+	"errors"
 	"fmt"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -10,7 +11,10 @@ import (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	KeyECDSA = []byte("keyECDSAParam")
+	KeyECDSA  = []byte("keyECDSAParam")
+	Threshold = []byte("thresholdParam")
+	Parties   = []byte("partiesParam")
+	Steps     = []byte("strpsParam")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -34,6 +38,9 @@ func DefaultParams() Params {
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
+		paramtypes.NewParamSetPair(Threshold, &p.Threshold, validateThreshold),
+		paramtypes.NewParamSetPair(Parties, &p.Parties, validateParties),
+		paramtypes.NewParamSetPair(Steps, &p.Steps, validateSteps),
 	}
 }
 
@@ -52,4 +59,43 @@ func validateKeyECDSA(i interface{}) error {
 	}
 
 	return crypto.ValidateECDSAKey(v)
+}
+
+func validateThreshold(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return errors.New("threshold can not be zero")
+	}
+
+	return nil
+}
+
+func validateParties(i interface{}) error {
+	v, ok := i.([]*Party)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if len(v) == 0 {
+		return errors.New("there should be at least one party")
+	}
+
+	return nil
+}
+
+func validateSteps(i interface{}) error {
+	v, ok := i.([]*Step)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if len(v) != 3 {
+		return errors.New("should be 3 steps: proposing, accepting, signing")
+	}
+
+	return nil
 }

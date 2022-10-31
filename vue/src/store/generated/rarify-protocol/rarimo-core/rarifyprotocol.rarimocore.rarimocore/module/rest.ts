@@ -241,6 +241,17 @@ export interface RarimocoreOperation {
  */
 export interface RarimocoreParams {
   keyECDSA?: string;
+
+  /** @format uint64 */
+  threshold?: string;
+  parties?: RarimocoreParty[];
+  steps?: RarimocoreStep[];
+}
+
+export interface RarimocoreParty {
+  pubKey?: string;
+  address?: string;
+  account?: string;
 }
 
 export interface RarimocoreQueryAllConfirmationResponse {
@@ -285,8 +296,20 @@ export interface RarimocoreQueryGetOperationResponse {
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface RarimocoreQueryParamsResponse {
-  /** params holds all the parameters of this module. */
+  /** Params defines the parameters for the module. */
   params?: RarimocoreParams;
+}
+
+export interface RarimocoreStep {
+  /** @format uint64 */
+  duration?: string;
+  type?: RarimocoreStepType;
+}
+
+export enum RarimocoreStepType {
+  Proposing = "Proposing",
+  Accepting = "Accepting",
+  Signing = "Signing",
 }
 
 export enum RarimocoreopType {

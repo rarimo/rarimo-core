@@ -30892,7 +30892,6 @@ paths:
                               "@type": "type.googleapis.com/google.protobuf.Duration",
                               "value": "1.212s"
                             }
-                      title: Corresponding to type details
                     signed:
                       type: boolean
                     creator:
@@ -31366,7 +31365,6 @@ paths:
                             "@type": "type.googleapis.com/google.protobuf.Duration",
                             "value": "1.212s"
                           }
-                    title: Corresponding to type details
                   signed:
                     type: boolean
                   creator:
@@ -31577,11 +31575,44 @@ paths:
             type: object
             properties:
               params:
-                description: params holds all the parameters of this module.
                 type: object
                 properties:
                   keyECDSA:
                     type: string
+                  threshold:
+                    type: string
+                    format: uint64
+                  parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pubKey:
+                          type: string
+                          title: PublicKey in hex format
+                        address:
+                          type: string
+                          title: Server address connect to
+                        account:
+                          type: string
+                          title: Rarimo core account
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        duration:
+                          type: string
+                          format: uint64
+                          title: Duration in blocks
+                        type:
+                          type: string
+                          enum:
+                            - Proposing
+                            - Accepting
+                            - Signing
+                          default: Proposing
+                description: Params defines the parameters for the module.
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -53832,7 +53863,6 @@ definitions:
                 "@type": "type.googleapis.com/google.protobuf.Duration",
                 "value": "1.212s"
               }
-        title: Corresponding to type details
       signed:
         type: boolean
       creator:
@@ -53845,7 +53875,52 @@ definitions:
     properties:
       keyECDSA:
         type: string
+      threshold:
+        type: string
+        format: uint64
+      parties:
+        type: array
+        items:
+          type: object
+          properties:
+            pubKey:
+              type: string
+              title: PublicKey in hex format
+            address:
+              type: string
+              title: Server address connect to
+            account:
+              type: string
+              title: Rarimo core account
+      steps:
+        type: array
+        items:
+          type: object
+          properties:
+            duration:
+              type: string
+              format: uint64
+              title: Duration in blocks
+            type:
+              type: string
+              enum:
+                - Proposing
+                - Accepting
+                - Signing
+              default: Proposing
     description: Params defines the parameters for the module.
+  rarifyprotocol.rarimocore.rarimocore.Party:
+    type: object
+    properties:
+      pubKey:
+        type: string
+        title: PublicKey in hex format
+      address:
+        type: string
+        title: Server address connect to
+      account:
+        type: string
+        title: Rarimo core account
   rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationResponse:
     type: object
     properties:
@@ -54076,7 +54151,6 @@ definitions:
                       "@type": "type.googleapis.com/google.protobuf.Duration",
                       "value": "1.212s"
                     }
-              title: Corresponding to type details
             signed:
               type: boolean
             creator:
@@ -54306,7 +54380,6 @@ definitions:
                     "@type": "type.googleapis.com/google.protobuf.Duration",
                     "value": "1.212s"
                   }
-            title: Corresponding to type details
           signed:
             type: boolean
           creator:
@@ -54318,12 +54391,66 @@ definitions:
     type: object
     properties:
       params:
-        description: params holds all the parameters of this module.
         type: object
         properties:
           keyECDSA:
             type: string
+          threshold:
+            type: string
+            format: uint64
+          parties:
+            type: array
+            items:
+              type: object
+              properties:
+                pubKey:
+                  type: string
+                  title: PublicKey in hex format
+                address:
+                  type: string
+                  title: Server address connect to
+                account:
+                  type: string
+                  title: Rarimo core account
+          steps:
+            type: array
+            items:
+              type: object
+              properties:
+                duration:
+                  type: string
+                  format: uint64
+                  title: Duration in blocks
+                type:
+                  type: string
+                  enum:
+                    - Proposing
+                    - Accepting
+                    - Signing
+                  default: Proposing
+        description: Params defines the parameters for the module.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarifyprotocol.rarimocore.rarimocore.Step:
+    type: object
+    properties:
+      duration:
+        type: string
+        format: uint64
+        title: Duration in blocks
+      type:
+        type: string
+        enum:
+          - Proposing
+          - Accepting
+          - Signing
+        default: Proposing
+  rarifyprotocol.rarimocore.rarimocore.StepType:
+    type: string
+    enum:
+      - Proposing
+      - Accepting
+      - Signing
+    default: Proposing
   rarifyprotocol.rarimocore.rarimocore.op_type:
     type: string
     enum:
