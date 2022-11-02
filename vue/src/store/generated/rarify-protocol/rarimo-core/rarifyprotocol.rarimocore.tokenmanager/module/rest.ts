@@ -28,6 +28,7 @@ export interface TokenmanagerChainInfo {
 export interface TokenmanagerChainParams {
   contract?: string;
   types?: Record<string, number>;
+  type?: TokenmanagerNetworkType;
 }
 
 export interface TokenmanagerInfo {
@@ -51,6 +52,7 @@ export interface TokenmanagerItem {
   imageUri?: string;
   imageHash?: string;
   tokenType?: Tokenmanagertype;
+  wrapped?: boolean;
 }
 
 export type TokenmanagerMsgAddChainResponse = object;
@@ -58,6 +60,13 @@ export type TokenmanagerMsgAddChainResponse = object;
 export type TokenmanagerMsgCreateInfoResponse = object;
 
 export type TokenmanagerMsgDeleteInfoResponse = object;
+
+export enum TokenmanagerNetworkType {
+  EVM = "EVM",
+  Solana = "Solana",
+  Near = "Near",
+  Other = "Other",
+}
 
 /**
  * Params defines the parameters for the module.

@@ -5,9 +5,18 @@ import "tokenmanager/info.proto";
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
 
+
+enum NetworkType {
+  EVM = 0;
+  Solana = 1;
+  Near = 2;
+  Other = 3;
+}
+
 message ChainParams {
   string contract = 1;
   map<string, uint32> types = 2;
+  NetworkType type = 3;
 }
 
 // Params defines the parameters for the module.

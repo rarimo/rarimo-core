@@ -31,5 +31,6 @@ message Item {
   // Hash of the token image. Encoded into hex string. (optional)
   string imageHash = 11;
   type tokenType = 12;
+  bool wrapped = 13;
 }
 

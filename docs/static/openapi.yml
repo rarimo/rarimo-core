@@ -30463,16 +30463,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -31156,16 +31146,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -32017,6 +31997,8 @@ paths:
                         - NEAR_FT
                         - NEAR_NFT
                       default: NATIVE
+                    wrapped:
+                      type: boolean
               pagination:
                 type: object
                 properties:
@@ -32177,6 +32159,8 @@ paths:
                       - NEAR_FT
                       - NEAR_NFT
                     default: NATIVE
+                  wrapped:
+                    type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -32236,6 +32220,14 @@ paths:
                           additionalProperties:
                             type: integer
                             format: int64
+                        type:
+                          type: string
+                          enum:
+                            - EVM
+                            - Solana
+                            - Near
+                            - Other
+                          default: EVM
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -54361,6 +54353,14 @@ definitions:
         additionalProperties:
           type: integer
           format: int64
+      type:
+        type: string
+        enum:
+          - EVM
+          - Solana
+          - Near
+          - Other
+        default: EVM
   rarifyprotocol.rarimocore.tokenmanager.Info:
     type: object
     properties:
@@ -54423,12 +54423,22 @@ definitions:
           - NEAR_FT
           - NEAR_NFT
         default: NATIVE
+      wrapped:
+        type: boolean
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfoResponse:
     type: object
+  rarifyprotocol.rarimocore.tokenmanager.NetworkType:
+    type: string
+    enum:
+      - EVM
+      - Solana
+      - Near
+      - Other
+    default: EVM
   rarifyprotocol.rarimocore.tokenmanager.Params:
     type: object
     properties:
@@ -54444,6 +54454,14 @@ definitions:
               additionalProperties:
                 type: integer
                 format: int64
+            type:
+              type: string
+              enum:
+                - EVM
+                - Solana
+                - Near
+                - Other
+              default: EVM
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
@@ -54542,6 +54560,8 @@ definitions:
                 - NEAR_FT
                 - NEAR_NFT
               default: NATIVE
+            wrapped:
+              type: boolean
       pagination:
         type: object
         properties:
@@ -54635,6 +54655,8 @@ definitions:
               - NEAR_FT
               - NEAR_NFT
             default: NATIVE
+          wrapped:
+            type: boolean
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:
@@ -54654,6 +54676,14 @@ definitions:
                   additionalProperties:
                     type: integer
                     format: int64
+                type:
+                  type: string
+                  enum:
+                    - EVM
+                    - Solana
+                    - Near
+                    - Other
+                  default: EVM
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

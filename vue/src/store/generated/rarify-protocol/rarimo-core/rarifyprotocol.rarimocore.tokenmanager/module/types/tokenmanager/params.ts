@@ -3,9 +3,54 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
 
+export enum NetworkType {
+  EVM = 0,
+  Solana = 1,
+  Near = 2,
+  Other = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function networkTypeFromJSON(object: any): NetworkType {
+  switch (object) {
+    case 0:
+    case "EVM":
+      return NetworkType.EVM;
+    case 1:
+    case "Solana":
+      return NetworkType.Solana;
+    case 2:
+    case "Near":
+      return NetworkType.Near;
+    case 3:
+    case "Other":
+      return NetworkType.Other;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return NetworkType.UNRECOGNIZED;
+  }
+}
+
+export function networkTypeToJSON(object: NetworkType): string {
+  switch (object) {
+    case NetworkType.EVM:
+      return "EVM";
+    case NetworkType.Solana:
+      return "Solana";
+    case NetworkType.Near:
+      return "Near";
+    case NetworkType.Other:
+      return "Other";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export interface ChainParams {
   contract: string;
   types: { [key: string]: number };
+  type: NetworkType;
 }
 
 export interface ChainParams_TypesEntry {
@@ -23,7 +68,7 @@ export interface Params_NetworksEntry {
   value: ChainParams | undefined;
 }
 
-const baseChainParams: object = { contract: "" };
+const baseChainParams: object = { contract: "", type: 0 };
 
 export const ChainParams = {
   encode(message: ChainParams, writer: Writer = Writer.create()): Writer {
@@ -36,6 +81,9 @@ export const ChainParams = {
         writer.uint32(18).fork()
       ).ldelim();
     });
+    if (message.type !== 0) {
+      writer.uint32(24).int32(message.type);
+    }
     return writer;
   },
 
@@ -55,6 +103,9 @@ export const ChainParams = {
           if (entry2.value !== undefined) {
             message.types[entry2.key] = entry2.value;
           }
+          break;
+        case 3:
+          message.type = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -77,6 +128,11 @@ export const ChainParams = {
         message.types[key] = Number(value);
       });
     }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = networkTypeFromJSON(object.type);
+    } else {
+      message.type = 0;
+    }
     return message;
   },
 
@@ -89,6 +145,7 @@ export const ChainParams = {
         obj.types[k] = v;
       });
     }
+    message.type !== undefined && (obj.type = networkTypeToJSON(message.type));
     return obj;
   },
 
@@ -106,6 +163,11 @@ export const ChainParams = {
           message.types[key] = Number(value);
         }
       });
+    }
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
+    } else {
+      message.type = 0;
     }
     return message;
   },
