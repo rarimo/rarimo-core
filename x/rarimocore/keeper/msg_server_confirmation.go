@@ -64,12 +64,21 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 	for _, op := range operations {
 		k.applyOperation(ctx, op)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
+			sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+			sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
+		))
 	}
 
 	k.SetConfirmation(
 		ctx,
 		confirmation,
 	)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewConfirmation,
+		sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
+	))
 
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
