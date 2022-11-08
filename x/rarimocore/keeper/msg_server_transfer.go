@@ -18,6 +18,9 @@ import (
 
 func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if k.checkCreatorIsValidator(ctx, msg.Creator) {
+		defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+	}
 
 	origin := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).

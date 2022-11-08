@@ -401,6 +401,7 @@ func New(
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
 		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
+		&app.StakingKeeper,
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -410,6 +411,7 @@ func New(
 		keys[rarimocoremoduletypes.MemStoreKey],
 		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
+		&app.StakingKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 

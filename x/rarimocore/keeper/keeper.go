@@ -3,6 +3,7 @@ package keeper
 import (
 	"fmt"
 
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/tendermint/tendermint/libs/log"
 	tmkeeper "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/keeper"
 
@@ -19,6 +20,7 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 		tm         *tmkeeper.Keeper
+		staking    *stakingkeeper.Keeper
 	}
 )
 
@@ -28,6 +30,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 	tmkeeper *tmkeeper.Keeper,
+	staking *stakingkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -40,6 +43,7 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 		tm:         tmkeeper,
+		staking:    staking,
 	}
 }
 

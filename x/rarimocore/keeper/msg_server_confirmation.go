@@ -15,6 +15,7 @@ import (
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
 	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
 		return nil, err

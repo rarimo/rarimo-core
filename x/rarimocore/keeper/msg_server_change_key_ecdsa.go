@@ -12,6 +12,11 @@ import (
 
 func (k msgServer) CreateChangeKeyECDSA(goCtx context.Context, msg *types.MsgCreateChangeKeyECDSA) (*types.MsgCreateChangeKeyECDSAResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+
+	if !k.checkCreatorIsValidator(ctx, msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only validators can submit that transaction")
+	}
 
 	var changeOp = types.ChangeKey{
 		NewKey:    msg.NewKey,
