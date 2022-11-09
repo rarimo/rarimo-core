@@ -49,8 +49,8 @@ type TransferDataBuilder struct {
 	symbol    string
 	uri       string
 	imageUri  string
-	imageHash string
-	decimals  uint8
+	imageHash []byte
+	decimals  []byte
 }
 
 func NewTransferDataBuilder() *TransferDataBuilder {
@@ -66,13 +66,13 @@ func (b *TransferDataBuilder) Build() *TransferData {
 		TargetSymbol:   b.symbol,
 		TargetURI:      b.uri,
 		ImageURI:       b.imageUri,
-		ImageHash:      crypto.TryHexDecode(b.imageHash),
-		TargetDecimals: decimalsBytes(b.decimals),
+		ImageHash:      b.imageHash,
+		TargetDecimals: b.decimals,
 	}
 }
 
 func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
-	b.address = to32Bytes(crypto.TryHexDecode(addr))
+	b.address = crypto.TryHexDecode(addr)
 	return b
 }
 
@@ -82,7 +82,7 @@ func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
 }
 
 func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
-	b.amount = amountBytes(amount)
+	b.amount = to32Bytes(amountBytes(amount))
 	return b
 }
 
@@ -107,11 +107,11 @@ func (b *TransferDataBuilder) SetImageURI(uri string) *TransferDataBuilder {
 }
 
 func (b *TransferDataBuilder) SetImageHash(hash string) *TransferDataBuilder {
-	b.imageHash = hash
+	b.imageHash = crypto.TryHexDecode(hash)
 	return b
 }
 
 func (b *TransferDataBuilder) SetDecimals(d uint8) *TransferDataBuilder {
-	b.decimals = d
+	b.decimals = []byte{d}
 	return b
 }

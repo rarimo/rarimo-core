@@ -30463,16 +30463,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -31155,16 +31145,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -32048,6 +32028,8 @@ paths:
                         - NEAR_FT
                         - NEAR_NFT
                       default: NATIVE
+                    wrapped:
+                      type: boolean
               pagination:
                 type: object
                 properties:
@@ -32208,6 +32190,8 @@ paths:
                       - NEAR_FT
                       - NEAR_NFT
                     default: NATIVE
+                  wrapped:
+                    type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -32241,6 +32225,93 @@ paths:
           type: string
       tags:
         - Query
+  '/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
+    get:
+      summary: Queries a Item by chain.
+      operationId: RarifyprotocolRarimocoreTokenmanagerItemByChain
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  tokenAddress:
+                    type: string
+                    title: hex-encoded
+                  tokenId:
+                    type: string
+                    title: hex-encoded
+                  chain:
+                    type: string
+                  index:
+                    type: string
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  uri:
+                    type: string
+                  decimals:
+                    type: integer
+                    format: int64
+                  seed:
+                    type: string
+                    title: >-
+                      Seed for deriving address for Solana networks. Encoded
+                      into hex string. (optional)
+                  imageUri:
+                    type: string
+                  imageHash:
+                    type: string
+                    title: >-
+                      Hash of the token image. Encoded into hex string.
+                      (optional)
+                  tokenType:
+                    type: string
+                    enum:
+                      - NATIVE
+                      - ERC20
+                      - ERC721
+                      - ERC1155
+                      - METAPLEX_NFT
+                      - METAPLEX_FT
+                      - NEAR_FT
+                      - NEAR_NFT
+                    default: NATIVE
+                  wrapped:
+                    type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: infoIndex
+          in: path
+          required: true
+          type: string
+        - name: chain
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /rarify-protocol/rarimo-core/tokenmanager/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -32267,6 +32338,14 @@ paths:
                           additionalProperties:
                             type: integer
                             format: int64
+                        type:
+                          type: string
+                          enum:
+                            - EVM
+                            - Solana
+                            - Near
+                            - Other
+                          default: EVM
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -54488,6 +54567,14 @@ definitions:
         additionalProperties:
           type: integer
           format: int64
+      type:
+        type: string
+        enum:
+          - EVM
+          - Solana
+          - Near
+          - Other
+        default: EVM
   rarifyprotocol.rarimocore.tokenmanager.Info:
     type: object
     properties:
@@ -54550,12 +54637,22 @@ definitions:
           - NEAR_FT
           - NEAR_NFT
         default: NATIVE
+      wrapped:
+        type: boolean
   rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
     type: object
   rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfoResponse:
     type: object
+  rarifyprotocol.rarimocore.tokenmanager.NetworkType:
+    type: string
+    enum:
+      - EVM
+      - Solana
+      - Near
+      - Other
+    default: EVM
   rarifyprotocol.rarimocore.tokenmanager.Params:
     type: object
     properties:
@@ -54571,6 +54668,14 @@ definitions:
               additionalProperties:
                 type: integer
                 format: int64
+            type:
+              type: string
+              enum:
+                - EVM
+                - Solana
+                - Near
+                - Other
+              default: EVM
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
@@ -54669,6 +54774,8 @@ definitions:
                 - NEAR_FT
                 - NEAR_NFT
               default: NATIVE
+            wrapped:
+              type: boolean
       pagination:
         type: object
         properties:
@@ -54715,6 +54822,55 @@ definitions:
                   title: hex-encoded
           creator:
             type: string
+  rarifyprotocol.rarimocore.tokenmanager.QueryGetItemByChainResponse:
+    type: object
+    properties:
+      item:
+        type: object
+        properties:
+          tokenAddress:
+            type: string
+            title: hex-encoded
+          tokenId:
+            type: string
+            title: hex-encoded
+          chain:
+            type: string
+          index:
+            type: string
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
+            type: string
+          decimals:
+            type: integer
+            format: int64
+          seed:
+            type: string
+            title: >-
+              Seed for deriving address for Solana networks. Encoded into hex
+              string. (optional)
+          imageUri:
+            type: string
+          imageHash:
+            type: string
+            title: Hash of the token image. Encoded into hex string. (optional)
+          tokenType:
+            type: string
+            enum:
+              - NATIVE
+              - ERC20
+              - ERC721
+              - ERC1155
+              - METAPLEX_NFT
+              - METAPLEX_FT
+              - NEAR_FT
+              - NEAR_NFT
+            default: NATIVE
+          wrapped:
+            type: boolean
   rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
     type: object
     properties:
@@ -54762,6 +54918,8 @@ definitions:
               - NEAR_FT
               - NEAR_NFT
             default: NATIVE
+          wrapped:
+            type: boolean
   rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:
@@ -54781,6 +54939,14 @@ definitions:
                   additionalProperties:
                     type: integer
                     format: int64
+                type:
+                  type: string
+                  enum:
+                    - EVM
+                    - Solana
+                    - Near
+                    - Other
+                  default: EVM
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

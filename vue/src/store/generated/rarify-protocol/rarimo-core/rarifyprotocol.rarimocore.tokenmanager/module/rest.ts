@@ -28,6 +28,7 @@ export interface TokenmanagerChainInfo {
 export interface TokenmanagerChainParams {
   contract?: string;
   types?: Record<string, number>;
+  type?: TokenmanagerNetworkType;
 }
 
 export interface TokenmanagerInfo {
@@ -51,6 +52,7 @@ export interface TokenmanagerItem {
   imageUri?: string;
   imageHash?: string;
   tokenType?: Tokenmanagertype;
+  wrapped?: boolean;
 }
 
 export type TokenmanagerMsgAddChainResponse = object;
@@ -58,6 +60,13 @@ export type TokenmanagerMsgAddChainResponse = object;
 export type TokenmanagerMsgCreateInfoResponse = object;
 
 export type TokenmanagerMsgDeleteInfoResponse = object;
+
+export enum TokenmanagerNetworkType {
+  EVM = "EVM",
+  Solana = "Solana",
+  Near = "Near",
+  Other = "Other",
+}
 
 /**
  * Params defines the parameters for the module.
@@ -98,6 +107,10 @@ export interface TokenmanagerQueryAllItemResponse {
 
 export interface TokenmanagerQueryGetInfoResponse {
   info?: TokenmanagerInfo;
+}
+
+export interface TokenmanagerQueryGetItemByChainResponse {
+  item?: TokenmanagerItem;
 }
 
 export interface TokenmanagerQueryGetItemResponse {
@@ -463,6 +476,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/rarify-protocol/rarimo-core/tokenmanager/item/${chain}`,
       method: "GET",
       query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryItemByChain
+   * @summary Queries a Item by chain.
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}
+   */
+  queryItemByChain = (infoIndex: string, chain: string, params: RequestParams = {}) =>
+    this.request<TokenmanagerQueryGetItemByChainResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${infoIndex}/${chain}`,
+      method: "GET",
       format: "json",
       ...params,
     });

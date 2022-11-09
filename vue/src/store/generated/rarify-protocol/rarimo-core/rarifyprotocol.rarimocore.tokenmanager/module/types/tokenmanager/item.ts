@@ -88,6 +88,7 @@ export interface Item {
   /** Hash of the token image. Encoded into hex string. (optional) */
   imageHash: string;
   tokenType: type;
+  wrapped: boolean;
 }
 
 const baseItem: object = {
@@ -103,6 +104,7 @@ const baseItem: object = {
   imageUri: "",
   imageHash: "",
   tokenType: 0,
+  wrapped: false,
 };
 
 export const Item = {
@@ -142,6 +144,9 @@ export const Item = {
     }
     if (message.tokenType !== 0) {
       writer.uint32(96).int32(message.tokenType);
+    }
+    if (message.wrapped === true) {
+      writer.uint32(104).bool(message.wrapped);
     }
     return writer;
   },
@@ -188,6 +193,9 @@ export const Item = {
           break;
         case 12:
           message.tokenType = reader.int32() as any;
+          break;
+        case 13:
+          message.wrapped = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -259,6 +267,11 @@ export const Item = {
     } else {
       message.tokenType = 0;
     }
+    if (object.wrapped !== undefined && object.wrapped !== null) {
+      message.wrapped = Boolean(object.wrapped);
+    } else {
+      message.wrapped = false;
+    }
     return message;
   },
 
@@ -278,6 +291,7 @@ export const Item = {
     message.imageHash !== undefined && (obj.imageHash = message.imageHash);
     message.tokenType !== undefined &&
       (obj.tokenType = typeToJSON(message.tokenType));
+    message.wrapped !== undefined && (obj.wrapped = message.wrapped);
     return obj;
   },
 
@@ -342,6 +356,11 @@ export const Item = {
       message.tokenType = object.tokenType;
     } else {
       message.tokenType = 0;
+    }
+    if (object.wrapped !== undefined && object.wrapped !== null) {
+      message.wrapped = object.wrapped;
+    } else {
+      message.wrapped = false;
     }
     return message;
   },

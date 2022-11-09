@@ -15,7 +15,6 @@ import (
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
 	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
 		return nil, err
@@ -64,13 +63,18 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		k.applyOperation(ctx, op)
+		op.Signed = true
+		k.SetOperation(ctx, op)
 	}
 
 	k.SetConfirmation(
 		ctx,
 		confirmation,
 	)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewConfirmation,
+		sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
+	))
 
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
@@ -127,7 +131,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 }
 
 func (k *Keeper) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	item, ok := k.tm.GetItemByNetwork(ctx, transfer.TokenIndex, transfer.ToChain)
+	item, ok := k.tm.GetItemByChain(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
 	}

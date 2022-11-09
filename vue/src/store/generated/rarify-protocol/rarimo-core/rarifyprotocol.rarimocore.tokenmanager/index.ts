@@ -47,6 +47,7 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				Item: {},
+				ItemByChain: {},
 				ItemAll: {},
 				Info: {},
 				InfoAll: {},
@@ -96,6 +97,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Item[JSON.stringify(params)] ?? {}
+		},
+				getItemByChain: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ItemByChain[JSON.stringify(params)] ?? {}
 		},
 				getItemAll: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -202,6 +209,28 @@ export default {
 		 		
 		
 		
+		async QueryItemByChain({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryItemByChain( key.infoIndex,  key.chain)).data
+				
+					
+				commit('QUERY', { query: 'ItemByChain', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryItemByChain', payload: { options: { all }, params: {...key},query }})
+				return getters['getItemByChain']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryItemByChain API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
 		async QueryItemAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
 				const key = params ?? {};
@@ -271,6 +300,21 @@ export default {
 		},
 		
 		
+		async sendMsgCreateInfo({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateInfo(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateInfo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateInfo:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgDeleteInfo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -301,22 +345,20 @@ export default {
 				}
 			}
 		},
-		async sendMsgCreateInfo({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		async MsgCreateInfo({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgCreateInfo(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCreateInfo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateInfo:Send Could not broadcast Tx: '+ e.message)
+				} else{
+					throw new Error('TxClient:MsgCreateInfo:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		
 		async MsgDeleteInfo({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -340,19 +382,6 @@ export default {
 					throw new Error('TxClient:MsgAddChain:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgAddChain:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCreateInfo({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCreateInfo(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateInfo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateInfo:Create Could not create message: ' + e.message)
 				}
 			}
 		},
