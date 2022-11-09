@@ -32194,6 +32194,93 @@ paths:
           type: string
       tags:
         - Query
+  '/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
+    get:
+      summary: Queries a Item by chain.
+      operationId: RarifyprotocolRarimocoreTokenmanagerItemByChain
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  tokenAddress:
+                    type: string
+                    title: hex-encoded
+                  tokenId:
+                    type: string
+                    title: hex-encoded
+                  chain:
+                    type: string
+                  index:
+                    type: string
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  uri:
+                    type: string
+                  decimals:
+                    type: integer
+                    format: int64
+                  seed:
+                    type: string
+                    title: >-
+                      Seed for deriving address for Solana networks. Encoded
+                      into hex string. (optional)
+                  imageUri:
+                    type: string
+                  imageHash:
+                    type: string
+                    title: >-
+                      Hash of the token image. Encoded into hex string.
+                      (optional)
+                  tokenType:
+                    type: string
+                    enum:
+                      - NATIVE
+                      - ERC20
+                      - ERC721
+                      - ERC1155
+                      - METAPLEX_NFT
+                      - METAPLEX_FT
+                      - NEAR_FT
+                      - NEAR_NFT
+                    default: NATIVE
+                  wrapped:
+                    type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: infoIndex
+          in: path
+          required: true
+          type: string
+        - name: chain
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /rarify-protocol/rarimo-core/tokenmanager/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -54608,6 +54695,55 @@ definitions:
                   title: hex-encoded
           creator:
             type: string
+  rarifyprotocol.rarimocore.tokenmanager.QueryGetItemByChainResponse:
+    type: object
+    properties:
+      item:
+        type: object
+        properties:
+          tokenAddress:
+            type: string
+            title: hex-encoded
+          tokenId:
+            type: string
+            title: hex-encoded
+          chain:
+            type: string
+          index:
+            type: string
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
+            type: string
+          decimals:
+            type: integer
+            format: int64
+          seed:
+            type: string
+            title: >-
+              Seed for deriving address for Solana networks. Encoded into hex
+              string. (optional)
+          imageUri:
+            type: string
+          imageHash:
+            type: string
+            title: Hash of the token image. Encoded into hex string. (optional)
+          tokenType:
+            type: string
+            enum:
+              - NATIVE
+              - ERC20
+              - ERC721
+              - ERC1155
+              - METAPLEX_NFT
+              - METAPLEX_FT
+              - NEAR_FT
+              - NEAR_NFT
+            default: NATIVE
+          wrapped:
+            type: boolean
   rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
     type: object
     properties:

@@ -29,6 +29,15 @@ export interface QueryGetItemResponse {
   item: Item | undefined;
 }
 
+export interface QueryGetItemByChainRequest {
+  infoIndex: string;
+  chain: string;
+}
+
+export interface QueryGetItemByChainResponse {
+  item: Item | undefined;
+}
+
 export interface QueryAllItemRequest {
   pagination: PageRequest | undefined;
 }
@@ -299,6 +308,162 @@ export const QueryGetItemResponse = {
 
   fromPartial(object: DeepPartial<QueryGetItemResponse>): QueryGetItemResponse {
     const message = { ...baseQueryGetItemResponse } as QueryGetItemResponse;
+    if (object.item !== undefined && object.item !== null) {
+      message.item = Item.fromPartial(object.item);
+    } else {
+      message.item = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetItemByChainRequest: object = { infoIndex: "", chain: "" };
+
+export const QueryGetItemByChainRequest = {
+  encode(
+    message: QueryGetItemByChainRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.infoIndex !== "") {
+      writer.uint32(10).string(message.infoIndex);
+    }
+    if (message.chain !== "") {
+      writer.uint32(18).string(message.chain);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetItemByChainRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetItemByChainRequest,
+    } as QueryGetItemByChainRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.infoIndex = reader.string();
+          break;
+        case 2:
+          message.chain = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetItemByChainRequest {
+    const message = {
+      ...baseQueryGetItemByChainRequest,
+    } as QueryGetItemByChainRequest;
+    if (object.infoIndex !== undefined && object.infoIndex !== null) {
+      message.infoIndex = String(object.infoIndex);
+    } else {
+      message.infoIndex = "";
+    }
+    if (object.chain !== undefined && object.chain !== null) {
+      message.chain = String(object.chain);
+    } else {
+      message.chain = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetItemByChainRequest): unknown {
+    const obj: any = {};
+    message.infoIndex !== undefined && (obj.infoIndex = message.infoIndex);
+    message.chain !== undefined && (obj.chain = message.chain);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetItemByChainRequest>
+  ): QueryGetItemByChainRequest {
+    const message = {
+      ...baseQueryGetItemByChainRequest,
+    } as QueryGetItemByChainRequest;
+    if (object.infoIndex !== undefined && object.infoIndex !== null) {
+      message.infoIndex = object.infoIndex;
+    } else {
+      message.infoIndex = "";
+    }
+    if (object.chain !== undefined && object.chain !== null) {
+      message.chain = object.chain;
+    } else {
+      message.chain = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetItemByChainResponse: object = {};
+
+export const QueryGetItemByChainResponse = {
+  encode(
+    message: QueryGetItemByChainResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.item !== undefined) {
+      Item.encode(message.item, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetItemByChainResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetItemByChainResponse,
+    } as QueryGetItemByChainResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.item = Item.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetItemByChainResponse {
+    const message = {
+      ...baseQueryGetItemByChainResponse,
+    } as QueryGetItemByChainResponse;
+    if (object.item !== undefined && object.item !== null) {
+      message.item = Item.fromJSON(object.item);
+    } else {
+      message.item = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetItemByChainResponse): unknown {
+    const obj: any = {};
+    message.item !== undefined &&
+      (obj.item = message.item ? Item.toJSON(message.item) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetItemByChainResponse>
+  ): QueryGetItemByChainResponse {
+    const message = {
+      ...baseQueryGetItemByChainResponse,
+    } as QueryGetItemByChainResponse;
     if (object.item !== undefined && object.item !== null) {
       message.item = Item.fromPartial(object.item);
     } else {
@@ -729,6 +894,10 @@ export interface Query {
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a Item by index. */
   Item(request: QueryGetItemRequest): Promise<QueryGetItemResponse>;
+  /** Queries a Item by chain. */
+  ItemByChain(
+    request: QueryGetItemByChainRequest
+  ): Promise<QueryGetItemByChainResponse>;
   /** Queries a list of Item items. */
   ItemAll(request: QueryAllItemRequest): Promise<QueryAllItemResponse>;
   /** Queries a Info by index. */
@@ -761,6 +930,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetItemResponse.decode(new Reader(data))
+    );
+  }
+
+  ItemByChain(
+    request: QueryGetItemByChainRequest
+  ): Promise<QueryGetItemByChainResponse> {
+    const data = QueryGetItemByChainRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.tokenmanager.Query",
+      "ItemByChain",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetItemByChainResponse.decode(new Reader(data))
     );
   }
 

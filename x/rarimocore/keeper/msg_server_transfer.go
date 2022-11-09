@@ -50,7 +50,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "current token not found")
 	}
 
-	targetItem, ok := k.tm.GetItemByNetwork(ctx, currentItem.Index, depositInfo.TargetNetwork)
+	targetItem, ok := k.tm.GetItemByChain(ctx, currentItem.Index, depositInfo.TargetNetwork)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
 	}

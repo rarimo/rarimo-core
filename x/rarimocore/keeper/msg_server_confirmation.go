@@ -123,7 +123,7 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 }
 
 func (k *Keeper) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	item, ok := k.tm.GetItemByNetwork(ctx, transfer.TokenIndex, transfer.ToChain)
+	item, ok := k.tm.GetItemByChain(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
 	}

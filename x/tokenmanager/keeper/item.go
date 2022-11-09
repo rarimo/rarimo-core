@@ -40,7 +40,7 @@ func (k Keeper) GetItem(
 }
 
 // GetItem returns an item from its index
-func (k Keeper) GetItemByNetwork(
+func (k Keeper) GetItemByChain(
 	ctx sdk.Context,
 	infoIndex string,
 	chain string,

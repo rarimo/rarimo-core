@@ -109,6 +109,10 @@ export interface TokenmanagerQueryGetInfoResponse {
   info?: TokenmanagerInfo;
 }
 
+export interface TokenmanagerQueryGetItemByChainResponse {
+  item?: TokenmanagerItem;
+}
+
 export interface TokenmanagerQueryGetItemResponse {
   item?: TokenmanagerItem;
 }
@@ -472,6 +476,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/rarify-protocol/rarimo-core/tokenmanager/item/${chain}`,
       method: "GET",
       query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryItemByChain
+   * @summary Queries a Item by chain.
+   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}
+   */
+  queryItemByChain = (infoIndex: string, chain: string, params: RequestParams = {}) =>
+    this.request<TokenmanagerQueryGetItemByChainResponse, RpcStatus>({
+      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${infoIndex}/${chain}`,
+      method: "GET",
       format: "json",
       ...params,
     });

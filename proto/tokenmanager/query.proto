@@ -22,6 +22,11 @@ service Query {
     option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{chain}";
   }
 
+  // Queries a Item by chain.
+  rpc ItemByChain(QueryGetItemByChainRequest) returns (QueryGetItemByChainResponse) {
+    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}";
+  }
+
   // Queries a list of Item items.
   rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
     option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item";
@@ -57,6 +62,15 @@ message QueryGetItemRequest {
 }
 
 message QueryGetItemResponse {
+  Item item = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetItemByChainRequest {
+  string infoIndex = 1;
+  string chain = 2;
+}
+
+message QueryGetItemByChainResponse {
   Item item = 1 [(gogoproto.nullable) = false];
 }
 

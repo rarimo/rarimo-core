@@ -47,6 +47,7 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				Item: {},
+				ItemByChain: {},
 				ItemAll: {},
 				Info: {},
 				InfoAll: {},
@@ -96,6 +97,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Item[JSON.stringify(params)] ?? {}
+		},
+				getItemByChain: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ItemByChain[JSON.stringify(params)] ?? {}
 		},
 				getItemAll: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -192,6 +199,28 @@ export default {
 				return getters['getItem']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryItem API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryItemByChain({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryItemByChain( key.infoIndex,  key.chain)).data
+				
+					
+				commit('QUERY', { query: 'ItemByChain', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryItemByChain', payload: { options: { all }, params: {...key},query }})
+				return getters['getItemByChain']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryItemByChain API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
