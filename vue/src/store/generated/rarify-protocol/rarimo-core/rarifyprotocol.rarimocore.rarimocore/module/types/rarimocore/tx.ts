@@ -1,8 +1,6 @@
 /* eslint-disable */
 import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
-import { Reader, util, configure, Writer } from "protobufjs/minimal";
-import * as Long from "long";
-import { Party } from "../rarimocore/params";
+import { Reader, Writer } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -27,15 +25,20 @@ export interface MsgCreateConfirmation {
 
 export interface MsgCreateConfirmationResponse {}
 
-export interface MsgCreateChangeKeyECDSA {
+export interface MsgCreateRemovePartyOp {
   creator: string;
-  /** hex-encoded */
-  newKey: string;
-  parties: Party[];
-  threshold: number;
+  index: number;
 }
 
-export interface MsgCreateChangeKeyECDSAResponse {}
+export interface MsgCreateRemovePartyOpResponse {}
+
+export interface MsgActivateParty {
+  creator: string;
+  /** hex-encoded */
+  pubKey: string;
+}
+
+export interface MsgActivatePartyResponse {}
 
 const baseMsgCreateTransferOp: object = {
   creator: "",
@@ -398,39 +401,26 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangeKeyECDSA: object = {
-  creator: "",
-  newKey: "",
-  threshold: 0,
-};
+const baseMsgCreateRemovePartyOp: object = { creator: "", index: 0 };
 
-export const MsgCreateChangeKeyECDSA = {
+export const MsgCreateRemovePartyOp = {
   encode(
-    message: MsgCreateChangeKeyECDSA,
+    message: MsgCreateRemovePartyOp,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.newKey !== "") {
-      writer.uint32(18).string(message.newKey);
-    }
-    for (const v of message.parties) {
-      Party.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-    if (message.threshold !== 0) {
-      writer.uint32(32).uint64(message.threshold);
+    if (message.index !== 0) {
+      writer.uint32(16).uint32(message.index);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgCreateChangeKeyECDSA {
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateRemovePartyOp {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseMsgCreateChangeKeyECDSA,
-    } as MsgCreateChangeKeyECDSA;
-    message.parties = [];
+    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -438,13 +428,7 @@ export const MsgCreateChangeKeyECDSA = {
           message.creator = reader.string();
           break;
         case 2:
-          message.newKey = reader.string();
-          break;
-        case 3:
-          message.parties.push(Party.decode(reader, reader.uint32()));
-          break;
-        case 4:
-          message.threshold = longToNumber(reader.uint64() as Long);
+          message.index = reader.uint32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -454,85 +438,51 @@ export const MsgCreateChangeKeyECDSA = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreateChangeKeyECDSA {
-    const message = {
-      ...baseMsgCreateChangeKeyECDSA,
-    } as MsgCreateChangeKeyECDSA;
-    message.parties = [];
+  fromJSON(object: any): MsgCreateRemovePartyOp {
+    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
     }
-    if (object.newKey !== undefined && object.newKey !== null) {
-      message.newKey = String(object.newKey);
+    if (object.index !== undefined && object.index !== null) {
+      message.index = Number(object.index);
     } else {
-      message.newKey = "";
-    }
-    if (object.parties !== undefined && object.parties !== null) {
-      for (const e of object.parties) {
-        message.parties.push(Party.fromJSON(e));
-      }
-    }
-    if (object.threshold !== undefined && object.threshold !== null) {
-      message.threshold = Number(object.threshold);
-    } else {
-      message.threshold = 0;
+      message.index = 0;
     }
     return message;
   },
 
-  toJSON(message: MsgCreateChangeKeyECDSA): unknown {
+  toJSON(message: MsgCreateRemovePartyOp): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.newKey !== undefined && (obj.newKey = message.newKey);
-    if (message.parties) {
-      obj.parties = message.parties.map((e) =>
-        e ? Party.toJSON(e) : undefined
-      );
-    } else {
-      obj.parties = [];
-    }
-    message.threshold !== undefined && (obj.threshold = message.threshold);
+    message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<MsgCreateChangeKeyECDSA>
-  ): MsgCreateChangeKeyECDSA {
-    const message = {
-      ...baseMsgCreateChangeKeyECDSA,
-    } as MsgCreateChangeKeyECDSA;
-    message.parties = [];
+    object: DeepPartial<MsgCreateRemovePartyOp>
+  ): MsgCreateRemovePartyOp {
+    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
       message.creator = "";
     }
-    if (object.newKey !== undefined && object.newKey !== null) {
-      message.newKey = object.newKey;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
     } else {
-      message.newKey = "";
-    }
-    if (object.parties !== undefined && object.parties !== null) {
-      for (const e of object.parties) {
-        message.parties.push(Party.fromPartial(e));
-      }
-    }
-    if (object.threshold !== undefined && object.threshold !== null) {
-      message.threshold = object.threshold;
-    } else {
-      message.threshold = 0;
+      message.index = 0;
     }
     return message;
   },
 };
 
-const baseMsgCreateChangeKeyECDSAResponse: object = {};
+const baseMsgCreateRemovePartyOpResponse: object = {};
 
-export const MsgCreateChangeKeyECDSAResponse = {
+export const MsgCreateRemovePartyOpResponse = {
   encode(
-    _: MsgCreateChangeKeyECDSAResponse,
+    _: MsgCreateRemovePartyOpResponse,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -541,12 +491,12 @@ export const MsgCreateChangeKeyECDSAResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): MsgCreateChangeKeyECDSAResponse {
+  ): MsgCreateRemovePartyOpResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgCreateChangeKeyECDSAResponse,
-    } as MsgCreateChangeKeyECDSAResponse;
+      ...baseMsgCreateRemovePartyOpResponse,
+    } as MsgCreateRemovePartyOpResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -558,24 +508,148 @@ export const MsgCreateChangeKeyECDSAResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateChangeKeyECDSAResponse {
+  fromJSON(_: any): MsgCreateRemovePartyOpResponse {
     const message = {
-      ...baseMsgCreateChangeKeyECDSAResponse,
-    } as MsgCreateChangeKeyECDSAResponse;
+      ...baseMsgCreateRemovePartyOpResponse,
+    } as MsgCreateRemovePartyOpResponse;
     return message;
   },
 
-  toJSON(_: MsgCreateChangeKeyECDSAResponse): unknown {
+  toJSON(_: MsgCreateRemovePartyOpResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateChangeKeyECDSAResponse>
-  ): MsgCreateChangeKeyECDSAResponse {
+    _: DeepPartial<MsgCreateRemovePartyOpResponse>
+  ): MsgCreateRemovePartyOpResponse {
     const message = {
-      ...baseMsgCreateChangeKeyECDSAResponse,
-    } as MsgCreateChangeKeyECDSAResponse;
+      ...baseMsgCreateRemovePartyOpResponse,
+    } as MsgCreateRemovePartyOpResponse;
+    return message;
+  },
+};
+
+const baseMsgActivateParty: object = { creator: "", pubKey: "" };
+
+export const MsgActivateParty = {
+  encode(message: MsgActivateParty, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.pubKey !== "") {
+      writer.uint32(18).string(message.pubKey);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgActivateParty {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgActivateParty } as MsgActivateParty;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.pubKey = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgActivateParty {
+    const message = { ...baseMsgActivateParty } as MsgActivateParty;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.pubKey !== undefined && object.pubKey !== null) {
+      message.pubKey = String(object.pubKey);
+    } else {
+      message.pubKey = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgActivateParty): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.pubKey !== undefined && (obj.pubKey = message.pubKey);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgActivateParty>): MsgActivateParty {
+    const message = { ...baseMsgActivateParty } as MsgActivateParty;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.pubKey !== undefined && object.pubKey !== null) {
+      message.pubKey = object.pubKey;
+    } else {
+      message.pubKey = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgActivatePartyResponse: object = {};
+
+export const MsgActivatePartyResponse = {
+  encode(
+    _: MsgActivatePartyResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgActivatePartyResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgActivatePartyResponse,
+    } as MsgActivatePartyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgActivatePartyResponse {
+    const message = {
+      ...baseMsgActivatePartyResponse,
+    } as MsgActivatePartyResponse;
+    return message;
+  },
+
+  toJSON(_: MsgActivatePartyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgActivatePartyResponse>
+  ): MsgActivatePartyResponse {
+    const message = {
+      ...baseMsgActivatePartyResponse,
+    } as MsgActivatePartyResponse;
     return message;
   },
 };
@@ -585,13 +659,14 @@ export interface Msg {
   CreateTransferOperation(
     request: MsgCreateTransferOp
   ): Promise<MsgCreateTransferOpResponse>;
+  CreateRemovePartyOperation(
+    request: MsgCreateRemovePartyOp
+  ): Promise<MsgCreateRemovePartyOpResponse>;
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
-  CreateChangeKeyECDSA(
-    request: MsgCreateChangeKeyECDSA
-  ): Promise<MsgCreateChangeKeyECDSAResponse>;
+  ActivateParty(request: MsgActivateParty): Promise<MsgActivatePartyResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -613,6 +688,20 @@ export class MsgClientImpl implements Msg {
     );
   }
 
+  CreateRemovePartyOperation(
+    request: MsgCreateRemovePartyOp
+  ): Promise<MsgCreateRemovePartyOpResponse> {
+    const data = MsgCreateRemovePartyOp.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "CreateRemovePartyOperation",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateRemovePartyOpResponse.decode(new Reader(data))
+    );
+  }
+
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse> {
@@ -627,17 +716,15 @@ export class MsgClientImpl implements Msg {
     );
   }
 
-  CreateChangeKeyECDSA(
-    request: MsgCreateChangeKeyECDSA
-  ): Promise<MsgCreateChangeKeyECDSAResponse> {
-    const data = MsgCreateChangeKeyECDSA.encode(request).finish();
+  ActivateParty(request: MsgActivateParty): Promise<MsgActivatePartyResponse> {
+    const data = MsgActivateParty.encode(request).finish();
     const promise = this.rpc.request(
       "rarifyprotocol.rarimocore.rarimocore.Msg",
-      "CreateChangeKeyECDSA",
+      "ActivateParty",
       data
     );
     return promise.then((data) =>
-      MsgCreateChangeKeyECDSAResponse.decode(new Reader(data))
+      MsgActivatePartyResponse.decode(new Reader(data))
     );
   }
 }
@@ -650,16 +737,6 @@ interface Rpc {
   ): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
   ? T
@@ -670,15 +747,3 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-if (util.Long !== Long) {
-  util.Long = Long as any;
-  configure();
-}

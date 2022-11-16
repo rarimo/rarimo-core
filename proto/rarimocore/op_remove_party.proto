@@ -5,9 +5,8 @@ import "rarimocore/params.proto";
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
-message ChangeKey {
-  string newKey = 1;
-  repeated Party parties = 2;
-  uint64 threshold = 3;
+message RemoveParty {
+  repeated Party currentSet = 1;
+  uint32 partyIndex = 2;
 }
 

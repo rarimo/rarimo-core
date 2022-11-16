@@ -11,8 +11,10 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateTransferOp{}, "rarimocore/CreateTransfer", nil)
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
-	cdc.RegisterConcrete(&MsgCreateChangeKeyECDSA{}, "rarimocore/CreateChangeKeyECDSA", nil)
+	cdc.RegisterConcrete(&MsgCreateRemovePartyOp{}, "rarimocore/CreateRemoveParty", nil)
+	cdc.RegisterConcrete(&MsgActivateParty{}, "rarimocore/ActivateParty", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
+	cdc.RegisterConcrete(&RemoveParty{}, "rarimocore/RemoveParty", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -24,13 +26,22 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateConfirmation{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateChangeKeyECDSA{},
+		&MsgCreateRemovePartyOp{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgActivateParty{},
 	)
 
 	registry.RegisterInterface(
 		"rarifyprotocol.rarimocore.rarimocore.Transfer",
 		(*proto.Message)(nil),
 		&Transfer{},
+	)
+
+	registry.RegisterInterface(
+		"rarifyprotocol.rarimocore.rarimocore.RemoveParty",
+		(*proto.Message)(nil),
+		&RemoveParty{},
 	)
 
 	// this line is used by starport scaffolding # 3

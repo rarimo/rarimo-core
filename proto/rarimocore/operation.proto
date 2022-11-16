@@ -7,7 +7,7 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
 enum op_type {
   TRANSFER = 0;
-  CHANGE_KEY = 1;
+  REMOVE_PARTY = 1;
 }
 
 message Operation {

@@ -32,10 +32,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateConfirmation int = 100
 
-	opWeightMsgCreateChangeKeyECDSA = "op_weight_msg_change_key_ecdsa"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateChangeKeyECDSA int = 100
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -110,17 +106,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateConfirmation,
 		rarimocoresimulation.SimulateMsgCreateConfirmation(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgCreateChangeKeyECDSA int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateChangeKeyECDSA, &weightMsgCreateChangeKeyECDSA, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateChangeKeyECDSA = defaultWeightMsgCreateChangeKeyECDSA
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateChangeKeyECDSA,
-		rarimocoresimulation.SimulateMsgCreateChangeKeyECDSA(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

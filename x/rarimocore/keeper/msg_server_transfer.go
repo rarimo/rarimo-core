@@ -119,7 +119,7 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 	return value.String()
 }
 
-func (k *Keeper) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
+func (k msgServer) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
 	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)

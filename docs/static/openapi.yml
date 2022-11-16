@@ -30463,16 +30463,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -30715,7 +30705,7 @@ paths:
                       type: string
                       enum:
                         - TRANSFER
-                        - CHANGE_KEY
+                        - REMOVE_PARTY
                       default: TRANSFER
                     details:
                       type: object
@@ -30892,6 +30882,7 @@ paths:
                               "@type": "type.googleapis.com/google.protobuf.Duration",
                               "value": "1.212s"
                             }
+                      title: Corresponding to type details
                     signed:
                       type: boolean
                     creator:
@@ -31158,16 +31149,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/operation/{index}':
@@ -31190,7 +31171,7 @@ paths:
                     type: string
                     enum:
                       - TRANSFER
-                      - CHANGE_KEY
+                      - REMOVE_PARTY
                     default: TRANSFER
                   details:
                     type: object
@@ -31365,6 +31346,7 @@ paths:
                             "@type": "type.googleapis.com/google.protobuf.Duration",
                             "value": "1.212s"
                           }
+                    title: Corresponding to type details
                   signed:
                     type: boolean
                   creator:
@@ -31575,6 +31557,7 @@ paths:
             type: object
             properties:
               params:
+                description: params holds all the parameters of this module.
                 type: object
                 properties:
                   keyECDSA:
@@ -31596,6 +31579,8 @@ paths:
                         account:
                           type: string
                           title: Rarimo core account
+                        active:
+                          type: boolean
                   steps:
                     type: array
                     items:
@@ -31612,7 +31597,6 @@ paths:
                             - Accepting
                             - Signing
                           default: Proposing
-                description: Params defines the parameters for the module.
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -53787,9 +53771,11 @@ definitions:
         title: hex-encoded
       creator:
         type: string
-  rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
+  rarifyprotocol.rarimocore.rarimocore.MsgActivatePartyResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:
+    type: object
+  rarifyprotocol.rarimocore.rarimocore.MsgCreateRemovePartyOpResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOpResponse:
     type: object
@@ -53803,7 +53789,7 @@ definitions:
         type: string
         enum:
           - TRANSFER
-          - CHANGE_KEY
+          - REMOVE_PARTY
         default: TRANSFER
       details:
         type: object
@@ -53962,6 +53948,7 @@ definitions:
                 "@type": "type.googleapis.com/google.protobuf.Duration",
                 "value": "1.212s"
               }
+        title: Corresponding to type details
       signed:
         type: boolean
       creator:
@@ -53991,6 +53978,8 @@ definitions:
             account:
               type: string
               title: Rarimo core account
+            active:
+              type: boolean
       steps:
         type: array
         items:
@@ -54020,6 +54009,8 @@ definitions:
       account:
         type: string
         title: Rarimo core account
+      active:
+        type: boolean
   rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationResponse:
     type: object
     properties:
@@ -54081,7 +54072,7 @@ definitions:
               type: string
               enum:
                 - TRANSFER
-                - CHANGE_KEY
+                - REMOVE_PARTY
               default: TRANSFER
             details:
               type: object
@@ -54250,6 +54241,7 @@ definitions:
                       "@type": "type.googleapis.com/google.protobuf.Duration",
                       "value": "1.212s"
                     }
+              title: Corresponding to type details
             signed:
               type: boolean
             creator:
@@ -54314,7 +54306,7 @@ definitions:
             type: string
             enum:
               - TRANSFER
-              - CHANGE_KEY
+              - REMOVE_PARTY
             default: TRANSFER
           details:
             type: object
@@ -54479,6 +54471,7 @@ definitions:
                     "@type": "type.googleapis.com/google.protobuf.Duration",
                     "value": "1.212s"
                   }
+            title: Corresponding to type details
           signed:
             type: boolean
           creator:
@@ -54490,6 +54483,7 @@ definitions:
     type: object
     properties:
       params:
+        description: params holds all the parameters of this module.
         type: object
         properties:
           keyECDSA:
@@ -54511,6 +54505,8 @@ definitions:
                 account:
                   type: string
                   title: Rarimo core account
+                active:
+                  type: boolean
           steps:
             type: array
             items:
@@ -54527,7 +54523,6 @@ definitions:
                     - Accepting
                     - Signing
                   default: Proposing
-        description: Params defines the parameters for the module.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarifyprotocol.rarimocore.rarimocore.Step:
     type: object
@@ -54554,7 +54549,7 @@ definitions:
     type: string
     enum:
       - TRANSFER
-      - CHANGE_KEY
+      - REMOVE_PARTY
     default: TRANSFER
   rarifyprotocol.rarimocore.tokenmanager.type:
     type: string

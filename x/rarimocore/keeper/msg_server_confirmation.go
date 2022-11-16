@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 
@@ -20,6 +21,10 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, err
 	}
 
+	if err := k.checkAllPartiesActive(ctx); err != nil {
+		return nil, err
+	}
+
 	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
@@ -32,22 +37,20 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	contents := make([]merkle.Content, 0, len(msg.Indexes))
 
 	for _, index := range msg.Indexes {
-		operation, ok := k.GetOperation(ctx, index)
+		op, ok := k.GetOperation(ctx, index)
 		if !ok {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", index))
 		}
 
-		if operation.Signed {
+		if op.Signed {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", index))
 		}
+		operations = append(operations, op)
 
-		operations = append(operations, operation)
-
-		content, err := k.getContent(ctx, operation)
+		content, err := k.getContent(ctx, op)
 		if err != nil {
 			return nil, err
 		}
-
 		contents = append(contents, content)
 	}
 
@@ -63,8 +66,10 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		op.Signed = true
-		k.SetOperation(ctx, op)
+		err := k.applyOperation(ctx, op)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	k.SetConfirmation(
@@ -79,37 +84,61 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *Keeper) checkSenderIsAParty(ctx sdk.Context, sender string) error {
-	for _, party := range k.GetParams(ctx).Parties {
-		if party.Account == sender {
-			return nil
+func (k *msgServer) checkAllPartiesActive(ctx sdk.Context) error {
+	for _, p := range k.GetParams(ctx).Parties {
+		if !p.Active {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "all parties should be active")
 		}
 	}
-
-	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a party")
+	return nil
 }
 
-func (k *Keeper) applyOperation(ctx sdk.Context, op types.Operation) {
+func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		// Nothing to do
-	case types.OpType_CHANGE_KEY:
-		// Change params
-		change, _ := pkg.GetChangeKey(op)
-		params := k.GetParams(ctx)
-		params.KeyECDSA = change.NewKey
-		params.Parties = change.Parties
-		params.Threshold = change.Threshold
-		k.SetParams(ctx, params)
+	case types.OpType_REMOVE_PARTY:
+		remove, _ := pkg.GetRemoveParty(op)
+		if err := k.applyRemoveParty(ctx, remove); err != nil {
+			return err
+		}
 	default:
 		// Nothing to do
 	}
 
 	op.Signed = true
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
+		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+	))
+
 	k.SetOperation(ctx, op)
+	return nil
 }
 
-func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
+func (k msgServer) applyRemoveParty(ctx sdk.Context, remove *types.RemoveParty) error {
+	params := k.GetParams(ctx)
+
+	if !bytes.Equal(operation.GetPartiesHash(params.Parties), operation.GetPartiesHash(remove.CurrentSet)) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid set for remove operation")
+	}
+
+	set := make([]*types.Party, 0, len(params.Parties)-1)
+	for i, p := range params.Parties {
+		if uint32(i) == remove.PartyIndex {
+			continue
+		}
+
+		p.Active = false
+		set = append(set, p)
+	}
+
+	params.Parties = set
+	k.SetParams(ctx, params)
+	return nil
+}
+
+func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, err := pkg.GetTransfer(op)
@@ -118,19 +147,19 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 		}
 
 		return k.getTransferOperationContent(ctx, transfer)
-	case types.OpType_CHANGE_KEY:
-		change, err := pkg.GetChangeKey(op)
+	case types.OpType_REMOVE_PARTY:
+		change, err := pkg.GetRemoveParty(op)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 
-		return pkg.GetChangeKeyContent(change)
+		return pkg.GetRemovePartyContent(change)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
 }
 
-func (k *Keeper) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
+func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
 	item, ok := k.tm.GetItemByChain(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")

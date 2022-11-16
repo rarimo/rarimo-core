@@ -10,6 +10,7 @@ message Party {
   string address = 2;
   // Rarimo core account
   string account = 3;
+  bool active = 4;
 }
 
 enum StepType {
