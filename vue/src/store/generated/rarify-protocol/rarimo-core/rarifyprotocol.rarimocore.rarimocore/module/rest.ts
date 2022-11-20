@@ -131,13 +131,17 @@ export interface RarimocoreConfirmation {
   indexes?: string[];
   signatureECDSA?: string;
   creator?: string;
+  meta?: RarimocoreConfirmationMeta;
 }
 
-export type RarimocoreMsgActivatePartyResponse = object;
+export interface RarimocoreConfirmationMeta {
+  newKeyECDSA?: string;
+  partyKey?: string[];
+}
+
+export type RarimocoreMsgCreateChangePartiesOpResponse = object;
 
 export type RarimocoreMsgCreateConfirmationResponse = object;
-
-export type RarimocoreMsgCreateRemovePartyOpResponse = object;
 
 export type RarimocoreMsgCreateTransferOpResponse = object;
 
@@ -254,7 +258,6 @@ export interface RarimocoreParty {
   pubKey?: string;
   address?: string;
   account?: string;
-  active?: boolean;
 }
 
 export interface RarimocoreQueryAllConfirmationResponse {
@@ -317,7 +320,7 @@ export enum RarimocoreStepType {
 
 export enum RarimocoreopType {
   TRANSFER = "TRANSFER",
-  REMOVE_PARTY = "REMOVE_PARTY",
+  CHANGE_PARTIES = "CHANGE_PARTIES",
 }
 
 export interface RpcStatus {

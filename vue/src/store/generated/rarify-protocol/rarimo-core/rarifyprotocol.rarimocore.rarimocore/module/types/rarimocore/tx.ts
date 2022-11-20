@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
 import { Reader, Writer } from "protobufjs/minimal";
+import { ConfirmationMeta } from "../rarimocore/confirmation";
+import { Party } from "../rarimocore/params";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -21,24 +23,17 @@ export interface MsgCreateConfirmation {
   indexes: string[];
   /** hex-encoded */
   signatureECDSA: string;
+  meta: ConfirmationMeta | undefined;
 }
 
 export interface MsgCreateConfirmationResponse {}
 
-export interface MsgCreateRemovePartyOp {
+export interface MsgCreateChangePartiesOp {
   creator: string;
-  index: number;
+  newSet: Party[];
 }
 
-export interface MsgCreateRemovePartyOpResponse {}
-
-export interface MsgActivateParty {
-  creator: string;
-  /** hex-encoded */
-  pubKey: string;
-}
-
-export interface MsgActivatePartyResponse {}
+export interface MsgCreateChangePartiesOpResponse {}
 
 const baseMsgCreateTransferOp: object = {
   creator: "",
@@ -249,6 +244,9 @@ export const MsgCreateConfirmation = {
     if (message.signatureECDSA !== "") {
       writer.uint32(34).string(message.signatureECDSA);
     }
+    if (message.meta !== undefined) {
+      ConfirmationMeta.encode(message.meta, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -271,6 +269,9 @@ export const MsgCreateConfirmation = {
           break;
         case 4:
           message.signatureECDSA = reader.string();
+          break;
+        case 5:
+          message.meta = ConfirmationMeta.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -303,6 +304,11 @@ export const MsgCreateConfirmation = {
     } else {
       message.signatureECDSA = "";
     }
+    if (object.meta !== undefined && object.meta !== null) {
+      message.meta = ConfirmationMeta.fromJSON(object.meta);
+    } else {
+      message.meta = undefined;
+    }
     return message;
   },
 
@@ -317,6 +323,10 @@ export const MsgCreateConfirmation = {
     }
     message.signatureECDSA !== undefined &&
       (obj.signatureECDSA = message.signatureECDSA);
+    message.meta !== undefined &&
+      (obj.meta = message.meta
+        ? ConfirmationMeta.toJSON(message.meta)
+        : undefined);
     return obj;
   },
 
@@ -344,6 +354,11 @@ export const MsgCreateConfirmation = {
       message.signatureECDSA = object.signatureECDSA;
     } else {
       message.signatureECDSA = "";
+    }
+    if (object.meta !== undefined && object.meta !== null) {
+      message.meta = ConfirmationMeta.fromPartial(object.meta);
+    } else {
+      message.meta = undefined;
     }
     return message;
   },
@@ -401,26 +416,32 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateRemovePartyOp: object = { creator: "", index: 0 };
+const baseMsgCreateChangePartiesOp: object = { creator: "" };
 
-export const MsgCreateRemovePartyOp = {
+export const MsgCreateChangePartiesOp = {
   encode(
-    message: MsgCreateRemovePartyOp,
+    message: MsgCreateChangePartiesOp,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.index !== 0) {
-      writer.uint32(16).uint32(message.index);
+    for (const v of message.newSet) {
+      Party.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgCreateRemovePartyOp {
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateChangePartiesOp {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
+    const message = {
+      ...baseMsgCreateChangePartiesOp,
+    } as MsgCreateChangePartiesOp;
+    message.newSet = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -428,7 +449,7 @@ export const MsgCreateRemovePartyOp = {
           message.creator = reader.string();
           break;
         case 2:
-          message.index = reader.uint32();
+          message.newSet.push(Party.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -438,51 +459,61 @@ export const MsgCreateRemovePartyOp = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreateRemovePartyOp {
-    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
+  fromJSON(object: any): MsgCreateChangePartiesOp {
+    const message = {
+      ...baseMsgCreateChangePartiesOp,
+    } as MsgCreateChangePartiesOp;
+    message.newSet = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
     }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = Number(object.index);
-    } else {
-      message.index = 0;
+    if (object.newSet !== undefined && object.newSet !== null) {
+      for (const e of object.newSet) {
+        message.newSet.push(Party.fromJSON(e));
+      }
     }
     return message;
   },
 
-  toJSON(message: MsgCreateRemovePartyOp): unknown {
+  toJSON(message: MsgCreateChangePartiesOp): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.index !== undefined && (obj.index = message.index);
+    if (message.newSet) {
+      obj.newSet = message.newSet.map((e) => (e ? Party.toJSON(e) : undefined));
+    } else {
+      obj.newSet = [];
+    }
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<MsgCreateRemovePartyOp>
-  ): MsgCreateRemovePartyOp {
-    const message = { ...baseMsgCreateRemovePartyOp } as MsgCreateRemovePartyOp;
+    object: DeepPartial<MsgCreateChangePartiesOp>
+  ): MsgCreateChangePartiesOp {
+    const message = {
+      ...baseMsgCreateChangePartiesOp,
+    } as MsgCreateChangePartiesOp;
+    message.newSet = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
       message.creator = "";
     }
-    if (object.index !== undefined && object.index !== null) {
-      message.index = object.index;
-    } else {
-      message.index = 0;
+    if (object.newSet !== undefined && object.newSet !== null) {
+      for (const e of object.newSet) {
+        message.newSet.push(Party.fromPartial(e));
+      }
     }
     return message;
   },
 };
 
-const baseMsgCreateRemovePartyOpResponse: object = {};
+const baseMsgCreateChangePartiesOpResponse: object = {};
 
-export const MsgCreateRemovePartyOpResponse = {
+export const MsgCreateChangePartiesOpResponse = {
   encode(
-    _: MsgCreateRemovePartyOpResponse,
+    _: MsgCreateChangePartiesOpResponse,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -491,12 +522,12 @@ export const MsgCreateRemovePartyOpResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): MsgCreateRemovePartyOpResponse {
+  ): MsgCreateChangePartiesOpResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgCreateRemovePartyOpResponse,
-    } as MsgCreateRemovePartyOpResponse;
+      ...baseMsgCreateChangePartiesOpResponse,
+    } as MsgCreateChangePartiesOpResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -508,148 +539,24 @@ export const MsgCreateRemovePartyOpResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateRemovePartyOpResponse {
+  fromJSON(_: any): MsgCreateChangePartiesOpResponse {
     const message = {
-      ...baseMsgCreateRemovePartyOpResponse,
-    } as MsgCreateRemovePartyOpResponse;
+      ...baseMsgCreateChangePartiesOpResponse,
+    } as MsgCreateChangePartiesOpResponse;
     return message;
   },
 
-  toJSON(_: MsgCreateRemovePartyOpResponse): unknown {
+  toJSON(_: MsgCreateChangePartiesOpResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateRemovePartyOpResponse>
-  ): MsgCreateRemovePartyOpResponse {
+    _: DeepPartial<MsgCreateChangePartiesOpResponse>
+  ): MsgCreateChangePartiesOpResponse {
     const message = {
-      ...baseMsgCreateRemovePartyOpResponse,
-    } as MsgCreateRemovePartyOpResponse;
-    return message;
-  },
-};
-
-const baseMsgActivateParty: object = { creator: "", pubKey: "" };
-
-export const MsgActivateParty = {
-  encode(message: MsgActivateParty, writer: Writer = Writer.create()): Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.pubKey !== "") {
-      writer.uint32(18).string(message.pubKey);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): MsgActivateParty {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgActivateParty } as MsgActivateParty;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.pubKey = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgActivateParty {
-    const message = { ...baseMsgActivateParty } as MsgActivateParty;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator);
-    } else {
-      message.creator = "";
-    }
-    if (object.pubKey !== undefined && object.pubKey !== null) {
-      message.pubKey = String(object.pubKey);
-    } else {
-      message.pubKey = "";
-    }
-    return message;
-  },
-
-  toJSON(message: MsgActivateParty): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.pubKey !== undefined && (obj.pubKey = message.pubKey);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<MsgActivateParty>): MsgActivateParty {
-    const message = { ...baseMsgActivateParty } as MsgActivateParty;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    } else {
-      message.creator = "";
-    }
-    if (object.pubKey !== undefined && object.pubKey !== null) {
-      message.pubKey = object.pubKey;
-    } else {
-      message.pubKey = "";
-    }
-    return message;
-  },
-};
-
-const baseMsgActivatePartyResponse: object = {};
-
-export const MsgActivatePartyResponse = {
-  encode(
-    _: MsgActivatePartyResponse,
-    writer: Writer = Writer.create()
-  ): Writer {
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): MsgActivatePartyResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseMsgActivatePartyResponse,
-    } as MsgActivatePartyResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgActivatePartyResponse {
-    const message = {
-      ...baseMsgActivatePartyResponse,
-    } as MsgActivatePartyResponse;
-    return message;
-  },
-
-  toJSON(_: MsgActivatePartyResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<MsgActivatePartyResponse>
-  ): MsgActivatePartyResponse {
-    const message = {
-      ...baseMsgActivatePartyResponse,
-    } as MsgActivatePartyResponse;
+      ...baseMsgCreateChangePartiesOpResponse,
+    } as MsgCreateChangePartiesOpResponse;
     return message;
   },
 };
@@ -659,14 +566,13 @@ export interface Msg {
   CreateTransferOperation(
     request: MsgCreateTransferOp
   ): Promise<MsgCreateTransferOpResponse>;
-  CreateRemovePartyOperation(
-    request: MsgCreateRemovePartyOp
-  ): Promise<MsgCreateRemovePartyOpResponse>;
+  CreateChangePartiesOperation(
+    request: MsgCreateChangePartiesOp
+  ): Promise<MsgCreateChangePartiesOpResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
-  ActivateParty(request: MsgActivateParty): Promise<MsgActivatePartyResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -688,17 +594,17 @@ export class MsgClientImpl implements Msg {
     );
   }
 
-  CreateRemovePartyOperation(
-    request: MsgCreateRemovePartyOp
-  ): Promise<MsgCreateRemovePartyOpResponse> {
-    const data = MsgCreateRemovePartyOp.encode(request).finish();
+  CreateChangePartiesOperation(
+    request: MsgCreateChangePartiesOp
+  ): Promise<MsgCreateChangePartiesOpResponse> {
+    const data = MsgCreateChangePartiesOp.encode(request).finish();
     const promise = this.rpc.request(
       "rarifyprotocol.rarimocore.rarimocore.Msg",
-      "CreateRemovePartyOperation",
+      "CreateChangePartiesOperation",
       data
     );
     return promise.then((data) =>
-      MsgCreateRemovePartyOpResponse.decode(new Reader(data))
+      MsgCreateChangePartiesOpResponse.decode(new Reader(data))
     );
   }
 
@@ -713,18 +619,6 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateConfirmationResponse.decode(new Reader(data))
-    );
-  }
-
-  ActivateParty(request: MsgActivateParty): Promise<MsgActivatePartyResponse> {
-    const data = MsgActivateParty.encode(request).finish();
-    const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.rarimocore.Msg",
-      "ActivateParty",
-      data
-    );
-    return promise.then((data) =>
-      MsgActivatePartyResponse.decode(new Reader(data))
     );
   }
 }

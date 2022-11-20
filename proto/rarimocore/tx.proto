@@ -12,9 +12,8 @@ option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 // Msg defines the Msg service.
 service Msg {
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
-  rpc CreateRemovePartyOperation(MsgCreateRemovePartyOp) returns (MsgCreateRemovePartyOpResponse);
+  rpc CreateChangePartiesOperation(MsgCreateChangePartiesOp) returns (MsgCreateChangePartiesOpResponse);
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
-  rpc ActivateParty(MsgActivateParty) returns (MsgActivatePartyResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -35,21 +34,15 @@ message MsgCreateConfirmation {
   repeated string indexes = 3;
   // hex-encoded
   string signatureECDSA = 4;
+  ConfirmationMeta meta = 5;
 }
 message MsgCreateConfirmationResponse {}
 
-message MsgCreateRemovePartyOp {
+message MsgCreateChangePartiesOp {
   string creator = 1;
-  uint32 index = 2;
+  repeated Party newSet = 2;
 }
-message MsgCreateRemovePartyOpResponse {}
 
-message MsgActivateParty {
-  string creator = 1;
-  // hex-encoded
-  string pubKey = 2;
-}
-message MsgActivatePartyResponse {}
-
+message MsgCreateChangePartiesOpResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

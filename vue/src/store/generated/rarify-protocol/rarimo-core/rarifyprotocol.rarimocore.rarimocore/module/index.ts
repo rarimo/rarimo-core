@@ -5,14 +5,14 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgCreateTransferOp } from "./types/rarimocore/tx";
+import { MsgCreateChangePartiesOp } from "./types/rarimocore/tx";
 import { MsgCreateConfirmation } from "./types/rarimocore/tx";
-import { MsgActivateParty } from "./types/rarimocore/tx";
 
 
 const types = [
   ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", MsgCreateTransferOp],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", MsgCreateChangePartiesOp],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgActivateParty", MsgActivateParty],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -46,8 +46,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgCreateTransferOp: (data: MsgCreateTransferOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", value: MsgCreateTransferOp.fromPartial( data ) }),
+    msgCreateChangePartiesOp: (data: MsgCreateChangePartiesOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", value: MsgCreateChangePartiesOp.fromPartial( data ) }),
     msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
-    msgActivateParty: (data: MsgActivateParty): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgActivateParty", value: MsgActivateParty.fromPartial( data ) }),
     
   };
 };

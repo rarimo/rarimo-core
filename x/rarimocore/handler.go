@@ -23,11 +23,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateConfirmation:
 			res, err := msgServer.CreateConfirmation(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateRemovePartyOp:
-			res, err := msgServer.CreateRemovePartyOperation(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgActivateParty:
-			res, err := msgServer.ActivateParty(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgCreateChangePartiesOp:
+			res, err := msgServer.CreateChangePartiesOperation(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

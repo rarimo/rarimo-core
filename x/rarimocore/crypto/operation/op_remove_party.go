@@ -2,32 +2,31 @@ package operation
 
 import (
 	"bytes"
-	"math/big"
 
 	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
-// RemovePartyContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
-type RemovePartyContent struct {
-	Set   []*types.Party
-	Index uint32
+// ChangePartiesContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
+type ChangePartiesContent struct {
+	OldSet []*types.Party
+	NewSet []*types.Party
 }
 
-var _ merkle.Content = RemovePartyContent{}
+var _ merkle.Content = ChangePartiesContent{}
 
-func (c RemovePartyContent) CalculateHash() []byte {
-	return eth.Keccak256(GetPartiesHash(c.Set), big.NewInt(int64(c.Index)).Bytes())
+func (c ChangePartiesContent) CalculateHash() []byte {
+	return eth.Keccak256(GetPartiesHash(c.OldSet), GetPartiesHash(c.NewSet))
 }
 
 // Equals tests for equality of two Contents
-func (c RemovePartyContent) Equals(other merkle.Content) bool {
-	if oc, ok := other.(RemovePartyContent); ok {
+func (c ChangePartiesContent) Equals(other merkle.Content) bool {
+	if oc, ok := other.(ChangePartiesContent); ok {
 		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
 	}
 
-	if oc, ok := other.(*RemovePartyContent); ok {
+	if oc, ok := other.(*ChangePartiesContent); ok {
 		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
 	}
 

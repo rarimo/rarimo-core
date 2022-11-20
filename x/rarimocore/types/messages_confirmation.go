@@ -1,9 +1,13 @@
 package types
 
 import (
+	"crypto/elliptic"
+	"math/big"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	eth "github.com/ethereum/go-ethereum/crypto"
 )
 
 const (
@@ -62,5 +66,25 @@ func (msg *MsgCreateConfirmation) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex receiver address (%s)", err)
 	}
 
+	if msg.Meta.NewKeyECDSA != getECDSAKey(msg.Meta.PartyKey) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid keys")
+	}
+
 	return nil
+}
+
+func getECDSAKey(keys []string) string {
+	if len(keys) == 0 {
+		return ""
+	}
+
+	curve := eth.S256()
+	x, y := big.NewInt(0), big.NewInt(0)
+
+	for _, key := range keys {
+		kx, ky := elliptic.Unmarshal(curve, hexutil.MustDecode(key))
+		x, y = curve.Add(x, y, kx, ky)
+	}
+
+	return hexutil.Encode(elliptic.Marshal(curve, x, y))
 }

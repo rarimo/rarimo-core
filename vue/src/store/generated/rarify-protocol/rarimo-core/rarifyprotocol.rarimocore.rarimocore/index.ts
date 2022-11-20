@@ -1,7 +1,8 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { ConfirmationMeta } from "./module/types/rarimocore/confirmation"
 import { Confirmation } from "./module/types/rarimocore/confirmation"
-import { RemoveParty } from "./module/types/rarimocore/op_remove_party"
+import { ChangeParties } from "./module/types/rarimocore/op_change_parties"
 import { Transfer } from "./module/types/rarimocore/op_transfer"
 import { Operation } from "./module/types/rarimocore/operation"
 import { Party } from "./module/types/rarimocore/params"
@@ -9,7 +10,7 @@ import { Step } from "./module/types/rarimocore/params"
 import { Params } from "./module/types/rarimocore/params"
 
 
-export { Confirmation, RemoveParty, Transfer, Operation, Party, Step, Params };
+export { ConfirmationMeta, Confirmation, ChangeParties, Transfer, Operation, Party, Step, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -54,8 +55,9 @@ const getDefaultState = () => {
 				ConfirmationAll: {},
 				
 				_Structure: {
+						ConfirmationMeta: getStructure(ConfirmationMeta.fromPartial({})),
 						Confirmation: getStructure(Confirmation.fromPartial({})),
-						RemoveParty: getStructure(RemoveParty.fromPartial({})),
+						ChangeParties: getStructure(ChangeParties.fromPartial({})),
 						Transfer: getStructure(Transfer.fromPartial({})),
 						Operation: getStructure(Operation.fromPartial({})),
 						Party: getStructure(Party.fromPartial({})),
@@ -286,6 +288,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgCreateChangePartiesOp({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateChangePartiesOp(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateChangePartiesOp:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateChangePartiesOp:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgCreateConfirmation({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -298,21 +315,6 @@ export default {
 					throw new Error('TxClient:MsgCreateConfirmation:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgCreateConfirmation:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgActivateParty({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgActivateParty(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgActivateParty:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgActivateParty:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -330,6 +332,19 @@ export default {
 				}
 			}
 		},
+		async MsgCreateChangePartiesOp({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateChangePartiesOp(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateChangePartiesOp:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateChangePartiesOp:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgCreateConfirmation({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -340,19 +355,6 @@ export default {
 					throw new Error('TxClient:MsgCreateConfirmation:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateConfirmation:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgActivateParty({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgActivateParty(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgActivateParty:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgActivateParty:Create Could not create message: ' + e.message)
 				}
 			}
 		},

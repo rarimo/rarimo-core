@@ -3,6 +3,11 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
+message ConfirmationMeta {
+  string newKeyECDSA = 1;
+  repeated string partyKey = 2;
+}
+
 message Confirmation {
   // hex-encoded
   string root = 1;
@@ -11,5 +16,6 @@ message Confirmation {
   // hex-encoded
   string signatureECDSA = 3;
   string creator = 4;
+  ConfirmationMeta meta = 5;
 }
 

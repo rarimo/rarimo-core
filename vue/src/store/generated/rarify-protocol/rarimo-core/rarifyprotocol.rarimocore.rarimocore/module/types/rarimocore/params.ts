@@ -49,7 +49,6 @@ export interface Party {
   address: string;
   /** Rarimo core account */
   account: string;
-  active: boolean;
 }
 
 export interface Step {
@@ -66,12 +65,7 @@ export interface Params {
   steps: Step[];
 }
 
-const baseParty: object = {
-  pubKey: "",
-  address: "",
-  account: "",
-  active: false,
-};
+const baseParty: object = { pubKey: "", address: "", account: "" };
 
 export const Party = {
   encode(message: Party, writer: Writer = Writer.create()): Writer {
@@ -83,9 +77,6 @@ export const Party = {
     }
     if (message.account !== "") {
       writer.uint32(26).string(message.account);
-    }
-    if (message.active === true) {
-      writer.uint32(32).bool(message.active);
     }
     return writer;
   },
@@ -105,9 +96,6 @@ export const Party = {
           break;
         case 3:
           message.account = reader.string();
-          break;
-        case 4:
-          message.active = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -134,11 +122,6 @@ export const Party = {
     } else {
       message.account = "";
     }
-    if (object.active !== undefined && object.active !== null) {
-      message.active = Boolean(object.active);
-    } else {
-      message.active = false;
-    }
     return message;
   },
 
@@ -147,7 +130,6 @@ export const Party = {
     message.pubKey !== undefined && (obj.pubKey = message.pubKey);
     message.address !== undefined && (obj.address = message.address);
     message.account !== undefined && (obj.account = message.account);
-    message.active !== undefined && (obj.active = message.active);
     return obj;
   },
 
@@ -167,11 +149,6 @@ export const Party = {
       message.account = object.account;
     } else {
       message.account = "";
-    }
-    if (object.active !== undefined && object.active !== null) {
-      message.active = object.active;
-    } else {
-      message.active = false;
     }
     return message;
   },

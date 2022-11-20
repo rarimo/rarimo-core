@@ -7,7 +7,7 @@ export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 export enum op_type {
   TRANSFER = 0,
-  REMOVE_PARTY = 1,
+  CHANGE_PARTIES = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -17,8 +17,8 @@ export function op_typeFromJSON(object: any): op_type {
     case "TRANSFER":
       return op_type.TRANSFER;
     case 1:
-    case "REMOVE_PARTY":
-      return op_type.REMOVE_PARTY;
+    case "CHANGE_PARTIES":
+      return op_type.CHANGE_PARTIES;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -30,8 +30,8 @@ export function op_typeToJSON(object: op_type): string {
   switch (object) {
     case op_type.TRANSFER:
       return "TRANSFER";
-    case op_type.REMOVE_PARTY:
-      return "REMOVE_PARTY";
+    case op_type.CHANGE_PARTIES:
+      return "CHANGE_PARTIES";
     default:
       return "UNKNOWN";
   }

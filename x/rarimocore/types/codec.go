@@ -11,10 +11,10 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateTransferOp{}, "rarimocore/CreateTransfer", nil)
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
-	cdc.RegisterConcrete(&MsgCreateRemovePartyOp{}, "rarimocore/CreateRemoveParty", nil)
-	cdc.RegisterConcrete(&MsgActivateParty{}, "rarimocore/ActivateParty", nil)
+	cdc.RegisterConcrete(&MsgCreateChangePartiesOp{}, "rarimocore/CreateChangeParties", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
-	cdc.RegisterConcrete(&RemoveParty{}, "rarimocore/RemoveParty", nil)
+	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
+	cdc.RegisterConcrete(&ConfirmationMeta{}, "rarimocore/ConfirmationMeta", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -26,10 +26,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateConfirmation{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateRemovePartyOp{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgActivateParty{},
+		&MsgCreateChangePartiesOp{},
 	)
 
 	registry.RegisterInterface(
@@ -39,9 +36,15 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 
 	registry.RegisterInterface(
-		"rarifyprotocol.rarimocore.rarimocore.RemoveParty",
+		"rarifyprotocol.rarimocore.rarimocore.ChangeParties",
 		(*proto.Message)(nil),
-		&RemoveParty{},
+		&ChangeParties{},
+	)
+
+	registry.RegisterInterface(
+		"rarifyprotocol.rarimocore.rarimocore.ConfirmationMeta",
+		(*proto.Message)(nil),
+		&ConfirmationMeta{},
 	)
 
 	// this line is used by starport scaffolding # 3

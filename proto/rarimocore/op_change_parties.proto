@@ -5,8 +5,14 @@ import "rarimocore/params.proto";
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
-message RemoveParty {
+enum ChangeType {
+  REMOVE = 0;
+  ADD = 1;
+}
+
+message ChangeParties {
   repeated Party currentSet = 1;
-  uint32 partyIndex = 2;
+  repeated Party newSet = 2;
+  ChangeType type = 3;
 }
 

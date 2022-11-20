@@ -21,10 +21,6 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, err
 	}
 
-	if err := k.checkAllPartiesActive(ctx); err != nil {
-		return nil, err
-	}
-
 	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
@@ -66,7 +62,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		err := k.applyOperation(ctx, op)
+		err := k.applyOperation(ctx, op, msg.Meta)
 		if err != nil {
 			return nil, err
 		}
@@ -84,22 +80,13 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *msgServer) checkAllPartiesActive(ctx sdk.Context) error {
-	for _, p := range k.GetParams(ctx).Parties {
-		if !p.Active {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "all parties should be active")
-		}
-	}
-	return nil
-}
-
-func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
+func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation, meta *types.ConfirmationMeta) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		// Nothing to do
-	case types.OpType_REMOVE_PARTY:
-		remove, _ := pkg.GetRemoveParty(op)
-		if err := k.applyRemoveParty(ctx, remove); err != nil {
+	case types.OpType_CHANGE_PARTIES:
+		change, _ := pkg.GetChangeParties(op)
+		if err := k.applyRemoveParty(ctx, change, meta); err != nil {
 			return err
 		}
 	default:
@@ -116,24 +103,23 @@ func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	return nil
 }
 
-func (k msgServer) applyRemoveParty(ctx sdk.Context, remove *types.RemoveParty) error {
+func (k msgServer) applyRemoveParty(ctx sdk.Context, remove *types.ChangeParties, meta *types.ConfirmationMeta) error {
 	params := k.GetParams(ctx)
 
 	if !bytes.Equal(operation.GetPartiesHash(params.Parties), operation.GetPartiesHash(remove.CurrentSet)) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid set for remove operation")
 	}
 
-	set := make([]*types.Party, 0, len(params.Parties)-1)
-	for i, p := range params.Parties {
-		if uint32(i) == remove.PartyIndex {
-			continue
-		}
-
-		p.Active = false
-		set = append(set, p)
+	if meta == nil || len(remove.NewSet) != len(meta.PartyKey) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid set size for remove operation")
 	}
 
-	params.Parties = set
+	for i := range remove.NewSet {
+		remove.NewSet[i].PubKey = meta.PartyKey[i]
+	}
+
+	params.Parties = remove.NewSet
+	params.KeyECDSA = meta.NewKeyECDSA
 	k.SetParams(ctx, params)
 	return nil
 }
@@ -147,13 +133,13 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 		}
 
 		return k.getTransferOperationContent(ctx, transfer)
-	case types.OpType_REMOVE_PARTY:
-		change, err := pkg.GetRemoveParty(op)
+	case types.OpType_CHANGE_PARTIES:
+		change, err := pkg.GetChangeParties(op)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 
-		return pkg.GetRemovePartyContent(change)
+		return pkg.GetChangePartiesContent(change)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}

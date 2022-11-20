@@ -3,6 +3,11 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
+export interface ConfirmationMeta {
+  newKeyECDSA: string;
+  partyKey: string[];
+}
+
 export interface Confirmation {
   /** hex-encoded */
   root: string;
@@ -11,7 +16,88 @@ export interface Confirmation {
   /** hex-encoded */
   signatureECDSA: string;
   creator: string;
+  meta: ConfirmationMeta | undefined;
 }
+
+const baseConfirmationMeta: object = { newKeyECDSA: "", partyKey: "" };
+
+export const ConfirmationMeta = {
+  encode(message: ConfirmationMeta, writer: Writer = Writer.create()): Writer {
+    if (message.newKeyECDSA !== "") {
+      writer.uint32(10).string(message.newKeyECDSA);
+    }
+    for (const v of message.partyKey) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): ConfirmationMeta {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseConfirmationMeta } as ConfirmationMeta;
+    message.partyKey = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.newKeyECDSA = reader.string();
+          break;
+        case 2:
+          message.partyKey.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConfirmationMeta {
+    const message = { ...baseConfirmationMeta } as ConfirmationMeta;
+    message.partyKey = [];
+    if (object.newKeyECDSA !== undefined && object.newKeyECDSA !== null) {
+      message.newKeyECDSA = String(object.newKeyECDSA);
+    } else {
+      message.newKeyECDSA = "";
+    }
+    if (object.partyKey !== undefined && object.partyKey !== null) {
+      for (const e of object.partyKey) {
+        message.partyKey.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: ConfirmationMeta): unknown {
+    const obj: any = {};
+    message.newKeyECDSA !== undefined &&
+      (obj.newKeyECDSA = message.newKeyECDSA);
+    if (message.partyKey) {
+      obj.partyKey = message.partyKey.map((e) => e);
+    } else {
+      obj.partyKey = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ConfirmationMeta>): ConfirmationMeta {
+    const message = { ...baseConfirmationMeta } as ConfirmationMeta;
+    message.partyKey = [];
+    if (object.newKeyECDSA !== undefined && object.newKeyECDSA !== null) {
+      message.newKeyECDSA = object.newKeyECDSA;
+    } else {
+      message.newKeyECDSA = "";
+    }
+    if (object.partyKey !== undefined && object.partyKey !== null) {
+      for (const e of object.partyKey) {
+        message.partyKey.push(e);
+      }
+    }
+    return message;
+  },
+};
 
 const baseConfirmation: object = {
   root: "",
@@ -33,6 +119,9 @@ export const Confirmation = {
     }
     if (message.creator !== "") {
       writer.uint32(34).string(message.creator);
+    }
+    if (message.meta !== undefined) {
+      ConfirmationMeta.encode(message.meta, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -56,6 +145,9 @@ export const Confirmation = {
           break;
         case 4:
           message.creator = reader.string();
+          break;
+        case 5:
+          message.meta = ConfirmationMeta.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -88,6 +180,11 @@ export const Confirmation = {
     } else {
       message.creator = "";
     }
+    if (object.meta !== undefined && object.meta !== null) {
+      message.meta = ConfirmationMeta.fromJSON(object.meta);
+    } else {
+      message.meta = undefined;
+    }
     return message;
   },
 
@@ -102,6 +199,10 @@ export const Confirmation = {
     message.signatureECDSA !== undefined &&
       (obj.signatureECDSA = message.signatureECDSA);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.meta !== undefined &&
+      (obj.meta = message.meta
+        ? ConfirmationMeta.toJSON(message.meta)
+        : undefined);
     return obj;
   },
 
@@ -127,6 +228,11 @@ export const Confirmation = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.meta !== undefined && object.meta !== null) {
+      message.meta = ConfirmationMeta.fromPartial(object.meta);
+    } else {
+      message.meta = undefined;
     }
     return message;
   },
