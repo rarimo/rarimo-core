@@ -16,6 +16,8 @@ enum StepType {
   Proposing = 0;
   Accepting = 1;
   Signing = 2;
+  Finishing = 3;
+  Resharing = 4;
 }
 
 message Step {
