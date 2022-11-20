@@ -3,6 +3,11 @@ package rarifyprotocol.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
 
+enum ParamsUpdateType {
+  CHANGE_SET = 0;
+  OTHER = 1;
+}
+
 message Party {
   // PublicKey in hex format
   string pubKey = 1;

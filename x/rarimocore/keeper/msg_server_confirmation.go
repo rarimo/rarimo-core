@@ -89,6 +89,9 @@ func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation, meta *typ
 		if err := k.applyRemoveParty(ctx, change, meta); err != nil {
 			return err
 		}
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeParamsUpdated,
+			sdk.NewAttribute(types.AttributeKeyParamsUpdateType, types.ParamsUpdateType_CHANGE_SET.String()),
+		))
 	default:
 		// Nothing to do
 	}
