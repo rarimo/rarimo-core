@@ -34,13 +34,13 @@ message MsgCreateConfirmation {
   repeated string indexes = 3;
   // hex-encoded
   string signatureECDSA = 4;
-  ConfirmationMeta meta = 5;
 }
 message MsgCreateConfirmationResponse {}
 
 message MsgCreateChangePartiesOp {
   string creator = 1;
   repeated Party newSet = 2;
+  string signature = 3;
 }
 
 message MsgCreateChangePartiesOpResponse {}

@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
 import { Reader, Writer } from "protobufjs/minimal";
-import { ConfirmationMeta } from "../rarimocore/confirmation";
 import { Party } from "../rarimocore/params";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
@@ -23,7 +22,6 @@ export interface MsgCreateConfirmation {
   indexes: string[];
   /** hex-encoded */
   signatureECDSA: string;
-  meta: ConfirmationMeta | undefined;
 }
 
 export interface MsgCreateConfirmationResponse {}
@@ -31,6 +29,7 @@ export interface MsgCreateConfirmationResponse {}
 export interface MsgCreateChangePartiesOp {
   creator: string;
   newSet: Party[];
+  signature: string;
 }
 
 export interface MsgCreateChangePartiesOpResponse {}
@@ -244,9 +243,6 @@ export const MsgCreateConfirmation = {
     if (message.signatureECDSA !== "") {
       writer.uint32(34).string(message.signatureECDSA);
     }
-    if (message.meta !== undefined) {
-      ConfirmationMeta.encode(message.meta, writer.uint32(42).fork()).ldelim();
-    }
     return writer;
   },
 
@@ -269,9 +265,6 @@ export const MsgCreateConfirmation = {
           break;
         case 4:
           message.signatureECDSA = reader.string();
-          break;
-        case 5:
-          message.meta = ConfirmationMeta.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -304,11 +297,6 @@ export const MsgCreateConfirmation = {
     } else {
       message.signatureECDSA = "";
     }
-    if (object.meta !== undefined && object.meta !== null) {
-      message.meta = ConfirmationMeta.fromJSON(object.meta);
-    } else {
-      message.meta = undefined;
-    }
     return message;
   },
 
@@ -323,10 +311,6 @@ export const MsgCreateConfirmation = {
     }
     message.signatureECDSA !== undefined &&
       (obj.signatureECDSA = message.signatureECDSA);
-    message.meta !== undefined &&
-      (obj.meta = message.meta
-        ? ConfirmationMeta.toJSON(message.meta)
-        : undefined);
     return obj;
   },
 
@@ -354,11 +338,6 @@ export const MsgCreateConfirmation = {
       message.signatureECDSA = object.signatureECDSA;
     } else {
       message.signatureECDSA = "";
-    }
-    if (object.meta !== undefined && object.meta !== null) {
-      message.meta = ConfirmationMeta.fromPartial(object.meta);
-    } else {
-      message.meta = undefined;
     }
     return message;
   },
@@ -416,7 +395,7 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangePartiesOp: object = { creator: "" };
+const baseMsgCreateChangePartiesOp: object = { creator: "", signature: "" };
 
 export const MsgCreateChangePartiesOp = {
   encode(
@@ -428,6 +407,9 @@ export const MsgCreateChangePartiesOp = {
     }
     for (const v of message.newSet) {
       Party.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.signature !== "") {
+      writer.uint32(26).string(message.signature);
     }
     return writer;
   },
@@ -450,6 +432,9 @@ export const MsgCreateChangePartiesOp = {
           break;
         case 2:
           message.newSet.push(Party.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.signature = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -474,6 +459,11 @@ export const MsgCreateChangePartiesOp = {
         message.newSet.push(Party.fromJSON(e));
       }
     }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
     return message;
   },
 
@@ -485,6 +475,7 @@ export const MsgCreateChangePartiesOp = {
     } else {
       obj.newSet = [];
     }
+    message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
 
@@ -504,6 +495,11 @@ export const MsgCreateChangePartiesOp = {
       for (const e of object.newSet) {
         message.newSet.push(Party.fromPartial(e));
       }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
     }
     return message;
   },

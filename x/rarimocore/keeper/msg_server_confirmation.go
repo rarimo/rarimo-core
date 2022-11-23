@@ -1,12 +1,15 @@
 package keeper
 
 import (
-	"bytes"
 	"context"
+	"crypto/elliptic"
 	"fmt"
+	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
@@ -62,7 +65,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		err := k.applyOperation(ctx, op, msg.Meta)
+		err := k.applyOperation(ctx, op)
 		if err != nil {
 			return nil, err
 		}
@@ -80,13 +83,16 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation, meta *types.ConfirmationMeta) error {
+func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
-		// Nothing to do
+		transfer, _ := pkg.GetTransfer(op)
+		if err := k.applyTransfer(ctx, transfer); err != nil {
+			return err
+		}
 	case types.OpType_CHANGE_PARTIES:
 		change, _ := pkg.GetChangeParties(op)
-		if err := k.applyRemoveParty(ctx, change, meta); err != nil {
+		if err := k.applyChangeParties(ctx, change); err != nil {
 			return err
 		}
 		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeParamsUpdated,
@@ -106,23 +112,40 @@ func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation, meta *typ
 	return nil
 }
 
-func (k msgServer) applyRemoveParty(ctx sdk.Context, remove *types.ChangeParties, meta *types.ConfirmationMeta) error {
+func (k msgServer) applyTransfer(ctx sdk.Context, _ *types.Transfer) error {
+	if k.GetParams(ctx).IsUpdateRequired {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply transfer: parties update needed")
+	}
+	return nil
+}
+
+func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
 	params := k.GetParams(ctx)
 
-	if !bytes.Equal(operation.GetPartiesHash(params.Parties), operation.GetPartiesHash(remove.CurrentSet)) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid set for remove operation")
+	key, err := getECDSAPubKey(op.Parties)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid parties keys %s", err.Error())
 	}
 
-	if meta == nil || len(remove.NewSet) != len(meta.PartyKey) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid set size for remove operation")
+	if err := crypto.VerifyECDSA(op.Signature, key, params.KeyECDSA); err != nil {
+		return err
 	}
 
-	for i := range remove.NewSet {
-		remove.NewSet[i].PubKey = meta.PartyKey[i]
+	if len(params.Parties) != len(op.Parties) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties amount")
 	}
 
-	params.Parties = remove.NewSet
-	params.KeyECDSA = meta.NewKeyECDSA
+	for i := range params.Parties {
+		if op.Parties[i].Address != params.Parties[i].Address {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties")
+		}
+
+		params.Parties[i].PubKey = op.Parties[i].PubKey
+	}
+
+	params.KeyECDSA = key
+	params.Threshold = uint64(((len(params.Parties) + 2) / 3) * 2)
+	params.IsUpdateRequired = false
 	k.SetParams(ctx, params)
 	return nil
 }
@@ -160,4 +183,19 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 	}
 
 	return pkg.GetTransferContent(&item, chainParams, transfer)
+}
+
+func getECDSAPubKey(parties []*types.Party) (string, error) {
+	x, y := new(big.Int), new(big.Int)
+	for _, p := range parties {
+		key, err := hexutil.Decode(p.PubKey)
+		if err != nil {
+			return "", err
+		}
+
+		x1, y1 := elliptic.Unmarshal(eth.S256(), key)
+		x, y = eth.S256().Add(x, y, x1, y1)
+	}
+
+	return hexutil.Encode(elliptic.Marshal(eth.S256(), x, y)), nil
 }

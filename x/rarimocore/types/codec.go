@@ -14,7 +14,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateChangePartiesOp{}, "rarimocore/CreateChangeParties", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
 	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
-	cdc.RegisterConcrete(&ConfirmationMeta{}, "rarimocore/ConfirmationMeta", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -40,13 +39,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		(*proto.Message)(nil),
 		&ChangeParties{},
 	)
-
-	registry.RegisterInterface(
-		"rarifyprotocol.rarimocore.rarimocore.ConfirmationMeta",
-		(*proto.Message)(nil),
-		&ConfirmationMeta{},
-	)
-
 	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

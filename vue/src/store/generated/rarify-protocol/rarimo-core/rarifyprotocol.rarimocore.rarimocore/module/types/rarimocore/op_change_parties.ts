@@ -4,56 +4,20 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
-export enum ChangeType {
-  REMOVE = 0,
-  ADD = 1,
-  UNRECOGNIZED = -1,
-}
-
-export function changeTypeFromJSON(object: any): ChangeType {
-  switch (object) {
-    case 0:
-    case "REMOVE":
-      return ChangeType.REMOVE;
-    case 1:
-    case "ADD":
-      return ChangeType.ADD;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ChangeType.UNRECOGNIZED;
-  }
-}
-
-export function changeTypeToJSON(object: ChangeType): string {
-  switch (object) {
-    case ChangeType.REMOVE:
-      return "REMOVE";
-    case ChangeType.ADD:
-      return "ADD";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export interface ChangeParties {
-  currentSet: Party[];
-  newSet: Party[];
-  type: ChangeType;
+  parties: Party[];
+  signature: string;
 }
 
-const baseChangeParties: object = { type: 0 };
+const baseChangeParties: object = { signature: "" };
 
 export const ChangeParties = {
   encode(message: ChangeParties, writer: Writer = Writer.create()): Writer {
-    for (const v of message.currentSet) {
+    for (const v of message.parties) {
       Party.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.newSet) {
-      Party.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.type !== 0) {
-      writer.uint32(24).int32(message.type);
+    if (message.signature !== "") {
+      writer.uint32(18).string(message.signature);
     }
     return writer;
   },
@@ -62,19 +26,15 @@ export const ChangeParties = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseChangeParties } as ChangeParties;
-    message.currentSet = [];
-    message.newSet = [];
+    message.parties = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.currentSet.push(Party.decode(reader, reader.uint32()));
+          message.parties.push(Party.decode(reader, reader.uint32()));
           break;
         case 2:
-          message.newSet.push(Party.decode(reader, reader.uint32()));
-          break;
-        case 3:
-          message.type = reader.int32() as any;
+          message.signature = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -86,62 +46,45 @@ export const ChangeParties = {
 
   fromJSON(object: any): ChangeParties {
     const message = { ...baseChangeParties } as ChangeParties;
-    message.currentSet = [];
-    message.newSet = [];
-    if (object.currentSet !== undefined && object.currentSet !== null) {
-      for (const e of object.currentSet) {
-        message.currentSet.push(Party.fromJSON(e));
+    message.parties = [];
+    if (object.parties !== undefined && object.parties !== null) {
+      for (const e of object.parties) {
+        message.parties.push(Party.fromJSON(e));
       }
     }
-    if (object.newSet !== undefined && object.newSet !== null) {
-      for (const e of object.newSet) {
-        message.newSet.push(Party.fromJSON(e));
-      }
-    }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = changeTypeFromJSON(object.type);
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
     } else {
-      message.type = 0;
+      message.signature = "";
     }
     return message;
   },
 
   toJSON(message: ChangeParties): unknown {
     const obj: any = {};
-    if (message.currentSet) {
-      obj.currentSet = message.currentSet.map((e) =>
+    if (message.parties) {
+      obj.parties = message.parties.map((e) =>
         e ? Party.toJSON(e) : undefined
       );
     } else {
-      obj.currentSet = [];
+      obj.parties = [];
     }
-    if (message.newSet) {
-      obj.newSet = message.newSet.map((e) => (e ? Party.toJSON(e) : undefined));
-    } else {
-      obj.newSet = [];
-    }
-    message.type !== undefined && (obj.type = changeTypeToJSON(message.type));
+    message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ChangeParties>): ChangeParties {
     const message = { ...baseChangeParties } as ChangeParties;
-    message.currentSet = [];
-    message.newSet = [];
-    if (object.currentSet !== undefined && object.currentSet !== null) {
-      for (const e of object.currentSet) {
-        message.currentSet.push(Party.fromPartial(e));
+    message.parties = [];
+    if (object.parties !== undefined && object.parties !== null) {
+      for (const e of object.parties) {
+        message.parties.push(Party.fromPartial(e));
       }
     }
-    if (object.newSet !== undefined && object.newSet !== null) {
-      for (const e of object.newSet) {
-        message.newSet.push(Party.fromPartial(e));
-      }
-    }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = object.type;
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
     } else {
-      message.type = 0;
+      message.signature = "";
     }
     return message;
   },

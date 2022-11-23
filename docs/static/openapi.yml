@@ -30204,15 +30204,6 @@ paths:
                       title: hex-encoded
                     creator:
                       type: string
-                    meta:
-                      type: object
-                      properties:
-                        newKeyECDSA:
-                          type: string
-                        partyKey:
-                          type: array
-                          items:
-                            type: string
               pagination:
                 type: object
                 properties:
@@ -30510,15 +30501,6 @@ paths:
                     title: hex-encoded
                   creator:
                     type: string
-                  meta:
-                    type: object
-                    properties:
-                      newKeyECDSA:
-                        type: string
-                      partyKey:
-                        type: array
-                        items:
-                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -31632,7 +31614,11 @@ paths:
                             - Proposing
                             - Accepting
                             - Signing
+                            - Finishing
+                            - Resharing
                           default: Proposing
+                  isUpdateRequired:
+                    type: boolean
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -53807,24 +53793,6 @@ definitions:
         title: hex-encoded
       creator:
         type: string
-      meta:
-        type: object
-        properties:
-          newKeyECDSA:
-            type: string
-          partyKey:
-            type: array
-            items:
-              type: string
-  rarifyprotocol.rarimocore.rarimocore.ConfirmationMeta:
-    type: object
-    properties:
-      newKeyECDSA:
-        type: string
-      partyKey:
-        type: array
-        items:
-          type: string
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:
@@ -54045,7 +54013,11 @@ definitions:
                 - Proposing
                 - Accepting
                 - Signing
+                - Finishing
+                - Resharing
               default: Proposing
+      isUpdateRequired:
+        type: boolean
     description: Params defines the parameters for the module.
   rarifyprotocol.rarimocore.rarimocore.Party:
     type: object
@@ -54080,15 +54052,6 @@ definitions:
               title: hex-encoded
             creator:
               type: string
-            meta:
-              type: object
-              properties:
-                newKeyECDSA:
-                  type: string
-                partyKey:
-                  type: array
-                  items:
-                    type: string
       pagination:
         type: object
         properties:
@@ -54350,15 +54313,6 @@ definitions:
             title: hex-encoded
           creator:
             type: string
-          meta:
-            type: object
-            properties:
-              newKeyECDSA:
-                type: string
-              partyKey:
-                type: array
-                items:
-                  type: string
   rarifyprotocol.rarimocore.rarimocore.QueryGetOperationResponse:
     type: object
     properties:
@@ -54586,7 +54540,11 @@ definitions:
                     - Proposing
                     - Accepting
                     - Signing
+                    - Finishing
+                    - Resharing
                   default: Proposing
+          isUpdateRequired:
+            type: boolean
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarifyprotocol.rarimocore.rarimocore.Step:
     type: object
@@ -54601,6 +54559,8 @@ definitions:
           - Proposing
           - Accepting
           - Signing
+          - Finishing
+          - Resharing
         default: Proposing
   rarifyprotocol.rarimocore.rarimocore.StepType:
     type: string
@@ -54608,6 +54568,8 @@ definitions:
       - Proposing
       - Accepting
       - Signing
+      - Finishing
+      - Resharing
     default: Proposing
   rarifyprotocol.rarimocore.rarimocore.op_type:
     type: string

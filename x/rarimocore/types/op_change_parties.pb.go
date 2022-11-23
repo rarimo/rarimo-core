@@ -22,35 +22,9 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type ChangeType int32
-
-const (
-	ChangeType_REMOVE ChangeType = 0
-	ChangeType_ADD    ChangeType = 1
-)
-
-var ChangeType_name = map[int32]string{
-	0: "REMOVE",
-	1: "ADD",
-}
-
-var ChangeType_value = map[string]int32{
-	"REMOVE": 0,
-	"ADD":    1,
-}
-
-func (x ChangeType) String() string {
-	return proto.EnumName(ChangeType_name, int32(x))
-}
-
-func (ChangeType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_bcce331765093f26, []int{0}
-}
-
 type ChangeParties struct {
-	CurrentSet []*Party   `protobuf:"bytes,1,rep,name=currentSet,proto3" json:"currentSet,omitempty"`
-	NewSet     []*Party   `protobuf:"bytes,2,rep,name=newSet,proto3" json:"newSet,omitempty"`
-	Type       ChangeType `protobuf:"varint,3,opt,name=type,proto3,enum=rarifyprotocol.rarimocore.rarimocore.ChangeType" json:"type,omitempty"`
+	Parties   []*Party `protobuf:"bytes,1,rep,name=parties,proto3" json:"parties,omitempty"`
+	Signature string   `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
 }
 
 func (m *ChangeParties) Reset()         { *m = ChangeParties{} }
@@ -86,29 +60,21 @@ func (m *ChangeParties) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ChangeParties proto.InternalMessageInfo
 
-func (m *ChangeParties) GetCurrentSet() []*Party {
+func (m *ChangeParties) GetParties() []*Party {
 	if m != nil {
-		return m.CurrentSet
+		return m.Parties
 	}
 	return nil
 }
 
-func (m *ChangeParties) GetNewSet() []*Party {
+func (m *ChangeParties) GetSignature() string {
 	if m != nil {
-		return m.NewSet
+		return m.Signature
 	}
-	return nil
-}
-
-func (m *ChangeParties) GetType() ChangeType {
-	if m != nil {
-		return m.Type
-	}
-	return ChangeType_REMOVE
+	return ""
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.rarimocore.ChangeType", ChangeType_name, ChangeType_value)
 	proto.RegisterType((*ChangeParties)(nil), "rarifyprotocol.rarimocore.rarimocore.ChangeParties")
 }
 
@@ -117,24 +83,21 @@ func init() {
 }
 
 var fileDescriptor_bcce331765093f26 = []byte{
-	// 265 bytes of a gzipped FileDescriptorProto
+	// 210 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x2a, 0x4a, 0x2c, 0xca,
 	0xcc, 0xcd, 0x4f, 0xce, 0x2f, 0x4a, 0xd5, 0xcf, 0x2f, 0x88, 0x4f, 0xce, 0x48, 0xcc, 0x4b, 0x4f,
 	0x8d, 0x2f, 0x48, 0x2c, 0x2a, 0xc9, 0x4c, 0x2d, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x52,
 	0x01, 0xa9, 0x49, 0xab, 0x04, 0x73, 0x92, 0xf3, 0x73, 0xf4, 0x10, 0x5a, 0x90, 0x98, 0x52, 0xe2,
-	0x48, 0x26, 0x15, 0x24, 0x16, 0x25, 0xe6, 0x42, 0xb5, 0x2b, 0x3d, 0x67, 0xe4, 0xe2, 0x75, 0x06,
-	0x9b, 0x1b, 0x00, 0x31, 0x56, 0xc8, 0x9b, 0x8b, 0x2b, 0xb9, 0xb4, 0xa8, 0x28, 0x35, 0xaf, 0x24,
-	0x38, 0xb5, 0x44, 0x82, 0x51, 0x81, 0x59, 0x83, 0xdb, 0x48, 0x5b, 0x8f, 0x18, 0x5b, 0xf4, 0x40,
-	0x46, 0x54, 0x06, 0x21, 0x69, 0x17, 0x72, 0xe6, 0x62, 0xcb, 0x4b, 0x2d, 0x07, 0x19, 0xc4, 0x44,
-	0xba, 0x41, 0x50, 0xad, 0x42, 0x2e, 0x5c, 0x2c, 0x25, 0x95, 0x05, 0xa9, 0x12, 0xcc, 0x0a, 0x8c,
-	0x1a, 0x7c, 0x46, 0x06, 0xc4, 0x19, 0x01, 0xf1, 0x54, 0x48, 0x65, 0x41, 0x6a, 0x10, 0x58, 0xb7,
-	0x96, 0x22, 0x17, 0x17, 0x42, 0x4c, 0x88, 0x8b, 0x8b, 0x2d, 0xc8, 0xd5, 0xd7, 0x3f, 0xcc, 0x55,
-	0x80, 0x41, 0x88, 0x9d, 0x8b, 0xd9, 0xd1, 0xc5, 0x45, 0x80, 0xd1, 0x29, 0xf8, 0xc4, 0x23, 0x39,
-	0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63,
-	0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0x2c, 0xd3, 0x33, 0x4b, 0x72, 0x12, 0x93, 0xf4, 0x92,
-	0xf3, 0x73, 0xf5, 0x21, 0xd6, 0xeb, 0xc2, 0xec, 0xd7, 0x87, 0x58, 0xaa, 0x0b, 0x0e, 0xdb, 0x0a,
-	0x7d, 0xa4, 0x80, 0x06, 0x59, 0x5b, 0x9c, 0xc4, 0x06, 0x56, 0x68, 0x0c, 0x08, 0x00, 0x00, 0xff,
-	0xff, 0xb6, 0xc7, 0x63, 0x04, 0xcd, 0x01, 0x00, 0x00,
+	0x48, 0x26, 0x15, 0x24, 0x16, 0x25, 0xe6, 0x42, 0xb5, 0x2b, 0x95, 0x70, 0xf1, 0x3a, 0x83, 0x8d,
+	0x0d, 0x80, 0x98, 0x2a, 0xe4, 0xca, 0xc5, 0x0e, 0xb5, 0x40, 0x82, 0x51, 0x81, 0x59, 0x83, 0xdb,
+	0x48, 0x5b, 0x8f, 0x18, 0x1b, 0xf4, 0x40, 0xfa, 0x2b, 0x83, 0x60, 0x7a, 0x85, 0x64, 0xb8, 0x38,
+	0x8b, 0x33, 0xd3, 0xf3, 0x12, 0x4b, 0x4a, 0x8b, 0x52, 0x25, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83,
+	0x10, 0x02, 0x4e, 0xc1, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c,
+	0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0x65, 0x99,
+	0x9e, 0x59, 0x92, 0x93, 0x98, 0xa4, 0x97, 0x9c, 0x9f, 0xab, 0x0f, 0xb1, 0x57, 0x17, 0x66, 0xb1,
+	0x3e, 0xc4, 0x36, 0x5d, 0xb0, 0x27, 0x2a, 0xf4, 0x91, 0x7c, 0x54, 0x52, 0x59, 0x90, 0x5a, 0x9c,
+	0xc4, 0x06, 0x56, 0x68, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x32, 0xd2, 0xa3, 0x6a, 0x36, 0x01,
+	0x00, 0x00,
 }
 
 func (m *ChangeParties) Marshal() (dAtA []byte, err error) {
@@ -157,29 +120,17 @@ func (m *ChangeParties) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Type != 0 {
-		i = encodeVarintOpChangeParties(dAtA, i, uint64(m.Type))
+	if len(m.Signature) > 0 {
+		i -= len(m.Signature)
+		copy(dAtA[i:], m.Signature)
+		i = encodeVarintOpChangeParties(dAtA, i, uint64(len(m.Signature)))
 		i--
-		dAtA[i] = 0x18
+		dAtA[i] = 0x12
 	}
-	if len(m.NewSet) > 0 {
-		for iNdEx := len(m.NewSet) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Parties) > 0 {
+		for iNdEx := len(m.Parties) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.NewSet[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintOpChangeParties(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.CurrentSet) > 0 {
-		for iNdEx := len(m.CurrentSet) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.CurrentSet[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Parties[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -210,20 +161,15 @@ func (m *ChangeParties) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.CurrentSet) > 0 {
-		for _, e := range m.CurrentSet {
+	if len(m.Parties) > 0 {
+		for _, e := range m.Parties {
 			l = e.Size()
 			n += 1 + l + sovOpChangeParties(uint64(l))
 		}
 	}
-	if len(m.NewSet) > 0 {
-		for _, e := range m.NewSet {
-			l = e.Size()
-			n += 1 + l + sovOpChangeParties(uint64(l))
-		}
-	}
-	if m.Type != 0 {
-		n += 1 + sovOpChangeParties(uint64(m.Type))
+	l = len(m.Signature)
+	if l > 0 {
+		n += 1 + l + sovOpChangeParties(uint64(l))
 	}
 	return n
 }
@@ -265,7 +211,7 @@ func (m *ChangeParties) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CurrentSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Parties", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -292,16 +238,16 @@ func (m *ChangeParties) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CurrentSet = append(m.CurrentSet, &Party{})
-			if err := m.CurrentSet[len(m.CurrentSet)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Parties = append(m.Parties, &Party{})
+			if err := m.Parties[len(m.Parties)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field NewSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowOpChangeParties
@@ -311,45 +257,24 @@ func (m *ChangeParties) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthOpChangeParties
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthOpChangeParties
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.NewSet = append(m.NewSet, &Party{})
-			if err := m.NewSet[len(m.NewSet)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.Signature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
-			}
-			m.Type = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOpChangeParties
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Type |= ChangeType(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipOpChangeParties(dAtA[iNdEx:])

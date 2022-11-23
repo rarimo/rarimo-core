@@ -17,7 +17,7 @@ func GetChangeParties(operation types.Operation) (*types.ChangeParties, error) {
 
 func GetChangePartiesContent(op *types.ChangeParties) (*operation.ChangePartiesContent, error) {
 	return &operation.ChangePartiesContent{
-		OldSet: op.CurrentSet,
-		NewSet: op.NewSet,
+		NewSet:    op.Parties,
+		Signature: op.Signature,
 	}, nil
 }

@@ -37,4 +37,5 @@ message Params {
   uint64 threshold = 2;
   repeated Party parties = 3;
   repeated Step steps = 4;
+  bool isUpdateRequired = 5;
 }

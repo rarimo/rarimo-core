@@ -4,10 +4,44 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
+export enum ParamsUpdateType {
+  CHANGE_SET = 0,
+  OTHER = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function paramsUpdateTypeFromJSON(object: any): ParamsUpdateType {
+  switch (object) {
+    case 0:
+    case "CHANGE_SET":
+      return ParamsUpdateType.CHANGE_SET;
+    case 1:
+    case "OTHER":
+      return ParamsUpdateType.OTHER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ParamsUpdateType.UNRECOGNIZED;
+  }
+}
+
+export function paramsUpdateTypeToJSON(object: ParamsUpdateType): string {
+  switch (object) {
+    case ParamsUpdateType.CHANGE_SET:
+      return "CHANGE_SET";
+    case ParamsUpdateType.OTHER:
+      return "OTHER";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 export enum StepType {
   Proposing = 0,
   Accepting = 1,
   Signing = 2,
+  Finishing = 3,
+  Resharing = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -22,6 +56,12 @@ export function stepTypeFromJSON(object: any): StepType {
     case 2:
     case "Signing":
       return StepType.Signing;
+    case 3:
+    case "Finishing":
+      return StepType.Finishing;
+    case 4:
+    case "Resharing":
+      return StepType.Resharing;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -37,6 +77,10 @@ export function stepTypeToJSON(object: StepType): string {
       return "Accepting";
     case StepType.Signing:
       return "Signing";
+    case StepType.Finishing:
+      return "Finishing";
+    case StepType.Resharing:
+      return "Resharing";
     default:
       return "UNKNOWN";
   }
@@ -63,6 +107,7 @@ export interface Params {
   threshold: number;
   parties: Party[];
   steps: Step[];
+  isUpdateRequired: boolean;
 }
 
 const baseParty: object = { pubKey: "", address: "", account: "" };
@@ -226,7 +271,11 @@ export const Step = {
   },
 };
 
-const baseParams: object = { keyECDSA: "", threshold: 0 };
+const baseParams: object = {
+  keyECDSA: "",
+  threshold: 0,
+  isUpdateRequired: false,
+};
 
 export const Params = {
   encode(message: Params, writer: Writer = Writer.create()): Writer {
@@ -241,6 +290,9 @@ export const Params = {
     }
     for (const v of message.steps) {
       Step.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.isUpdateRequired === true) {
+      writer.uint32(40).bool(message.isUpdateRequired);
     }
     return writer;
   },
@@ -265,6 +317,9 @@ export const Params = {
           break;
         case 4:
           message.steps.push(Step.decode(reader, reader.uint32()));
+          break;
+        case 5:
+          message.isUpdateRequired = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -298,6 +353,14 @@ export const Params = {
         message.steps.push(Step.fromJSON(e));
       }
     }
+    if (
+      object.isUpdateRequired !== undefined &&
+      object.isUpdateRequired !== null
+    ) {
+      message.isUpdateRequired = Boolean(object.isUpdateRequired);
+    } else {
+      message.isUpdateRequired = false;
+    }
     return message;
   },
 
@@ -317,6 +380,8 @@ export const Params = {
     } else {
       obj.steps = [];
     }
+    message.isUpdateRequired !== undefined &&
+      (obj.isUpdateRequired = message.isUpdateRequired);
     return obj;
   },
 
@@ -343,6 +408,14 @@ export const Params = {
       for (const e of object.steps) {
         message.steps.push(Step.fromPartial(e));
       }
+    }
+    if (
+      object.isUpdateRequired !== undefined &&
+      object.isUpdateRequired !== null
+    ) {
+      message.isUpdateRequired = object.isUpdateRequired;
+    } else {
+      message.isUpdateRequired = false;
     }
     return message;
   },
