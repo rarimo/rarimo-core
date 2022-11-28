@@ -8,46 +8,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarify-protocol/go-merkle"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
-const ECDSAPublicKeySize = 65
 const ECDSASignatureSize = 64
-
-func ValidateECDSAKey(hexKey string) error {
-	if hexKey == "" {
-		// Key has not been initialized
-		return nil
-	}
-
-	keyBytes, err := hexutil.Decode(hexKey)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
-	}
-
-	if len(keyBytes) != ECDSAPublicKeySize {
-		return ErrInvalidKey
-	}
-
-	return nil
-}
-
-func ValidateEdDSAKey(hexKey string) error {
-	if hexKey == "" {
-		// Key has not been initialized
-		return nil
-	}
-
-	keyBytes, err := hexutil.Decode(hexKey)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
-	}
-
-	if len(keyBytes) != ed25519.PublicKeySize {
-		return ErrInvalidKey
-	}
-
-	return nil
-}
 
 func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) error {
 	if targetPublicKey == "" {
@@ -129,4 +93,14 @@ func TryHexDecode(hexStr string) []byte {
 	}
 
 	return resp
+}
+
+func GetPartiesHash(set []*types.Party) []byte {
+	var data []byte
+	for _, p := range set {
+		data = append(data, []byte(p.PubKey)...)
+		data = append(data, []byte(p.Address)...)
+		data = append(data, []byte(p.Account)...)
+	}
+	return crypto.Keccak256(data)
 }

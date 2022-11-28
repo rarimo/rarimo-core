@@ -36,56 +36,6 @@ export function paramsUpdateTypeToJSON(object: ParamsUpdateType): string {
   }
 }
 
-export enum StepType {
-  Proposing = 0,
-  Accepting = 1,
-  Signing = 2,
-  Finishing = 3,
-  Resharing = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function stepTypeFromJSON(object: any): StepType {
-  switch (object) {
-    case 0:
-    case "Proposing":
-      return StepType.Proposing;
-    case 1:
-    case "Accepting":
-      return StepType.Accepting;
-    case 2:
-    case "Signing":
-      return StepType.Signing;
-    case 3:
-    case "Finishing":
-      return StepType.Finishing;
-    case 4:
-    case "Resharing":
-      return StepType.Resharing;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return StepType.UNRECOGNIZED;
-  }
-}
-
-export function stepTypeToJSON(object: StepType): string {
-  switch (object) {
-    case StepType.Proposing:
-      return "Proposing";
-    case StepType.Accepting:
-      return "Accepting";
-    case StepType.Signing:
-      return "Signing";
-    case StepType.Finishing:
-      return "Finishing";
-    case StepType.Resharing:
-      return "Resharing";
-    default:
-      return "UNKNOWN";
-  }
-}
-
 export interface Party {
   /** PublicKey in hex format */
   pubKey: string;
@@ -95,18 +45,11 @@ export interface Party {
   account: string;
 }
 
-export interface Step {
-  /** Duration in blocks */
-  duration: number;
-  type: StepType;
-}
-
 /** Params defines the parameters for the module. */
 export interface Params {
   keyECDSA: string;
   threshold: number;
   parties: Party[];
-  steps: Step[];
   isUpdateRequired: boolean;
 }
 
@@ -199,78 +142,6 @@ export const Party = {
   },
 };
 
-const baseStep: object = { duration: 0, type: 0 };
-
-export const Step = {
-  encode(message: Step, writer: Writer = Writer.create()): Writer {
-    if (message.duration !== 0) {
-      writer.uint32(8).uint64(message.duration);
-    }
-    if (message.type !== 0) {
-      writer.uint32(16).int32(message.type);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): Step {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseStep } as Step;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.duration = longToNumber(reader.uint64() as Long);
-          break;
-        case 2:
-          message.type = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Step {
-    const message = { ...baseStep } as Step;
-    if (object.duration !== undefined && object.duration !== null) {
-      message.duration = Number(object.duration);
-    } else {
-      message.duration = 0;
-    }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = stepTypeFromJSON(object.type);
-    } else {
-      message.type = 0;
-    }
-    return message;
-  },
-
-  toJSON(message: Step): unknown {
-    const obj: any = {};
-    message.duration !== undefined && (obj.duration = message.duration);
-    message.type !== undefined && (obj.type = stepTypeToJSON(message.type));
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<Step>): Step {
-    const message = { ...baseStep } as Step;
-    if (object.duration !== undefined && object.duration !== null) {
-      message.duration = object.duration;
-    } else {
-      message.duration = 0;
-    }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = object.type;
-    } else {
-      message.type = 0;
-    }
-    return message;
-  },
-};
-
 const baseParams: object = {
   keyECDSA: "",
   threshold: 0,
@@ -288,9 +159,6 @@ export const Params = {
     for (const v of message.parties) {
       Party.encode(v!, writer.uint32(26).fork()).ldelim();
     }
-    for (const v of message.steps) {
-      Step.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
     if (message.isUpdateRequired === true) {
       writer.uint32(40).bool(message.isUpdateRequired);
     }
@@ -302,7 +170,6 @@ export const Params = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseParams } as Params;
     message.parties = [];
-    message.steps = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -314,9 +181,6 @@ export const Params = {
           break;
         case 3:
           message.parties.push(Party.decode(reader, reader.uint32()));
-          break;
-        case 4:
-          message.steps.push(Step.decode(reader, reader.uint32()));
           break;
         case 5:
           message.isUpdateRequired = reader.bool();
@@ -332,7 +196,6 @@ export const Params = {
   fromJSON(object: any): Params {
     const message = { ...baseParams } as Params;
     message.parties = [];
-    message.steps = [];
     if (object.keyECDSA !== undefined && object.keyECDSA !== null) {
       message.keyECDSA = String(object.keyECDSA);
     } else {
@@ -346,11 +209,6 @@ export const Params = {
     if (object.parties !== undefined && object.parties !== null) {
       for (const e of object.parties) {
         message.parties.push(Party.fromJSON(e));
-      }
-    }
-    if (object.steps !== undefined && object.steps !== null) {
-      for (const e of object.steps) {
-        message.steps.push(Step.fromJSON(e));
       }
     }
     if (
@@ -375,11 +233,6 @@ export const Params = {
     } else {
       obj.parties = [];
     }
-    if (message.steps) {
-      obj.steps = message.steps.map((e) => (e ? Step.toJSON(e) : undefined));
-    } else {
-      obj.steps = [];
-    }
     message.isUpdateRequired !== undefined &&
       (obj.isUpdateRequired = message.isUpdateRequired);
     return obj;
@@ -388,7 +241,6 @@ export const Params = {
   fromPartial(object: DeepPartial<Params>): Params {
     const message = { ...baseParams } as Params;
     message.parties = [];
-    message.steps = [];
     if (object.keyECDSA !== undefined && object.keyECDSA !== null) {
       message.keyECDSA = object.keyECDSA;
     } else {
@@ -402,11 +254,6 @@ export const Params = {
     if (object.parties !== undefined && object.parties !== null) {
       for (const e of object.parties) {
         message.parties.push(Party.fromPartial(e));
-      }
-    }
-    if (object.steps !== undefined && object.steps !== null) {
-      for (const e of object.steps) {
-        message.steps.push(Step.fromPartial(e));
       }
     }
     if (

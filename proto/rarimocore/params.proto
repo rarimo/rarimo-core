@@ -17,25 +17,10 @@ message Party {
   string account = 3;
 }
 
-enum StepType {
-  Proposing = 0;
-  Accepting = 1;
-  Signing = 2;
-  Finishing = 3;
-  Resharing = 4;
-}
-
-message Step {
-  // Duration in blocks
-  uint64 duration = 1;
-  StepType type = 2;
-}
-
 // Params defines the parameters for the module.
 message Params {
   string keyECDSA = 1;
   uint64 threshold = 2;
   repeated Party parties = 3;
-  repeated Step steps = 4;
   bool isUpdateRequired = 5;
 }

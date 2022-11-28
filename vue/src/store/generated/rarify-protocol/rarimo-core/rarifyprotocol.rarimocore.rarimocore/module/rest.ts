@@ -139,6 +139,8 @@ export type RarimocoreMsgCreateConfirmationResponse = object;
 
 export type RarimocoreMsgCreateTransferOpResponse = object;
 
+export type RarimocoreMsgSetupInitialResponse = object;
+
 export interface RarimocoreOperation {
   /** Should be in a hex format 0x... */
   index?: string;
@@ -245,7 +247,6 @@ export interface RarimocoreParams {
   /** @format uint64 */
   threshold?: string;
   parties?: RarimocoreParty[];
-  steps?: RarimocoreStep[];
   isUpdateRequired?: boolean;
 }
 
@@ -299,20 +300,6 @@ export interface RarimocoreQueryGetOperationResponse {
 export interface RarimocoreQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: RarimocoreParams;
-}
-
-export interface RarimocoreStep {
-  /** @format uint64 */
-  duration?: string;
-  type?: RarimocoreStepType;
-}
-
-export enum RarimocoreStepType {
-  Proposing = "Proposing",
-  Accepting = "Accepting",
-  Signing = "Signing",
-  Finishing = "Finishing",
-  Resharing = "Resharing",
 }
 
 export enum RarimocoreopType {
@@ -375,13 +362,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -611,7 +591,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -653,7 +632,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

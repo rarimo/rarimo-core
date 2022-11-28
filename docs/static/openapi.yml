@@ -30463,16 +30463,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -31159,16 +31149,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/operation/{index}':
@@ -31599,24 +31579,6 @@ paths:
                         account:
                           type: string
                           title: Rarimo core account
-                  steps:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        duration:
-                          type: string
-                          format: uint64
-                          title: Duration in blocks
-                        type:
-                          type: string
-                          enum:
-                            - Proposing
-                            - Accepting
-                            - Signing
-                            - Finishing
-                            - Resharing
-                          default: Proposing
                   isUpdateRequired:
                     type: boolean
             description: >-
@@ -53799,6 +53761,8 @@ definitions:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOpResponse:
     type: object
+  rarifyprotocol.rarimocore.rarimocore.MsgSetupInitialResponse:
+    type: object
   rarifyprotocol.rarimocore.rarimocore.Operation:
     type: object
     properties:
@@ -53998,24 +53962,6 @@ definitions:
             account:
               type: string
               title: Rarimo core account
-      steps:
-        type: array
-        items:
-          type: object
-          properties:
-            duration:
-              type: string
-              format: uint64
-              title: Duration in blocks
-            type:
-              type: string
-              enum:
-                - Proposing
-                - Accepting
-                - Signing
-                - Finishing
-                - Resharing
-              default: Proposing
       isUpdateRequired:
         type: boolean
     description: Params defines the parameters for the module.
@@ -54525,52 +54471,9 @@ definitions:
                 account:
                   type: string
                   title: Rarimo core account
-          steps:
-            type: array
-            items:
-              type: object
-              properties:
-                duration:
-                  type: string
-                  format: uint64
-                  title: Duration in blocks
-                type:
-                  type: string
-                  enum:
-                    - Proposing
-                    - Accepting
-                    - Signing
-                    - Finishing
-                    - Resharing
-                  default: Proposing
           isUpdateRequired:
             type: boolean
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarifyprotocol.rarimocore.rarimocore.Step:
-    type: object
-    properties:
-      duration:
-        type: string
-        format: uint64
-        title: Duration in blocks
-      type:
-        type: string
-        enum:
-          - Proposing
-          - Accepting
-          - Signing
-          - Finishing
-          - Resharing
-        default: Proposing
-  rarifyprotocol.rarimocore.rarimocore.StepType:
-    type: string
-    enum:
-      - Proposing
-      - Accepting
-      - Signing
-      - Finishing
-      - Resharing
-    default: Proposing
   rarifyprotocol.rarimocore.rarimocore.op_type:
     type: string
     enum:

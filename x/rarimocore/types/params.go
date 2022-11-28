@@ -5,8 +5,10 @@ import (
 	"fmt"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
+
+const ECDSAPublicKeySize = 65
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
@@ -40,7 +42,6 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
 		paramtypes.NewParamSetPair(Threshold, &p.Threshold, validateThreshold),
 		paramtypes.NewParamSetPair(Parties, &p.Parties, validateParties),
-		paramtypes.NewParamSetPair(Steps, &p.Steps, validateSteps),
 	}
 }
 
@@ -58,7 +59,16 @@ func validateKeyECDSA(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 
-	return crypto.ValidateECDSAKey(v)
+	keyBytes, err := hexutil.Decode(v)
+	if err != nil {
+		return fmt.Errorf("invalid ECDSA key format %v", err)
+	}
+
+	if len(keyBytes) != ECDSAPublicKeySize {
+		return fmt.Errorf("invalid ECDSA key len")
+	}
+
+	return nil
 }
 
 func validateThreshold(i interface{}) error {
@@ -82,19 +92,6 @@ func validateParties(i interface{}) error {
 
 	if len(v) == 0 {
 		return errors.New("there should be at least one party")
-	}
-
-	return nil
-}
-
-func validateSteps(i interface{}) error {
-	v, ok := i.([]*Step)
-	if !ok {
-		return fmt.Errorf("invalid parameter type: %T", i)
-	}
-
-	if len(v) != 3 {
-		return errors.New("should be 3 steps: proposing, accepting, signing")
 	}
 
 	return nil

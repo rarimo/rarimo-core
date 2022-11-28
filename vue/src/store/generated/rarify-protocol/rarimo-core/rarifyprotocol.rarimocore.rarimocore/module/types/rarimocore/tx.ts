@@ -34,6 +34,14 @@ export interface MsgCreateChangePartiesOp {
 
 export interface MsgCreateChangePartiesOpResponse {}
 
+export interface MsgSetupInitial {
+  creator: string;
+  set: Party[];
+  signature: string;
+}
+
+export interface MsgSetupInitialResponse {}
+
 const baseMsgCreateTransferOp: object = {
   creator: "",
   tx: "",
@@ -557,6 +565,148 @@ export const MsgCreateChangePartiesOpResponse = {
   },
 };
 
+const baseMsgSetupInitial: object = { creator: "", signature: "" };
+
+export const MsgSetupInitial = {
+  encode(message: MsgSetupInitial, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.set) {
+      Party.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.signature !== "") {
+      writer.uint32(34).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetupInitial {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
+    message.set = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.set.push(Party.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.signature = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSetupInitial {
+    const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
+    message.set = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.set !== undefined && object.set !== null) {
+      for (const e of object.set) {
+        message.set.push(Party.fromJSON(e));
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = String(object.signature);
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSetupInitial): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.set) {
+      obj.set = message.set.map((e) => (e ? Party.toJSON(e) : undefined));
+    } else {
+      obj.set = [];
+    }
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSetupInitial>): MsgSetupInitial {
+    const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
+    message.set = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.set !== undefined && object.set !== null) {
+      for (const e of object.set) {
+        message.set.push(Party.fromPartial(e));
+      }
+    }
+    if (object.signature !== undefined && object.signature !== null) {
+      message.signature = object.signature;
+    } else {
+      message.signature = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgSetupInitialResponse: object = {};
+
+export const MsgSetupInitialResponse = {
+  encode(_: MsgSetupInitialResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetupInitialResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSetupInitialResponse,
+    } as MsgSetupInitialResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSetupInitialResponse {
+    const message = {
+      ...baseMsgSetupInitialResponse,
+    } as MsgSetupInitialResponse;
+    return message;
+  },
+
+  toJSON(_: MsgSetupInitialResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgSetupInitialResponse>
+  ): MsgSetupInitialResponse {
+    const message = {
+      ...baseMsgSetupInitialResponse,
+    } as MsgSetupInitialResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateTransferOperation(
@@ -565,10 +715,11 @@ export interface Msg {
   CreateChangePartiesOperation(
     request: MsgCreateChangePartiesOp
   ): Promise<MsgCreateChangePartiesOpResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SetupInitial(request: MsgSetupInitial): Promise<MsgSetupInitialResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -615,6 +766,18 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateConfirmationResponse.decode(new Reader(data))
+    );
+  }
+
+  SetupInitial(request: MsgSetupInitial): Promise<MsgSetupInitialResponse> {
+    const data = MsgSetupInitial.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "SetupInitial",
+      data
+    );
+    return promise.then((data) =>
+      MsgSetupInitialResponse.decode(new Reader(data))
     );
   }
 }
