@@ -41,7 +41,8 @@ message MsgCreateConfirmationResponse {}
 message MsgCreateChangePartiesOp {
   string creator = 1;
   repeated Party newSet = 2;
-  string signature = 3;
+  string newPublicKey = 3;
+  string signature = 4;
 }
 
 message MsgCreateChangePartiesOpResponse {}

@@ -20,8 +20,9 @@ func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *type
 	}
 
 	var changeOp = &types.ChangeParties{
-		Parties:   msg.NewSet,
-		Signature: msg.Signature,
+		Parties:      msg.NewSet,
+		Signature:    msg.Signature,
+		NewPublicKey: msg.NewPublicKey,
 	}
 
 	details, err := cosmostypes.NewAnyWithValue(changeOp)
