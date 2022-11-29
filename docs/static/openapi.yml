@@ -30463,6 +30463,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
@@ -31149,6 +31159,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarify-protocol/rarimo-core/rarimocore/operation/{index}':
@@ -31579,6 +31599,8 @@ paths:
                         account:
                           type: string
                           title: Rarimo core account
+                        verified:
+                          type: boolean
                   isUpdateRequired:
                     type: boolean
             description: >-
@@ -53962,6 +53984,8 @@ definitions:
             account:
               type: string
               title: Rarimo core account
+            verified:
+              type: boolean
       isUpdateRequired:
         type: boolean
     description: Params defines the parameters for the module.
@@ -53977,6 +54001,8 @@ definitions:
       account:
         type: string
         title: Rarimo core account
+      verified:
+        type: boolean
   rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationResponse:
     type: object
     properties:
@@ -54471,6 +54497,8 @@ definitions:
                 account:
                   type: string
                   title: Rarimo core account
+                verified:
+                  type: boolean
           isUpdateRequired:
             type: boolean
     description: QueryParamsResponse is response type for the Query/Params RPC method.

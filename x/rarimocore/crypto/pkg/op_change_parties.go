@@ -19,5 +19,6 @@ func GetChangePartiesContent(op *types.ChangeParties) (*operation.ChangePartiesC
 	return &operation.ChangePartiesContent{
 		NewSet:    op.Parties,
 		Signature: op.Signature,
+		NewKey:    op.NewPublicKey,
 	}, nil
 }

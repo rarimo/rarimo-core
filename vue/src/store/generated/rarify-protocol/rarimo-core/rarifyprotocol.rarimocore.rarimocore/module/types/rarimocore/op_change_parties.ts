@@ -6,18 +6,22 @@ export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
 export interface ChangeParties {
   parties: Party[];
+  newPublicKey: string;
   signature: string;
 }
 
-const baseChangeParties: object = { signature: "" };
+const baseChangeParties: object = { newPublicKey: "", signature: "" };
 
 export const ChangeParties = {
   encode(message: ChangeParties, writer: Writer = Writer.create()): Writer {
     for (const v of message.parties) {
       Party.encode(v!, writer.uint32(10).fork()).ldelim();
     }
+    if (message.newPublicKey !== "") {
+      writer.uint32(18).string(message.newPublicKey);
+    }
     if (message.signature !== "") {
-      writer.uint32(18).string(message.signature);
+      writer.uint32(26).string(message.signature);
     }
     return writer;
   },
@@ -34,6 +38,9 @@ export const ChangeParties = {
           message.parties.push(Party.decode(reader, reader.uint32()));
           break;
         case 2:
+          message.newPublicKey = reader.string();
+          break;
+        case 3:
           message.signature = reader.string();
           break;
         default:
@@ -52,6 +59,11 @@ export const ChangeParties = {
         message.parties.push(Party.fromJSON(e));
       }
     }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = String(object.newPublicKey);
+    } else {
+      message.newPublicKey = "";
+    }
     if (object.signature !== undefined && object.signature !== null) {
       message.signature = String(object.signature);
     } else {
@@ -69,6 +81,8 @@ export const ChangeParties = {
     } else {
       obj.parties = [];
     }
+    message.newPublicKey !== undefined &&
+      (obj.newPublicKey = message.newPublicKey);
     message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
@@ -80,6 +94,11 @@ export const ChangeParties = {
       for (const e of object.parties) {
         message.parties.push(Party.fromPartial(e));
       }
+    }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = object.newPublicKey;
+    } else {
+      message.newPublicKey = "";
     }
     if (object.signature !== undefined && object.signature !== null) {
       message.signature = object.signature;

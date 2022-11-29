@@ -13,13 +13,14 @@ import (
 // ChangePartiesContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type ChangePartiesContent struct {
 	NewSet    []*types.Party
+	NewKey    string
 	Signature string
 }
 
 var _ merkle.Content = ChangePartiesContent{}
 
 func (c ChangePartiesContent) CalculateHash() []byte {
-	return eth.Keccak256(crypto.GetPartiesHash(c.NewSet), hexutil.MustDecode(c.Signature))
+	return eth.Keccak256(crypto.GetPartiesHash(c.NewSet), hexutil.MustDecode(c.NewKey), hexutil.MustDecode(c.Signature))
 }
 
 // Equals tests for equality of two Contents

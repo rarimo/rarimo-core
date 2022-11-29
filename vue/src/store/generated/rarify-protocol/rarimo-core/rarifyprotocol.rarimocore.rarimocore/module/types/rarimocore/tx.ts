@@ -36,8 +36,8 @@ export interface MsgCreateChangePartiesOpResponse {}
 
 export interface MsgSetupInitial {
   creator: string;
-  set: Party[];
-  signature: string;
+  partyPublicKey: string;
+  newPublicKey: string;
 }
 
 export interface MsgSetupInitialResponse {}
@@ -565,18 +565,22 @@ export const MsgCreateChangePartiesOpResponse = {
   },
 };
 
-const baseMsgSetupInitial: object = { creator: "", signature: "" };
+const baseMsgSetupInitial: object = {
+  creator: "",
+  partyPublicKey: "",
+  newPublicKey: "",
+};
 
 export const MsgSetupInitial = {
   encode(message: MsgSetupInitial, writer: Writer = Writer.create()): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    for (const v of message.set) {
-      Party.encode(v!, writer.uint32(18).fork()).ldelim();
+    if (message.partyPublicKey !== "") {
+      writer.uint32(18).string(message.partyPublicKey);
     }
-    if (message.signature !== "") {
-      writer.uint32(34).string(message.signature);
+    if (message.newPublicKey !== "") {
+      writer.uint32(26).string(message.newPublicKey);
     }
     return writer;
   },
@@ -585,7 +589,6 @@ export const MsgSetupInitial = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
-    message.set = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -593,10 +596,10 @@ export const MsgSetupInitial = {
           message.creator = reader.string();
           break;
         case 2:
-          message.set.push(Party.decode(reader, reader.uint32()));
+          message.partyPublicKey = reader.string();
           break;
-        case 4:
-          message.signature = reader.string();
+        case 3:
+          message.newPublicKey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -608,21 +611,20 @@ export const MsgSetupInitial = {
 
   fromJSON(object: any): MsgSetupInitial {
     const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
-    message.set = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
       message.creator = "";
     }
-    if (object.set !== undefined && object.set !== null) {
-      for (const e of object.set) {
-        message.set.push(Party.fromJSON(e));
-      }
-    }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = String(object.signature);
+    if (object.partyPublicKey !== undefined && object.partyPublicKey !== null) {
+      message.partyPublicKey = String(object.partyPublicKey);
     } else {
-      message.signature = "";
+      message.partyPublicKey = "";
+    }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = String(object.newPublicKey);
+    } else {
+      message.newPublicKey = "";
     }
     return message;
   },
@@ -630,32 +632,29 @@ export const MsgSetupInitial = {
   toJSON(message: MsgSetupInitial): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    if (message.set) {
-      obj.set = message.set.map((e) => (e ? Party.toJSON(e) : undefined));
-    } else {
-      obj.set = [];
-    }
-    message.signature !== undefined && (obj.signature = message.signature);
+    message.partyPublicKey !== undefined &&
+      (obj.partyPublicKey = message.partyPublicKey);
+    message.newPublicKey !== undefined &&
+      (obj.newPublicKey = message.newPublicKey);
     return obj;
   },
 
   fromPartial(object: DeepPartial<MsgSetupInitial>): MsgSetupInitial {
     const message = { ...baseMsgSetupInitial } as MsgSetupInitial;
-    message.set = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
       message.creator = "";
     }
-    if (object.set !== undefined && object.set !== null) {
-      for (const e of object.set) {
-        message.set.push(Party.fromPartial(e));
-      }
-    }
-    if (object.signature !== undefined && object.signature !== null) {
-      message.signature = object.signature;
+    if (object.partyPublicKey !== undefined && object.partyPublicKey !== null) {
+      message.partyPublicKey = object.partyPublicKey;
     } else {
-      message.signature = "";
+      message.partyPublicKey = "";
+    }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = object.newPublicKey;
+    } else {
+      message.newPublicKey = "";
     }
     return message;
   },

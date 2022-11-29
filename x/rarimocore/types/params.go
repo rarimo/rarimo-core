@@ -13,10 +13,10 @@ const ECDSAPublicKeySize = 65
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	KeyECDSA  = []byte("keyECDSAParam")
-	Threshold = []byte("thresholdParam")
-	Parties   = []byte("partiesParam")
-	Steps     = []byte("strpsParam")
+	KeyECDSA         = []byte("keyECDSAParam")
+	Threshold        = []byte("thresholdParam")
+	Parties          = []byte("partiesParam")
+	IsUpdateRequired = []byte("isUpdateRequiredParam")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -42,6 +42,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
 		paramtypes.NewParamSetPair(Threshold, &p.Threshold, validateThreshold),
 		paramtypes.NewParamSetPair(Parties, &p.Parties, validateParties),
+		paramtypes.NewParamSetPair(IsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 	}
 }
 
@@ -57,6 +58,11 @@ func validateKeyECDSA(i interface{}) error {
 	v, ok := i.(string)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	// not initialized
+	if len(v) == 0 {
+		return nil
 	}
 
 	keyBytes, err := hexutil.Decode(v)
@@ -94,5 +100,13 @@ func validateParties(i interface{}) error {
 		return errors.New("there should be at least one party")
 	}
 
+	return nil
+}
+
+func validateIsUpdateRequired(i interface{}) error {
+	_, ok := i.(bool)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
 	return nil
 }

@@ -15,6 +15,7 @@ message Party {
   string address = 2;
   // Rarimo core account
   string account = 3;
+  bool verified = 4;
 }
 
 // Params defines the parameters for the module.

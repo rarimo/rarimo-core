@@ -48,8 +48,8 @@ message MsgCreateChangePartiesOpResponse {}
 
 message MsgSetupInitial {
   string creator = 1;
-  repeated Party set = 2;
-  string signature = 4;
+  string partyPublicKey = 2;
+  string newPublicKey = 3;
 }
 
 message MsgSetupInitialResponse {}

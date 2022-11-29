@@ -43,6 +43,7 @@ export interface Party {
   address: string;
   /** Rarimo core account */
   account: string;
+  verified: boolean;
 }
 
 /** Params defines the parameters for the module. */
@@ -53,7 +54,12 @@ export interface Params {
   isUpdateRequired: boolean;
 }
 
-const baseParty: object = { pubKey: "", address: "", account: "" };
+const baseParty: object = {
+  pubKey: "",
+  address: "",
+  account: "",
+  verified: false,
+};
 
 export const Party = {
   encode(message: Party, writer: Writer = Writer.create()): Writer {
@@ -65,6 +71,9 @@ export const Party = {
     }
     if (message.account !== "") {
       writer.uint32(26).string(message.account);
+    }
+    if (message.verified === true) {
+      writer.uint32(32).bool(message.verified);
     }
     return writer;
   },
@@ -84,6 +93,9 @@ export const Party = {
           break;
         case 3:
           message.account = reader.string();
+          break;
+        case 4:
+          message.verified = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -110,6 +122,11 @@ export const Party = {
     } else {
       message.account = "";
     }
+    if (object.verified !== undefined && object.verified !== null) {
+      message.verified = Boolean(object.verified);
+    } else {
+      message.verified = false;
+    }
     return message;
   },
 
@@ -118,6 +135,7 @@ export const Party = {
     message.pubKey !== undefined && (obj.pubKey = message.pubKey);
     message.address !== undefined && (obj.address = message.address);
     message.account !== undefined && (obj.account = message.account);
+    message.verified !== undefined && (obj.verified = message.verified);
     return obj;
   },
 
@@ -137,6 +155,11 @@ export const Party = {
       message.account = object.account;
     } else {
       message.account = "";
+    }
+    if (object.verified !== undefined && object.verified !== null) {
+      message.verified = object.verified;
+    } else {
+      message.verified = false;
     }
     return message;
   },

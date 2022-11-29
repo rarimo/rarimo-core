@@ -2,9 +2,7 @@ package keeper
 
 import (
 	"context"
-	"crypto/elliptic"
 	"fmt"
-	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -122,12 +120,8 @@ func (k msgServer) applyTransfer(ctx sdk.Context, _ *types.Transfer) error {
 func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
 	params := k.GetParams(ctx)
 
-	key, err := getECDSAPubKey(op.Parties)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid parties keys %s", err.Error())
-	}
-
-	if err := crypto.VerifyECDSA(op.Signature, key, params.KeyECDSA); err != nil {
+	hash := hexutil.Encode(eth.Keccak256(hexutil.MustDecode(op.NewPublicKey)))
+	if err := crypto.VerifyECDSA(op.Signature, hash, params.KeyECDSA); err != nil {
 		return err
 	}
 
@@ -143,7 +137,7 @@ func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 		params.Parties[i].PubKey = op.Parties[i].PubKey
 	}
 
-	params.KeyECDSA = key
+	params.KeyECDSA = op.NewPublicKey
 	params.Threshold = uint64(((len(params.Parties) + 2) / 3) * 2)
 	params.IsUpdateRequired = false
 	k.SetParams(ctx, params)
@@ -183,19 +177,4 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 	}
 
 	return pkg.GetTransferContent(&item, chainParams, transfer)
-}
-
-func getECDSAPubKey(parties []*types.Party) (string, error) {
-	x, y := new(big.Int), new(big.Int)
-	for _, p := range parties {
-		key, err := hexutil.Decode(p.PubKey)
-		if err != nil {
-			return "", err
-		}
-
-		x1, y1 := elliptic.Unmarshal(eth.S256(), key)
-		x, y = eth.S256().Add(x, y, x1, y1)
-	}
-
-	return hexutil.Encode(elliptic.Marshal(eth.S256(), x, y)), nil
 }

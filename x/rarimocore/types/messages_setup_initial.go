@@ -14,13 +14,13 @@ var _ sdk.Msg = &MsgSetupInitial{}
 
 func NewMsgSetupInitial(
 	creator string,
-	set []*Party,
-	signature string,
+	partyPubKey,
+	pubKey string,
 ) *MsgSetupInitial {
 	return &MsgSetupInitial{
-		Creator:   creator,
-		Set:       set,
-		Signature: signature,
+		Creator:        creator,
+		PartyPublicKey: partyPubKey,
+		NewPublicKey:   pubKey,
 	}
 }
 
@@ -51,12 +51,12 @@ func (msg *MsgSetupInitial) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if len(msg.Set) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid set size (0)")
+	if _, err = hexutil.Decode(msg.PartyPublicKey); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex party pub key", err)
 	}
 
-	if _, err = hexutil.Decode(msg.Signature); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex receiver address (%s)", err)
+	if _, err = hexutil.Decode(msg.NewPublicKey); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hex pub key", err)
 	}
 
 	return nil
