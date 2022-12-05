@@ -53777,6 +53777,8 @@ definitions:
         title: hex-encoded
       creator:
         type: string
+  rarifyprotocol.rarimocore.rarimocore.MsgCreateAddSignerPartyProposalResponse:
+    type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse:
     type: object
   rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:

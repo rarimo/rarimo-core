@@ -2,6 +2,7 @@
 import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
 import { Reader, Writer } from "protobufjs/minimal";
 import { Party } from "../rarimocore/params";
+import { Coin } from "../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
 
@@ -29,6 +30,7 @@ export interface MsgCreateConfirmationResponse {}
 export interface MsgCreateChangePartiesOp {
   creator: string;
   newSet: Party[];
+  newPublicKey: string;
   signature: string;
 }
 
@@ -41,6 +43,18 @@ export interface MsgSetupInitial {
 }
 
 export interface MsgSetupInitialResponse {}
+
+export interface MsgCreateAddSignerPartyProposal {
+  creator: string;
+  title: string;
+  description: string;
+  account: string;
+  address: string;
+  trialPublicKey: string;
+  deposit: Coin[];
+}
+
+export interface MsgCreateAddSignerPartyProposalResponse {}
 
 const baseMsgCreateTransferOp: object = {
   creator: "",
@@ -403,7 +417,11 @@ export const MsgCreateConfirmationResponse = {
   },
 };
 
-const baseMsgCreateChangePartiesOp: object = { creator: "", signature: "" };
+const baseMsgCreateChangePartiesOp: object = {
+  creator: "",
+  newPublicKey: "",
+  signature: "",
+};
 
 export const MsgCreateChangePartiesOp = {
   encode(
@@ -416,8 +434,11 @@ export const MsgCreateChangePartiesOp = {
     for (const v of message.newSet) {
       Party.encode(v!, writer.uint32(18).fork()).ldelim();
     }
+    if (message.newPublicKey !== "") {
+      writer.uint32(26).string(message.newPublicKey);
+    }
     if (message.signature !== "") {
-      writer.uint32(26).string(message.signature);
+      writer.uint32(34).string(message.signature);
     }
     return writer;
   },
@@ -442,6 +463,9 @@ export const MsgCreateChangePartiesOp = {
           message.newSet.push(Party.decode(reader, reader.uint32()));
           break;
         case 3:
+          message.newPublicKey = reader.string();
+          break;
+        case 4:
           message.signature = reader.string();
           break;
         default:
@@ -467,6 +491,11 @@ export const MsgCreateChangePartiesOp = {
         message.newSet.push(Party.fromJSON(e));
       }
     }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = String(object.newPublicKey);
+    } else {
+      message.newPublicKey = "";
+    }
     if (object.signature !== undefined && object.signature !== null) {
       message.signature = String(object.signature);
     } else {
@@ -483,6 +512,8 @@ export const MsgCreateChangePartiesOp = {
     } else {
       obj.newSet = [];
     }
+    message.newPublicKey !== undefined &&
+      (obj.newPublicKey = message.newPublicKey);
     message.signature !== undefined && (obj.signature = message.signature);
     return obj;
   },
@@ -503,6 +534,11 @@ export const MsgCreateChangePartiesOp = {
       for (const e of object.newSet) {
         message.newSet.push(Party.fromPartial(e));
       }
+    }
+    if (object.newPublicKey !== undefined && object.newPublicKey !== null) {
+      message.newPublicKey = object.newPublicKey;
+    } else {
+      message.newPublicKey = "";
     }
     if (object.signature !== undefined && object.signature !== null) {
       message.signature = object.signature;
@@ -706,6 +742,247 @@ export const MsgSetupInitialResponse = {
   },
 };
 
+const baseMsgCreateAddSignerPartyProposal: object = {
+  creator: "",
+  title: "",
+  description: "",
+  account: "",
+  address: "",
+  trialPublicKey: "",
+};
+
+export const MsgCreateAddSignerPartyProposal = {
+  encode(
+    message: MsgCreateAddSignerPartyProposal,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    if (message.account !== "") {
+      writer.uint32(34).string(message.account);
+    }
+    if (message.address !== "") {
+      writer.uint32(42).string(message.address);
+    }
+    if (message.trialPublicKey !== "") {
+      writer.uint32(50).string(message.trialPublicKey);
+    }
+    for (const v of message.deposit) {
+      Coin.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateAddSignerPartyProposal {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposal,
+    } as MsgCreateAddSignerPartyProposal;
+    message.deposit = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.title = reader.string();
+          break;
+        case 3:
+          message.description = reader.string();
+          break;
+        case 4:
+          message.account = reader.string();
+          break;
+        case 5:
+          message.address = reader.string();
+          break;
+        case 6:
+          message.trialPublicKey = reader.string();
+          break;
+        case 7:
+          message.deposit.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateAddSignerPartyProposal {
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposal,
+    } as MsgCreateAddSignerPartyProposal;
+    message.deposit = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = String(object.title);
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    } else {
+      message.description = "";
+    }
+    if (object.account !== undefined && object.account !== null) {
+      message.account = String(object.account);
+    } else {
+      message.account = "";
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    if (object.trialPublicKey !== undefined && object.trialPublicKey !== null) {
+      message.trialPublicKey = String(object.trialPublicKey);
+    } else {
+      message.trialPublicKey = "";
+    }
+    if (object.deposit !== undefined && object.deposit !== null) {
+      for (const e of object.deposit) {
+        message.deposit.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateAddSignerPartyProposal): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.account !== undefined && (obj.account = message.account);
+    message.address !== undefined && (obj.address = message.address);
+    message.trialPublicKey !== undefined &&
+      (obj.trialPublicKey = message.trialPublicKey);
+    if (message.deposit) {
+      obj.deposit = message.deposit.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.deposit = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateAddSignerPartyProposal>
+  ): MsgCreateAddSignerPartyProposal {
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposal,
+    } as MsgCreateAddSignerPartyProposal;
+    message.deposit = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = object.title;
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.account !== undefined && object.account !== null) {
+      message.account = object.account;
+    } else {
+      message.account = "";
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    if (object.trialPublicKey !== undefined && object.trialPublicKey !== null) {
+      message.trialPublicKey = object.trialPublicKey;
+    } else {
+      message.trialPublicKey = "";
+    }
+    if (object.deposit !== undefined && object.deposit !== null) {
+      for (const e of object.deposit) {
+        message.deposit.push(Coin.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateAddSignerPartyProposalResponse: object = {};
+
+export const MsgCreateAddSignerPartyProposalResponse = {
+  encode(
+    _: MsgCreateAddSignerPartyProposalResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateAddSignerPartyProposalResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposalResponse,
+    } as MsgCreateAddSignerPartyProposalResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateAddSignerPartyProposalResponse {
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposalResponse,
+    } as MsgCreateAddSignerPartyProposalResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateAddSignerPartyProposalResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateAddSignerPartyProposalResponse>
+  ): MsgCreateAddSignerPartyProposalResponse {
+    const message = {
+      ...baseMsgCreateAddSignerPartyProposalResponse,
+    } as MsgCreateAddSignerPartyProposalResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateTransferOperation(
@@ -717,8 +994,11 @@ export interface Msg {
   CreateConfirmation(
     request: MsgCreateConfirmation
   ): Promise<MsgCreateConfirmationResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SetupInitial(request: MsgSetupInitial): Promise<MsgSetupInitialResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateAddSignerPartyProposal(
+    request: MsgCreateAddSignerPartyProposal
+  ): Promise<MsgCreateAddSignerPartyProposalResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -777,6 +1057,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgSetupInitialResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateAddSignerPartyProposal(
+    request: MsgCreateAddSignerPartyProposal
+  ): Promise<MsgCreateAddSignerPartyProposalResponse> {
+    const data = MsgCreateAddSignerPartyProposal.encode(request).finish();
+    const promise = this.rpc.request(
+      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "CreateAddSignerPartyProposal",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateAddSignerPartyProposalResponse.decode(new Reader(data))
     );
   }
 }

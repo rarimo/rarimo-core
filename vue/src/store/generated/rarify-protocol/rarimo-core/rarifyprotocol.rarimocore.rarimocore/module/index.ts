@@ -4,17 +4,19 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateChangePartiesOp } from "./types/rarimocore/tx";
+import { MsgCreateAddSignerPartyProposal } from "./types/rarimocore/tx";
 import { MsgCreateTransferOp } from "./types/rarimocore/tx";
-import { MsgSetupInitial } from "./types/rarimocore/tx";
 import { MsgCreateConfirmation } from "./types/rarimocore/tx";
+import { MsgSetupInitial } from "./types/rarimocore/tx";
+import { MsgCreateChangePartiesOp } from "./types/rarimocore/tx";
 
 
 const types = [
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", MsgCreateChangePartiesOp],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateAddSignerPartyProposal", MsgCreateAddSignerPartyProposal],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", MsgCreateTransferOp],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", MsgSetupInitial],
   ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", MsgSetupInitial],
+  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", MsgCreateChangePartiesOp],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -47,10 +49,11 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreateChangePartiesOp: (data: MsgCreateChangePartiesOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", value: MsgCreateChangePartiesOp.fromPartial( data ) }),
+    msgCreateAddSignerPartyProposal: (data: MsgCreateAddSignerPartyProposal): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateAddSignerPartyProposal", value: MsgCreateAddSignerPartyProposal.fromPartial( data ) }),
     msgCreateTransferOp: (data: MsgCreateTransferOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", value: MsgCreateTransferOp.fromPartial( data ) }),
-    msgSetupInitial: (data: MsgSetupInitial): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", value: MsgSetupInitial.fromPartial( data ) }),
     msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
+    msgSetupInitial: (data: MsgSetupInitial): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", value: MsgSetupInitial.fromPartial( data ) }),
+    msgCreateChangePartiesOp: (data: MsgCreateChangePartiesOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", value: MsgCreateChangePartiesOp.fromPartial( data ) }),
     
   };
 };

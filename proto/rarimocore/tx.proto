@@ -5,6 +5,8 @@ import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "tokenmanager/item.proto";
 import "rarimocore/params.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
@@ -15,6 +17,7 @@ service Msg {
   rpc CreateChangePartiesOperation(MsgCreateChangePartiesOp) returns (MsgCreateChangePartiesOpResponse);
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
+  rpc CreateAddSignerPartyProposal(MsgCreateAddSignerPartyProposal) returns (MsgCreateAddSignerPartyProposalResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -54,5 +57,17 @@ message MsgSetupInitial {
 }
 
 message MsgSetupInitialResponse {}
+
+message MsgCreateAddSignerPartyProposal {
+  string creator = 1;
+  string title = 2;
+  string description = 3;
+  string account = 4;
+  string address = 5;
+  string trialPublicKey = 6;
+  repeated cosmos.base.v1beta1.Coin deposit = 7  [(gogoproto.nullable) = false];
+}
+
+message MsgCreateAddSignerPartyProposalResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
