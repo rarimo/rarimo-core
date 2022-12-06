@@ -8,7 +8,9 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-const ECDSAPublicKeySize = 65
+const (
+	ECDSAPublicKeySize = 65
+)
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
@@ -17,6 +19,7 @@ var (
 	ParamThreshold        = []byte("Threshold")
 	ParamParties          = []byte("Parties")
 	ParamIsUpdateRequired = []byte("IsUpdateRequired")
+	ParamLastSignature    = []byte("LastSignature")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -43,6 +46,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamThreshold, &p.Threshold, validateThreshold),
 		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
 		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
+		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
 	}
 }
 
@@ -109,4 +113,13 @@ func validateIsUpdateRequired(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 	return nil
+}
+
+func validateLastSignature(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	_, err := hexutil.Decode(v)
+	return err
 }

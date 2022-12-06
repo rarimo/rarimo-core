@@ -20,3 +20,9 @@ func (k Keeper) GetKeyECDSA(ctx sdk.Context) string {
 	params := k.GetParams(ctx)
 	return params.GetKeyECDSA()
 }
+
+func (k Keeper) UpdateLastSignature(ctx sdk.Context, sig string) {
+	params := k.GetParams(ctx)
+	params.LastSignature = sig
+	k.SetParams(ctx, params)
+}

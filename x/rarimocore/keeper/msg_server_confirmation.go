@@ -74,6 +74,8 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		confirmation,
 	)
 
+	k.UpdateLastSignature(ctx, confirmation.SignatureECDSA)
+
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewConfirmation,
 		sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
 	))

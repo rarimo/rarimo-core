@@ -24,4 +24,5 @@ message Params {
   uint64 threshold = 2;
   repeated Party parties = 3;
   bool isUpdateRequired = 5;
+  string lastSignature = 6;
 }
