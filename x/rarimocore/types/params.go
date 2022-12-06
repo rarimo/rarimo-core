@@ -13,10 +13,10 @@ const ECDSAPublicKeySize = 65
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	KeyECDSA         = []byte("keyECDSAParam")
-	Threshold        = []byte("thresholdParam")
-	Parties          = []byte("partiesParam")
-	IsUpdateRequired = []byte("isUpdateRequiredParam")
+	ParamKeyECDSA         = []byte("KeyECDSA")
+	ParamThreshold        = []byte("Threshold")
+	ParamParties          = []byte("Parties")
+	ParamIsUpdateRequired = []byte("IsUpdateRequired")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -33,16 +33,16 @@ func NewParams(keyECDSA string) Params {
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams("")
+	return Params{}
 }
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
-		paramtypes.NewParamSetPair(Threshold, &p.Threshold, validateThreshold),
-		paramtypes.NewParamSetPair(Parties, &p.Parties, validateParties),
-		paramtypes.NewParamSetPair(IsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
+		paramtypes.NewParamSetPair(ParamKeyECDSA, &p.KeyECDSA, validateKeyECDSA),
+		paramtypes.NewParamSetPair(ParamThreshold, &p.Threshold, validateThreshold),
+		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
+		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 	}
 }
 

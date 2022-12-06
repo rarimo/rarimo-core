@@ -133,8 +133,6 @@ export interface RarimocoreConfirmation {
   creator?: string;
 }
 
-export type RarimocoreMsgCreateAddSignerPartyProposalResponse = object;
-
 export type RarimocoreMsgCreateChangePartiesOpResponse = object;
 
 export type RarimocoreMsgCreateConfirmationResponse = object;
@@ -326,17 +324,6 @@ export enum Tokenmanagertype {
   METAPLEX_FT = "METAPLEX_FT",
   NEAR_FT = "NEAR_FT",
   NEAR_NFT = "NEAR_NFT",
-}
-
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
-  denom?: string;
-  amount?: string;
 }
 
 /**
