@@ -52,6 +52,7 @@ export interface Params {
   threshold: number;
   parties: Party[];
   isUpdateRequired: boolean;
+  lastSignature: string;
 }
 
 const baseParty: object = {
@@ -169,6 +170,7 @@ const baseParams: object = {
   keyECDSA: "",
   threshold: 0,
   isUpdateRequired: false,
+  lastSignature: "",
 };
 
 export const Params = {
@@ -184,6 +186,9 @@ export const Params = {
     }
     if (message.isUpdateRequired === true) {
       writer.uint32(40).bool(message.isUpdateRequired);
+    }
+    if (message.lastSignature !== "") {
+      writer.uint32(50).string(message.lastSignature);
     }
     return writer;
   },
@@ -207,6 +212,9 @@ export const Params = {
           break;
         case 5:
           message.isUpdateRequired = reader.bool();
+          break;
+        case 6:
+          message.lastSignature = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -242,6 +250,11 @@ export const Params = {
     } else {
       message.isUpdateRequired = false;
     }
+    if (object.lastSignature !== undefined && object.lastSignature !== null) {
+      message.lastSignature = String(object.lastSignature);
+    } else {
+      message.lastSignature = "";
+    }
     return message;
   },
 
@@ -258,6 +271,8 @@ export const Params = {
     }
     message.isUpdateRequired !== undefined &&
       (obj.isUpdateRequired = message.isUpdateRequired);
+    message.lastSignature !== undefined &&
+      (obj.lastSignature = message.lastSignature);
     return obj;
   },
 
@@ -286,6 +301,11 @@ export const Params = {
       message.isUpdateRequired = object.isUpdateRequired;
     } else {
       message.isUpdateRequired = false;
+    }
+    if (object.lastSignature !== undefined && object.lastSignature !== null) {
+      message.lastSignature = object.lastSignature;
+    } else {
+      message.lastSignature = "";
     }
     return message;
   },
