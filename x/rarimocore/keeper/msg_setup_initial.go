@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
 )
 
@@ -33,7 +34,7 @@ func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitia
 
 	params.KeyECDSA = msg.NewPublicKey
 	if verifications == len(params.Parties) {
-		params.Threshold = (uint64(len(params.Parties)+2) / 3) * 2
+		params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
 		params.IsUpdateRequired = false
 	}
 

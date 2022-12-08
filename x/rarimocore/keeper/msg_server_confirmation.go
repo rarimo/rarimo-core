@@ -140,7 +140,7 @@ func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 	}
 
 	params.KeyECDSA = op.NewPublicKey
-	params.Threshold = uint64(((len(params.Parties) + 2) / 3) * 2)
+	params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
 	params.IsUpdateRequired = false
 	k.SetParams(ctx, params)
 	return nil
