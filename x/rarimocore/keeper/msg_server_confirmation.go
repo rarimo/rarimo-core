@@ -36,11 +36,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	for _, index := range msg.Indexes {
 		op, ok := k.GetOperation(ctx, index)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", index))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s not found", index))
 		}
 
 		if op.Signed {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", index))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is already signed", index))
 		}
 		operations = append(operations, op)
 
@@ -132,11 +132,12 @@ func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 	}
 
 	for i := range params.Parties {
-		if op.Parties[i].Address != params.Parties[i].Address {
+		if op.Parties[i].Account != params.Parties[i].Account {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties")
 		}
 
 		params.Parties[i].PubKey = op.Parties[i].PubKey
+		params.Parties[i].Verified = true
 	}
 
 	params.KeyECDSA = op.NewPublicKey
