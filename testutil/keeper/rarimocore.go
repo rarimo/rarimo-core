@@ -13,8 +13,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/keeper"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func RarimocoreKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

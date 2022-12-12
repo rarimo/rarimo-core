@@ -13,8 +13,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/keeper"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func TokenmanagerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

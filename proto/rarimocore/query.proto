@@ -9,32 +9,32 @@ import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/params";
+    option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/params";
   }
   // Queries a Deposit by index.
 	rpc Operation(QueryGetOperationRequest) returns (QueryGetOperationResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/operation/{index}";
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation/{index}";
 	}
 
 	// Queries a list of Deposit items.
 	rpc OperationAll(QueryAllOperationRequest) returns (QueryAllOperationResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/operation";
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation";
 	}
 
 // Queries a Confirmation by index.
 	rpc Confirmation(QueryGetConfirmationRequest) returns (QueryGetConfirmationResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}";
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation/{root}";
 	}
 
 	// Queries a list of Confirmation items.
 	rpc ConfirmationAll(QueryAllConfirmationRequest) returns (QueryAllConfirmationResponse) {
-		option (google.api.http).get = "/rarify-protocol/rarimo-core/rarimocore/confirmation";
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation";
 	}
 
 // this line is used by starport scaffolding # 2

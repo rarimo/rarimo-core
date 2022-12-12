@@ -3,8 +3,8 @@ package bundle
 import (
 	"bytes"
 
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 type DefaultBundle struct {

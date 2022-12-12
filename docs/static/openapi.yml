@@ -30176,7 +30176,7 @@ paths:
           format: uint64
       tags:
         - Query
-  /rarify-protocol/rarimo-core/rarimocore/confirmation:
+  /rarimo/rarimo-core/rarimocore/confirmation:
     get:
       summary: Queries a list of Confirmation items.
       operationId: RarifyprotocolRarimocoreRarimocoreConfirmationAll
@@ -30465,7 +30465,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}':
+  '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
     get:
       summary: Queries a Confirmation by index.
       operationId: RarifyprotocolRarimocoreRarimocoreConfirmation
@@ -30683,7 +30683,7 @@ paths:
           type: string
       tags:
         - Query
-  /rarify-protocol/rarimo-core/rarimocore/operation:
+  /rarimo/rarimo-core/rarimocore/operation:
     get:
       summary: Queries a list of Deposit items.
       operationId: RarifyprotocolRarimocoreRarimocoreOperationAll
@@ -31151,7 +31151,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/rarimocore/operation/{index}':
+  '/rarimo/rarimo-core/rarimocore/operation/{index}':
     get:
       summary: Queries a Deposit by index.
       operationId: RarifyprotocolRarimocoreRarimocoreOperation
@@ -31546,7 +31546,7 @@ paths:
           type: string
       tags:
         - Query
-  /rarify-protocol/rarimo-core/rarimocore/params:
+  /rarimo/rarimo-core/rarimocore/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: RarifyprotocolRarimocoreRarimocoreParams
@@ -31752,7 +31752,7 @@ paths:
                         }
       tags:
         - Query
-  /rarify-protocol/rarimo-core/tokenmanager/info:
+  /rarimo/rarimo-core/tokenmanager/info:
     get:
       summary: Queries a list of Info items.
       operationId: RarifyprotocolRarimocoreTokenmanagerInfoAll
@@ -31886,7 +31886,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/tokenmanager/info/{index}':
+  '/rarimo/rarimo-core/tokenmanager/info/{index}':
     get:
       summary: Queries a Info by index.
       operationId: RarifyprotocolRarimocoreTokenmanagerInfo
@@ -31939,7 +31939,7 @@ paths:
           type: string
       tags:
         - Query
-  /rarify-protocol/rarimo-core/tokenmanager/item:
+  /rarimo/rarimo-core/tokenmanager/item:
     get:
       summary: Queries a list of Item items.
       operationId: RarifyprotocolRarimocoreTokenmanagerItemAll
@@ -32103,7 +32103,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/tokenmanager/item/{chain}':
+  '/rarimo/rarimo-core/tokenmanager/item/{chain}':
     get:
       summary: Queries a Item by index.
       operationId: RarifyprotocolRarimocoreTokenmanagerItem
@@ -32194,7 +32194,7 @@ paths:
           type: string
       tags:
         - Query
-  '/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
+  '/rarimo/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
     get:
       summary: Queries a Item by chain.
       operationId: RarifyprotocolRarimocoreTokenmanagerItemByChain
@@ -32281,7 +32281,7 @@ paths:
           type: string
       tags:
         - Query
-  /rarify-protocol/rarimo-core/tokenmanager/params:
+  /rarimo/rarimo-core/tokenmanager/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: RarifyprotocolRarimocoreTokenmanagerParams

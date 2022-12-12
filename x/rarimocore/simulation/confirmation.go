@@ -9,8 +9,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/keeper"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // Prevent strconv unused error

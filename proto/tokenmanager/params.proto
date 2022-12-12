@@ -3,7 +3,7 @@ package rarifyprotocol.rarimocore.tokenmanager;
 
 import "tokenmanager/info.proto";
 
-option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 
 enum NetworkType {

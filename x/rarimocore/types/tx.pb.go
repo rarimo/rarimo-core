@@ -8,7 +8,7 @@ import (
 	fmt "fmt"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
-	types "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	types "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

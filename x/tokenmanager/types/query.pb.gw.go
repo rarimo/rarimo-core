@@ -634,17 +634,17 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "params"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "tokenmanager", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Item_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item", "chain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Item_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarimo", "rarimo-core", "tokenmanager", "item", "chain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ItemByChain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item", "infoIndex", "chain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ItemByChain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"rarimo", "rarimo-core", "tokenmanager", "item", "infoIndex", "chain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ItemAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "item"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ItemAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "tokenmanager", "item"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "info", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarimo", "rarimo-core", "tokenmanager", "info", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_InfoAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "tokenmanager", "info"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_InfoAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "tokenmanager", "info"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

@@ -401,7 +401,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryInfoAll
    * @summary Queries a list of Info items.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/info
+   * @request GET:/rarimo/rarimo-core/tokenmanager/info
    */
   queryInfoAll = (
     query?: {
@@ -414,7 +414,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<TokenmanagerQueryAllInfoResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/info`,
+      path: `/rarimo/rarimo-core/tokenmanager/info`,
       method: "GET",
       query: query,
       format: "json",
@@ -427,11 +427,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryInfo
    * @summary Queries a Info by index.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/info/{index}
+   * @request GET:/rarimo/rarimo-core/tokenmanager/info/{index}
    */
   queryInfo = (index: string, params: RequestParams = {}) =>
     this.request<TokenmanagerQueryGetInfoResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/info/${index}`,
+      path: `/rarimo/rarimo-core/tokenmanager/info/${index}`,
       method: "GET",
       format: "json",
       ...params,
@@ -443,7 +443,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryItemAll
    * @summary Queries a list of Item items.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item
+   * @request GET:/rarimo/rarimo-core/tokenmanager/item
    */
   queryItemAll = (
     query?: {
@@ -456,7 +456,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<TokenmanagerQueryAllItemResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/item`,
+      path: `/rarimo/rarimo-core/tokenmanager/item`,
       method: "GET",
       query: query,
       format: "json",
@@ -469,11 +469,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryItem
    * @summary Queries a Item by index.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{chain}
+   * @request GET:/rarimo/rarimo-core/tokenmanager/item/{chain}
    */
   queryItem = (chain: string, query?: { tokenAddress?: string; tokenId?: string }, params: RequestParams = {}) =>
     this.request<TokenmanagerQueryGetItemResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${chain}`,
+      path: `/rarimo/rarimo-core/tokenmanager/item/${chain}`,
       method: "GET",
       query: query,
       format: "json",
@@ -486,11 +486,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryItemByChain
    * @summary Queries a Item by chain.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}
+   * @request GET:/rarimo/rarimo-core/tokenmanager/item/{infoIndex}/{chain}
    */
   queryItemByChain = (infoIndex: string, chain: string, params: RequestParams = {}) =>
     this.request<TokenmanagerQueryGetItemByChainResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/item/${infoIndex}/${chain}`,
+      path: `/rarimo/rarimo-core/tokenmanager/item/${infoIndex}/${chain}`,
       method: "GET",
       format: "json",
       ...params,
@@ -502,11 +502,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
-   * @request GET:/rarify-protocol/rarimo-core/tokenmanager/params
+   * @request GET:/rarimo/rarimo-core/tokenmanager/params
    */
   queryParams = (params: RequestParams = {}) =>
     this.request<TokenmanagerQueryParamsResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/tokenmanager/params`,
+      path: `/rarimo/rarimo-core/tokenmanager/params`,
       method: "GET",
       format: "json",
       ...params,

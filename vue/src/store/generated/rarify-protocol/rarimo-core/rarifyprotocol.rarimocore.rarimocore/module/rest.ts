@@ -577,7 +577,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryConfirmationAll
    * @summary Queries a list of Confirmation items.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation
+   * @request GET:/rarimo/rarimo-core/rarimocore/confirmation
    */
   queryConfirmationAll = (
     query?: {
@@ -590,7 +590,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<RarimocoreQueryAllConfirmationResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation`,
+      path: `/rarimo/rarimo-core/rarimocore/confirmation`,
       method: "GET",
       query: query,
       format: "json",
@@ -603,11 +603,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryConfirmation
    * @summary Queries a Confirmation by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/confirmation/{root}
+   * @request GET:/rarimo/rarimo-core/rarimocore/confirmation/{root}
    */
   queryConfirmation = (root: string, params: RequestParams = {}) =>
     this.request<RarimocoreQueryGetConfirmationResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/confirmation/${root}`,
+      path: `/rarimo/rarimo-core/rarimocore/confirmation/${root}`,
       method: "GET",
       format: "json",
       ...params,
@@ -619,7 +619,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryOperationAll
    * @summary Queries a list of Deposit items.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/operation
+   * @request GET:/rarimo/rarimo-core/rarimocore/operation
    */
   queryOperationAll = (
     query?: {
@@ -632,7 +632,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<RarimocoreQueryAllOperationResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/operation`,
+      path: `/rarimo/rarimo-core/rarimocore/operation`,
       method: "GET",
       query: query,
       format: "json",
@@ -645,11 +645,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryOperation
    * @summary Queries a Deposit by index.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/operation/{index}
+   * @request GET:/rarimo/rarimo-core/rarimocore/operation/{index}
    */
   queryOperation = (index: string, params: RequestParams = {}) =>
     this.request<RarimocoreQueryGetOperationResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/operation/${index}`,
+      path: `/rarimo/rarimo-core/rarimocore/operation/${index}`,
       method: "GET",
       format: "json",
       ...params,
@@ -661,11 +661,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
-   * @request GET:/rarify-protocol/rarimo-core/rarimocore/params
+   * @request GET:/rarimo/rarimo-core/rarimocore/params
    */
   queryParams = (params: RequestParams = {}) =>
     this.request<RarimocoreQueryParamsResponse, RpcStatus>({
-      path: `/rarify-protocol/rarimo-core/rarimocore/params`,
+      path: `/rarimo/rarimo-core/rarimocore/params`,
       method: "GET",
       format: "json",
       ...params,

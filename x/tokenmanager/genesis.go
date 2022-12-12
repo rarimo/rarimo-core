@@ -2,8 +2,8 @@ package tokenmanager
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/keeper"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

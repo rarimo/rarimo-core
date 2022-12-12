@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 var _ types.QueryServer = Keeper{}

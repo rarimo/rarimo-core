@@ -1,4 +1,4 @@
-module gitlab.com/rarify-protocol/rarimo-core
+module gitlab.com/rarimo/rarimo-core
 
 go 1.18
 
@@ -19,8 +19,8 @@ require (
 	github.com/tendermint/spn v0.2.1-0.20220708132853-26a17f03c072
 	github.com/tendermint/tendermint v0.34.19
 	github.com/tendermint/tm-db v0.6.7
-	gitlab.com/rarify-protocol/go-merkle v0.0.0-20220831221733-8f4135fe9f1f
-	gitlab.com/rarify-protocol/saver-grpc-lib v0.0.0-20221002233650-44be7a6effa1
+	gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1
+	gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221212105441-b96e79f05d25
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c
 	google.golang.org/grpc v1.50.1
 )
@@ -177,7 +177,7 @@ require (
 )
 
 replace (
+	github.com/cosmos/cosmos-sdk v0.45.5 => gitlab.com/rarify-protocol/cosmos-sdk v0.45.5-dev.4
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
-	github.com/keybase/go-keychain => github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )

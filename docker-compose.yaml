@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   validator:
-    image: registry.gitlab.com/rarify-protocol/rarimo-core:ba434e3e818e50796042b5b0b5a1a6d74e6f2ada
+    image: registry.gitlab.com/rarimo/rarimo-core:ba434e3e818e50796042b5b0b5a1a6d74e6f2ada
     entrypoint: sh -c "rarimo-core start --home=/usr/local/bin/genesis"
     environment:
       - Solana_ADDR_ENV=solana-saver:8000
@@ -10,7 +10,7 @@ services:
       - ./genesis:/usr/local/bin/genesis
 
   solana-saver:
-    image: registry.gitlab.com/rarify-protocol/sol-saver-svc:e7878a49b4680c2844a03f573467a7a290d2c1b1
+    image: registry.gitlab.com/rarimo/sol-saver-svc:e7878a49b4680c2844a03f573467a7a290d2c1b1
     restart: unless-stopped
     depends_on:
       - solana-saver-db
@@ -31,7 +31,7 @@ services:
       - solana-data:/pgdata
 
   signer:
-    image: registry.gitlab.com/rarify-protocol/signer-svc:831023d79333ce087b47a102ca55b60e9949dd50
+    image: registry.gitlab.com/rarimo/signer-svc:831023d79333ce087b47a102ca55b60e9949dd50
     restart: unless-stopped
     depends_on:
       - signer-db

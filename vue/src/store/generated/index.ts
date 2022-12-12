@@ -20,8 +20,8 @@ import CosmosIbcGoIbcCoreChannelV1 from './cosmos/ibc-go/ibc.core.channel.v1'
 import CosmosIbcGoIbcCoreClientV1 from './cosmos/ibc-go/ibc.core.client.v1'
 import CosmosIbcGoIbcCoreConnectionV1 from './cosmos/ibc-go/ibc.core.connection.v1'
 import CosmosIbcGoIbcCorePortV1 from './cosmos/ibc-go/ibc.core.port.v1'
-import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreRarimocore from './rarify-protocol/rarimo-core/rarifyprotocol.rarimocore.rarimocore'
-import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreTokenmanager from './rarify-protocol/rarimo-core/rarifyprotocol.rarimocore.tokenmanager'
+import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreRarimocore from './rarimo/rarimo-core/rarifyprotocol.rarimocore.rarimocore'
+import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreTokenmanager from './rarimo/rarimo-core/rarifyprotocol.rarimocore.tokenmanager'
 
 
 export default { 

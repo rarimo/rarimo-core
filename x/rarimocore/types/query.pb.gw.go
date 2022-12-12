@@ -497,15 +497,15 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "params"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "rarimocore", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Operation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "operation", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Operation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarimo", "rarimo-core", "rarimocore", "operation", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_OperationAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "operation"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_OperationAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "rarimocore", "operation"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Confirmation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "confirmation", "root"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Confirmation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"rarimo", "rarimo-core", "rarimocore", "confirmation", "root"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ConfirmationAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarify-protocol", "rarimo-core", "rarimocore", "confirmation"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ConfirmationAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"rarimo", "rarimo-core", "rarimocore", "confirmation"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
