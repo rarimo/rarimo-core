@@ -22,6 +22,8 @@ import CosmosIbcGoIbcCoreConnectionV1 from './cosmos/ibc-go/ibc.core.connection.
 import CosmosIbcGoIbcCorePortV1 from './cosmos/ibc-go/ibc.core.port.v1'
 import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreRarimocore from './rarify-protocol/rarimo-core/rarifyprotocol.rarimocore.rarimocore'
 import RarifyProtocolRarimoCoreRarifyprotocolRarimocoreTokenmanager from './rarify-protocol/rarimo-core/rarifyprotocol.rarimocore.tokenmanager'
+import RarimoRarimoCoreRarifyprotocolRarimocoreRarimocore from './rarimo/rarimo-core/rarifyprotocol.rarimocore.rarimocore'
+import RarimoRarimoCoreRarifyprotocolRarimocoreTokenmanager from './rarimo/rarimo-core/rarifyprotocol.rarimocore.tokenmanager'
 
 
 export default { 
@@ -47,6 +49,8 @@ export default {
   CosmosIbcGoIbcCorePortV1: load(CosmosIbcGoIbcCorePortV1, 'ibc.core.port.v1'),
   RarifyProtocolRarimoCoreRarifyprotocolRarimocoreRarimocore: load(RarifyProtocolRarimoCoreRarifyprotocolRarimocoreRarimocore, 'rarifyprotocol.rarimocore.rarimocore'),
   RarifyProtocolRarimoCoreRarifyprotocolRarimocoreTokenmanager: load(RarifyProtocolRarimoCoreRarifyprotocolRarimocoreTokenmanager, 'rarifyprotocol.rarimocore.tokenmanager'),
+  RarimoRarimoCoreRarifyprotocolRarimocoreRarimocore: load(RarimoRarimoCoreRarifyprotocolRarimocoreRarimocore, 'rarifyprotocol.rarimocore.rarimocore'),
+  RarimoRarimoCoreRarifyprotocolRarimocoreTokenmanager: load(RarimoRarimoCoreRarifyprotocolRarimocoreTokenmanager, 'rarifyprotocol.rarimocore.tokenmanager'),
   
 }
 

@@ -5,7 +5,7 @@ import (
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/ignite/cli/ignite/pkg/cosmoscmd"
-	"gitlab.com/rarify-protocol/rarimo-core/app"
+	"gitlab.com/rarimo/rarimo-core/app"
 )
 
 func main() {

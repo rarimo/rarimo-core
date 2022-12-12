@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"gitlab.com/rarify-protocol/rarimo-core/testutil/sample"
-	tokenmanagersimulation "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/simulation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/testutil/sample"
+	tokenmanagersimulation "gitlab.com/rarimo/rarimo-core/x/tokenmanager/simulation"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 // avoid unused import issue

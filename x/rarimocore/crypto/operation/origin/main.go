@@ -1,7 +1,7 @@
 package origin
 
 import (
-	xcrypto "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
+	xcrypto "gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 // Origin stores information about deposit (lock) transaction

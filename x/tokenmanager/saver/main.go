@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
-	saver "gitlab.com/rarify-protocol/saver-grpc-lib/grpc"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	saver "gitlab.com/rarimo/savers/saver-grpc-lib/grpc"
 	"google.golang.org/grpc"
 )
 

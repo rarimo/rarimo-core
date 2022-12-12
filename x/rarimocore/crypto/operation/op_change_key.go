@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarify-protocol/go-merkle"
+	merkle "gitlab.com/rarimo/go-merkle"
 )
 
 // ChangeKeyContent implements the Content interface provided by go-merkle and represents the content stored in the tree.

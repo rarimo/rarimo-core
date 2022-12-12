@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (*types.MsgCreateInfoResponse, error) {

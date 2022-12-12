@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // GetParams get all parameters as types.Params
