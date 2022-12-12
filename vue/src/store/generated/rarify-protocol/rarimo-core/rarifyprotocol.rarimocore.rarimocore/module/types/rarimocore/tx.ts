@@ -3,7 +3,7 @@ import { type, typeFromJSON, typeToJSON } from "../tokenmanager/item";
 import { Reader, Writer } from "protobufjs/minimal";
 import { Party } from "../rarimocore/params";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
+export const protobufPackage = "rarimo.rarimocore.rarimocore";
 
 export interface MsgCreateTransferOp {
   creator: string;
@@ -754,7 +754,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgCreateTransferOpResponse> {
     const data = MsgCreateTransferOp.encode(request).finish();
     const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "rarimo.rarimocore.rarimocore.Msg",
       "CreateTransferOperation",
       data
     );
@@ -768,7 +768,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgCreateChangePartiesOpResponse> {
     const data = MsgCreateChangePartiesOp.encode(request).finish();
     const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "rarimo.rarimocore.rarimocore.Msg",
       "CreateChangePartiesOperation",
       data
     );
@@ -782,7 +782,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgCreateConfirmationResponse> {
     const data = MsgCreateConfirmation.encode(request).finish();
     const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "rarimo.rarimocore.rarimocore.Msg",
       "CreateConfirmation",
       data
     );
@@ -794,7 +794,7 @@ export class MsgClientImpl implements Msg {
   SetupInitial(request: MsgSetupInitial): Promise<MsgSetupInitialResponse> {
     const data = MsgSetupInitial.encode(request).finish();
     const promise = this.rpc.request(
-      "rarifyprotocol.rarimocore.rarimocore.Msg",
+      "rarimo.rarimocore.rarimocore.Msg",
       "SetupInitial",
       data
     );

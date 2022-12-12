@@ -98,14 +98,14 @@ import (
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
-	"gitlab.com/rarify-protocol/rarimo-core/docs"
+	"gitlab.com/rarimo/rarimo-core/docs"
 
-	rarimocoremodule "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore"
-	rarimocoremodulekeeper "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/keeper"
-	rarimocoremoduletypes "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
-	tokenmanagermodule "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager"
-	tokenmanagermodulekeeper "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/keeper"
-	tokenmanagermoduletypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	rarimocoremodule "gitlab.com/rarimo/rarimo-core/x/rarimocore"
+	rarimocoremodulekeeper "gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
+	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagermodule "gitlab.com/rarimo/rarimo-core/x/tokenmanager"
+	tokenmanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
+	tokenmanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

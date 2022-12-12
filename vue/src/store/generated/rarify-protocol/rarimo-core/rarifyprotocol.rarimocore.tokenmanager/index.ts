@@ -132,7 +132,7 @@ export default {
 	},
 	actions: {
 		init({ dispatch, rootGetters }) {
-			console.log('Vuex module: rarifyprotocol.rarimocore.tokenmanager initialized!')
+			console.log('Vuex module: rarimo.rarimocore.tokenmanager initialized!')
 			if (rootGetters['common/env/client']) {
 				rootGetters['common/env/client'].on('newblock', () => {
 					dispatch('StoreUpdate')

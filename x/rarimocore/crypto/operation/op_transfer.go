@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarify-protocol/go-merkle"
+	merkle "gitlab.com/rarimo/go-merkle"
 )
 
 // ContentData contains specific information for the certain content

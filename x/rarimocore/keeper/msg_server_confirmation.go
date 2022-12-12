@@ -8,11 +8,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarify-protocol/go-merkle"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto/pkg"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	merkle "gitlab.com/rarimo/go-merkle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {

@@ -3,7 +3,7 @@ import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Party } from "../rarimocore/params";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
+export const protobufPackage = "rarimo.rarimocore.rarimocore";
 
 export interface ChangeKey {
   newKey: string;

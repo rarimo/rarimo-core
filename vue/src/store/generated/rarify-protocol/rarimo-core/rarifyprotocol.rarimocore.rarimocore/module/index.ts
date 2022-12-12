@@ -11,10 +11,10 @@ import { MsgCreateChangePartiesOp } from "./types/rarimocore/tx";
 
 
 const types = [
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", MsgSetupInitial],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", MsgCreateTransferOp],
-  ["/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", MsgCreateChangePartiesOp],
+  ["/rarimo.rarimocore.rarimocore.MsgSetupInitial", MsgSetupInitial],
+  ["/rarimo.rarimocore.rarimocore.MsgCreateConfirmation", MsgCreateConfirmation],
+  ["/rarimo.rarimocore.rarimocore.MsgCreateTransferOp", MsgCreateTransferOp],
+  ["/rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOp", MsgCreateChangePartiesOp],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -47,10 +47,10 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgSetupInitial: (data: MsgSetupInitial): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial", value: MsgSetupInitial.fromPartial( data ) }),
-    msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
-    msgCreateTransferOp: (data: MsgCreateTransferOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp", value: MsgCreateTransferOp.fromPartial( data ) }),
-    msgCreateChangePartiesOp: (data: MsgCreateChangePartiesOp): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp", value: MsgCreateChangePartiesOp.fromPartial( data ) }),
+    msgSetupInitial: (data: MsgSetupInitial): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.rarimocore.MsgSetupInitial", value: MsgSetupInitial.fromPartial( data ) }),
+    msgCreateConfirmation: (data: MsgCreateConfirmation): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.rarimocore.MsgCreateConfirmation", value: MsgCreateConfirmation.fromPartial( data ) }),
+    msgCreateTransferOp: (data: MsgCreateTransferOp): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.rarimocore.MsgCreateTransferOp", value: MsgCreateTransferOp.fromPartial( data ) }),
+    msgCreateChangePartiesOp: (data: MsgCreateChangePartiesOp): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOp", value: MsgCreateChangePartiesOp.fromPartial( data ) }),
     
   };
 };

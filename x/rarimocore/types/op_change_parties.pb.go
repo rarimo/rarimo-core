@@ -83,7 +83,7 @@ func (m *ChangeParties) GetSignature() string {
 }
 
 func init() {
-	proto.RegisterType((*ChangeParties)(nil), "rarifyprotocol.rarimocore.rarimocore.ChangeParties")
+	proto.RegisterType((*ChangeParties)(nil), "rarimo.rarimocore.rarimocore.ChangeParties")
 }
 
 func init() {

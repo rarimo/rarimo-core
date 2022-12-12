@@ -196,9 +196,9 @@ func (m *Params) GetLastSignature() string {
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.rarimocore.ParamsUpdateType", ParamsUpdateType_name, ParamsUpdateType_value)
-	proto.RegisterType((*Party)(nil), "rarifyprotocol.rarimocore.rarimocore.Party")
-	proto.RegisterType((*Params)(nil), "rarifyprotocol.rarimocore.rarimocore.Params")
+	proto.RegisterEnum("rarimo.rarimocore.rarimocore.ParamsUpdateType", ParamsUpdateType_name, ParamsUpdateType_value)
+	proto.RegisterType((*Party)(nil), "rarimo.rarimocore.rarimocore.Party")
+	proto.RegisterType((*Params)(nil), "rarimo.rarimocore.rarimocore.Params")
 }
 
 func init() { proto.RegisterFile("rarimocore/params.proto", fileDescriptor_997c11d1d0285e72) }

@@ -85,7 +85,7 @@ func (m *GenesisState) GetInfoList() []Info {
 }
 
 func init() {
-	proto.RegisterType((*GenesisState)(nil), "rarifyprotocol.rarimocore.tokenmanager.GenesisState")
+	proto.RegisterType((*GenesisState)(nil), "rarimo.rarimocore.tokenmanager.GenesisState")
 }
 
 func init() { proto.RegisterFile("tokenmanager/genesis.proto", fileDescriptor_2e2658d20615f329) }

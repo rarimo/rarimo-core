@@ -4,8 +4,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/keeper"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func NewProposalHandler(k keeper.Keeper) govtypes.Handler {

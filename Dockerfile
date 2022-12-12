@@ -1,6 +1,6 @@
 FROM golang:1.18-alpine as buildbase
 
-WORKDIR /go/src/gitlab.com/rarify-protocol/rarimo-core
+WORKDIR /go/src/gitlab.com/rarimo/rarimo-core
 COPY vendor .
 COPY . .
 
@@ -9,7 +9,7 @@ ENV CGO_ENABLED=1
 ENV GOOS="linux"
 
 RUN apk add build-base
-RUN go build -o /usr/local/bin/rarimo-core gitlab.com/rarify-protocol/rarimo-core/cmd/rarimo-cored
+RUN go build -o /usr/local/bin/rarimo-core gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 ###
 

@@ -129,7 +129,7 @@ export default {
 	},
 	actions: {
 		init({ dispatch, rootGetters }) {
-			console.log('Vuex module: rarifyprotocol.rarimocore.rarimocore initialized!')
+			console.log('Vuex module: rarimo.rarimocore.rarimocore initialized!')
 			if (rootGetters['common/env/client']) {
 				rootGetters['common/env/client'].on('newblock', () => {
 					dispatch('StoreUpdate')

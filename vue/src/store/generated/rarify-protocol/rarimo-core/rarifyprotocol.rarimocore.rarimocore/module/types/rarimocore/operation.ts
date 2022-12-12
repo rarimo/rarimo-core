@@ -3,7 +3,7 @@ import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Any } from "../google/protobuf/any";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
+export const protobufPackage = "rarimo.rarimocore.rarimocore";
 
 export enum op_type {
   TRANSFER = 0,

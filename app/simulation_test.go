@@ -17,7 +17,7 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"gitlab.com/rarify-protocol/rarimo-core/app"
+	"gitlab.com/rarimo/rarimo-core/app"
 )
 
 func init() {

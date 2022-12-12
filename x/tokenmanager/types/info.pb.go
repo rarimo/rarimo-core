@@ -137,9 +137,9 @@ func (m *Info) GetCreator() string {
 }
 
 func init() {
-	proto.RegisterType((*ChainInfo)(nil), "rarifyprotocol.rarimocore.tokenmanager.ChainInfo")
-	proto.RegisterType((*Info)(nil), "rarifyprotocol.rarimocore.tokenmanager.Info")
-	proto.RegisterMapType((map[string]*ChainInfo)(nil), "rarifyprotocol.rarimocore.tokenmanager.Info.ChainsEntry")
+	proto.RegisterType((*ChainInfo)(nil), "rarimo.rarimocore.tokenmanager.ChainInfo")
+	proto.RegisterType((*Info)(nil), "rarimo.rarimocore.tokenmanager.Info")
+	proto.RegisterMapType((map[string]*ChainInfo)(nil), "rarimo.rarimocore.tokenmanager.Info.ChainsEntry")
 }
 
 func init() { proto.RegisterFile("tokenmanager/info.proto", fileDescriptor_6eb11e3d6e3aa6d7) }

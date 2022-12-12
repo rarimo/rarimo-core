@@ -5,9 +5,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarify-protocol/go-merkle"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types"
+	merkle "gitlab.com/rarimo/go-merkle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // ChangePartiesContent implements the Content interface provided by go-merkle and represents the content stored in the tree.

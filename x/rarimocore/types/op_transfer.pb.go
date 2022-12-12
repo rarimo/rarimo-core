@@ -145,7 +145,7 @@ func (m *Transfer) GetTokenIndex() string {
 }
 
 func init() {
-	proto.RegisterType((*Transfer)(nil), "rarifyprotocol.rarimocore.rarimocore.Transfer")
+	proto.RegisterType((*Transfer)(nil), "rarimo.rarimocore.rarimocore.Transfer")
 }
 
 func init() { proto.RegisterFile("rarimocore/op_transfer.proto", fileDescriptor_5b795acb1df5370f) }

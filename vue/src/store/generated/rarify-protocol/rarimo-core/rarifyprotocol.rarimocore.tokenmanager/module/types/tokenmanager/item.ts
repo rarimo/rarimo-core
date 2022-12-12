@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.tokenmanager";
+export const protobufPackage = "rarimo.rarimocore.tokenmanager";
 
 export enum type {
   NATIVE = 0,

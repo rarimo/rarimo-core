@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	tokentypes "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 const (

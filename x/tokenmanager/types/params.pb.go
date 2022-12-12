@@ -56,7 +56,7 @@ func (NetworkType) EnumDescriptor() ([]byte, []int) {
 type ChainParams struct {
 	Contract string            `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
 	Types    map[string]uint32 `protobuf:"bytes,2,rep,name=types,proto3" json:"types,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
-	Type     NetworkType       `protobuf:"varint,3,opt,name=type,proto3,enum=rarifyprotocol.rarimocore.tokenmanager.NetworkType" json:"type,omitempty"`
+	Type     NetworkType       `protobuf:"varint,3,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.NetworkType" json:"type,omitempty"`
 }
 
 func (m *ChainParams) Reset()         { *m = ChainParams{} }
@@ -159,11 +159,11 @@ func (m *Params) GetNetworks() map[string]*ChainParams {
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.tokenmanager.NetworkType", NetworkType_name, NetworkType_value)
-	proto.RegisterType((*ChainParams)(nil), "rarifyprotocol.rarimocore.tokenmanager.ChainParams")
-	proto.RegisterMapType((map[string]uint32)(nil), "rarifyprotocol.rarimocore.tokenmanager.ChainParams.TypesEntry")
-	proto.RegisterType((*Params)(nil), "rarifyprotocol.rarimocore.tokenmanager.Params")
-	proto.RegisterMapType((map[string]*ChainParams)(nil), "rarifyprotocol.rarimocore.tokenmanager.Params.NetworksEntry")
+	proto.RegisterEnum("rarimo.rarimocore.tokenmanager.NetworkType", NetworkType_name, NetworkType_value)
+	proto.RegisterType((*ChainParams)(nil), "rarimo.rarimocore.tokenmanager.ChainParams")
+	proto.RegisterMapType((map[string]uint32)(nil), "rarimo.rarimocore.tokenmanager.ChainParams.TypesEntry")
+	proto.RegisterType((*Params)(nil), "rarimo.rarimocore.tokenmanager.Params")
+	proto.RegisterMapType((map[string]*ChainParams)(nil), "rarimo.rarimocore.tokenmanager.Params.NetworksEntry")
 }
 
 func init() { proto.RegisterFile("tokenmanager/params.proto", fileDescriptor_55f297a3c8945a13) }

@@ -94,7 +94,7 @@ func (m *Confirmation) GetCreator() string {
 }
 
 func init() {
-	proto.RegisterType((*Confirmation)(nil), "rarifyprotocol.rarimocore.rarimocore.Confirmation")
+	proto.RegisterType((*Confirmation)(nil), "rarimo.rarimocore.rarimocore.Confirmation")
 }
 
 func init() { proto.RegisterFile("rarimocore/confirmation.proto", fileDescriptor_862d5195a2826b26) }

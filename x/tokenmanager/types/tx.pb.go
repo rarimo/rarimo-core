@@ -44,7 +44,7 @@ type MsgCreateInfo struct {
 	CurrentImageUri string `protobuf:"bytes,11,opt,name=currentImageUri,proto3" json:"currentImageUri,omitempty"`
 	// hex-encoded
 	CurrentImageHash string `protobuf:"bytes,12,opt,name=currentImageHash,proto3" json:"currentImageHash,omitempty"`
-	CurrentType      Type   `protobuf:"varint,13,opt,name=currentType,proto3,enum=rarifyprotocol.rarimocore.tokenmanager.Type" json:"currentType,omitempty"`
+	CurrentType      Type   `protobuf:"varint,13,opt,name=currentType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"currentType,omitempty"`
 }
 
 func (m *MsgCreateInfo) Reset()         { *m = MsgCreateInfo{} }
@@ -312,7 +312,7 @@ type MsgAddChain struct {
 	ImageUri string `protobuf:"bytes,11,opt,name=imageUri,proto3" json:"imageUri,omitempty"`
 	// hex-encoded
 	ImageHash string `protobuf:"bytes,12,opt,name=imageHash,proto3" json:"imageHash,omitempty"`
-	TokenType Type   `protobuf:"varint,13,opt,name=tokenType,proto3,enum=rarifyprotocol.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
+	TokenType Type   `protobuf:"varint,13,opt,name=tokenType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
 }
 
 func (m *MsgAddChain) Reset()         { *m = MsgAddChain{} }
@@ -476,12 +476,12 @@ func (m *MsgAddChainResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgAddChainResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateInfo)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfo")
-	proto.RegisterType((*MsgCreateInfoResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse")
-	proto.RegisterType((*MsgDeleteInfo)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfo")
-	proto.RegisterType((*MsgDeleteInfoResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfoResponse")
-	proto.RegisterType((*MsgAddChain)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgAddChain")
-	proto.RegisterType((*MsgAddChainResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse")
+	proto.RegisterType((*MsgCreateInfo)(nil), "rarimo.rarimocore.tokenmanager.MsgCreateInfo")
+	proto.RegisterType((*MsgCreateInfoResponse)(nil), "rarimo.rarimocore.tokenmanager.MsgCreateInfoResponse")
+	proto.RegisterType((*MsgDeleteInfo)(nil), "rarimo.rarimocore.tokenmanager.MsgDeleteInfo")
+	proto.RegisterType((*MsgDeleteInfoResponse)(nil), "rarimo.rarimocore.tokenmanager.MsgDeleteInfoResponse")
+	proto.RegisterType((*MsgAddChain)(nil), "rarimo.rarimocore.tokenmanager.MsgAddChain")
+	proto.RegisterType((*MsgAddChainResponse)(nil), "rarimo.rarimocore.tokenmanager.MsgAddChainResponse")
 }
 
 func init() { proto.RegisterFile("tokenmanager/tx.proto", fileDescriptor_0b7dd519179c34b5) }
@@ -554,7 +554,7 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreateInfo(ctx context.Context, in *MsgCreateInfo, opts ...grpc.CallOption) (*MsgCreateInfoResponse, error) {
 	out := new(MsgCreateInfoResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Msg/CreateInfo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Msg/CreateInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -563,7 +563,7 @@ func (c *msgClient) CreateInfo(ctx context.Context, in *MsgCreateInfo, opts ...g
 
 func (c *msgClient) DeleteInfo(ctx context.Context, in *MsgDeleteInfo, opts ...grpc.CallOption) (*MsgDeleteInfoResponse, error) {
 	out := new(MsgDeleteInfoResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Msg/DeleteInfo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Msg/DeleteInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -572,7 +572,7 @@ func (c *msgClient) DeleteInfo(ctx context.Context, in *MsgDeleteInfo, opts ...g
 
 func (c *msgClient) AddChain(ctx context.Context, in *MsgAddChain, opts ...grpc.CallOption) (*MsgAddChainResponse, error) {
 	out := new(MsgAddChainResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Msg/AddChain", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Msg/AddChain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -614,7 +614,7 @@ func _Msg_CreateInfo_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Msg/CreateInfo",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Msg/CreateInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateInfo(ctx, req.(*MsgCreateInfo))
@@ -632,7 +632,7 @@ func _Msg_DeleteInfo_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Msg/DeleteInfo",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Msg/DeleteInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).DeleteInfo(ctx, req.(*MsgDeleteInfo))
@@ -650,7 +650,7 @@ func _Msg_AddChain_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Msg/AddChain",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Msg/AddChain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).AddChain(ctx, req.(*MsgAddChain))
@@ -659,7 +659,7 @@ func _Msg_AddChain_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "rarifyprotocol.rarimocore.tokenmanager.Msg",
+	ServiceName: "rarimo.rarimocore.tokenmanager.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

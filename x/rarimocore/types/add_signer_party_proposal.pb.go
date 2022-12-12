@@ -99,7 +99,7 @@ func (m *AddSignerPartyProposal) GetTrialPublicKey() string {
 }
 
 func init() {
-	proto.RegisterType((*AddSignerPartyProposal)(nil), "rarifyprotocol.rarimocore.rarimocore.AddSignerPartyProposal")
+	proto.RegisterType((*AddSignerPartyProposal)(nil), "rarimo.rarimocore.rarimocore.AddSignerPartyProposal")
 }
 
 func init() {

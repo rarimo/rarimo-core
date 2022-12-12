@@ -81,7 +81,7 @@ type Item struct {
 	ImageUri string `protobuf:"bytes,10,opt,name=imageUri,proto3" json:"imageUri,omitempty"`
 	// Hash of the token image. Encoded into hex string. (optional)
 	ImageHash string `protobuf:"bytes,11,opt,name=imageHash,proto3" json:"imageHash,omitempty"`
-	TokenType Type   `protobuf:"varint,12,opt,name=tokenType,proto3,enum=rarifyprotocol.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
+	TokenType Type   `protobuf:"varint,12,opt,name=tokenType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
 	Wrapped   bool   `protobuf:"varint,13,opt,name=wrapped,proto3" json:"wrapped,omitempty"`
 }
 
@@ -210,8 +210,8 @@ func (m *Item) GetWrapped() bool {
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.tokenmanager.Type", Type_name, Type_value)
-	proto.RegisterType((*Item)(nil), "rarifyprotocol.rarimocore.tokenmanager.Item")
+	proto.RegisterEnum("rarimo.rarimocore.tokenmanager.Type", Type_name, Type_value)
+	proto.RegisterType((*Item)(nil), "rarimo.rarimocore.tokenmanager.Item")
 }
 
 func init() { proto.RegisterFile("tokenmanager/item.proto", fileDescriptor_e83fe9c71c21d068) }

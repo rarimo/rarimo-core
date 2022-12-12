@@ -1,7 +1,7 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.tokenmanager;
+package rarimo.rarimocore.tokenmanager;
 
-option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 enum type {
   NATIVE = 0;

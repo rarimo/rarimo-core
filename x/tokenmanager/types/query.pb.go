@@ -594,18 +594,18 @@ func (m *QueryAllInfoResponse) GetPagination() *query.PageResponse {
 }
 
 func init() {
-	proto.RegisterType((*QueryParamsRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryParamsRequest")
-	proto.RegisterType((*QueryParamsResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse")
-	proto.RegisterType((*QueryGetItemRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetItemRequest")
-	proto.RegisterType((*QueryGetItemResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse")
-	proto.RegisterType((*QueryGetItemByChainRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetItemByChainRequest")
-	proto.RegisterType((*QueryGetItemByChainResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetItemByChainResponse")
-	proto.RegisterType((*QueryAllItemRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryAllItemRequest")
-	proto.RegisterType((*QueryAllItemResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryAllItemResponse")
-	proto.RegisterType((*QueryGetInfoRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetInfoRequest")
-	proto.RegisterType((*QueryGetInfoResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryGetInfoResponse")
-	proto.RegisterType((*QueryAllInfoRequest)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoRequest")
-	proto.RegisterType((*QueryAllInfoResponse)(nil), "rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse")
+	proto.RegisterType((*QueryParamsRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryParamsRequest")
+	proto.RegisterType((*QueryParamsResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryParamsResponse")
+	proto.RegisterType((*QueryGetItemRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryGetItemRequest")
+	proto.RegisterType((*QueryGetItemResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryGetItemResponse")
+	proto.RegisterType((*QueryGetItemByChainRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryGetItemByChainRequest")
+	proto.RegisterType((*QueryGetItemByChainResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryGetItemByChainResponse")
+	proto.RegisterType((*QueryAllItemRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryAllItemRequest")
+	proto.RegisterType((*QueryAllItemResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryAllItemResponse")
+	proto.RegisterType((*QueryGetInfoRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryGetInfoRequest")
+	proto.RegisterType((*QueryGetInfoResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryGetInfoResponse")
+	proto.RegisterType((*QueryAllInfoRequest)(nil), "rarimo.rarimocore.tokenmanager.QueryAllInfoRequest")
+	proto.RegisterType((*QueryAllInfoResponse)(nil), "rarimo.rarimocore.tokenmanager.QueryAllInfoResponse")
 }
 
 func init() { proto.RegisterFile("tokenmanager/query.proto", fileDescriptor_d6c1b9fce48b6c34) }
@@ -694,7 +694,7 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
 	out := new(QueryParamsResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/Params", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/Params", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -703,7 +703,7 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 
 func (c *queryClient) Item(ctx context.Context, in *QueryGetItemRequest, opts ...grpc.CallOption) (*QueryGetItemResponse, error) {
 	out := new(QueryGetItemResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/Item", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/Item", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -712,7 +712,7 @@ func (c *queryClient) Item(ctx context.Context, in *QueryGetItemRequest, opts ..
 
 func (c *queryClient) ItemByChain(ctx context.Context, in *QueryGetItemByChainRequest, opts ...grpc.CallOption) (*QueryGetItemByChainResponse, error) {
 	out := new(QueryGetItemByChainResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/ItemByChain", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/ItemByChain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -721,7 +721,7 @@ func (c *queryClient) ItemByChain(ctx context.Context, in *QueryGetItemByChainRe
 
 func (c *queryClient) ItemAll(ctx context.Context, in *QueryAllItemRequest, opts ...grpc.CallOption) (*QueryAllItemResponse, error) {
 	out := new(QueryAllItemResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/ItemAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/ItemAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -730,7 +730,7 @@ func (c *queryClient) ItemAll(ctx context.Context, in *QueryAllItemRequest, opts
 
 func (c *queryClient) Info(ctx context.Context, in *QueryGetInfoRequest, opts ...grpc.CallOption) (*QueryGetInfoResponse, error) {
 	out := new(QueryGetInfoResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/Info", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/Info", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -739,7 +739,7 @@ func (c *queryClient) Info(ctx context.Context, in *QueryGetInfoRequest, opts ..
 
 func (c *queryClient) InfoAll(ctx context.Context, in *QueryAllInfoRequest, opts ...grpc.CallOption) (*QueryAllInfoResponse, error) {
 	out := new(QueryAllInfoResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.tokenmanager.Query/InfoAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.tokenmanager.Query/InfoAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -799,7 +799,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/Params",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/Params",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
@@ -817,7 +817,7 @@ func _Query_Item_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/Item",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/Item",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Item(ctx, req.(*QueryGetItemRequest))
@@ -835,7 +835,7 @@ func _Query_ItemByChain_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/ItemByChain",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/ItemByChain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ItemByChain(ctx, req.(*QueryGetItemByChainRequest))
@@ -853,7 +853,7 @@ func _Query_ItemAll_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/ItemAll",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/ItemAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ItemAll(ctx, req.(*QueryAllItemRequest))
@@ -871,7 +871,7 @@ func _Query_Info_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/Info",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/Info",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Info(ctx, req.(*QueryGetInfoRequest))
@@ -889,7 +889,7 @@ func _Query_InfoAll_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.tokenmanager.Query/InfoAll",
+		FullMethod: "/rarimo.rarimocore.tokenmanager.Query/InfoAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).InfoAll(ctx, req.(*QueryAllInfoRequest))
@@ -898,7 +898,7 @@ func _Query_InfoAll_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "rarifyprotocol.rarimocore.tokenmanager.Query",
+	ServiceName: "rarimo.rarimocore.tokenmanager.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

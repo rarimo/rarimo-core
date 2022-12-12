@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.tokenmanager;
+package rarimo.rarimocore.tokenmanager;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
@@ -9,37 +9,37 @@ import "tokenmanager/item.proto";
 import "tokenmanager/info.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types";
+option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/params";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/params";
   }
   // Queries a Item by index.
   rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{chain}";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{chain}";
   }
 
   // Queries a Item by chain.
   rpc ItemByChain(QueryGetItemByChainRequest) returns (QueryGetItemByChainResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item/{infoIndex}/{chain}";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{infoIndex}/{chain}";
   }
 
   // Queries a list of Item items.
   rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/item";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item";
   }
 
   // Queries a Info by index.
   rpc Info(QueryGetInfoRequest) returns (QueryGetInfoResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info/{index}";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/info/{index}";
   }
 
   // Queries a list of Info items.
   rpc InfoAll(QueryAllInfoRequest) returns (QueryAllInfoResponse) {
-    option (google.api.http).get = "/rarify-protocol/rarimo-core/tokenmanager/info";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/info";
   }
 
   // this line is used by starport scaffolding # 2

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
+export const protobufPackage = "rarimo.rarimocore.rarimocore";
 
 export interface ChangeKeyEdDSA {
   newKey: string;

@@ -51,7 +51,7 @@ func (OpType) EnumDescriptor() ([]byte, []int) {
 type Operation struct {
 	// Should be in a hex format 0x...
 	Index         string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
-	OperationType OpType `protobuf:"varint,2,opt,name=operationType,proto3,enum=rarifyprotocol.rarimocore.rarimocore.OpType" json:"operationType,omitempty"`
+	OperationType OpType `protobuf:"varint,2,opt,name=operationType,proto3,enum=rarimo.rarimocore.rarimocore.OpType" json:"operationType,omitempty"`
 	// Corresponding to type details
 	Details   *types.Any `protobuf:"bytes,3,opt,name=details,proto3" json:"details,omitempty"`
 	Signed    bool       `protobuf:"varint,4,opt,name=signed,proto3" json:"signed,omitempty"`
@@ -135,8 +135,8 @@ func (m *Operation) GetTimestamp() int64 {
 }
 
 func init() {
-	proto.RegisterEnum("rarifyprotocol.rarimocore.rarimocore.OpType", OpType_name, OpType_value)
-	proto.RegisterType((*Operation)(nil), "rarifyprotocol.rarimocore.rarimocore.Operation")
+	proto.RegisterEnum("rarimo.rarimocore.rarimocore.OpType", OpType_name, OpType_value)
+	proto.RegisterType((*Operation)(nil), "rarimo.rarimocore.rarimocore.Operation")
 }
 
 func init() { proto.RegisterFile("rarimocore/operation.proto", fileDescriptor_4615e59ddf669d07) }

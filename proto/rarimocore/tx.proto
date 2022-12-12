@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.rarimocore;
+package rarimo.rarimocore.rarimocore;
 
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
@@ -7,7 +7,7 @@ import "tokenmanager/item.proto";
 import "rarimocore/params.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "gitlab.com/rarify-protocol/rarimo-core/x/rarimocore/types";
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
 // Msg defines the Msg service.
 service Msg {
@@ -23,7 +23,7 @@ message MsgCreateTransferOp {
   string tx = 2;
   string eventId = 3;
   string fromChain = 4;
-  rarifyprotocol.rarimocore.tokenmanager.type tokenType = 5;
+  rarimo.rarimocore.tokenmanager.type tokenType = 5;
 }
 
 message MsgCreateTransferOpResponse {}

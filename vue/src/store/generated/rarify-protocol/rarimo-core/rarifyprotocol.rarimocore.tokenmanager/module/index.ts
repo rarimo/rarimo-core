@@ -10,9 +10,9 @@ import { MsgDeleteInfo } from "./types/tokenmanager/tx";
 
 
 const types = [
-  ["/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", MsgAddChain],
-  ["/rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfo", MsgCreateInfo],
-  ["/rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfo", MsgDeleteInfo],
+  ["/rarimo.rarimocore.tokenmanager.MsgAddChain", MsgAddChain],
+  ["/rarimo.rarimocore.tokenmanager.MsgCreateInfo", MsgCreateInfo],
+  ["/rarimo.rarimocore.tokenmanager.MsgDeleteInfo", MsgDeleteInfo],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,9 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgAddChain: (data: MsgAddChain): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgAddChain", value: MsgAddChain.fromPartial( data ) }),
-    msgCreateInfo: (data: MsgCreateInfo): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfo", value: MsgCreateInfo.fromPartial( data ) }),
-    msgDeleteInfo: (data: MsgDeleteInfo): EncodeObject => ({ typeUrl: "/rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfo", value: MsgDeleteInfo.fromPartial( data ) }),
+    msgAddChain: (data: MsgAddChain): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.tokenmanager.MsgAddChain", value: MsgAddChain.fromPartial( data ) }),
+    msgCreateInfo: (data: MsgCreateInfo): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.tokenmanager.MsgCreateInfo", value: MsgCreateInfo.fromPartial( data ) }),
+    msgDeleteInfo: (data: MsgDeleteInfo): EncodeObject => ({ typeUrl: "/rarimo.rarimocore.tokenmanager.MsgDeleteInfo", value: MsgDeleteInfo.fromPartial( data ) }),
     
   };
 };

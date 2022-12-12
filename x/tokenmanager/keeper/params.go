@@ -2,8 +2,8 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/saver"
-	"gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/saver"
+	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 // GetParams get all parameters as types.Params

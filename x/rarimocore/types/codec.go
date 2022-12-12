@@ -39,13 +39,13 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 
 	registry.RegisterInterface(
-		"rarifyprotocol.rarimocore.rarimocore.Transfer",
+		"rarimo.rarimocore.rarimocore.Transfer",
 		(*proto.Message)(nil),
 		&Transfer{},
 	)
 
 	registry.RegisterInterface(
-		"rarifyprotocol.rarimocore.rarimocore.ChangeParties",
+		"rarimo.rarimocore.rarimocore.ChangeParties",
 		(*proto.Message)(nil),
 		&ChangeParties{},
 	)

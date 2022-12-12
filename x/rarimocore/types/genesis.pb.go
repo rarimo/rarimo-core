@@ -85,7 +85,7 @@ func (m *GenesisState) GetConfirmationList() []Confirmation {
 }
 
 func init() {
-	proto.RegisterType((*GenesisState)(nil), "rarifyprotocol.rarimocore.rarimocore.GenesisState")
+	proto.RegisterType((*GenesisState)(nil), "rarimo.rarimocore.rarimocore.GenesisState")
 }
 
 func init() { proto.RegisterFile("rarimocore/genesis.proto", fileDescriptor_7c823eb3ed15d1a7) }

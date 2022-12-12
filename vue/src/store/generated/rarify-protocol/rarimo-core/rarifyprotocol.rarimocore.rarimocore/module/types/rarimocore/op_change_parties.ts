@@ -2,7 +2,7 @@
 import { Party } from "../rarimocore/params";
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "rarifyprotocol.rarimocore.rarimocore";
+export const protobufPackage = "rarimo.rarimocore.rarimocore";
 
 export interface ChangeParties {
   parties: Party[];

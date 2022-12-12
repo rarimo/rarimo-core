@@ -482,16 +482,16 @@ func (m *QueryAllConfirmationResponse) GetPagination() *query.PageResponse {
 }
 
 func init() {
-	proto.RegisterType((*QueryParamsRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryParamsRequest")
-	proto.RegisterType((*QueryParamsResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse")
-	proto.RegisterType((*QueryGetOperationRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetOperationRequest")
-	proto.RegisterType((*QueryGetOperationResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetOperationResponse")
-	proto.RegisterType((*QueryAllOperationRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllOperationRequest")
-	proto.RegisterType((*QueryAllOperationResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllOperationResponse")
-	proto.RegisterType((*QueryGetConfirmationRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetConfirmationRequest")
-	proto.RegisterType((*QueryGetConfirmationResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryGetConfirmationResponse")
-	proto.RegisterType((*QueryAllConfirmationRequest)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationRequest")
-	proto.RegisterType((*QueryAllConfirmationResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationResponse")
+	proto.RegisterType((*QueryParamsRequest)(nil), "rarimo.rarimocore.rarimocore.QueryParamsRequest")
+	proto.RegisterType((*QueryParamsResponse)(nil), "rarimo.rarimocore.rarimocore.QueryParamsResponse")
+	proto.RegisterType((*QueryGetOperationRequest)(nil), "rarimo.rarimocore.rarimocore.QueryGetOperationRequest")
+	proto.RegisterType((*QueryGetOperationResponse)(nil), "rarimo.rarimocore.rarimocore.QueryGetOperationResponse")
+	proto.RegisterType((*QueryAllOperationRequest)(nil), "rarimo.rarimocore.rarimocore.QueryAllOperationRequest")
+	proto.RegisterType((*QueryAllOperationResponse)(nil), "rarimo.rarimocore.rarimocore.QueryAllOperationResponse")
+	proto.RegisterType((*QueryGetConfirmationRequest)(nil), "rarimo.rarimocore.rarimocore.QueryGetConfirmationRequest")
+	proto.RegisterType((*QueryGetConfirmationResponse)(nil), "rarimo.rarimocore.rarimocore.QueryGetConfirmationResponse")
+	proto.RegisterType((*QueryAllConfirmationRequest)(nil), "rarimo.rarimocore.rarimocore.QueryAllConfirmationRequest")
+	proto.RegisterType((*QueryAllConfirmationResponse)(nil), "rarimo.rarimocore.rarimocore.QueryAllConfirmationResponse")
 }
 
 func init() { proto.RegisterFile("rarimocore/query.proto", fileDescriptor_11634ad12f474a6a) }
@@ -575,7 +575,7 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
 	out := new(QueryParamsResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/Params", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Query/Params", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -584,7 +584,7 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 
 func (c *queryClient) Operation(ctx context.Context, in *QueryGetOperationRequest, opts ...grpc.CallOption) (*QueryGetOperationResponse, error) {
 	out := new(QueryGetOperationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/Operation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Query/Operation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -593,7 +593,7 @@ func (c *queryClient) Operation(ctx context.Context, in *QueryGetOperationReques
 
 func (c *queryClient) OperationAll(ctx context.Context, in *QueryAllOperationRequest, opts ...grpc.CallOption) (*QueryAllOperationResponse, error) {
 	out := new(QueryAllOperationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/OperationAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Query/OperationAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -602,7 +602,7 @@ func (c *queryClient) OperationAll(ctx context.Context, in *QueryAllOperationReq
 
 func (c *queryClient) Confirmation(ctx context.Context, in *QueryGetConfirmationRequest, opts ...grpc.CallOption) (*QueryGetConfirmationResponse, error) {
 	out := new(QueryGetConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/Confirmation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Query/Confirmation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -611,7 +611,7 @@ func (c *queryClient) Confirmation(ctx context.Context, in *QueryGetConfirmation
 
 func (c *queryClient) ConfirmationAll(ctx context.Context, in *QueryAllConfirmationRequest, opts ...grpc.CallOption) (*QueryAllConfirmationResponse, error) {
 	out := new(QueryAllConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Query/ConfirmationAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Query/ConfirmationAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -666,7 +666,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/Params",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Query/Params",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
@@ -684,7 +684,7 @@ func _Query_Operation_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/Operation",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Query/Operation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Operation(ctx, req.(*QueryGetOperationRequest))
@@ -702,7 +702,7 @@ func _Query_OperationAll_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/OperationAll",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Query/OperationAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).OperationAll(ctx, req.(*QueryAllOperationRequest))
@@ -720,7 +720,7 @@ func _Query_Confirmation_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/Confirmation",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Query/Confirmation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Confirmation(ctx, req.(*QueryGetConfirmationRequest))
@@ -738,7 +738,7 @@ func _Query_ConfirmationAll_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Query/ConfirmationAll",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Query/ConfirmationAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ConfirmationAll(ctx, req.(*QueryAllConfirmationRequest))
@@ -747,7 +747,7 @@ func _Query_ConfirmationAll_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "rarifyprotocol.rarimocore.rarimocore.Query",
+	ServiceName: "rarimo.rarimocore.rarimocore.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -8,7 +8,7 @@ import (
 	fmt "fmt"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
-	types "gitlab.com/rarify-protocol/rarimo-core/x/tokenmanager/types"
+	types "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -33,7 +33,7 @@ type MsgCreateTransferOp struct {
 	Tx        string     `protobuf:"bytes,2,opt,name=tx,proto3" json:"tx,omitempty"`
 	EventId   string     `protobuf:"bytes,3,opt,name=eventId,proto3" json:"eventId,omitempty"`
 	FromChain string     `protobuf:"bytes,4,opt,name=fromChain,proto3" json:"fromChain,omitempty"`
-	TokenType types.Type `protobuf:"varint,5,opt,name=tokenType,proto3,enum=rarifyprotocol.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
+	TokenType types.Type `protobuf:"varint,5,opt,name=tokenType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
 }
 
 func (m *MsgCreateTransferOp) Reset()         { *m = MsgCreateTransferOp{} }
@@ -447,14 +447,14 @@ func (m *MsgSetupInitialResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgSetupInitialResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateTransferOp)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOp")
-	proto.RegisterType((*MsgCreateTransferOpResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOpResponse")
-	proto.RegisterType((*MsgCreateConfirmation)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmation")
-	proto.RegisterType((*MsgCreateConfirmationResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse")
-	proto.RegisterType((*MsgCreateChangePartiesOp)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOp")
-	proto.RegisterType((*MsgCreateChangePartiesOpResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse")
-	proto.RegisterType((*MsgSetupInitial)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgSetupInitial")
-	proto.RegisterType((*MsgSetupInitialResponse)(nil), "rarifyprotocol.rarimocore.rarimocore.MsgSetupInitialResponse")
+	proto.RegisterType((*MsgCreateTransferOp)(nil), "rarimo.rarimocore.rarimocore.MsgCreateTransferOp")
+	proto.RegisterType((*MsgCreateTransferOpResponse)(nil), "rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse")
+	proto.RegisterType((*MsgCreateConfirmation)(nil), "rarimo.rarimocore.rarimocore.MsgCreateConfirmation")
+	proto.RegisterType((*MsgCreateConfirmationResponse)(nil), "rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse")
+	proto.RegisterType((*MsgCreateChangePartiesOp)(nil), "rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOp")
+	proto.RegisterType((*MsgCreateChangePartiesOpResponse)(nil), "rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse")
+	proto.RegisterType((*MsgSetupInitial)(nil), "rarimo.rarimocore.rarimocore.MsgSetupInitial")
+	proto.RegisterType((*MsgSetupInitialResponse)(nil), "rarimo.rarimocore.rarimocore.MsgSetupInitialResponse")
 }
 
 func init() { proto.RegisterFile("rarimocore/tx.proto", fileDescriptor_d9dffb74ddf0d475) }
@@ -528,7 +528,7 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreateTransferOperation(ctx context.Context, in *MsgCreateTransferOp, opts ...grpc.CallOption) (*MsgCreateTransferOpResponse, error) {
 	out := new(MsgCreateTransferOpResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateTransferOperation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/CreateTransferOperation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -537,7 +537,7 @@ func (c *msgClient) CreateTransferOperation(ctx context.Context, in *MsgCreateTr
 
 func (c *msgClient) CreateChangePartiesOperation(ctx context.Context, in *MsgCreateChangePartiesOp, opts ...grpc.CallOption) (*MsgCreateChangePartiesOpResponse, error) {
 	out := new(MsgCreateChangePartiesOpResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangePartiesOperation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/CreateChangePartiesOperation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -546,7 +546,7 @@ func (c *msgClient) CreateChangePartiesOperation(ctx context.Context, in *MsgCre
 
 func (c *msgClient) CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error) {
 	out := new(MsgCreateConfirmationResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/CreateConfirmation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -555,7 +555,7 @@ func (c *msgClient) CreateConfirmation(ctx context.Context, in *MsgCreateConfirm
 
 func (c *msgClient) SetupInitial(ctx context.Context, in *MsgSetupInitial, opts ...grpc.CallOption) (*MsgSetupInitialResponse, error) {
 	out := new(MsgSetupInitialResponse)
-	err := c.cc.Invoke(ctx, "/rarifyprotocol.rarimocore.rarimocore.Msg/SetupInitial", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/SetupInitial", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -601,7 +601,7 @@ func _Msg_CreateTransferOperation_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateTransferOperation",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/CreateTransferOperation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateTransferOperation(ctx, req.(*MsgCreateTransferOp))
@@ -619,7 +619,7 @@ func _Msg_CreateChangePartiesOperation_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateChangePartiesOperation",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/CreateChangePartiesOperation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateChangePartiesOperation(ctx, req.(*MsgCreateChangePartiesOp))
@@ -637,7 +637,7 @@ func _Msg_CreateConfirmation_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/CreateConfirmation",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/CreateConfirmation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateConfirmation(ctx, req.(*MsgCreateConfirmation))
@@ -655,7 +655,7 @@ func _Msg_SetupInitial_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rarifyprotocol.rarimocore.rarimocore.Msg/SetupInitial",
+		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/SetupInitial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).SetupInitial(ctx, req.(*MsgSetupInitial))
@@ -664,7 +664,7 @@ func _Msg_SetupInitial_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "rarifyprotocol.rarimocore.rarimocore.Msg",
+	ServiceName: "rarimo.rarimocore.rarimocore.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
