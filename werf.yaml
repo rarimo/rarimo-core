@@ -23,9 +23,13 @@ shell: # Shell сборочные инструкции.
     - go mod tidy
     - go mod vendor
   setup: # Для стадии Setup.
+    - export GOPRIVATE=gitlab.com/*
+    - export GONOSUMDB=gitlab.com/*
+    - export GONOPROXY=gitlab.com/*
     - export CGO_ENABLED=1
     - export GO111MODULE=on
     - export GOOS=linux
+    - cd /go/src/gitlab.com/rarimo/rarimo-core
     - go build -o /usr/local/bin/rarimo-core /go/src/gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 ---
