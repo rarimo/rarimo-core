@@ -15,14 +15,17 @@ shell: # Shell сборочные инструкции.
   install:
     - apk add git build-base
     - git config --global url."https://gitlab-ci-token:{{ env "CI_JOB_TOKEN" }}@gitlab.com/".insteadOf https://gitlab.com/
+    - echo "machine gitlab.com login gitlab-ci-token password {{ env "CI_JOB_TOKEN" }}" > ~/.netrc
     - go env -w GOPRIVATE=gitlab.com/*
+    - go env -w GONOSUMDB=gitlab.com/*
+    - go env -w GONOPROXY=gitlab.com/*
+    - cd /go/src/gitlab.com/rarimo/rarimo-core
+    - go mod tidy
+    - go mod vendor
   setup: # Для стадии Setup.
     - export CGO_ENABLED=1
     - export GO111MODULE=on
     - export GOOS=linux
-    - cd /go/src/gitlab.com/rarimo/rarimo-core
-    - go mod tidy
-    - go mod vendor
     - go build -o /usr/local/bin/rarimo-core /go/src/gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 ---
