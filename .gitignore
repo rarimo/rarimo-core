@@ -1,6 +1,5 @@
 vue
-ts-client/node_modules
-ts-client/lib
+ts-client
 vue/dist
 release/
 .idea/

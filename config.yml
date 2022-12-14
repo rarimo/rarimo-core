@@ -16,8 +16,8 @@ validator:
 client:
   openapi:
     path: "docs/static/openapi.yml"
-  vuex:
-    path: "vue/src/store"
+  typescript:
+    path: "ts-client"
 
 genesis:
   chain_id: "rarimo"
