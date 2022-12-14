@@ -30257,7 +30257,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/confirmation:
     get:
       summary: Queries a list of Confirmation items.
-      operationId: rarimoRarimocoreRarimocoreConfirmationAll
+      operationId: RarimoRarimocoreRarimocoreConfirmationAll
       responses:
         '200':
           description: A successful response.
@@ -30541,12 +30541,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
     get:
       summary: Queries a Confirmation by index.
-      operationId: rarimoRarimocoreRarimocoreConfirmation
+      operationId: RarimoRarimocoreRarimocoreConfirmation
       responses:
         '200':
           description: A successful response.
@@ -30764,7 +30774,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/operation:
     get:
       summary: Queries a list of Deposit items.
-      operationId: rarimoRarimocoreRarimocoreOperationAll
+      operationId: RarimoRarimocoreRarimocoreOperationAll
       responses:
         '200':
           description: A successful response.
@@ -31227,12 +31237,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
     get:
       summary: Queries a Deposit by index.
-      operationId: rarimoRarimocoreRarimocoreOperation
+      operationId: RarimoRarimocoreRarimocoreOperation
       responses:
         '200':
           description: A successful response.
@@ -31627,7 +31647,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: rarimoRarimocoreRarimocoreParams
+      operationId: RarimoRarimocoreRarimocoreParams
       responses:
         '200':
           description: A successful response.
@@ -31856,7 +31876,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/info:
     get:
       summary: Queries a list of Info items.
-      operationId: rarimoRarimocoreTokenmanagerInfoAll
+      operationId: RarimoRarimocoreTokenmanagerInfoAll
       responses:
         '200':
           description: A successful response.
@@ -31975,12 +31995,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/info/{index}':
     get:
       summary: Queries a Info by index.
-      operationId: rarimoRarimocoreTokenmanagerInfo
+      operationId: RarimoRarimocoreTokenmanagerInfo
       responses:
         '200':
           description: A successful response.
@@ -32033,7 +32063,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/item:
     get:
       summary: Queries a list of Item items.
-      operationId: rarimoRarimocoreTokenmanagerItemAll
+      operationId: RarimoRarimocoreTokenmanagerItemAll
       responses:
         '200':
           description: A successful response.
@@ -32182,12 +32212,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/item/{chain}':
     get:
       summary: Queries a Item by index.
-      operationId: rarimoRarimocoreTokenmanagerItem
+      operationId: RarimoRarimocoreTokenmanagerItem
       responses:
         '200':
           description: A successful response.
@@ -32278,7 +32318,7 @@ paths:
   '/rarimo/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
     get:
       summary: Queries a Item by chain.
-      operationId: rarimoRarimocoreTokenmanagerItemByChain
+      operationId: RarimoRarimocoreTokenmanagerItemByChain
       responses:
         '200':
           description: A successful response.
@@ -32365,7 +32405,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: rarimoRarimocoreTokenmanagerParams
+      operationId: RarimoRarimocoreTokenmanagerParams
       responses:
         '200':
           description: A successful response.
