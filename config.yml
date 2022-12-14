@@ -12,7 +12,7 @@ client:
   vuex:
     path: "vue/src/store"
   typescript:
-    path: "ts-client/src"
+    path: "ts-client"
 
 faucet:
   name: bob
