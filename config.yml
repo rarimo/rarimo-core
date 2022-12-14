@@ -11,20 +11,9 @@ client:
     path: "docs/static/openapi.yml"
   vuex:
     path: "vue/src/store"
+  typescript:
+    path: "ts-client/src"
+
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
-
-genesis:
-  chain_id: "rarimo-core"
-  app_state:
-    tokenmanager:
-      params:
-        networks:
-          Solana:
-            contract: "0xe8983a5b763cf562ecd69484de73b86eff5e3e610fa836502e9f2dbf5694862c"
-            types:
-              0: 0
-              5: 1
-              4: 2
-
