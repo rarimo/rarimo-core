@@ -1,0 +1,35 @@
+{
+  "name": "@rarimo/client",
+  "version": "0.0.2",
+  "description": "Generated, TypeScript-based client for the Rarimo Core",
+  "author": "Rarimo",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rm -rf lib && NODE_OPTIONS=--max-old-space-size=16192 tsc-silent -p tsconfig.json --suppress @/src/"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@cosmjs/launchpad": "0.27.0",
+    "@cosmjs/proto-signing": "0.27.0",
+    "@cosmjs/stargate": "0.27.0",
+    "@keplr-wallet/types": "^0.11.23",
+    "axios": "^0.27.2",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "tsc-silent": "^1.2.2",
+    "typescript": "4.8.2"
+  },
+  "peerDependencies": {
+    "@cosmjs/launchpad": "0.27.0",
+    "@cosmjs/proto-signing": "0.27.0",
+    "@cosmjs/stargate": "0.27.0"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.0"
+  }
+}
