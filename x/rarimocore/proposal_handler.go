@@ -12,13 +12,12 @@ func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
 		case *types.AddSignerPartyProposal:
-			return handleAccountRecoveryProposal(ctx, k, c)
+			return k.AddSignerParty(ctx, c)
+		case *types.RemoveSignerPartyProposal:
+			return k.RemoveSignerParty(ctx, c)
+
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized proposal content type: %T", c)
 		}
 	}
-}
-
-func handleAccountRecoveryProposal(ctx sdk.Context, k keeper.Keeper, p *types.AddSignerPartyProposal) error {
-	return k.AddSignerParty(ctx, p)
 }

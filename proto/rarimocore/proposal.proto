@@ -10,3 +10,9 @@ message AddSignerPartyProposal {
   string address = 4;
   string trialPublicKey = 5;
 }
+
+message RemoveSignerPartyProposal {
+  string title = 1;
+  string description = 2;
+  string account = 3;
+}
