@@ -1,9 +1,9 @@
 vue
 ts-client
-vue/dist
 release/
 .idea/
 .vscode/
 .DS_Store
 vendor/
 /genesis/
+
