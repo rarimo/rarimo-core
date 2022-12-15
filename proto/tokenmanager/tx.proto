@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.tokenmanager;
+package rarimo.rarimocore.tokenmanager;
 
 import "tokenmanager/item.proto";
 // this line is used by starport scaffolding # proto/tx/import

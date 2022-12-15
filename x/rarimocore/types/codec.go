@@ -28,7 +28,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 
 	registry.RegisterInterface(
-		"rarifyprotocol.rarimocore.rarimocore.Transfer",
+		"rarimo.rarimocore.rarimocore.Transfer",
 		(*proto.Message)(nil),
 		&Transfer{},
 	)

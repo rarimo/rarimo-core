@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.rarimocore;
+package rarimo.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 

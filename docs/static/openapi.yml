@@ -30256,7 +30256,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/confirmation:
     get:
       summary: Queries a list of Confirmation items.
-      operationId: RarifyprotocolRarimocoreRarimocoreConfirmationAll
+      operationId: RarimoRarimocoreRarimocoreConfirmationAll
       responses:
         '200':
           description: A successful response.
@@ -30540,12 +30540,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
     get:
       summary: Queries a Confirmation by index.
-      operationId: RarifyprotocolRarimocoreRarimocoreConfirmation
+      operationId: RarimoRarimocoreRarimocoreConfirmation
       responses:
         '200':
           description: A successful response.
@@ -30763,7 +30773,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/operation:
     get:
       summary: Queries a list of Deposit items.
-      operationId: RarifyprotocolRarimocoreRarimocoreOperationAll
+      operationId: RarimoRarimocoreRarimocoreOperationAll
       responses:
         '200':
           description: A successful response.
@@ -31226,12 +31236,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
     get:
       summary: Queries a Deposit by index.
-      operationId: RarifyprotocolRarimocoreRarimocoreOperation
+      operationId: RarimoRarimocoreRarimocoreOperation
       responses:
         '200':
           description: A successful response.
@@ -31626,7 +31646,7 @@ paths:
   /rarimo/rarimo-core/rarimocore/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: RarifyprotocolRarimocoreRarimocoreParams
+      operationId: RarimoRarimocoreRarimocoreParams
       responses:
         '200':
           description: A successful response.
@@ -31832,7 +31852,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/info:
     get:
       summary: Queries a list of Info items.
-      operationId: RarifyprotocolRarimocoreTokenmanagerInfoAll
+      operationId: RarimoRarimocoreTokenmanagerInfoAll
       responses:
         '200':
           description: A successful response.
@@ -31951,12 +31971,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/info/{index}':
     get:
       summary: Queries a Info by index.
-      operationId: RarifyprotocolRarimocoreTokenmanagerInfo
+      operationId: RarimoRarimocoreTokenmanagerInfo
       responses:
         '200':
           description: A successful response.
@@ -32009,7 +32039,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/item:
     get:
       summary: Queries a list of Item items.
-      operationId: RarifyprotocolRarimocoreTokenmanagerItemAll
+      operationId: RarimoRarimocoreTokenmanagerItemAll
       responses:
         '200':
           description: A successful response.
@@ -32158,12 +32188,22 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/item/{chain}':
     get:
       summary: Queries a Item by index.
-      operationId: RarifyprotocolRarimocoreTokenmanagerItem
+      operationId: RarimoRarimocoreTokenmanagerItem
       responses:
         '200':
           description: A successful response.
@@ -32254,7 +32294,7 @@ paths:
   '/rarimo/rarimo-core/tokenmanager/item/{infoIndex}/{chain}':
     get:
       summary: Queries a Item by chain.
-      operationId: RarifyprotocolRarimocoreTokenmanagerItemByChain
+      operationId: RarimoRarimocoreTokenmanagerItemByChain
       responses:
         '200':
           description: A successful response.
@@ -32341,7 +32381,7 @@ paths:
   /rarimo/rarimo-core/tokenmanager/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: RarifyprotocolRarimocoreTokenmanagerParams
+      operationId: RarimoRarimocoreTokenmanagerParams
       responses:
         '200':
           description: A successful response.
@@ -53985,7 +54025,7 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  rarifyprotocol.rarimocore.rarimocore.Confirmation:
+  rarimo.rarimocore.rarimocore.Confirmation:
     type: object
     properties:
       root:
@@ -54001,13 +54041,13 @@ definitions:
         title: hex-encoded
       creator:
         type: string
-  rarifyprotocol.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
+  rarimo.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
     type: object
-  rarifyprotocol.rarimocore.rarimocore.MsgCreateConfirmationResponse:
+  rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
     type: object
-  rarifyprotocol.rarimocore.rarimocore.MsgCreateTransferOpResponse:
+  rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
     type: object
-  rarifyprotocol.rarimocore.rarimocore.Operation:
+  rarimo.rarimocore.rarimocore.Operation:
     type: object
     properties:
       index:
@@ -54184,13 +54224,13 @@ definitions:
       timestamp:
         type: string
         format: int64
-  rarifyprotocol.rarimocore.rarimocore.Params:
+  rarimo.rarimocore.rarimocore.Params:
     type: object
     properties:
       keyECDSA:
         type: string
     description: Params defines the parameters for the module.
-  rarifyprotocol.rarimocore.rarimocore.QueryAllConfirmationResponse:
+  rarimo.rarimocore.rarimocore.QueryAllConfirmationResponse:
     type: object
     properties:
       confirmation:
@@ -54236,7 +54276,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  rarifyprotocol.rarimocore.rarimocore.QueryAllOperationResponse:
+  rarimo.rarimocore.rarimocore.QueryAllOperationResponse:
     type: object
     properties:
       operation:
@@ -54453,7 +54493,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  rarifyprotocol.rarimocore.rarimocore.QueryGetConfirmationResponse:
+  rarimo.rarimocore.rarimocore.QueryGetConfirmationResponse:
     type: object
     properties:
       confirmation:
@@ -54472,7 +54512,7 @@ definitions:
             title: hex-encoded
           creator:
             type: string
-  rarifyprotocol.rarimocore.rarimocore.QueryGetOperationResponse:
+  rarimo.rarimocore.rarimocore.QueryGetOperationResponse:
     type: object
     properties:
       operation:
@@ -54658,7 +54698,7 @@ definitions:
           timestamp:
             type: string
             format: int64
-  rarifyprotocol.rarimocore.rarimocore.QueryParamsResponse:
+  rarimo.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:
       params:
@@ -54668,13 +54708,13 @@ definitions:
           keyECDSA:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarifyprotocol.rarimocore.rarimocore.op_type:
+  rarimo.rarimocore.rarimocore.op_type:
     type: string
     enum:
       - TRANSFER
       - CHANGE_KEY
     default: TRANSFER
-  rarifyprotocol.rarimocore.tokenmanager.type:
+  rarimo.rarimocore.tokenmanager.type:
     type: string
     enum:
       - NATIVE
@@ -54686,7 +54726,7 @@ definitions:
       - NEAR_FT
       - NEAR_NFT
     default: NATIVE
-  rarifyprotocol.rarimocore.tokenmanager.ChainInfo:
+  rarimo.rarimocore.tokenmanager.ChainInfo:
     type: object
     properties:
       tokenAddress:
@@ -54695,7 +54735,7 @@ definitions:
       tokenId:
         type: string
         title: hex-encoded
-  rarifyprotocol.rarimocore.tokenmanager.ChainParams:
+  rarimo.rarimocore.tokenmanager.ChainParams:
     type: object
     properties:
       contract:
@@ -54713,7 +54753,7 @@ definitions:
           - Near
           - Other
         default: EVM
-  rarifyprotocol.rarimocore.tokenmanager.Info:
+  rarimo.rarimocore.tokenmanager.Info:
     type: object
     properties:
       index:
@@ -54731,7 +54771,7 @@ definitions:
               title: hex-encoded
       creator:
         type: string
-  rarifyprotocol.rarimocore.tokenmanager.Item:
+  rarimo.rarimocore.tokenmanager.Item:
     type: object
     properties:
       tokenAddress:
@@ -54777,13 +54817,13 @@ definitions:
         default: NATIVE
       wrapped:
         type: boolean
-  rarifyprotocol.rarimocore.tokenmanager.MsgAddChainResponse:
+  rarimo.rarimocore.tokenmanager.MsgAddChainResponse:
     type: object
-  rarifyprotocol.rarimocore.tokenmanager.MsgCreateInfoResponse:
+  rarimo.rarimocore.tokenmanager.MsgCreateInfoResponse:
     type: object
-  rarifyprotocol.rarimocore.tokenmanager.MsgDeleteInfoResponse:
+  rarimo.rarimocore.tokenmanager.MsgDeleteInfoResponse:
     type: object
-  rarifyprotocol.rarimocore.tokenmanager.NetworkType:
+  rarimo.rarimocore.tokenmanager.NetworkType:
     type: string
     enum:
       - EVM
@@ -54791,7 +54831,7 @@ definitions:
       - Near
       - Other
     default: EVM
-  rarifyprotocol.rarimocore.tokenmanager.Params:
+  rarimo.rarimocore.tokenmanager.Params:
     type: object
     properties:
       networks:
@@ -54815,7 +54855,7 @@ definitions:
                 - Other
               default: EVM
     description: Params defines the parameters for the module.
-  rarifyprotocol.rarimocore.tokenmanager.QueryAllInfoResponse:
+  rarimo.rarimocore.tokenmanager.QueryAllInfoResponse:
     type: object
     properties:
       info:
@@ -54863,7 +54903,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  rarifyprotocol.rarimocore.tokenmanager.QueryAllItemResponse:
+  rarimo.rarimocore.tokenmanager.QueryAllItemResponse:
     type: object
     properties:
       item:
@@ -54939,7 +54979,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  rarifyprotocol.rarimocore.tokenmanager.QueryGetInfoResponse:
+  rarimo.rarimocore.tokenmanager.QueryGetInfoResponse:
     type: object
     properties:
       info:
@@ -54960,7 +55000,7 @@ definitions:
                   title: hex-encoded
           creator:
             type: string
-  rarifyprotocol.rarimocore.tokenmanager.QueryGetItemByChainResponse:
+  rarimo.rarimocore.tokenmanager.QueryGetItemByChainResponse:
     type: object
     properties:
       item:
@@ -55009,7 +55049,7 @@ definitions:
             default: NATIVE
           wrapped:
             type: boolean
-  rarifyprotocol.rarimocore.tokenmanager.QueryGetItemResponse:
+  rarimo.rarimocore.tokenmanager.QueryGetItemResponse:
     type: object
     properties:
       item:
@@ -55058,7 +55098,7 @@ definitions:
             default: NATIVE
           wrapped:
             type: boolean
-  rarifyprotocol.rarimocore.tokenmanager.QueryParamsResponse:
+  rarimo.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:
       params:

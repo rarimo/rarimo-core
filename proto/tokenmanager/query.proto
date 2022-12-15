@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.tokenmanager;
+package rarimo.rarimocore.tokenmanager;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";

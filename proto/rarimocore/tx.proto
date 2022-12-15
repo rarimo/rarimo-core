@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarifyprotocol.rarimocore.rarimocore;
+package rarimo.rarimocore.rarimocore;
 
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
@@ -21,7 +21,7 @@ message MsgCreateTransferOp {
   string tx = 2;
   string eventId = 3;
   string fromChain = 4;
-  rarifyprotocol.rarimocore.tokenmanager.type tokenType = 5;
+  rarimo.rarimocore.tokenmanager.type tokenType = 5;
 }
 
 message MsgCreateTransferOpResponse {}
