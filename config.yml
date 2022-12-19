@@ -1,19 +1,42 @@
 accounts:
-  - name: alice
-    coins: ["20000token", "200000000stake"]
-  - name: bob
-    coins: ["10000token", "100000000stake"]
+  - name: validator
+    coins: [ "10000000000stake" ]
+  - name: tss1
+    address: rarimo176yez73ujvecqrrnxlnuqf7zufn0n9cj6kt6wl
+    coins: [ "10000000000stake" ]
+  - name: tss2
+    address: rarimo1ypgswwl5tzed278rnfu6fsvl3etfjsgyuz8sds
+    coins: [ "10000000000stake" ]
+  - name: tss3
+    address: rarimo1fttm7yd066cxyczz7ep2w0ekt3lsjs8gvaucm7
+    coins: [ "10000000000stake" ]
 validator:
-  name: alice
+  name: validator
   staked: "100000000stake"
 client:
   openapi:
     path: "docs/static/openapi.yml"
-  vuex:
-    path: "vue/src/store"
   typescript:
     path: "ts-client"
 
-faucet:
-  name: bob
-  coins: ["5token", "100000stake"]
+genesis:
+  chain_id: "rarimo"
+  app_state:
+    rarimocore:
+      params:
+        keyECDSA: "0x04e9b0b276d1119812bd3fae68bacf9017b903311aa9271e9644d2ea7bb36d302a578eb52b00cdd579fcb1a90c1341c5fb840fa403e6b64f499ef82d962a5e5441"
+        threshold: "2"
+        isUpdateRequired: false
+        parties:
+          - pubKey: "0x048d96cec9b993839165816dd228e5616b489be25389586a6404f64b33158b6a270ac5284a38869092655cdb4b3368e5873ed76b4ca767f731a6d2fb5d3bfbc090"
+            address: "192.168.10.7:8090"
+            account: "rarimo176yez73ujvecqrrnxlnuqf7zufn0n9cj6kt6wl"
+            verified: true
+          - pubKey: "0x045823fbfb4f326ff53ab677acef5f4e16d90007806c4b169245c68906da872a01272b4963344adcda6e624a4ef49ea9948033dd44425da2511607b7171df03e62"
+            address: "192.168.10.9:8091"
+            account: "rarimo1ypgswwl5tzed278rnfu6fsvl3etfjsgyuz8sds"
+            verified: true
+          - pubKey: "0x0420acab2f4d0de844a229c3869e0ab38ba0b009fe39525a71167eb7d217b0e2116a866edb0919dd32ed4b93dd0b2a6448999e41a14f72d6a9cf552c1f3d8521a4"
+            address: "192.168.10.11:8092"
+            account: "rarimo1fttm7yd066cxyczz7ep2w0ekt3lsjs8gvaucm7"
+            verified: true

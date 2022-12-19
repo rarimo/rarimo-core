@@ -350,13 +350,34 @@ func New(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
 	)
 
+	app.TokenmanagerKeeper = *tokenmanagermodulekeeper.NewKeeper(
+		appCodec,
+		keys[tokenmanagermoduletypes.StoreKey],
+		keys[tokenmanagermoduletypes.MemStoreKey],
+		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
+		&app.StakingKeeper,
+	)
+	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
+
+	// should be initialized before adding to the gov route
+	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
+		appCodec,
+		keys[rarimocoremoduletypes.StoreKey],
+		keys[rarimocoremoduletypes.MemStoreKey],
+		app.GetSubspace(rarimocoremoduletypes.ModuleName),
+		&app.TokenmanagerKeeper,
+		&app.StakingKeeper,
+	)
+	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
 	govRouter.AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper))
+		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
+		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper))
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
@@ -395,23 +416,6 @@ func New(
 		scopedMonitoringKeeper,
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
-
-	app.TokenmanagerKeeper = *tokenmanagermodulekeeper.NewKeeper(
-		appCodec,
-		keys[tokenmanagermoduletypes.StoreKey],
-		keys[tokenmanagermoduletypes.MemStoreKey],
-		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
-	)
-	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
-
-	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
-		appCodec,
-		keys[rarimocoremoduletypes.StoreKey],
-		keys[rarimocoremoduletypes.MemStoreKey],
-		app.GetSubspace(rarimocoremoduletypes.ModuleName),
-		&app.TokenmanagerKeeper,
-	)
-	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

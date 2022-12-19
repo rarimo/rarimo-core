@@ -10,6 +10,9 @@ import (
 
 func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (*types.MsgCreateInfoResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if !k.checkCreatorIsValidator(ctx, msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only validators can submit that transaction")
+	}
 
 	// Check if the value already exists
 	_, isFound := k.GetInfo(
@@ -62,6 +65,9 @@ func (k msgServer) CreateInfo(goCtx context.Context, msg *types.MsgCreateInfo) (
 
 func (k msgServer) DeleteInfo(goCtx context.Context, msg *types.MsgDeleteInfo) (*types.MsgDeleteInfoResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if !k.checkCreatorIsValidator(ctx, msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only validators can submit that transaction")
+	}
 
 	// Check if the value exists
 	valFound, isFound := k.GetInfo(
@@ -87,6 +93,9 @@ func (k msgServer) DeleteInfo(goCtx context.Context, msg *types.MsgDeleteInfo) (
 
 func (k msgServer) AddChain(goCtx context.Context, msg *types.MsgAddChain) (*types.MsgAddChainResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if !k.checkCreatorIsValidator(ctx, msg.Creator) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only validators can submit that transaction")
+	}
 
 	info, ok := k.GetInfo(
 		ctx,

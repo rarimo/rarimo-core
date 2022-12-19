@@ -1,16 +1,25 @@
 package types
 
 import (
+	"errors"
 	"fmt"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+)
+
+const (
+	ECDSAPublicKeySize = 65
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	KeyECDSA = []byte("keyECDSAParam")
+	ParamKeyECDSA         = []byte("KeyECDSA")
+	ParamThreshold        = []byte("Threshold")
+	ParamParties          = []byte("Parties")
+	ParamIsUpdateRequired = []byte("IsUpdateRequired")
+	ParamLastSignature    = []byte("LastSignature")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -27,13 +36,17 @@ func NewParams(keyECDSA string) Params {
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams("")
+	return Params{}
 }
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyECDSA, &p.KeyECDSA, validateKeyECDSA),
+		paramtypes.NewParamSetPair(ParamKeyECDSA, &p.KeyECDSA, validateKeyECDSA),
+		paramtypes.NewParamSetPair(ParamThreshold, &p.Threshold, validateThreshold),
+		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
+		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
+		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
 	}
 }
 
@@ -51,5 +64,62 @@ func validateKeyECDSA(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 
-	return crypto.ValidateECDSAKey(v)
+	// not initialized
+	if len(v) == 0 {
+		return nil
+	}
+
+	keyBytes, err := hexutil.Decode(v)
+	if err != nil {
+		return fmt.Errorf("invalid ECDSA key format %v", err)
+	}
+
+	if len(keyBytes) != ECDSAPublicKeySize {
+		return fmt.Errorf("invalid ECDSA key len")
+	}
+
+	return nil
+}
+
+func validateThreshold(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return errors.New("threshold can not be zero")
+	}
+
+	return nil
+}
+
+func validateParties(i interface{}) error {
+	v, ok := i.([]*Party)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if len(v) == 0 {
+		return errors.New("there should be at least one party")
+	}
+
+	return nil
+}
+
+func validateIsUpdateRequired(i interface{}) error {
+	_, ok := i.(bool)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	return nil
+}
+
+func validateLastSignature(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	_, err := hexutil.Decode(v)
+	return err
 }

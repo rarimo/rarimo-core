@@ -1,0 +1,13 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "rarimocore/params.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message ChangeParties {
+  repeated Party parties = 1;
+  string newPublicKey = 2;
+  string signature = 3;
+}
+

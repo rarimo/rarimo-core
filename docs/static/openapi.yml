@@ -8807,7 +8807,8 @@ paths:
                 properties:
                   voting_period:
                     type: string
-                    description: Length of the voting period.
+                    format: uint64
+                    description: Length of the voting period in blocks.
               deposit_params:
                 description: deposit_params defines the parameters related to deposit.
                 type: object
@@ -8832,10 +8833,10 @@ paths:
                     description: Minimum deposit for a proposal to enter voting period.
                   max_deposit_period:
                     type: string
+                    format: uint64
                     description: >-
-                      Maximum period for Atom holders to deposit on a proposal.
-                      Initial value: 2
-                       months.
+                      Maximum period for Atom holders to deposit on a proposal
+                      in blocks.
               tally_params:
                 description: tally_params defines the parameters related to tally.
                 type: object
@@ -9292,12 +9293,12 @@ paths:
                       description: >-
                         TallyResult defines a standard tally for a governance
                         proposal.
-                    submit_time:
+                    submit_block:
                       type: string
-                      format: date-time
-                    deposit_end_time:
+                      format: uint64
+                    deposit_end_block:
                       type: string
-                      format: date-time
+                      format: uint64
                     total_deposit:
                       type: array
                       items:
@@ -9316,12 +9317,12 @@ paths:
                           custom method
 
                           signatures required by gogoproto.
-                    voting_start_time:
+                    voting_start_block:
                       type: string
-                      format: date-time
-                    voting_end_time:
+                      format: uint64
+                    voting_end_block:
                       type: string
-                      format: date-time
+                      format: uint64
                   description: >-
                     Proposal defines the core field members of a governance
                     proposal.
@@ -9856,12 +9857,12 @@ paths:
                     description: >-
                       TallyResult defines a standard tally for a governance
                       proposal.
-                  submit_time:
+                  submit_block:
                     type: string
-                    format: date-time
-                  deposit_end_time:
+                    format: uint64
+                  deposit_end_block:
                     type: string
-                    format: date-time
+                    format: uint64
                   total_deposit:
                     type: array
                     items:
@@ -9879,12 +9880,12 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
-                  voting_start_time:
+                  voting_start_block:
                     type: string
-                    format: date-time
-                  voting_end_time:
+                    format: uint64
+                  voting_end_block:
                     type: string
-                    format: date-time
+                    format: uint64
                 description: >-
                   Proposal defines the core field members of a governance
                   proposal.
@@ -30792,7 +30793,7 @@ paths:
                       type: string
                       enum:
                         - TRANSFER
-                        - CHANGE_KEY
+                        - CHANGE_PARTIES
                       default: TRANSFER
                     details:
                       type: object
@@ -31268,7 +31269,7 @@ paths:
                     type: string
                     enum:
                       - TRANSFER
-                      - CHANGE_KEY
+                      - CHANGE_PARTIES
                     default: TRANSFER
                   details:
                     type: object
@@ -31658,6 +31659,29 @@ paths:
                 type: object
                 properties:
                   keyECDSA:
+                    type: string
+                  threshold:
+                    type: string
+                    format: uint64
+                  parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pubKey:
+                          type: string
+                          title: PublicKey in hex format
+                        address:
+                          type: string
+                          title: Server address connect to
+                        account:
+                          type: string
+                          title: Rarimo core account
+                        verified:
+                          type: boolean
+                  isUpdateRequired:
+                    type: boolean
+                  lastSignature:
                     type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
@@ -40412,10 +40436,8 @@ definitions:
         description: Minimum deposit for a proposal to enter voting period.
       max_deposit_period:
         type: string
-        description: >-
-          Maximum period for Atom holders to deposit on a proposal. Initial
-          value: 2
-           months.
+        format: uint64
+        description: Maximum period for Atom holders to deposit on a proposal in blocks.
     description: DepositParams defines the params for deposits on governance proposals.
   cosmos.gov.v1beta1.MsgDepositResponse:
     type: object
@@ -40635,12 +40657,12 @@ definitions:
           no_with_veto:
             type: string
         description: TallyResult defines a standard tally for a governance proposal.
-      submit_time:
+      submit_block:
         type: string
-        format: date-time
-      deposit_end_time:
+        format: uint64
+      deposit_end_block:
         type: string
-        format: date-time
+        format: uint64
       total_deposit:
         type: array
         items:
@@ -40655,12 +40677,12 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
-      voting_start_time:
+      voting_start_block:
         type: string
-        format: date-time
-      voting_end_time:
+        format: uint64
+      voting_end_block:
         type: string
-        format: date-time
+        format: uint64
     description: Proposal defines the core field members of a governance proposal.
   cosmos.gov.v1beta1.ProposalStatus:
     type: string
@@ -40785,7 +40807,8 @@ definitions:
         properties:
           voting_period:
             type: string
-            description: Length of the voting period.
+            format: uint64
+            description: Length of the voting period in blocks.
       deposit_params:
         description: deposit_params defines the parameters related to deposit.
         type: object
@@ -40810,10 +40833,10 @@ definitions:
             description: Minimum deposit for a proposal to enter voting period.
           max_deposit_period:
             type: string
+            format: uint64
             description: >-
-              Maximum period for Atom holders to deposit on a proposal. Initial
-              value: 2
-               months.
+              Maximum period for Atom holders to deposit on a proposal in
+              blocks.
       tally_params:
         description: tally_params defines the parameters related to tally.
         type: object
@@ -41047,12 +41070,12 @@ definitions:
               no_with_veto:
                 type: string
             description: TallyResult defines a standard tally for a governance proposal.
-          submit_time:
+          submit_block:
             type: string
-            format: date-time
-          deposit_end_time:
+            format: uint64
+          deposit_end_block:
             type: string
-            format: date-time
+            format: uint64
           total_deposit:
             type: array
             items:
@@ -41070,12 +41093,12 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-          voting_start_time:
+          voting_start_block:
             type: string
-            format: date-time
-          voting_end_time:
+            format: uint64
+          voting_end_block:
             type: string
-            format: date-time
+            format: uint64
         description: Proposal defines the core field members of a governance proposal.
     description: >-
       QueryProposalResponse is the response type for the Query/Proposal RPC
@@ -41294,12 +41317,12 @@ definitions:
                 no_with_veto:
                   type: string
               description: TallyResult defines a standard tally for a governance proposal.
-            submit_time:
+            submit_block:
               type: string
-              format: date-time
-            deposit_end_time:
+              format: uint64
+            deposit_end_block:
               type: string
-              format: date-time
+              format: uint64
             total_deposit:
               type: array
               items:
@@ -41317,12 +41340,12 @@ definitions:
                   method
 
                   signatures required by gogoproto.
-            voting_start_time:
+            voting_start_block:
               type: string
-              format: date-time
-            voting_end_time:
+              format: uint64
+            voting_end_block:
               type: string
-              format: date-time
+              format: uint64
           description: Proposal defines the core field members of a governance proposal.
       pagination:
         description: pagination defines the pagination in the response.
@@ -41623,7 +41646,8 @@ definitions:
     properties:
       voting_period:
         type: string
-        description: Length of the voting period.
+        format: uint64
+        description: Length of the voting period in blocks.
     description: VotingParams defines the params for voting on governance proposals.
   cosmos.gov.v1beta1.WeightedVoteOption:
     type: object
@@ -54041,11 +54065,13 @@ definitions:
         title: hex-encoded
       creator:
         type: string
-  rarimo.rarimocore.rarimocore.MsgCreateChangeKeyECDSAResponse:
+  rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
+    type: object
+  rarimo.rarimocore.rarimocore.MsgSetupInitialResponse:
     type: object
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -54057,7 +54083,7 @@ definitions:
         type: string
         enum:
           - TRANSFER
-          - CHANGE_KEY
+          - CHANGE_PARTIES
         default: TRANSFER
       details:
         type: object
@@ -54229,7 +54255,44 @@ definitions:
     properties:
       keyECDSA:
         type: string
+      threshold:
+        type: string
+        format: uint64
+      parties:
+        type: array
+        items:
+          type: object
+          properties:
+            pubKey:
+              type: string
+              title: PublicKey in hex format
+            address:
+              type: string
+              title: Server address connect to
+            account:
+              type: string
+              title: Rarimo core account
+            verified:
+              type: boolean
+      isUpdateRequired:
+        type: boolean
+      lastSignature:
+        type: string
     description: Params defines the parameters for the module.
+  rarimo.rarimocore.rarimocore.Party:
+    type: object
+    properties:
+      pubKey:
+        type: string
+        title: PublicKey in hex format
+      address:
+        type: string
+        title: Server address connect to
+      account:
+        type: string
+        title: Rarimo core account
+      verified:
+        type: boolean
   rarimo.rarimocore.rarimocore.QueryAllConfirmationResponse:
     type: object
     properties:
@@ -54291,7 +54354,7 @@ definitions:
               type: string
               enum:
                 - TRANSFER
-                - CHANGE_KEY
+                - CHANGE_PARTIES
               default: TRANSFER
             details:
               type: object
@@ -54525,7 +54588,7 @@ definitions:
             type: string
             enum:
               - TRANSFER
-              - CHANGE_KEY
+              - CHANGE_PARTIES
             default: TRANSFER
           details:
             type: object
@@ -54707,12 +54770,35 @@ definitions:
         properties:
           keyECDSA:
             type: string
+          threshold:
+            type: string
+            format: uint64
+          parties:
+            type: array
+            items:
+              type: object
+              properties:
+                pubKey:
+                  type: string
+                  title: PublicKey in hex format
+                address:
+                  type: string
+                  title: Server address connect to
+                account:
+                  type: string
+                  title: Rarimo core account
+                verified:
+                  type: boolean
+          isUpdateRequired:
+            type: boolean
+          lastSignature:
+            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.rarimocore.op_type:
     type: string
     enum:
       - TRANSFER
-      - CHANGE_KEY
+      - CHANGE_PARTIES
     default: TRANSFER
   rarimo.rarimocore.tokenmanager.type:
     type: string

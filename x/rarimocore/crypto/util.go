@@ -8,46 +8,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarimo/go-merkle"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
-const ECDSAPublicKeySize = 65
 const ECDSASignatureSize = 64
-
-func ValidateECDSAKey(hexKey string) error {
-	if hexKey == "" {
-		// Key has not been initialized
-		return nil
-	}
-
-	keyBytes, err := hexutil.Decode(hexKey)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
-	}
-
-	if len(keyBytes) != ECDSAPublicKeySize {
-		return ErrInvalidKey
-	}
-
-	return nil
-}
-
-func ValidateEdDSAKey(hexKey string) error {
-	if hexKey == "" {
-		// Key has not been initialized
-		return nil
-	}
-
-	keyBytes, err := hexutil.Decode(hexKey)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA key format", err)
-	}
-
-	if len(keyBytes) != ed25519.PublicKeySize {
-		return ErrInvalidKey
-	}
-
-	return nil
-}
 
 func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) error {
 	if targetPublicKey == "" {
@@ -56,25 +20,25 @@ func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) er
 
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash %v", err)
 	}
 
 	sigBytes, err := hexutil.Decode(hexSignature)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
+		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format %v", err)
 	}
 
 	if len(sigBytes) < ECDSASignatureSize {
-		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
+		return sdkerrors.Wrap(ErrInvalidSignature, "invalid ECDSA signature format")
 	}
 
 	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA target key format", err)
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA target key format %v", err)
 	}
 
 	if !crypto.VerifySignature(targetKeyBytes, rootBytes, sigBytes[:ECDSASignatureSize]) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "signed ECDSA key does not match", err)
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "signed ECDSA key does not match")
 	}
 
 	return nil
@@ -87,21 +51,21 @@ func VerifyEdDSA(hexSignature string, hexHash string, targetPublicKey string) er
 
 	rootBytes, err := hexutil.Decode(hexHash)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash %v", err)
 	}
 
 	sigBytes, err := hexutil.Decode(hexSignature)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format", err)
+		return sdkerrors.Wrapf(ErrInvalidSignature, "invalid ECDSA signature format %v", err)
 	}
 
 	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid EdDSA target key format", err)
+		return sdkerrors.Wrapf(ErrInvalidKey, "invalid EdDSA target key format %v", err)
 	}
 
 	if !ed25519.Verify(targetKeyBytes, rootBytes, sigBytes) {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "signed EdDSA key does not match", err)
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "signed EdDSA key does not match")
 	}
 
 	return nil
@@ -112,7 +76,7 @@ func VerifyMerkleRoot(hashes []merkle.Content, hexRoot string) error {
 
 	root, err := hexutil.Decode(hexRoot)
 	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash", err)
+		return sdkerrors.Wrapf(ErrInvalidMerkleRoot, "invalid Merkle root hash %v", err)
 	}
 
 	if !bytes.Equal(t.Root(), root) {
@@ -129,4 +93,19 @@ func TryHexDecode(hexStr string) []byte {
 	}
 
 	return resp
+}
+
+func GetPartiesHash(set []*types.Party) []byte {
+	var data []byte
+	for _, p := range set {
+		data = append(data, []byte(p.PubKey)...)
+		data = append(data, []byte(p.Address)...)
+		data = append(data, []byte(p.Account)...)
+	}
+	return crypto.Keccak256(data)
+}
+
+func GetThreshold(n int) int {
+	var res float32 = float32(n) * 2 / 3
+	return int(res)
 }

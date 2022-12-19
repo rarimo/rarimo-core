@@ -6,6 +6,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
@@ -20,11 +22,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		return nil, err
 	}
 
-	_, isFound := k.GetConfirmation(
-		ctx,
-		msg.Root,
-	)
-	if isFound {
+	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
+		return nil, err
+	}
+
+	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
@@ -32,22 +34,20 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	contents := make([]merkle.Content, 0, len(msg.Indexes))
 
 	for _, index := range msg.Indexes {
-		operation, ok := k.GetOperation(ctx, index)
+		op, ok := k.GetOperation(ctx, index)
 		if !ok {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s not found", index))
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s not found", index))
 		}
 
-		if operation.Signed {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("deposit %s is already signed", index))
+		if op.Signed {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is already signed", index))
 		}
+		operations = append(operations, op)
 
-		operations = append(operations, operation)
-
-		content, err := k.getContent(ctx, operation)
+		content, err := k.getContent(ctx, op)
 		if err != nil {
 			return nil, err
 		}
-
 		contents = append(contents, content)
 	}
 
@@ -63,18 +63,18 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		k.applyOperation(ctx, op)
-
-		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
-			sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
-			sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
-		))
+		err := k.applyOperation(ctx, op)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	k.SetConfirmation(
 		ctx,
 		confirmation,
 	)
+
+	k.UpdateLastSignature(ctx, confirmation.SignatureECDSA)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewConfirmation,
 		sdk.NewAttribute(types.AttributeKeyConfirmationId, msg.Root),
@@ -83,25 +83,71 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k *Keeper) applyOperation(ctx sdk.Context, op types.Operation) {
+func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
-		// Nothing to do
-	case types.OpType_CHANGE_KEY:
-		// Changing key in params
-		change, _ := pkg.GetChangeKey(op)
-		params := k.GetParams(ctx)
-		params.KeyECDSA = change.NewKey
-		k.SetParams(ctx, params)
+		transfer, _ := pkg.GetTransfer(op)
+		if err := k.applyTransfer(ctx, transfer); err != nil {
+			return err
+		}
+	case types.OpType_CHANGE_PARTIES:
+		change, _ := pkg.GetChangeParties(op)
+		if err := k.applyChangeParties(ctx, change); err != nil {
+			return err
+		}
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeParamsUpdated,
+			sdk.NewAttribute(types.AttributeKeyParamsUpdateType, types.ParamsUpdateType_CHANGE_SET.String()),
+		))
 	default:
 		// Nothing to do
 	}
 
 	op.Signed = true
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
+		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+	))
+
 	k.SetOperation(ctx, op)
+	return nil
 }
 
-func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
+func (k msgServer) applyTransfer(ctx sdk.Context, _ *types.Transfer) error {
+	if k.GetParams(ctx).IsUpdateRequired {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply transfer: parties update needed")
+	}
+	return nil
+}
+
+func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
+	params := k.GetParams(ctx)
+
+	hash := hexutil.Encode(eth.Keccak256(hexutil.MustDecode(op.NewPublicKey)))
+	if err := crypto.VerifyECDSA(op.Signature, hash, params.KeyECDSA); err != nil {
+		return err
+	}
+
+	if len(params.Parties) != len(op.Parties) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties amount")
+	}
+
+	for i := range params.Parties {
+		if op.Parties[i].Account != params.Parties[i].Account {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties")
+		}
+
+		params.Parties[i].PubKey = op.Parties[i].PubKey
+		params.Parties[i].Verified = true
+	}
+
+	params.KeyECDSA = op.NewPublicKey
+	params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
+	params.IsUpdateRequired = false
+	k.SetParams(ctx, params)
+	return nil
+}
+
+func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, err := pkg.GetTransfer(op)
@@ -110,19 +156,19 @@ func (k *Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content
 		}
 
 		return k.getTransferOperationContent(ctx, transfer)
-	case types.OpType_CHANGE_KEY:
-		change, err := pkg.GetChangeKey(op)
+	case types.OpType_CHANGE_PARTIES:
+		change, err := pkg.GetChangeParties(op)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 
-		return pkg.GetChangeKeyContent(change)
+		return pkg.GetChangePartiesContent(change)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
 }
 
-func (k *Keeper) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
+func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
 	item, ok := k.tm.GetItemByChain(ctx, transfer.TokenIndex, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")

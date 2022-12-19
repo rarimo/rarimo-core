@@ -55,9 +55,5 @@ func (c TransferContent) Equals(other merkle.Content) bool {
 		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
 	}
 
-	if oc, ok := other.(*TransferContent); ok {
-		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
-	}
-
 	return false
 }

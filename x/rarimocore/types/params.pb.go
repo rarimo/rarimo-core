@@ -22,16 +22,116 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type ParamsUpdateType int32
+
+const (
+	ParamsUpdateType_CHANGE_SET ParamsUpdateType = 0
+	ParamsUpdateType_OTHER      ParamsUpdateType = 1
+)
+
+var ParamsUpdateType_name = map[int32]string{
+	0: "CHANGE_SET",
+	1: "OTHER",
+}
+
+var ParamsUpdateType_value = map[string]int32{
+	"CHANGE_SET": 0,
+	"OTHER":      1,
+}
+
+func (x ParamsUpdateType) String() string {
+	return proto.EnumName(ParamsUpdateType_name, int32(x))
+}
+
+func (ParamsUpdateType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_997c11d1d0285e72, []int{0}
+}
+
+type Party struct {
+	// PublicKey in hex format
+	PubKey string `protobuf:"bytes,1,opt,name=pubKey,proto3" json:"pubKey,omitempty"`
+	// Server address connect to
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	// Rarimo core account
+	Account  string `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
+	Verified bool   `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`
+}
+
+func (m *Party) Reset()         { *m = Party{} }
+func (m *Party) String() string { return proto.CompactTextString(m) }
+func (*Party) ProtoMessage()    {}
+func (*Party) Descriptor() ([]byte, []int) {
+	return fileDescriptor_997c11d1d0285e72, []int{0}
+}
+func (m *Party) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Party) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Party.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Party) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Party.Merge(m, src)
+}
+func (m *Party) XXX_Size() int {
+	return m.Size()
+}
+func (m *Party) XXX_DiscardUnknown() {
+	xxx_messageInfo_Party.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Party proto.InternalMessageInfo
+
+func (m *Party) GetPubKey() string {
+	if m != nil {
+		return m.PubKey
+	}
+	return ""
+}
+
+func (m *Party) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *Party) GetAccount() string {
+	if m != nil {
+		return m.Account
+	}
+	return ""
+}
+
+func (m *Party) GetVerified() bool {
+	if m != nil {
+		return m.Verified
+	}
+	return false
+}
+
 // Params defines the parameters for the module.
 type Params struct {
-	KeyECDSA string `protobuf:"bytes,1,opt,name=keyECDSA,proto3" json:"keyECDSA,omitempty"`
+	KeyECDSA         string   `protobuf:"bytes,1,opt,name=keyECDSA,proto3" json:"keyECDSA,omitempty"`
+	Threshold        uint64   `protobuf:"varint,2,opt,name=threshold,proto3" json:"threshold,omitempty"`
+	Parties          []*Party `protobuf:"bytes,3,rep,name=parties,proto3" json:"parties,omitempty"`
+	IsUpdateRequired bool     `protobuf:"varint,5,opt,name=isUpdateRequired,proto3" json:"isUpdateRequired,omitempty"`
+	LastSignature    string   `protobuf:"bytes,6,opt,name=lastSignature,proto3" json:"lastSignature,omitempty"`
 }
 
 func (m *Params) Reset()         { *m = Params{} }
 func (m *Params) String() string { return proto.CompactTextString(m) }
 func (*Params) ProtoMessage()    {}
 func (*Params) Descriptor() ([]byte, []int) {
-	return fileDescriptor_997c11d1d0285e72, []int{0}
+	return fileDescriptor_997c11d1d0285e72, []int{1}
 }
 func (m *Params) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -67,24 +167,120 @@ func (m *Params) GetKeyECDSA() string {
 	return ""
 }
 
+func (m *Params) GetThreshold() uint64 {
+	if m != nil {
+		return m.Threshold
+	}
+	return 0
+}
+
+func (m *Params) GetParties() []*Party {
+	if m != nil {
+		return m.Parties
+	}
+	return nil
+}
+
+func (m *Params) GetIsUpdateRequired() bool {
+	if m != nil {
+		return m.IsUpdateRequired
+	}
+	return false
+}
+
+func (m *Params) GetLastSignature() string {
+	if m != nil {
+		return m.LastSignature
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterEnum("rarimo.rarimocore.rarimocore.ParamsUpdateType", ParamsUpdateType_name, ParamsUpdateType_value)
+	proto.RegisterType((*Party)(nil), "rarimo.rarimocore.rarimocore.Party")
 	proto.RegisterType((*Params)(nil), "rarimo.rarimocore.rarimocore.Params")
 }
 
 func init() { proto.RegisterFile("rarimocore/params.proto", fileDescriptor_997c11d1d0285e72) }
 
 var fileDescriptor_997c11d1d0285e72 = []byte{
-	// 148 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2f, 0x4a, 0x2c, 0xca,
-	0xcc, 0xcd, 0x4f, 0xce, 0x2f, 0x4a, 0xd5, 0x2f, 0x48, 0x2c, 0x4a, 0xcc, 0x2d, 0xd6, 0x2b, 0x28,
-	0xca, 0x2f, 0xc9, 0x17, 0x92, 0x81, 0x48, 0xe8, 0x21, 0xe4, 0x91, 0x98, 0x4a, 0x2a, 0x5c, 0x6c,
-	0x01, 0x60, 0xd5, 0x42, 0x52, 0x5c, 0x1c, 0xd9, 0xa9, 0x95, 0xae, 0xce, 0x2e, 0xc1, 0x8e, 0x12,
-	0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x70, 0xbe, 0x93, 0xd7, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e,
-	0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37,
-	0x1e, 0xcb, 0x31, 0x44, 0x19, 0xa4, 0x67, 0x96, 0xe4, 0x24, 0x26, 0xe9, 0x25, 0xe7, 0xe7, 0xea,
-	0x43, 0x8c, 0x85, 0x52, 0xba, 0x60, 0x97, 0x54, 0xe8, 0x23, 0x39, 0xab, 0xa4, 0xb2, 0x20, 0xb5,
-	0x38, 0x89, 0x0d, 0xec, 0x2c, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa4, 0xdd, 0x5a, 0xeb,
-	0xb1, 0x00, 0x00, 0x00,
+	// 350 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0xcd, 0x4e, 0x2a, 0x31,
+	0x18, 0x9d, 0x5e, 0x60, 0x80, 0xde, 0xdc, 0x9b, 0x49, 0x17, 0xda, 0x18, 0x32, 0x21, 0xe8, 0x82,
+	0x90, 0x30, 0x18, 0x5d, 0xbb, 0x40, 0x9c, 0x48, 0x34, 0x51, 0x32, 0xe0, 0xc6, 0x8d, 0x29, 0x33,
+	0x15, 0x1a, 0x81, 0xd6, 0xb6, 0x63, 0x9c, 0xb7, 0xf0, 0xb1, 0x5c, 0x92, 0xb8, 0x71, 0x69, 0xe0,
+	0x45, 0x8c, 0x9d, 0xe1, 0xc7, 0x98, 0xb8, 0x6a, 0xcf, 0x39, 0xdf, 0x97, 0xef, 0x9c, 0x1c, 0xb8,
+	0x2b, 0x89, 0x64, 0x53, 0x1e, 0x72, 0x49, 0x5b, 0x82, 0x48, 0x32, 0x55, 0x9e, 0x90, 0x5c, 0x73,
+	0x54, 0x49, 0x05, 0x6f, 0xa3, 0x6f, 0x7d, 0x6b, 0x1c, 0x16, 0x7a, 0x44, 0xea, 0x04, 0xed, 0x40,
+	0x5b, 0xc4, 0xc3, 0x4b, 0x9a, 0x60, 0x50, 0x05, 0xf5, 0x72, 0x90, 0x21, 0x84, 0x61, 0x91, 0x44,
+	0x91, 0xa4, 0x4a, 0xe1, 0x3f, 0x46, 0x58, 0x41, 0xa3, 0x84, 0x21, 0x8f, 0x67, 0x1a, 0xe7, 0x32,
+	0x25, 0x85, 0x68, 0x0f, 0x96, 0x9e, 0xa8, 0x64, 0xf7, 0x8c, 0x46, 0x38, 0x5f, 0x05, 0xf5, 0x52,
+	0xb0, 0xc6, 0xb5, 0x37, 0x00, 0xed, 0x9e, 0xf1, 0xf7, 0x35, 0xf6, 0x40, 0x13, 0xbf, 0x73, 0xd6,
+	0x6f, 0x67, 0x47, 0xd7, 0x18, 0x55, 0x60, 0x59, 0x8f, 0x25, 0x55, 0x63, 0x3e, 0x89, 0xcc, 0xe1,
+	0x7c, 0xb0, 0x21, 0xd0, 0x09, 0x2c, 0x0a, 0x22, 0x35, 0xa3, 0x0a, 0xe7, 0xaa, 0xb9, 0xfa, 0xdf,
+	0xa3, 0x7d, 0xef, 0xb7, 0x94, 0x9e, 0x89, 0x18, 0xac, 0x76, 0x50, 0x03, 0x3a, 0x4c, 0xdd, 0x88,
+	0x88, 0x68, 0x1a, 0xd0, 0xc7, 0x98, 0x49, 0x1a, 0xe1, 0x82, 0xf1, 0xf9, 0x83, 0x47, 0x07, 0xf0,
+	0xdf, 0x84, 0x28, 0xdd, 0x67, 0xa3, 0x19, 0xd1, 0xb1, 0xa4, 0xd8, 0x36, 0x4e, 0xbf, 0x93, 0x8d,
+	0x26, 0x74, 0xd2, 0x50, 0xe9, 0xf6, 0x20, 0x11, 0x14, 0xfd, 0x87, 0xb0, 0xd3, 0x6d, 0x5f, 0x9d,
+	0xfb, 0x77, 0x7d, 0x7f, 0xe0, 0x58, 0xa8, 0x0c, 0x0b, 0xd7, 0x83, 0xae, 0x1f, 0x38, 0xe0, 0xf4,
+	0xe2, 0x75, 0xe1, 0x82, 0xf9, 0xc2, 0x05, 0x1f, 0x0b, 0x17, 0xbc, 0x2c, 0x5d, 0x6b, 0xbe, 0x74,
+	0xad, 0xf7, 0xa5, 0x6b, 0xdd, 0x1e, 0x8e, 0x98, 0x9e, 0x90, 0xa1, 0x17, 0xf2, 0x69, 0x2b, 0x0d,
+	0x90, 0x3d, 0x4d, 0xd3, 0xec, 0x73, 0x6b, 0xab, 0x66, 0x9d, 0x08, 0xaa, 0x86, 0xb6, 0xa9, 0xf9,
+	0xf8, 0x33, 0x00, 0x00, 0xff, 0xff, 0xf1, 0x86, 0xb9, 0x8b, 0x01, 0x02, 0x00, 0x00,
+}
+
+func (m *Party) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Party) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Party) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Verified {
+		i--
+		if m.Verified {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.Account) > 0 {
+		i -= len(m.Account)
+		copy(dAtA[i:], m.Account)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Account)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.PubKey) > 0 {
+		i -= len(m.PubKey)
+		copy(dAtA[i:], m.PubKey)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.PubKey)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -107,6 +303,42 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.LastSignature) > 0 {
+		i -= len(m.LastSignature)
+		copy(dAtA[i:], m.LastSignature)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.LastSignature)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.IsUpdateRequired {
+		i--
+		if m.IsUpdateRequired {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.Parties) > 0 {
+		for iNdEx := len(m.Parties) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Parties[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintParams(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.Threshold != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.Threshold))
+		i--
+		dAtA[i] = 0x10
+	}
 	if len(m.KeyECDSA) > 0 {
 		i -= len(m.KeyECDSA)
 		copy(dAtA[i:], m.KeyECDSA)
@@ -128,6 +360,30 @@ func encodeVarintParams(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *Party) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.PubKey)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	l = len(m.Account)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	if m.Verified {
+		n += 2
+	}
+	return n
+}
+
 func (m *Params) Size() (n int) {
 	if m == nil {
 		return 0
@@ -135,6 +391,22 @@ func (m *Params) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.KeyECDSA)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	if m.Threshold != 0 {
+		n += 1 + sovParams(uint64(m.Threshold))
+	}
+	if len(m.Parties) > 0 {
+		for _, e := range m.Parties {
+			l = e.Size()
+			n += 1 + l + sovParams(uint64(l))
+		}
+	}
+	if m.IsUpdateRequired {
+		n += 2
+	}
+	l = len(m.LastSignature)
 	if l > 0 {
 		n += 1 + l + sovParams(uint64(l))
 	}
@@ -146,6 +418,172 @@ func sovParams(x uint64) (n int) {
 }
 func sozParams(x uint64) (n int) {
 	return sovParams(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Party) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Party: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Party: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PubKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PubKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Account = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Verified", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Verified = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *Params) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -207,6 +645,111 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.KeyECDSA = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Threshold", wireType)
+			}
+			m.Threshold = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Threshold |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Parties", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Parties = append(m.Parties, &Party{})
+			if err := m.Parties[len(m.Parties)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsUpdateRequired", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsUpdateRequired = bool(v != 0)
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LastSignature", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.LastSignature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -18,6 +18,9 @@ import (
 
 func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if k.checkCreatorIsValidator(ctx, msg.Creator) {
+		defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+	}
 
 	origin := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).
@@ -28,11 +31,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 
 	index := hexutil.Encode(origin[:])
 
-	_, isFound := k.GetOperation(
-		ctx,
-		index,
-	)
-	if isFound {
+	if _, isFound := k.GetOperation(ctx, index); isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
@@ -120,7 +119,7 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 	return value.String()
 }
 
-func (k *Keeper) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
+func (k msgServer) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
 	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
