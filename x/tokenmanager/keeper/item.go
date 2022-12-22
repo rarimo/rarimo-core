@@ -50,23 +50,10 @@ func (k Keeper) GetItemByChain(
 		return val, false
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
-
 	for _, network := range info.Networks {
 		// searching network name in info networks
 		if network.Name == name {
-			b := store.Get(types.ItemKey(
-				network.TokenAddress,
-				network.TokenId,
-				name,
-			))
-
-			if b != nil {
-				return val, false
-			}
-
-			k.cdc.MustUnmarshal(b, &val)
-			return val, true
+			return k.GetItem(ctx, network.TokenAddress, network.TokenId, network.Name)
 		}
 	}
 	return val, false
