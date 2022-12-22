@@ -81,7 +81,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Details:       details,
 		Signed:        false,
 		Creator:       msg.Creator,
-		Timestamp:     ctx.BlockTime().Unix(),
+		Timestamp:     ctx.BlockHeight(),
 	}
 
 	k.SetOperation(
