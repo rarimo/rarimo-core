@@ -20,7 +20,7 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(item *tokentypes.Item, params *tokentypes.ChainParams, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
 	switch item.TokenType {

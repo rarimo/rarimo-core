@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"math/big"
-	"strconv"
 
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -120,15 +119,10 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 }
 
 func (k msgServer) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
-	network, ok := k.tm.GetNetwork(ctx, msg.FromChain)
-	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", msg.FromChain)
-	}
-
 	infoRequest := &savermsg.MsgTransactionInfoRequest{
 		Hash:    msg.Tx,
 		EventId: msg.EventId,
-		Type:    network.Types[strconv.Itoa(int(msg.TokenType))],
+		Type:    k.tm.GetSaverType(ctx, msg.FromChain, msg.TokenType),
 	}
 
 	saverClient, err := saver.GetClient(msg.FromChain)

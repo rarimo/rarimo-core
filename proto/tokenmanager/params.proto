@@ -13,13 +13,21 @@ enum NetworkType {
   Other = 3;
 }
 
-message ChainParams {
-  string contract = 1;
-  map<string, uint32> types = 2;
-  NetworkType type = 3;
+message NetworkTypeBinding {
+  uint32 coreType = 1;
+  uint32 saverType = 2;
+}
+
+message NetworkParams {
+  // network name
+  string name = 1;
+  // contract address hex
+  string contract = 2;
+  repeated NetworkTypeBinding types = 3;
+  NetworkType type = 4;
 }
 
 // Params defines the parameters for the module.
 message Params {
-  map<string, ChainParams> networks = 1;
+  repeated NetworkParams networks = 1;
 }

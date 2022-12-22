@@ -16,7 +16,7 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(networks map[string]*ChainParams) Params {
+func NewParams(networks []*NetworkParams) Params {
 	return Params{
 		networks,
 	}
