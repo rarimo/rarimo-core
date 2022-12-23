@@ -1,0 +1,22 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "google/protobuf/any.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+enum op_type {
+  TRANSFER = 0;
+  CHANGE_PARTIES = 1;
+}
+
+message Operation {
+  // Should be in a hex format 0x...
+  string index = 1;
+  op_type operationType = 2;
+  // Corresponding to type details
+  google.protobuf.Any details = 3;
+  bool signed = 4;
+  string creator = 5;
+  int64 timestamp = 6;
+}

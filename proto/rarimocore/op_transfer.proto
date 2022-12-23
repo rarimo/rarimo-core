@@ -1,0 +1,28 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message Transfer {
+  // hex-encoded keccak256 hash for tx||event||chain strings' bytes
+  string origin = 1;
+
+  // Deposit transaction data
+  string tx = 2;
+  string eventId = 3;
+  string fromChain = 4;
+
+  string toChain = 5;
+  // hex-encoded
+  string receiver = 6;
+  // dec-encoded
+  string amount = 7;
+
+  // hex-encoded
+  string bundleData = 8;
+  // hex-encoded
+  string bundleSalt = 9;
+
+  string tokenIndex = 12;
+}
+

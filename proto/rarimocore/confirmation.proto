@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message Confirmation {
+  // hex-encoded
+  string root = 1;
+  // hex-encoded
+  repeated string indexes = 2;
+  // hex-encoded
+  string signatureECDSA = 3;
+  string creator = 4;
+}
+

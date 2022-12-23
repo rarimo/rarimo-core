@@ -1,0 +1,86 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "rarimocore/params.proto";
+import "rarimocore/operation.proto";
+import "rarimocore/confirmation.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/params";
+  }
+  // Queries a Deposit by index.
+	rpc Operation(QueryGetOperationRequest) returns (QueryGetOperationResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation/{index}";
+	}
+
+	// Queries a list of Deposit items.
+	rpc OperationAll(QueryAllOperationRequest) returns (QueryAllOperationResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation";
+	}
+
+// Queries a Confirmation by index.
+	rpc Confirmation(QueryGetConfirmationRequest) returns (QueryGetConfirmationResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation/{root}";
+	}
+
+	// Queries a list of Confirmation items.
+	rpc ConfirmationAll(QueryAllConfirmationRequest) returns (QueryAllConfirmationResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetOperationRequest {
+	  string index = 1;
+}
+
+message QueryGetOperationResponse {
+	Operation operation = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllOperationRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllOperationResponse {
+	repeated Operation operation = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetConfirmationRequest {
+	  string root = 1;
+}
+
+message QueryGetConfirmationResponse {
+	Confirmation confirmation = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllConfirmationRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllConfirmationResponse {
+	repeated Confirmation confirmation = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

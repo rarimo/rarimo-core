@@ -1,6 +1,9 @@
-vue/node_modules
-vue/dist
+vue
+ts-client
 release/
 .idea/
 .vscode/
 .DS_Store
+vendor/
+/genesis/
+

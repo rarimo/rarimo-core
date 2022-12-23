@@ -1,0 +1,1 @@
+ignite generate ts-client -y && rm ts-client/package.json && rm -rf $RARIMO_TS_CLIENT_DIR/src && mkdir -p $RARIMO_TS_CLIENT_DIR/src && mv -v ts-client/* $RARIMO_TS_CLIENT_DIR/src && rm -rf ts-client && cd $RARIMO_TS_CLIENT_DIR && sh build.sh

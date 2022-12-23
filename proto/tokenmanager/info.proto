@@ -1,0 +1,20 @@
+syntax = "proto3";
+package rarimo.rarimocore.tokenmanager;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
+
+message NetworkInfo {
+  // network name
+  string name = 1;
+  // hex-encoded
+  string tokenAddress = 2;
+  // hex-encoded
+  string tokenId = 3;
+}
+
+message Info {
+  string index = 1;
+  repeated NetworkInfo networks = 2;
+  string creator = 3;
+}
+

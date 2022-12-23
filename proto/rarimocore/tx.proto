@@ -1,0 +1,58 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "rarimocore/operation.proto";
+import "rarimocore/confirmation.proto";
+import "tokenmanager/item.proto";
+import "rarimocore/params.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
+  rpc CreateChangePartiesOperation(MsgCreateChangePartiesOp) returns (MsgCreateChangePartiesOpResponse);
+  rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
+  rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateTransferOp {
+  string creator = 1;
+  string tx = 2;
+  string eventId = 3;
+  string fromChain = 4;
+  rarimo.rarimocore.tokenmanager.type tokenType = 5;
+}
+
+message MsgCreateTransferOpResponse {}
+
+message MsgCreateConfirmation {
+  string creator = 1;
+  // hex-encoded
+  string root = 2;
+  repeated string indexes = 3;
+  // hex-encoded
+  string signatureECDSA = 4;
+}
+message MsgCreateConfirmationResponse {}
+
+message MsgCreateChangePartiesOp {
+  string creator = 1;
+  repeated Party newSet = 2;
+  string newPublicKey = 3;
+  string signature = 4;
+}
+
+message MsgCreateChangePartiesOpResponse {}
+
+message MsgSetupInitial {
+  string creator = 1;
+  string partyPublicKey = 2;
+  string newPublicKey = 3;
+}
+
+message MsgSetupInitialResponse {}
+
+// this line is used by starport scaffolding # proto/tx/message
