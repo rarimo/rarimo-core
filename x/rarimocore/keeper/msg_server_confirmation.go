@@ -174,7 +174,7 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
 	}
 
-	chainParams, ok := k.tm.GetParams(ctx).Networks[transfer.ToChain]
+	chainParams, ok := k.tm.GetNetwork(ctx, transfer.ToChain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("requested network not found: %s", transfer.ToChain))
 	}

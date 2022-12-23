@@ -8,9 +8,6 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateInfo(MsgCreateInfo) returns (MsgCreateInfoResponse);
-  rpc DeleteInfo(MsgDeleteInfo) returns (MsgDeleteInfoResponse);
-  rpc AddChain(MsgAddChain) returns (MsgAddChainResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 

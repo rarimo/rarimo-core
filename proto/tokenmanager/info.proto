@@ -3,16 +3,18 @@ package rarimo.rarimocore.tokenmanager;
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-message ChainInfo {
+message NetworkInfo {
+  // network name
+  string name = 1;
   // hex-encoded
-  string tokenAddress = 1;
+  string tokenAddress = 2;
   // hex-encoded
-  string tokenId = 2;
+  string tokenId = 3;
 }
 
 message Info {
   string index = 1;
-  map<string, ChainInfo> chains = 2;
+  repeated NetworkInfo networks = 2;
   string creator = 3;
 }
 

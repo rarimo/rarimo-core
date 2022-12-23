@@ -31890,11 +31890,14 @@ paths:
                   properties:
                     index:
                       type: string
-                    chains:
-                      type: object
-                      additionalProperties:
+                    networks:
+                      type: array
+                      items:
                         type: object
                         properties:
+                          name:
+                            type: string
+                            title: network name
                           tokenAddress:
                             type: string
                             title: hex-encoded
@@ -32022,11 +32025,14 @@ paths:
                 properties:
                   index:
                     type: string
-                  chains:
-                    type: object
-                    additionalProperties:
+                  networks:
+                    type: array
+                    items:
                       type: object
                       properties:
+                        name:
+                          type: string
+                          title: network name
                         tokenAddress:
                           type: string
                           title: hex-encoded
@@ -32417,17 +32423,27 @@ paths:
                 type: object
                 properties:
                   networks:
-                    type: object
-                    additionalProperties:
+                    type: array
+                    items:
                       type: object
                       properties:
+                        name:
+                          type: string
+                          title: network name
                         contract:
                           type: string
+                          title: contract address hex
                         types:
-                          type: object
-                          additionalProperties:
-                            type: integer
-                            format: int64
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              coreType:
+                                type: integer
+                                format: int64
+                              saverType:
+                                type: integer
+                                format: int64
                         type:
                           type: string
                           enum:
@@ -54812,43 +54828,19 @@ definitions:
       - NEAR_FT
       - NEAR_NFT
     default: NATIVE
-  rarimo.rarimocore.tokenmanager.ChainInfo:
-    type: object
-    properties:
-      tokenAddress:
-        type: string
-        title: hex-encoded
-      tokenId:
-        type: string
-        title: hex-encoded
-  rarimo.rarimocore.tokenmanager.ChainParams:
-    type: object
-    properties:
-      contract:
-        type: string
-      types:
-        type: object
-        additionalProperties:
-          type: integer
-          format: int64
-      type:
-        type: string
-        enum:
-          - EVM
-          - Solana
-          - Near
-          - Other
-        default: EVM
   rarimo.rarimocore.tokenmanager.Info:
     type: object
     properties:
       index:
         type: string
-      chains:
-        type: object
-        additionalProperties:
+      networks:
+        type: array
+        items:
           type: object
           properties:
+            name:
+              type: string
+              title: network name
             tokenAddress:
               type: string
               title: hex-encoded
@@ -54903,12 +54895,46 @@ definitions:
         default: NATIVE
       wrapped:
         type: boolean
-  rarimo.rarimocore.tokenmanager.MsgAddChainResponse:
+  rarimo.rarimocore.tokenmanager.NetworkInfo:
     type: object
-  rarimo.rarimocore.tokenmanager.MsgCreateInfoResponse:
+    properties:
+      name:
+        type: string
+        title: network name
+      tokenAddress:
+        type: string
+        title: hex-encoded
+      tokenId:
+        type: string
+        title: hex-encoded
+  rarimo.rarimocore.tokenmanager.NetworkParams:
     type: object
-  rarimo.rarimocore.tokenmanager.MsgDeleteInfoResponse:
-    type: object
+    properties:
+      name:
+        type: string
+        title: network name
+      contract:
+        type: string
+        title: contract address hex
+      types:
+        type: array
+        items:
+          type: object
+          properties:
+            coreType:
+              type: integer
+              format: int64
+            saverType:
+              type: integer
+              format: int64
+      type:
+        type: string
+        enum:
+          - EVM
+          - Solana
+          - Near
+          - Other
+        default: EVM
   rarimo.rarimocore.tokenmanager.NetworkType:
     type: string
     enum:
@@ -54917,21 +54943,40 @@ definitions:
       - Near
       - Other
     default: EVM
+  rarimo.rarimocore.tokenmanager.NetworkTypeBinding:
+    type: object
+    properties:
+      coreType:
+        type: integer
+        format: int64
+      saverType:
+        type: integer
+        format: int64
   rarimo.rarimocore.tokenmanager.Params:
     type: object
     properties:
       networks:
-        type: object
-        additionalProperties:
+        type: array
+        items:
           type: object
           properties:
+            name:
+              type: string
+              title: network name
             contract:
               type: string
+              title: contract address hex
             types:
-              type: object
-              additionalProperties:
-                type: integer
-                format: int64
+              type: array
+              items:
+                type: object
+                properties:
+                  coreType:
+                    type: integer
+                    format: int64
+                  saverType:
+                    type: integer
+                    format: int64
             type:
               type: string
               enum:
@@ -54951,11 +54996,14 @@ definitions:
           properties:
             index:
               type: string
-            chains:
-              type: object
-              additionalProperties:
+            networks:
+              type: array
+              items:
                 type: object
                 properties:
+                  name:
+                    type: string
+                    title: network name
                   tokenAddress:
                     type: string
                     title: hex-encoded
@@ -55073,11 +55121,14 @@ definitions:
         properties:
           index:
             type: string
-          chains:
-            type: object
-            additionalProperties:
+          networks:
+            type: array
+            items:
               type: object
               properties:
+                name:
+                  type: string
+                  title: network name
                 tokenAddress:
                   type: string
                   title: hex-encoded
@@ -55192,17 +55243,27 @@ definitions:
         type: object
         properties:
           networks:
-            type: object
-            additionalProperties:
+            type: array
+            items:
               type: object
               properties:
+                name:
+                  type: string
+                  title: network name
                 contract:
                   type: string
+                  title: contract address hex
                 types:
-                  type: object
-                  additionalProperties:
-                    type: integer
-                    format: int64
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      coreType:
+                        type: integer
+                        format: int64
+                      saverType:
+                        type: integer
+                        format: int64
                 type:
                   type: string
                   enum:

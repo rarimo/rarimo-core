@@ -43,25 +43,20 @@ func (k Keeper) GetItem(
 func (k Keeper) GetItemByChain(
 	ctx sdk.Context,
 	infoIndex string,
-	chain string,
+	name string,
 ) (val types.Item, found bool) {
 	info, ok := k.GetInfo(ctx, infoIndex)
 	if !ok {
 		return val, false
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKeyPrefix))
-	b := store.Get(types.ItemKey(
-		info.Chains[chain].TokenAddress,
-		info.Chains[chain].TokenId,
-		chain,
-	))
-	if b == nil {
-		return val, false
+	for _, network := range info.Networks {
+		// searching network name in info networks
+		if network.Name == name {
+			return k.GetItem(ctx, network.TokenAddress, network.TokenId, network.Name)
+		}
 	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
+	return val, false
 }
 
 // RemoveItem removes an item from the store

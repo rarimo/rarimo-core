@@ -14,17 +14,17 @@ const UrlSuffix = "_ADDR_ENV"
 // Storage for saver clients connections
 var connections = make(map[string]*grpc.ClientConn)
 
-func Set(networks map[string]*types.ChainParams) {
+func Set(networks []*types.NetworkParams) {
 	for _, con := range connections {
 		con.Close()
 	}
 
 	connections = make(map[string]*grpc.ClientConn, len(networks))
 
-	for network, _ := range networks {
-		addr := os.Getenv(network + UrlSuffix)
+	for _, network := range networks {
+		addr := os.Getenv(network.Name + UrlSuffix)
 		if addr == "" {
-			panic(errors.New("address for " + network + " saver not found."))
+			panic(errors.New("address for " + network.Name + " saver not found."))
 		}
 
 		con, err := grpc.Dial(addr, grpc.WithInsecure())
@@ -32,7 +32,7 @@ func Set(networks map[string]*types.ChainParams) {
 			panic(err)
 		}
 
-		connections[network] = con
+		connections[network.Name] = con
 	}
 }
 
