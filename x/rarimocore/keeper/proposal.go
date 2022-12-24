@@ -42,3 +42,13 @@ func (k Keeper) ReshareKeys(ctx sdk.Context, _ *types.ReshareKeysProposal) error
 	k.SetParams(ctx, params)
 	return nil
 }
+
+func (k Keeper) ChangeThreshold(ctx sdk.Context, proposal *types.ChangeThresholdProposal) error {
+	params := k.GetParams(ctx)
+	if proposal.Threshold < uint32(len(params.Parties)) {
+		params.Threshold = uint64(proposal.Threshold)
+		params.IsUpdateRequired = true
+		k.SetParams(ctx, params)
+	}
+	return nil
+}
