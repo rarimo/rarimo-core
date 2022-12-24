@@ -15,6 +15,7 @@ service Msg {
   rpc CreateChangePartiesOperation(MsgCreateChangePartiesOp) returns (MsgCreateChangePartiesOpResponse);
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
+  rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -54,5 +55,12 @@ message MsgSetupInitial {
 }
 
 message MsgSetupInitialResponse {}
+
+message MsgChangePartyAddress {
+  string creator = 1;
+  string newAddress = 2;
+}
+
+message MsgChangePartyAddressResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

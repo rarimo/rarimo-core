@@ -35,3 +35,10 @@ func (k Keeper) RemoveSignerParty(ctx sdk.Context, proposal *types.RemoveSignerP
 	k.SetParams(ctx, params)
 	return nil
 }
+
+func (k Keeper) ReshareKeys(ctx sdk.Context, _ *types.ReshareKeysProposal) error {
+	params := k.GetParams(ctx)
+	params.IsUpdateRequired = true
+	k.SetParams(ctx, params)
+	return nil
+}

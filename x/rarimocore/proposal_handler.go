@@ -15,7 +15,8 @@ func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 			return k.AddSignerParty(ctx, c)
 		case *types.RemoveSignerPartyProposal:
 			return k.RemoveSignerParty(ctx, c)
-
+		case *types.ReshareKeysProposal:
+			return k.ReshareKeys(ctx, c)
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized proposal content type: %T", c)
 		}
