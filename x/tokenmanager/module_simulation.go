@@ -65,7 +65,6 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 
 // RandomizedParams creates randomized  param changes for the simulator
 func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
 	return []simtypes.ParamChange{}
 }
 
@@ -75,30 +74,6 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
-
-	var weightMsgCreateInfo int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateInfo, &weightMsgCreateInfo, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateInfo = defaultWeightMsgCreateInfo
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateInfo,
-		tokenmanagersimulation.SimulateMsgCreateInfo(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgDeleteInfo int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteInfo, &weightMsgDeleteInfo, nil,
-		func(_ *rand.Rand) {
-			weightMsgDeleteInfo = defaultWeightMsgDeleteInfo
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgDeleteInfo,
-		tokenmanagersimulation.SimulateMsgDeleteInfo(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	// this line is used by starport scaffolding # simapp/module/operation
-
 	return operations
 }

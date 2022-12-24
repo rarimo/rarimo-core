@@ -377,7 +377,8 @@ func New(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper))
+		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper)).
+		AddRoute(tokenmanagermoduletypes.RouterKey, tokenmanagermodule.NewProposalHandler(app.TokenmanagerKeeper))
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
