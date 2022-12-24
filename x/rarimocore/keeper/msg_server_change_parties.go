@@ -38,7 +38,7 @@ func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *type
 		Details:       details,
 		Signed:        false,
 		Creator:       msg.Creator,
-		Timestamp:     ctx.BlockTime().Unix(),
+		Timestamp:     uint64(ctx.BlockHeight()),
 	}
 
 	k.SetOperation(

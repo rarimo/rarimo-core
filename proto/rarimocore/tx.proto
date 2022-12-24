@@ -16,6 +16,7 @@ service Msg {
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
   rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
+  rpc ResignOperation(MsgResignOperation) returns (MsgResignOperationResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -62,5 +63,16 @@ message MsgChangePartyAddress {
 }
 
 message MsgChangePartyAddressResponse {}
+
+
+message MsgResignOperation {
+  string creator = 1;
+  // index of change op that was accepted on block X where operation to resign was accepted on X >= block >= X - Params.availableResignBlockDelta
+  string changeOpIndex = 2;
+  // index of operation to be resigned
+  string opIndex = 3;
+}
+
+message MsgResignOperationResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
