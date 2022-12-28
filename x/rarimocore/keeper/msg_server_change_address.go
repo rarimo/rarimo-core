@@ -15,6 +15,7 @@ func (k msgServer) ChangePartyAddress(goCtx context.Context, msg *types.MsgChang
 	for _, party := range params.Parties {
 		if party.Account == msg.Creator {
 			party.Address = msg.NewAddress
+			k.SetParams(ctx, params)
 			return &types.MsgChangePartyAddressResponse{}, nil
 		}
 	}
