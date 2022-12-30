@@ -15,11 +15,12 @@ const (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	ParamKeyECDSA         = []byte("KeyECDSA")
-	ParamThreshold        = []byte("Threshold")
-	ParamParties          = []byte("Parties")
-	ParamIsUpdateRequired = []byte("IsUpdateRequired")
-	ParamLastSignature    = []byte("LastSignature")
+	ParamKeyECDSA                  = []byte("KeyECDSA")
+	ParamThreshold                 = []byte("Threshold")
+	ParamParties                   = []byte("Parties")
+	ParamIsUpdateRequired          = []byte("IsUpdateRequired")
+	ParamLastSignature             = []byte("LastSignature")
+	ParamAvailableResignBlockDelta = []byte("AvailableResignBlockDelta")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -47,6 +48,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
 		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
+		paramtypes.NewParamSetPair(ParamAvailableResignBlockDelta, &p.AvailableResignBlockDelta, validateAvailableResignBlockDelta),
 	}
 }
 
@@ -122,4 +124,12 @@ func validateLastSignature(i interface{}) error {
 	}
 	_, err := hexutil.Decode(v)
 	return err
+}
+
+func validateAvailableResignBlockDelta(i interface{}) error {
+	_, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	return nil
 }

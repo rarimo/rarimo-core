@@ -16,3 +16,14 @@ message RemoveSignerPartyProposal {
   string description = 2;
   string account = 3;
 }
+
+message ReshareKeysProposal {
+  string title = 1;
+  string description = 2;
+}
+
+message ChangeThresholdProposal {
+  string title = 1;
+  string description = 2;
+  uint32 threshold = 3;
+}

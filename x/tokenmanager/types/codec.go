@@ -3,22 +3,27 @@ package types
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreateInfo{}, "tokenmanager/CreateInfo", nil)
-	cdc.RegisterConcrete(&MsgDeleteInfo{}, "tokenmanager/DeleteInfo", nil)
-	cdc.RegisterConcrete(&MsgAddChain{}, "tokenmanager/AddChain", nil)
+	cdc.RegisterConcrete(&SetTokenInfoProposal{}, "tokenmanager/SetTokenInfoProposal", nil)
+	cdc.RegisterConcrete(&SetTokenItemProposal{}, "tokenmanager/SetTokenItemProposal", nil)
+	cdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
+	cdc.RegisterConcrete(&RemoveTokenInfoProposal{}, "tokenmanager/RemoveTokenInfoProposal", nil)
+	cdc.RegisterConcrete(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateInfo{},
-		&MsgDeleteInfo{},
-		&MsgAddChain{},
+	registry.RegisterImplementations(
+		(*govtypes.Content)(nil),
+		&SetTokenInfoProposal{},
+		&SetTokenItemProposal{},
+		&RemoveTokenItemProposal{},
+		&RemoveTokenInfoProposal{},
+		&SetNetworkProposal{},
 	)
 	// this line is used by starport scaffolding # 3
 

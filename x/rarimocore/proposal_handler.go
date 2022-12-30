@@ -12,10 +12,13 @@ func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
 		case *types.AddSignerPartyProposal:
-			return k.AddSignerParty(ctx, c)
+			return k.AddSignerPartyProposal(ctx, c)
 		case *types.RemoveSignerPartyProposal:
-			return k.RemoveSignerParty(ctx, c)
-
+			return k.RemoveSignerPartyProposal(ctx, c)
+		case *types.ReshareKeysProposal:
+			return k.ReshareKeysProposal(ctx, c)
+		case *types.ChangeThresholdProposal:
+			return k.ChangeThresholdProposal(ctx, c)
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized proposal content type: %T", c)
 		}
