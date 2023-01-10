@@ -19,7 +19,7 @@ require (
 	github.com/tendermint/tendermint v0.34.23
 	github.com/tendermint/tm-db v0.6.7
 	gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1
-	gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c
+	gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c
 	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37
 	google.golang.org/grpc v1.51.0
 )

@@ -1379,6 +1379,10 @@ gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1 h1:/NTsZ61HpUSxJu
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1/go.mod h1:O4/lUka2v/6HvcxNielMJ2HsTZaizQN6uBYimSIithE=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c h1:tUM3ze4Aj/7A6VylX8BpOvsqV3QE3vlVXu0LrRSNYns=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2 h1:2xCaoPatQWSHtzkImXJxsnxt4IMahOOBmQfDz4rLpJ0=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c h1:tr3d1TinAqn2omLdDyBSAvAc00n33PuEYuys6vvE4FA=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
