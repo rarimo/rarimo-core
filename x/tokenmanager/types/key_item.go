@@ -2,6 +2,8 @@ package types
 
 import (
 	"encoding/binary"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 var _ binary.ByteOrder
@@ -29,4 +31,12 @@ func ItemKey(
 	key = append(key, []byte("/")...)
 
 	return key
+}
+
+func ItemIndex(
+	tokenAddress string,
+	tokenId string,
+	chain string,
+) string {
+	return hexutil.Encode(ItemKey(tokenAddress, tokenId, chain))
 }

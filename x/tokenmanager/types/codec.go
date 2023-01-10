@@ -8,22 +8,26 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&SetTokenInfoProposal{}, "tokenmanager/SetTokenInfoProposal", nil)
-	cdc.RegisterConcrete(&SetTokenItemProposal{}, "tokenmanager/SetTokenItemProposal", nil)
+	cdc.RegisterConcrete(&CreateTokenItemProposal{}, "tokenmanager/CreateTokenItemProposal", nil)
 	cdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
-	cdc.RegisterConcrete(&RemoveTokenInfoProposal{}, "tokenmanager/RemoveTokenInfoProposal", nil)
 	cdc.RegisterConcrete(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal", nil)
+	cdc.RegisterConcrete(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal", nil)
+	cdc.RegisterConcrete(&PutCollectionNetworkAddressProposal{}, "tokenmanager/PutCollectionNetworkAddressProposal", nil)
+	cdc.RegisterConcrete(&RemoveCollectionNetworkAddressProposal{}, "tokenmanager/RemoveCollectionNetworkAddressProposal", nil)
+	cdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
-		&SetTokenInfoProposal{},
-		&SetTokenItemProposal{},
+		&CreateTokenItemProposal{},
 		&RemoveTokenItemProposal{},
-		&RemoveTokenInfoProposal{},
 		&SetNetworkProposal{},
+		&CreateCollectionProposal{},
+		&PutCollectionNetworkAddressProposal{},
+		&RemoveCollectionNetworkAddressProposal{},
+		&RemoveCollectionProposal{},
 	)
 	// this line is used by starport scaffolding # 3
 

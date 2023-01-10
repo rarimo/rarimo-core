@@ -10,8 +10,7 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ItemList: []Item{},
-		InfoList: []Info{},
+		Collections: []CollectionInfo{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -20,26 +19,15 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated index in item
-	itemIndexMap := make(map[string]struct{})
+	collectionsCheck := make(map[string]struct{})
 
-	for _, elem := range gs.ItemList {
-		index := string(ItemKey(elem.TokenAddress, elem.TokenId, elem.Chain))
-		if _, ok := itemIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for item")
+	for _, collection := range gs.Collections {
+		if _, ok := collectionsCheck[collection.Index]; ok {
+			return fmt.Errorf("duplicated collection index: %s", collection.Index)
 		}
-		itemIndexMap[index] = struct{}{}
+		collectionsCheck[collection.Index] = struct{}{}
 	}
-	// Check for duplicated index in info
-	infoIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.InfoList {
-		index := string(InfoKey(elem.Index))
-		if _, ok := infoIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for info")
-		}
-		infoIndexMap[index] = struct{}{}
-	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()

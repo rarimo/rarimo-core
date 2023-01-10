@@ -169,15 +169,15 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 }
 
 func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	item, ok := k.tm.GetItemByChain(ctx, transfer.TokenIndex, transfer.ToChain)
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token item not found")
+	collection := k.tm.GetCollectionInfo(ctx, transfer.GetCollectionIndex())
+	if collection == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s not found", transfer.GetCollectionIndex()))
 	}
 
-	chainParams, ok := k.tm.GetNetwork(ctx, transfer.ToChain)
+	item, ok := k.tm.GetItemByIndex(ctx, transfer.GetItemIndex())
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("requested network not found: %s", transfer.ToChain))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("target item on chain %s not found", transfer.GetToChain()))
 	}
 
-	return pkg.GetTransferContent(&item, chainParams, transfer)
+	return pkg.GetTransferContent(&item, collection, transfer)
 }

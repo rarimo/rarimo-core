@@ -22,7 +22,9 @@ message Transfer {
   string bundleData = 8;
   // hex-encoded
   string bundleSalt = 9;
-
-  string tokenIndex = 12;
+  // index of the collection whose item has been transferred
+  string collectionIndex = 10;
+  // ID of the token that has been transferred
+  string itemIndex = 11;
 }
 

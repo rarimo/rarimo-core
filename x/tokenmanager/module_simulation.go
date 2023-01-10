@@ -43,16 +43,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	tokenmanagerGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		InfoList: []types.Info{
-			{
-				Creator: sample.AccAddress(),
-				Index:   "0",
-			},
-			{
-				Creator: sample.AccAddress(),
-				Index:   "1",
-			},
-		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&tokenmanagerGenesis)

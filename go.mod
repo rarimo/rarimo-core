@@ -19,7 +19,7 @@ require (
 	github.com/tendermint/tendermint v0.34.23
 	github.com/tendermint/tm-db v0.6.7
 	gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1
-	gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221212132611-648c3cf06bee
+	gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c
 	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37
 	google.golang.org/grpc v1.51.0
 )
@@ -42,7 +42,7 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
-	github.com/cenkalti/backoff/v4 v4.1.2 // indirect
+	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/coinbase/rosetta-sdk-go v0.7.9 // indirect

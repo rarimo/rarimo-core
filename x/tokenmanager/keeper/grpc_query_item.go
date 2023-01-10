@@ -58,20 +58,21 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 	return &types.QueryGetItemResponse{Item: val}, nil
 }
 
-func (k Keeper) ItemByChain(c context.Context, req *types.QueryGetItemByChainRequest) (*types.QueryGetItemByChainResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
-	}
-	ctx := sdk.UnwrapSDKContext(c)
-
-	val, found := k.GetItemByChain(
-		ctx,
-		req.InfoIndex,
-		req.Chain,
-	)
-	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
-	}
-
-	return &types.QueryGetItemByChainResponse{Item: val}, nil
-}
+// TODO make CollectionItemByChain
+//func (k Keeper) ItemByChain(c context.Context, req *types.QueryGetItemByChainRequest) (*types.QueryGetItemByChainResponse, error) {
+//	if req == nil {
+//		return nil, status.Error(codes.InvalidArgument, "invalid request")
+//	}
+//	ctx := sdk.UnwrapSDKContext(c)
+//
+//	val, found := k.GetItemFromCollectionByChain(
+//		ctx,
+//		req.InfoIndex,
+//		req.Chain,
+//	)
+//	if !found {
+//		return nil, status.Error(codes.NotFound, "not found")
+//	}
+//
+//	return &types.QueryGetItemByChainResponse{Item: val}, nil
+//}

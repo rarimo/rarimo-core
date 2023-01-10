@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"fmt"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/gogo/protobuf/proto"
@@ -20,63 +22,82 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(item *tokentypes.Item, collection *tokentypes.CollectionInfo, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
-	switch item.TokenType {
+	destinationChainParams, ok := collection.ChainParams[transfer.ToChain]
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("chain [%s] not found for collection [%s]", transfer.ToChain, collection.Index))
+	}
+
+	destinationItemParams, ok := item.ChainParams[transfer.ToChain]
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("chain [%s] not found for item [%s]", transfer.ToChain, item.Index))
+	}
+
+	switch collection.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetAddress(destinationChainParams.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetName(item.Name).
-			SetImageURI(item.ImageUri).
-			SetImageHash(item.ImageHash)
+			SetAddress(destinationChainParams.Address).
+			SetId(destinationItemParams.TokenID).
+			SetName(collection.Metadata.Name).
+			SetImageURI(item.Metadata.ImageUri).
+			SetImageHash(item.Metadata.ImageHash)
 	case tokentypes.Type_NATIVE:
 		builder.SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC20:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetAddress(destinationChainParams.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC721:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetURI(item.Uri)
+			SetAddress(destinationChainParams.Address).
+			SetId(destinationItemParams.TokenID).
+			SetURI(item.Metadata.Uri)
 	case tokentypes.Type_ERC1155:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
+			SetAddress(destinationChainParams.Address).
+			SetId(destinationItemParams.TokenID).
 			SetAmount(transfer.Amount).
-			SetURI(item.Uri)
+			SetURI(item.Metadata.Uri)
 	case tokentypes.Type_METAPLEX_FT:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetAddress(destinationChainParams.Address).
 			SetAmount(transfer.Amount).
-			SetName(item.Name).
-			SetSymbol(item.Symbol).
-			SetURI(item.Uri).
-			SetDecimals(uint8(item.Decimals))
+			SetName(collection.Metadata.Name).
+			SetSymbol(collection.Metadata.Symbol).
+			SetURI(item.Metadata.Uri).
+			SetDecimals(uint8(destinationChainParams.Decimals))
 	case tokentypes.Type_METAPLEX_NFT:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetName(item.Name).
-			SetSymbol(item.Symbol).
-			SetURI(item.Uri)
+			SetAddress(destinationChainParams.Address).
+			SetId(destinationItemParams.TokenID).
+			SetName(collection.Metadata.Name).
+			SetSymbol(collection.Metadata.Symbol).
+			SetURI(item.Metadata.Uri)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")
 	}
 
 	return &operation.TransferContent{
-		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(transfer.Tx).SetOpId(transfer.EventId).SetCurrentNetwork(transfer.FromChain).Build().GetOrigin(),
+		Origin: origin.NewDefaultOriginBuilder().
+			SetTxHash(transfer.Tx).
+			SetOpId(transfer.EventId).
+			SetCurrentNetwork(transfer.FromChain).
+			Build().
+			GetOrigin(),
 		TargetNetwork:  transfer.ToChain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
 		Data:           builder.Build().GetContent(),
-		TargetContract: hexutil.MustDecode(params.Contract),
-		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.BundleData).SetSalt(transfer.BundleSalt).Build().GetBundle(),
+		TargetContract: hexutil.MustDecode(destinationChainParams.Address),
+		Bundle: bundle.NewDefaultBundleBuilder().
+			SetBundle(transfer.BundleData).
+			SetSalt(transfer.BundleSalt).
+			Build().
+			GetBundle(),
 	}, nil
 }

@@ -1,8 +1,6 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
-import "tokenmanager/info.proto";
-
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 

@@ -1,20 +1,13 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
-import "tokenmanager/info.proto";
+import "tokenmanager/collection.proto";
 import "tokenmanager/item.proto";
 import "tokenmanager/params.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-
-message SetTokenInfoProposal {
-  string title = 1;
-  string description = 2;
-  Info info = 3;
-}
-
-message SetTokenItemProposal {
+message CreateTokenItemProposal {
   string title = 1;
   string description = 2;
   Item item = 3;
@@ -26,16 +19,44 @@ message RemoveTokenItemProposal {
   string tokenAddress = 3;
   string tokenId = 4;
   string network = 5;
-}
-
-message RemoveTokenInfoProposal {
-  string title = 1;
-  string description = 2;
-  string index = 3;
+  string collection = 6;
 }
 
 message SetNetworkProposal {
   string title = 1;
   string description = 2;
   NetworkParams networkParams = 3;
+}
+
+message CreateCollectionProposal {
+  string title = 1;
+  string description = 2;
+  string index = 3;
+  string network = 4; // TODO make map<network,CollectionChainParams> usable here
+  string address = 5;
+  uint32 decimals = 6;
+  type tokenType = 7;
+  CollectionMetadata metadata = 8;
+}
+
+message PutCollectionNetworkAddressProposal {
+  string title = 1;
+  string description = 2;
+  string index = 3;
+  string network = 4; // TODO make map<network,CollectionChainParams> usable here
+  string address = 5;
+  uint32 decimals = 6;
+}
+
+message RemoveCollectionNetworkAddressProposal {
+  string title = 1;
+  string description = 2;
+  string index = 3;
+  string network = 4;
+}
+
+message RemoveCollectionProposal {
+  string title = 1;
+  string description = 2;
+  string index = 3;
 }

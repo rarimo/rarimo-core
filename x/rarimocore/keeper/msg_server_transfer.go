@@ -43,14 +43,19 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", depositInfo.TargetNetwork)
 	}
 
-	currentItem, ok := k.tm.GetItem(ctx, depositInfo.TokenAddress, depositInfo.TokenId, msg.FromChain)
-	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "current token not found")
+	collection := k.tm.GetCollectionInfo(ctx, depositInfo.Collection)
+	if collection == nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "collection not found by index [%d]", depositInfo.Collection)
 	}
 
-	targetItem, ok := k.tm.GetItemByChain(ctx, currentItem.Index, depositInfo.TargetNetwork)
+	sourceChainParams, ok := collection.ChainParams[msg.FromChain]
 	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "chain [%s] not supported by collection", msg.FromChain)
+	}
+
+	targetChainParams, ok := collection.ChainParams[depositInfo.TargetNetwork]
+	if !ok {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "chain [%s] not supported by collection", depositInfo.TargetNetwork)
 	}
 
 	if _, err := hexutil.Decode(depositInfo.Receiver); err != nil {
@@ -58,16 +63,16 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	}
 
 	var transferOp = types.Transfer{
-		Origin:     index,
-		Tx:         msg.Tx,
-		EventId:    msg.EventId,
-		FromChain:  msg.FromChain,
-		ToChain:    depositInfo.TargetNetwork,
-		Receiver:   depositInfo.Receiver,
-		Amount:     castAmount(depositInfo.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
-		BundleData: getBundle(depositInfo),
-		BundleSalt: getSalt(depositInfo),
-		TokenIndex: currentItem.Index,
+		Origin:          index,
+		Tx:              msg.Tx,
+		EventId:         msg.EventId,
+		FromChain:       msg.FromChain,
+		ToChain:         depositInfo.TargetNetwork,
+		Receiver:        depositInfo.Receiver,
+		Amount:          castAmount(depositInfo.Amount, uint8(sourceChainParams.Decimals), uint8(targetChainParams.Decimals)),
+		BundleData:      getBundle(depositInfo),
+		BundleSalt:      getSalt(depositInfo),
+		CollectionIndex: collection.Index,
 	}
 
 	details, err := cosmostypes.NewAnyWithValue(&transferOp)
