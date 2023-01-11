@@ -44,7 +44,7 @@ func CmdAddSignerPartyProposal() *cobra.Command {
 
 			contentDetails, err := cosmostypes.NewAnyWithValue(content)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			msg := &govtypes.MsgSubmitProposal{
