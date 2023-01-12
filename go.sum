@@ -1373,8 +1373,8 @@ github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go
 github.com/zondax/hid v0.9.0/go.mod h1:l5wttcP0jwtdLjqjMMWFVEE7d1zO0jvSPA9OPZxWpEM=
 github.com/zondax/hid v0.9.1-0.20220302062450-5552068d2266 h1:O9XLFXGkVswDFmH9LaYpqu+r/AAFWqr0DL6V00KEVFg=
 github.com/zondax/hid v0.9.1-0.20220302062450-5552068d2266/go.mod h1:l5wttcP0jwtdLjqjMMWFVEE7d1zO0jvSPA9OPZxWpEM=
-gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.4 h1:2Iq+d2M4iSmEN8rmozCwZ/5c308GB1CACNf12DVC7Eg=
-gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.4/go.mod h1:WOqtDxN3eCCmnYLVla10xG7lEXkFjpTaqm2a2WasgCc=
+gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.5 h1:foaMTCaZPafTGsvWSZwHQQf2WebdhKAnwNBaW4b5hGQ=
+gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.5/go.mod h1:WOqtDxN3eCCmnYLVla10xG7lEXkFjpTaqm2a2WasgCc=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1 h1:/NTsZ61HpUSxJuzZp9nUbeVeMIIlmFGygFuVOBsUqlY=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1/go.mod h1:O4/lUka2v/6HvcxNielMJ2HsTZaizQN6uBYimSIithE=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221212132611-648c3cf06bee h1:rIhT0pxYlHLGMCZwgwlzdYF7PNHTqfvujfIPeLRLh3k=

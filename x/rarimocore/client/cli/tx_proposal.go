@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"errors"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -24,9 +22,9 @@ func CmdAddSignerPartyProposal() *cobra.Command {
 			account := args[2]
 			address := args[3]
 			prv := args[4]
-			deposit, ok := sdk.NewIntFromString(args[5])
-			if !ok {
-				return errors.New("invalid deposit amount")
+			deposit, err := sdk.ParseCoinsNormalized(args[5])
+			if err != nil {
+				return err
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -48,14 +46,9 @@ func CmdAddSignerPartyProposal() *cobra.Command {
 			}
 
 			msg := &govtypes.MsgSubmitProposal{
-				Content: contentDetails,
-				InitialDeposit: []sdk.Coin{
-					{
-						Denom:  "stake",
-						Amount: deposit,
-					},
-				},
-				Proposer: clientCtx.GetFromAddress().String(),
+				Content:        contentDetails,
+				InitialDeposit: deposit,
+				Proposer:       clientCtx.GetFromAddress().String(),
 			}
 
 			if err := msg.ValidateBasic(); err != nil {
