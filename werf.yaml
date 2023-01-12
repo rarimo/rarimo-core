@@ -29,6 +29,8 @@ shell: # Shell сборочные инструкции.
     - export CGO_ENABLED=1
     - export GO111MODULE=on
     - export GOOS=linux
+    - go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+    - cp $GOPATH/bin/cosmovisor /usr/local/bin/cosmovisor
     - cd /go/src/gitlab.com/rarimo/rarimo-core
     - go build -o /usr/local/bin/rarimo-core /go/src/gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
 
@@ -44,4 +46,8 @@ import:
   - image: builder
     add: /usr/local/bin/rarimo-core
     to: /usr/local/bin/rarimo-core
+    after: setup
+  - image: builder
+    add: /usr/local/bin/cosmovisor
+    to: /usr/local/bin/cosmovisor
     after: setup
