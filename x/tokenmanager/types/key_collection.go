@@ -9,9 +9,8 @@ var _ binary.ByteOrder
 
 const (
 	// CollectionKeyPrefix is the prefix to retrieve all Collection
-	CollectionKeyPrefix = "Collection/value/"
-	// CollectionChainParamsKeyPrefix is the prefix to save collection chain params (index, decimals)
-	CollectionChainParamsKeyPrefix = "Collection/index/"
+	CollectionKeyPrefix  = "Collection/value/"
+	CollectionAddrPrefix = "Collection/value/addr/"
 )
 
 func CollectionKey(index string) []byte {
@@ -19,6 +18,6 @@ func CollectionKey(index string) []byte {
 }
 
 // address is hex-encoded (should be as it might have been done hexutil package)
-func CollectionIndexKey(network, address string) []byte {
+func CollectionNetworkKey(network, address string) []byte {
 	return append([]byte(fmt.Sprintf("%s:%s", network, address)), '/')
 }

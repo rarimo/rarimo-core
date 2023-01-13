@@ -23,7 +23,7 @@ func (k Keeper) HandleCreateCollectionProposal(
 	}
 
 	k.PutCollectionInfo(ctx, types.CollectionInfo{
-		Index: proposal.Index,
+		Index: makeCollectionIndex(proposal),
 		ChainParams: map[string]*types.CollectionChainParams{
 			proposal.Network: {
 				Address:  proposal.Address,
@@ -45,6 +45,10 @@ func (k Keeper) HandlePutCollectionNetworkAddressProposal(
 	collection := k.GetCollectionInfo(ctx, proposal.Index)
 	if collection == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection with index %s not found", proposal.Index))
+	}
+
+	if params, ok := collection.ChainParams[proposal.Network]; ok {
+		k.RemoveCollectionInfoByAddress(ctx, params.Address, proposal.Network)
 	}
 
 	collection.ChainParams[proposal.Network] = &types.CollectionChainParams{
@@ -84,4 +88,16 @@ func (k Keeper) HandleRemoveCollectionProposal(
 
 	k.RemoveCollectionInfo(ctx, proposal.Index)
 	return nil
+}
+
+func makeCollectionIndex(proposal *types.CreateCollectionProposal) string {
+	if proposal.Index != "" {
+		return proposal.Index
+	}
+
+	if proposal.Metadata != nil {
+		return fmt.Sprintf("%s:%s-%s", proposal.Network, proposal.Metadata.Name, proposal.Metadata.Symbol)
+	}
+
+	return fmt.Sprintf("%s:%s", proposal.Network, proposal.Address)
 }

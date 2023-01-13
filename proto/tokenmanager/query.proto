@@ -83,4 +83,13 @@ message QueryAllCollectionResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryGetCollectionByNetworkParamsRequest {
+  string network = 1;
+  string address = 2;
+}
+
+message QueryGetCollectionByNetworkParamsResponse {
+  CollectionInfo collection = 1 [(gogoproto.nullable) = false];
+}
+
 // this line is used by starport scaffolding # 3

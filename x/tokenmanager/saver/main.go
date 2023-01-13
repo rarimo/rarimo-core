@@ -51,7 +51,7 @@ func GetClient(network string) (saver.SaverClient, error) {
 }
 
 func getClient(network string) (*grpc.ClientConn, error) {
-	addr := os.Getenv(network + UrlSuffix)
+	addr := os.Getenv(network + UrlSuffix) // FIXME use config
 	if addr == "" {
 		panic(errors.New("address for " + network + " saver not found."))
 	}

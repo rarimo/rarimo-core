@@ -13,6 +13,23 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
+func (k Keeper) CollectionByNetworkParams(ctx context.Context,
+	r *types.QueryGetCollectionByNetworkParamsRequest,
+) (*types.QueryGetCollectionByNetworkParamsResponse, error) {
+	if r == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	val := k.GetCollectionInfoByNetworkParams(sdkCtx, r.Network, r.Address)
+	if val == nil {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	return &types.QueryGetCollectionByNetworkParamsResponse{Collection: *val}, nil
+}
+
 func (k Keeper) Collection(ctx context.Context, r *types.QueryGetCollectionRequest) (*types.QueryGetCollectionResponse, error) {
 	if r == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -20,7 +37,7 @@ func (k Keeper) Collection(ctx context.Context, r *types.QueryGetCollectionReque
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	val := k.GetCollectionInfo(sdkCtx, r.GetIndex())
+	val := k.GetCollectionInfo(sdkCtx, r.Index)
 	if val == nil {
 		return nil, status.Error(codes.NotFound, "not found")
 	}

@@ -18,23 +18,21 @@ func (k Keeper) HandleCreateTokenItemProposal(ctx sdk.Context, proposal *types.C
 		collection.Items = make(map[string]string)
 	}
 
-	{
-		keys := make([]string, 0, len(proposal.Item.ChainParams))
+	keys := make([]string, 0, len(proposal.Item.ChainParams))
 
-		for chain, params := range proposal.Item.GetChainParams() {
-			collectionChainParams, ok := collection.ChainParams[chain]
-			if !ok {
-				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s does not support network %s", collection.Index, chain))
-			}
-			itemKey := types.ItemKey(collectionChainParams.Address, params.TokenID, chain)
-
-			keys = append(keys, string(itemKey))
-
-			collection.Items[string(itemKey)] = proposal.Item.Index
+	for chain, params := range proposal.Item.ChainParams {
+		collectionChainParams, ok := collection.ChainParams[chain]
+		if !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s does not support network %s", collection.Index, chain))
 		}
+		itemKey := types.ItemKey(collectionChainParams.Address, params.TokenID, chain)
 
-		k.PutItem(ctx, *proposal.Item, keys...)
+		keys = append(keys, string(itemKey))
+
+		collection.Items[string(itemKey)] = proposal.Item.Index
 	}
+
+	k.PutItem(ctx, *proposal.Item, keys...)
 
 	k.PutCollectionInfo(ctx, *collection)
 

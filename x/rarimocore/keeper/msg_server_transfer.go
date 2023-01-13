@@ -4,6 +4,10 @@ import (
 	"context"
 	"math/big"
 
+	"cosmossdk.io/errors"
+
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -15,10 +19,10 @@ import (
 	savermsg "gitlab.com/rarimo/savers/saver-grpc-lib/grpc"
 )
 
-func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	if k.checkCreatorIsValidator(ctx, msg.Creator) {
-		defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+func (k msgServer) CreateTransferOperation(ctx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	if k.checkCreatorIsValidator(sdkCtx, msg.Creator) {
+		defer k.disableFee(sdkCtx.GasMeter().GasConsumed(), sdkCtx.GasMeter())
 	}
 
 	origin := origin.NewDefaultOriginBuilder().
@@ -30,20 +34,20 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 
 	index := hexutil.Encode(origin[:])
 
-	if _, isFound := k.GetOperation(ctx, index); isFound {
+	if _, ok := k.GetOperation(sdkCtx, index); ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	depositInfo, err := k.getDepositInfo(ctx, msg)
+	depositInfo, err := k.getDepositInfo(sdkCtx, msg)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, ok := k.tm.GetNetwork(ctx, depositInfo.TargetNetwork); !ok {
+	if _, ok := k.tm.GetNetwork(sdkCtx, depositInfo.TargetNetwork); !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", depositInfo.TargetNetwork)
 	}
 
-	collection := k.tm.GetCollectionInfo(ctx, depositInfo.Collection)
+	collection := k.tm.GetCollectionInfo(sdkCtx, depositInfo.Collection)
 	if collection == nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "collection not found by index [%d]", depositInfo.Collection)
 	}
@@ -57,6 +61,15 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "chain [%s] not supported by collection", depositInfo.TargetNetwork)
 	}
+
+	itemKey := tokentypes.ItemKey(sourceChainParams.Address, depositInfo.TokenId, msg.FromChain)
+
+	_, err = k.ensureItem(ctx, itemKey, *collection, msg.FromChain, depositInfo.TokenId, collection.TokenType)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "error creating item: %s", err.Error())
+	}
+
+	// TODO ensure that item has network to transfer from and to
 
 	if _, err := hexutil.Decode(depositInfo.Receiver); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver format")
@@ -86,15 +99,15 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Details:       details,
 		Signed:        false,
 		Creator:       msg.Creator,
-		Timestamp:     uint64(ctx.BlockHeight()),
+		Timestamp:     uint64(sdkCtx.BlockHeight()),
 	}
 
 	k.SetOperation(
-		ctx,
+		sdkCtx,
 		operation,
 	)
 
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+	sdkCtx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
@@ -123,6 +136,63 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 	return value.String()
 }
 
+func (k msgServer) ensureItem(ctx context.Context,
+	itemKey []byte,
+	collection tokentypes.CollectionInfo,
+	networkName string,
+	tokenID string,
+	tokenType tokentypes.Type,
+) (*tokentypes.Item, error) {
+	itemIdx, ok := collection.Items[string(itemKey)]
+	if ok {
+		item, ok := k.tm.GetItemByIndex(sdk.UnwrapSDKContext(ctx), itemIdx)
+		if ok { // i suppose we should have this item stored but just in case
+			return &item, nil
+		}
+	}
+
+	item := tokentypes.Item{
+		Index:      tokentypes.ItemKeyToIndex(itemKey),
+		Collection: collection.Index,
+		ChainParams: map[string]*tokentypes.ItemChainParams{
+			networkName: {
+				TokenID:   tokenID,
+				TokenType: tokenType,
+			},
+		},
+	}
+
+	saverClient, err := saver.GetClient(networkName)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to init saver client")
+	}
+
+	itemMeta, err := saverClient.GetMetadata(ctx, &savermsg.MsgMetadataRequest{
+		TokenAddress: collection.ChainParams[networkName].Address,
+		TokenId:      tokenID,
+		TokenType:    uint32(tokenType),
+	})
+
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get metadata")
+	}
+
+	item.Metadata = &tokentypes.ItemMetadata{
+		Uri:       itemMeta.Uri,
+		ImageUri:  itemMeta.ImageUri,
+		ImageHash: itemMeta.ImageHash,
+	}
+
+	if itemMeta.SolanaSeed != "" {
+		item.ChainParams[networkName].Seed = itemMeta.SolanaSeed
+	}
+
+	k.tm.PutItem(sdk.UnwrapSDKContext(ctx), item)
+
+	return &item, nil
+}
+
+// TODO put deposit info into MsgCreateTransferOp to make core independent from savers
 func (k msgServer) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
 	infoRequest := &savermsg.MsgTransactionInfoRequest{
 		Hash:    msg.Tx,

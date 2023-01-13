@@ -33,10 +33,14 @@ func ItemKey(
 	return key
 }
 
+func ItemKeyToIndex(key []byte) string {
+	return hexutil.Encode(key)
+}
+
 func ItemIndex(
 	tokenAddress string,
 	tokenId string,
 	chain string,
 ) string {
-	return hexutil.Encode(ItemKey(tokenAddress, tokenId, chain))
+	return ItemKeyToIndex(ItemKey(tokenAddress, tokenId, chain))
 }

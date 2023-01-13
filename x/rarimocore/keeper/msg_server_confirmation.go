@@ -169,14 +169,14 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 }
 
 func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	collection := k.tm.GetCollectionInfo(ctx, transfer.GetCollectionIndex())
+	collection := k.tm.GetCollectionInfo(ctx, transfer.CollectionIndex)
 	if collection == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s not found", transfer.GetCollectionIndex()))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s not found", transfer.CollectionIndex))
 	}
 
-	item, ok := k.tm.GetItemByIndex(ctx, transfer.GetItemIndex())
+	item, ok := k.tm.GetItemByIndex(ctx, transfer.ItemIndex)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("target item on chain %s not found", transfer.GetToChain()))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("target item on chain %s not found", transfer.ToChain))
 	}
 
 	return pkg.GetTransferContent(&item, collection, transfer)

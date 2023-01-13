@@ -722,6 +722,8 @@ github.com/grpc-ecosystem/grpc-gateway v1.9.0/go.mod h1:vNeuVxBJEsws4ogUvrchl83t
 github.com/grpc-ecosystem/grpc-gateway v1.9.5/go.mod h1:vNeuVxBJEsws4ogUvrchl83t/GYV9WGTSLVdBhOQFDY=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0 h1:gmcG1KaJ57LophUzW0Hy8NmPhnMZb4M0+kPpLofRdBo=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0/go.mod h1:BDjrQk3hbvj6Nolgz8mAMFbcEtjT1g+wF4CSlocrBnw=
+github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0 h1:1JYBfzqrWPcCclBwxFCPAou9n+q86mfnu7NAeHfte7A=
+github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0/go.mod h1:YDZoGHuwE+ov0c8smSH49WLF3F2LaWnYYuDVd+EWrc0=
 github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c h1:6rhixN/i8ZofjG1Y75iExal34USq5p+wiN1tpie8IrU=
 github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c/go.mod h1:NMPJylDgVpX0MLRlPy15sqSwOFv/U1GZ2m21JhFfek0=
 github.com/gtank/merlin v0.1.1-0.20191105220539-8318aed1a79f/go.mod h1:T86dnYJhcGOh5BjZFCJWTDeTK7XW8uE+E21Cy/bIQ+s=
@@ -1383,6 +1385,8 @@ gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2 h1:2x
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c h1:tr3d1TinAqn2omLdDyBSAvAc00n33PuEYuys6vvE4FA=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230112211625-f781889f3678 h1:AaCGCITIG/AMUkrM49shCB1wByHrBEcILgWYzkei5Do=
+gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230112211625-f781889f3678/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
