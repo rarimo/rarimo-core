@@ -71,11 +71,19 @@ func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams,
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")
 	}
 
+	var contentData operation.ContentData
+
+	if item.TokenType == tokentypes.Type_NEAR_FT || item.TokenType == tokentypes.Type_NEAR_NFT {
+		contentData = builder.Build().GetNearContent()
+	} else {
+		contentData = builder.Build().GetContent()
+	}
+
 	return &operation.TransferContent{
 		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(transfer.Tx).SetOpId(transfer.EventId).SetCurrentNetwork(transfer.FromChain).Build().GetOrigin(),
 		TargetNetwork:  transfer.ToChain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
-		Data:           builder.Build().GetContent(),
+		Data:           contentData,
 		TargetContract: hexutil.MustDecode(params.Contract),
 		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.BundleData).SetSalt(transfer.BundleSalt).Build().GetBundle(),
 	}, nil
