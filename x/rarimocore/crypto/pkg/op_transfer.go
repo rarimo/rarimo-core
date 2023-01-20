@@ -73,9 +73,10 @@ func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams,
 
 	var contentData operation.ContentData
 
-	if item.TokenType == tokentypes.Type_NEAR_FT || item.TokenType == tokentypes.Type_NEAR_NFT {
+	switch item.TokenType {
+	case tokentypes.Type_NEAR_FT, tokentypes.Type_NEAR_NFT:
 		contentData = builder.Build().GetNearContent()
-	} else {
+	default:
 		contentData = builder.Build().GetContent()
 	}
 
