@@ -15,15 +15,15 @@ message CollectionMetadata {
 }
 
 message CollectionDataIndex {
-  string collection = 1;
   // Chain name
-  string chain = 2;
-  // Collection address
-  string address = 3;
+  string chain = 1;
+  // Collection contract address
+  string address = 2;
 }
 
 message CollectionData {
   CollectionDataIndex index = 1;
+  string collection = 2;
   Type tokenType = 3;
   bool wrapped = 4;
   uint32 decimals = 5;
@@ -32,4 +32,5 @@ message CollectionData {
 message Collection {
   string index = 1;
   CollectionMetadata meta = 2;
+  repeated CollectionDataIndex data = 3;
 }

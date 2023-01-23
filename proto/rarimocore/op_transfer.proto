@@ -3,6 +3,8 @@ package rarimo.rarimocore.rarimocore;
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
+import "tokenmanager/item.proto";
+
 message Transfer {
   // hex-encoded keccak256 hash for tx||event||chain strings' bytes
   string origin = 1;
@@ -10,21 +12,22 @@ message Transfer {
   // Deposit transaction data
   string tx = 2;
   string eventId = 3;
-  string fromChain = 4;
 
-  string toChain = 5;
   // hex-encoded
-  string receiver = 6;
+  string receiver = 4;
   // dec-encoded
-  string amount = 7;
+  string amount = 5;
 
   // hex-encoded
-  string bundleData = 8;
+  string bundleData = 6;
   // hex-encoded
-  string bundleSalt = 9;
-  // index of the collection whose item has been transferred
-  string collectionIndex = 10;
-  // ID of the token that has been transferred
-  string itemIndex = 11;
+  string bundleSalt = 7;
+
+  // Information about current and target chains
+  rarimo.rarimocore.tokenmanager.ItemChainParams from = 8;
+  rarimo.rarimocore.tokenmanager.ItemChainParams to = 9;
+  // Information about token
+  rarimo.rarimocore.tokenmanager.ItemIndex item = 10;
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists
 }
 

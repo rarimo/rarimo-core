@@ -5,6 +5,7 @@ import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "tokenmanager/item.proto";
 import "rarimocore/params.proto";
+import "rarimocore/vote.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
@@ -17,15 +18,26 @@ service Msg {
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
   rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
   rpc ResignOperation(MsgResignOperation) returns (MsgResignOperationResponse);
+  rpc Vote(MsgVote) returns(MsgVoteResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgCreateTransferOp {
   string creator = 1;
+  // Information to identify transfer
   string tx = 2;
   string eventId = 3;
-  string fromChain = 4;
-  rarimo.rarimocore.tokenmanager.Type tokenType = 5;
+  // Information about deposit
+  string receiver = 4;
+  string amount = 5;
+  string bundleData = 6;// hex-encoded
+  string bundleSalt = 7;// hex-encoded
+  // Information about current and target chains
+  rarimo.rarimocore.tokenmanager.ItemChainParams from = 8;
+  rarimo.rarimocore.tokenmanager.ItemChainParams to = 9;
+  // Information about token
+  rarimo.rarimocore.tokenmanager.ItemIndex item = 10;
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists
 }
 
 message MsgCreateTransferOpResponse {}
@@ -74,5 +86,13 @@ message MsgResignOperation {
 }
 
 message MsgResignOperationResponse {}
+
+message MsgVote{
+  string creator = 1;
+  string operation = 2;
+  VoteType vote = 3;
+}
+
+message MsgVoteResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

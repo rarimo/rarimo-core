@@ -14,9 +14,6 @@ const (
 func CollectionDataKey(index *CollectionDataIndex) []byte {
 	var key []byte
 
-	key = append(key, []byte(index.Collection)...)
-	key = append(key, []byte("/")...)
-
 	key = append(key, []byte(index.Chain)...)
 	key = append(key, []byte("/")...)
 
@@ -31,5 +28,5 @@ func (i *CollectionDataIndex) Equal(o *CollectionDataIndex) bool {
 		return i == o
 	}
 
-	return i.Collection == o.Collection && i.Chain == o.Chain && i.Address == o.Address
+	return i.Chain == o.Chain && i.Address == o.Address
 }

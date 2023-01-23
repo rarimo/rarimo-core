@@ -13,6 +13,7 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
@@ -169,15 +170,27 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 }
 
 func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	collection := k.tm.GetCollectionInfo(ctx, transfer.CollectionIndex)
-	if collection == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection %s not found", transfer.CollectionIndex))
-	}
-
-	item, ok := k.tm.GetItemByIndex(ctx, transfer.ItemIndex)
+	collection, ok := k.tm.GetCollection(ctx, transfer.Item.Collection)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("target item on chain %s not found", transfer.ToChain))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection not found")
 	}
 
-	return pkg.GetTransferContent(&item, collection, transfer)
+	var collectionData tokentypes.CollectionData
+	for _, data := range collection.Data {
+		if collectionData.Index.Chain == data.Chain {
+			collectionData, ok = k.tm.GetCollectionData(ctx, data)
+			if !ok {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data not found")
+			}
+
+			break
+		}
+	}
+
+	item, ok := k.tm.GetItem(ctx, transfer.Item)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "item not found")
+	}
+
+	return pkg.GetTransferContent(collectionData, item, transfer)
 }

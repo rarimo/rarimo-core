@@ -2,7 +2,6 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/saver"
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
@@ -14,7 +13,6 @@ func (k Keeper) GetParams(ctx sdk.Context) (params types.Params) {
 
 // SetParams set the params
 func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
-	saver.Set(params.Networks)
 	k.paramstore.SetParamSet(ctx, &params)
 }
 

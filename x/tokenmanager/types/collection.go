@@ -31,10 +31,6 @@ func validateCollectionDataIndex(c *CollectionDataIndex) error {
 		return fmt.Errorf("empty index")
 	}
 
-	if len(c.Collection) == 0 {
-		return fmt.Errorf("invalid collection index")
-	}
-
 	if len(c.Chain) == 0 {
 		return fmt.Errorf("invalid chain")
 	}

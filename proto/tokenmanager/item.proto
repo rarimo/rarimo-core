@@ -22,11 +22,11 @@ message ItemIndex {
 }
 
 message ItemMetadata {
-  string imageUri = 4;
+  string imageUri = 1;
   // Hash of the token image. Encoded into hex string. (optional)
-  string imageHash = 5;
+  string imageHash = 2;
   // Seed is used to generate PDA address for Solana
-  string seed = 6;
+  string seed = 3;
 }
 
 message ItemChainParams {
@@ -36,6 +36,6 @@ message ItemChainParams {
 
 message Item {
   ItemIndex index = 1;
-  ItemMetadata meta = 3;
-  repeated ItemChainParams chainParams = 4;
+  ItemMetadata meta = 2;
+  repeated ItemChainParams chainParams = 3;
 }

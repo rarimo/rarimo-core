@@ -63,7 +63,7 @@ func (k Keeper) CollectionData(ctx context.Context, r *types.QueryGetCollectionD
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	val, ok := k.GetCollectionData(sdkCtx, &types.CollectionDataIndex{Collection: r.Collection, Chain: r.Chain, Address: r.Address})
+	val, ok := k.GetCollectionData(sdkCtx, &types.CollectionDataIndex{Chain: r.Chain, Address: r.Address})
 	if !ok {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
