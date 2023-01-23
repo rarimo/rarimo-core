@@ -25,7 +25,7 @@ message MsgCreateTransferOp {
   string tx = 2;
   string eventId = 3;
   string fromChain = 4;
-  rarimo.rarimocore.tokenmanager.type tokenType = 5;
+  rarimo.rarimocore.tokenmanager.Type tokenType = 5;
 }
 
 message MsgCreateTransferOpResponse {}

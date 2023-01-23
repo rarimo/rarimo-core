@@ -19,7 +19,7 @@ service Query {
   }
   // Queries a Item by index.
   rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
-    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{chain}";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{collection}";
   }
 
   // Queries a list of Item entries.
@@ -35,8 +35,12 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection";
   }
 
-  rpc CollectionByNetworkParams(QueryGetCollectionByNetworkParamsRequest) returns (QueryGetCollectionByNetworkParamsResponse) {
-    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection/{network}/{address}";
+  rpc CollectionData(QueryGetCollectionDataRequest) returns (QueryGetCollectionDataResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data/{chain}/{address}";
+  }
+
+  rpc CollectionDataAll(QueryAllCollectionDataRequest) returns (QueryAllCollectionDataResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data";
   }
 
   // this line is used by starport scaffolding # 2
@@ -52,9 +56,10 @@ message QueryParamsResponse {
 }
 
 message QueryGetItemRequest {
-  string tokenAddress = 1;
-  string tokenId = 2;
-  string chain = 3;
+  string collection = 1;
+  string name = 2;
+  string symbol = 3;
+  string uri = 4;
 }
 
 message QueryGetItemResponse {
@@ -75,7 +80,7 @@ message QueryGetCollectionRequest {
 }
 
 message QueryGetCollectionResponse {
-  CollectionInfo collection = 1 [(gogoproto.nullable) = false];
+  Collection collection = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllCollectionRequest {
@@ -83,17 +88,26 @@ message QueryAllCollectionRequest {
 }
 
 message QueryAllCollectionResponse {
-  repeated CollectionInfo collection = 1 [(gogoproto.nullable) = false];
+  repeated Collection collection = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetCollectionByNetworkParamsRequest {
-  string network = 1;
+message QueryGetCollectionDataRequest {
+  string chain = 1;
   string address = 2;
 }
 
-message QueryGetCollectionByNetworkParamsResponse {
-  CollectionInfo collection = 1 [(gogoproto.nullable) = false];
+message QueryGetCollectionDataResponse {
+  CollectionData data = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCollectionDataRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCollectionDataResponse {
+  repeated CollectionData data = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

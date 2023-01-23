@@ -7,56 +7,61 @@ import "tokenmanager/params.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-message CreateTokenItemProposal {
-  string title = 1;
-  string description = 2;
-  Item item = 3;
-}
-
-message RemoveTokenItemProposal {
-  string title = 1;
-  string description = 2;
-  string tokenAddress = 3;
-  string tokenId = 4;
-  string network = 5;
-  string collection = 6;
-}
-
 message SetNetworkProposal {
   string title = 1;
   string description = 2;
   NetworkParams networkParams = 3;
 }
 
+message UpdateTokenItemProposal {
+  string title = 1;
+  string description = 2;
+
+  repeated Item item = 3;
+}
+
+message RemoveTokenItemProposal {
+  string title = 1;
+  string description = 2;
+
+  repeated ItemIndex index = 3;
+}
+
 message CreateCollectionProposal {
   string title = 1;
   string description = 2;
+
   string index = 3;
-  string network = 4; // TODO make map<network,CollectionChainParams> usable here
-  string address = 5;
-  uint32 decimals = 6;
-  type tokenType = 7;
-  CollectionMetadata metadata = 8;
+  CollectionMetadata metadata = 4;
+  // All supported networks described
+  repeated CollectionData data = 5;
 }
 
-message PutCollectionNetworkAddressProposal {
+message UpdateCollectionDataProposal {
   string title = 1;
   string description = 2;
-  string index = 3;
-  string network = 4; // TODO make map<network,CollectionChainParams> usable here
-  string address = 5;
-  uint32 decimals = 6;
+
+  repeated CollectionData data = 3;
 }
 
-message RemoveCollectionNetworkAddressProposal {
+message AddCollectionDataProposal {
   string title = 1;
   string description = 2;
-  string index = 3;
-  string network = 4;
+
+  repeated CollectionData data = 3;
+}
+
+
+message RemoveCollectionDataProposal {
+  string title = 1;
+  string description = 2;
+
+  repeated CollectionDataIndex index = 3;
 }
 
 message RemoveCollectionProposal {
   string title = 1;
   string description = 2;
+
   string index = 3;
 }
