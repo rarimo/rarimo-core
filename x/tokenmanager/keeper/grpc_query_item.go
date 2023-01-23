@@ -47,9 +47,12 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 
 	val, found := k.GetItem(
 		ctx,
-		req.TokenAddress,
-		req.TokenId,
-		req.Chain,
+		&types.ItemIndex{
+			Collection: req.Collection,
+			Name:       req.Name,
+			Symbol:     req.Symbol,
+			Uri:        req.Uri,
+		},
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
@@ -57,22 +60,3 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 
 	return &types.QueryGetItemResponse{Item: val}, nil
 }
-
-// TODO make CollectionItemByChain
-//func (k Keeper) ItemByChain(c context.Context, req *types.QueryGetItemByChainRequest) (*types.QueryGetItemByChainResponse, error) {
-//	if req == nil {
-//		return nil, status.Error(codes.InvalidArgument, "invalid request")
-//	}
-//	ctx := sdk.UnwrapSDKContext(c)
-//
-//	val, found := k.GetItemFromCollectionByChain(
-//		ctx,
-//		req.InfoIndex,
-//		req.Chain,
-//	)
-//	if !found {
-//		return nil, status.Error(codes.NotFound, "not found")
-//	}
-//
-//	return &types.QueryGetItemByChainResponse{Item: val}, nil
-//}

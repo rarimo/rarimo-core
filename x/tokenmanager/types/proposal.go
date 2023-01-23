@@ -1,69 +1,38 @@
 package types
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	gov "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
 const (
-	ProposalTypeCreateTokenItem                = "set_token_item"
-	ProposalTypeRemoveTokenItem                = "remove_token_item"
-	ProposalTypeRemoveTokenInfo                = "remove_token_info"
-	ProposalTypeSetNetwork                     = "set_network"
-	ProposalTypeCreateCollection               = "create_collection"
-	ProposalTypePutCollectionNetworkAddress    = "put_collection_network_address"
-	ProposalTypeRemoveCollectionNetworkAddress = "remove_collection_network_address"
-	ProposalTypeRemoveCollection               = "remove_collection"
+	ProposalTypeSetNetwork           = "SetNetwork"
+	ProposalTypeUpdateTokenItem      = "UpdateTokenItem"
+	ProposalTypeRemoveTokenItem      = "RemoveTokenItem"
+	ProposalTypeCreateCollection     = "CreateCollection"
+	ProposalTypeUpdateCollectionData = "UpdateCollectionData"
+	ProposalTypeAddCollectionData    = "AddCollectionData"
+	ProposalTypeRemoveCollectionData = "RemoveCollectionData"
+	ProposalTypeRemoveCollection     = "RemoveCollection"
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeCreateTokenItem)
-	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
-	gov.RegisterProposalType(ProposalTypeRemoveTokenInfo)
 	gov.RegisterProposalType(ProposalTypeSetNetwork)
+	gov.RegisterProposalType(ProposalTypeUpdateTokenItem)
+	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
 	gov.RegisterProposalType(ProposalTypeCreateCollection)
-	gov.RegisterProposalType(ProposalTypePutCollectionNetworkAddress)
-	gov.RegisterProposalType(ProposalTypeRemoveCollectionNetworkAddress)
+	gov.RegisterProposalType(ProposalTypeUpdateCollectionData)
+	gov.RegisterProposalType(ProposalTypeAddCollectionData)
+	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
-	gov.RegisterProposalTypeCodec(&CreateTokenItemProposal{}, "rarimocore/CreateTokenItemProposal")
-	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "rarimocore/RemoveTokenItemProposal")
+
 	gov.RegisterProposalTypeCodec(&SetNetworkProposal{}, "rarimocore/SetNetworkProposal")
+	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "rarimocore/UpdateTokenItemProposal")
+	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "rarimocore/RemoveTokenItemProposal")
 	gov.RegisterProposalTypeCodec(&CreateCollectionProposal{}, "rarimocore/CreateCollectionProposal")
-	gov.RegisterProposalTypeCodec(&PutCollectionNetworkAddressProposal{}, "rarimocore/PutCollectionNetworkAddressProposal")
-	gov.RegisterProposalTypeCodec(&RemoveCollectionNetworkAddressProposal{}, "rarimocore/RemoveCollectionNetworkAddressProposal")
+	gov.RegisterProposalTypeCodec(&UpdateCollectionDataProposal{}, "rarimocore/UpdateCollectionDataProposal")
+	gov.RegisterProposalTypeCodec(&AddCollectionDataProposal{}, "rarimocore/AddCollectionDataProposal")
+	gov.RegisterProposalTypeCodec(&RemoveCollectionDataProposal{}, "rarimocore/RemoveCollectionDataProposal")
 	gov.RegisterProposalTypeCodec(&RemoveCollectionProposal{}, "rarimocore/RemoveCollectionProposal")
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &CreateTokenItemProposal{}
-
-func (m *CreateTokenItemProposal) ProposalRoute() string { return RouterKey }
-func (m *CreateTokenItemProposal) ProposalType() string  { return ProposalTypeCreateTokenItem }
-
-func (m *CreateTokenItemProposal) ValidateBasic() error {
-	if m.Item == nil {
-		return sdkerrors.Wrapf(gov.ErrInvalidProposalContent, "token item should not be nil")
-	}
-
-	if m.Item.Index != "" {
-		return sdkerrors.Wrapf(gov.ErrInvalidProposalContent, "token item index should be empty as it set by the system")
-	}
-
-	if m.Item.Collection == "" {
-		return sdkerrors.Wrapf(gov.ErrInvalidProposalContent, "token item collection should not be empty")
-	}
-
-	return gov.ValidateAbstract(m)
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &RemoveTokenItemProposal{}
-
-func (m *RemoveTokenItemProposal) ProposalRoute() string { return RouterKey }
-func (m *RemoveTokenItemProposal) ProposalType() string  { return ProposalTypeRemoveTokenItem }
-
-func (m *RemoveTokenItemProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
 }
 
 // Implements Proposal Interface
@@ -73,7 +42,51 @@ func (m *SetNetworkProposal) ProposalRoute() string { return RouterKey }
 func (m *SetNetworkProposal) ProposalType() string  { return ProposalTypeSetNetwork }
 
 func (m *SetNetworkProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return validateNetwork(m.NetworkParams)
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpdateTokenItemProposal{}
+
+func (m *UpdateTokenItemProposal) ProposalRoute() string { return RouterKey }
+func (m *UpdateTokenItemProposal) ProposalType() string  { return ProposalTypeUpdateTokenItem }
+
+func (m *UpdateTokenItemProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	for _, i := range m.Item {
+		if err := validateItem(i); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &RemoveTokenItemProposal{}
+
+func (m *RemoveTokenItemProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveTokenItemProposal) ProposalType() string  { return ProposalTypeRemoveTokenItem }
+
+func (m *RemoveTokenItemProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	for _, i := range m.Index {
+		if err := validateItemIndex(i); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface
@@ -83,31 +96,81 @@ func (m *CreateCollectionProposal) ProposalRoute() string { return RouterKey }
 func (m *CreateCollectionProposal) ProposalType() string  { return ProposalTypeCreateCollection }
 
 func (m *CreateCollectionProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	if err := validateCollection(&Collection{Index: m.Index, Meta: m.Metadata}); err != nil {
+		return err
+	}
+
+	for _, d := range m.Data {
+		if err := validateCollectionData(d); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &PutCollectionNetworkAddressProposal{}
+var _ gov.Content = &UpdateCollectionDataProposal{}
 
-func (m *PutCollectionNetworkAddressProposal) ProposalRoute() string { return RouterKey }
-func (m *PutCollectionNetworkAddressProposal) ProposalType() string {
-	return ProposalTypePutCollectionNetworkAddress
-}
+func (m *UpdateCollectionDataProposal) ProposalRoute() string { return RouterKey }
+func (m *UpdateCollectionDataProposal) ProposalType() string  { return ProposalTypeUpdateCollectionData }
 
-func (m *PutCollectionNetworkAddressProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
+func (m *UpdateCollectionDataProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	for _, d := range m.Data {
+		if err := validateCollectionData(d); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &RemoveCollectionNetworkAddressProposal{}
+var _ gov.Content = &AddCollectionDataProposal{}
 
-func (m *RemoveCollectionNetworkAddressProposal) ProposalRoute() string { return RouterKey }
-func (m *RemoveCollectionNetworkAddressProposal) ProposalType() string {
-	return ProposalTypeRemoveCollectionNetworkAddress
+func (m *AddCollectionDataProposal) ProposalRoute() string { return RouterKey }
+func (m *AddCollectionDataProposal) ProposalType() string  { return ProposalTypeAddCollectionData }
+
+func (m *AddCollectionDataProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	for _, d := range m.Data {
+		if err := validateCollectionData(d); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
-func (m *RemoveCollectionNetworkAddressProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
+// Implements Proposal Interface
+var _ gov.Content = &RemoveCollectionDataProposal{}
+
+func (m *RemoveCollectionDataProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveCollectionDataProposal) ProposalType() string  { return ProposalTypeRemoveCollectionData }
+
+func (m *RemoveCollectionDataProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	for _, d := range m.Index {
+		if err := validateCollectionDataIndex(d); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface

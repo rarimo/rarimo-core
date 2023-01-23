@@ -3,6 +3,7 @@ module gitlab.com/rarimo/rarimo-core
 go 1.18
 
 require (
+	cosmossdk.io/errors v1.0.0-beta.7
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/cosmos/ibc-go/v3 v3.0.1
 	github.com/ethereum/go-ethereum v1.10.26

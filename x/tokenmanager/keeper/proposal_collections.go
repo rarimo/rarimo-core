@@ -8,96 +8,60 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
-func (k Keeper) HandleCreateCollectionProposal(
-	ctx sdk.Context,
-	proposal *types.CreateCollectionProposal,
-) error {
-	collection := k.GetCollectionInfo(ctx, proposal.Index)
-	if collection != nil {
+func (k Keeper) HandleCreateCollectionProposal(ctx sdk.Context, proposal *types.CreateCollectionProposal) error {
+	if _, ok := k.GetCollection(ctx, proposal.Index); ok {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection with index %s already exists", proposal.Index))
 	}
 
-	meta := proposal.Metadata
-	if meta == nil {
-		meta = &types.CollectionMetadata{}
-	}
-
-	k.PutCollectionInfo(ctx, types.CollectionInfo{
-		Index: makeCollectionIndex(proposal),
-		ChainParams: map[string]*types.CollectionChainParams{
-			proposal.Network: {
-				Address:  proposal.Address,
-				Decimals: proposal.Decimals,
-			},
-		},
-		Items:     make(map[string]string),
-		TokenType: proposal.TokenType,
-		Metadata:  meta,
+	k.PutCollection(ctx, types.Collection{
+		Index: proposal.Index,
+		Meta:  proposal.Metadata,
 	})
 
-	return nil
-}
-
-func (k Keeper) HandlePutCollectionNetworkAddressProposal(
-	ctx sdk.Context,
-	proposal *types.PutCollectionNetworkAddressProposal,
-) error {
-	collection := k.GetCollectionInfo(ctx, proposal.Index)
-	if collection == nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection with index %s not found", proposal.Index))
+	for _, data := range proposal.Data {
+		k.PutCollectionData(ctx, *data)
 	}
-
-	if params, ok := collection.ChainParams[proposal.Network]; ok {
-		k.RemoveCollectionInfoByAddress(ctx, params.Address, proposal.Network)
-	}
-
-	collection.ChainParams[proposal.Network] = &types.CollectionChainParams{
-		Address:  proposal.Address,
-		Decimals: proposal.Decimals,
-	}
-
-	k.PutCollectionInfo(ctx, *collection)
 
 	return nil
 }
 
-func (k Keeper) HandleRemoveCollectionNetworkAddressProposal(
-	ctx sdk.Context,
-	proposal *types.RemoveCollectionNetworkAddressProposal,
-) error {
-	collection := k.GetCollectionInfo(ctx, proposal.Index)
-	if collection == nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("collection with index %s not found", proposal.Index))
+func (k Keeper) HandleAddCollectionDataProposal(ctx sdk.Context, proposal *types.AddCollectionDataProposal) error {
+	for _, data := range proposal.Data {
+		if _, ok := k.GetCollection(ctx, data.Index.Collection); !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
+		}
+
+		if _, ok := k.GetCollectionData(ctx, data.Index); ok {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("data with index %s already exists", data.Index))
+		}
+
+		k.PutCollectionData(ctx, *data)
 	}
-
-	delete(collection.ChainParams, proposal.Network)
-
-	k.PutCollectionInfo(ctx, *collection)
 
 	return nil
 }
 
-func (k Keeper) HandleRemoveCollectionProposal(
-	ctx sdk.Context,
-	proposal *types.RemoveCollectionProposal,
-) error {
-	collection := k.GetCollectionInfo(ctx, proposal.Index)
-	if collection == nil {
-		return nil
+func (k Keeper) HandleUpdateCollectionDataProposal(ctx sdk.Context, proposal *types.UpdateCollectionDataProposal) error {
+	for _, data := range proposal.Data {
+		if _, ok := k.GetCollectionData(ctx, data.Index); !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
+		}
+
+		k.PutCollectionData(ctx, *data)
 	}
 
-	k.RemoveCollectionInfo(ctx, proposal.Index)
 	return nil
 }
 
-func makeCollectionIndex(proposal *types.CreateCollectionProposal) string {
-	if proposal.Index != "" {
-		return proposal.Index
+func (k Keeper) HandleRemoveCollectionDataProposal(ctx sdk.Context, proposal *types.RemoveCollectionDataProposal) error {
+	for _, index := range proposal.Index {
+		k.RemoveCollectionData(ctx, index)
 	}
 
-	if proposal.Metadata != nil {
-		return fmt.Sprintf("%s:%s-%s", proposal.Network, proposal.Metadata.Name, proposal.Metadata.Symbol)
-	}
+	return nil
+}
 
-	return fmt.Sprintf("%s:%s", proposal.Network, proposal.Address)
+func (k Keeper) HandleRemoveCollectionProposal(ctx sdk.Context, proposal *types.RemoveCollectionProposal) error {
+	k.RemoveCollection(ctx, proposal.Index)
+	return nil
 }

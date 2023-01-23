@@ -2,8 +2,6 @@ package types
 
 import (
 	"encoding/binary"
-
-	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 var _ binary.ByteOrder
@@ -13,34 +11,31 @@ const (
 	ItemKeyPrefix = "Item/value/"
 )
 
-// ItemKey returns the store key to retrieve a Item from the index fields
+// ItemKey returns the store key to retrieve an Item from the index fields
 func ItemKey(
-	tokenAddress string,
-	tokenId string,
-	chain string,
+	index *ItemIndex,
 ) []byte {
 	var key []byte
 
-	key = append(key, []byte(tokenAddress)...)
+	key = append(key, []byte(index.Collection)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(tokenId)...)
+	key = append(key, []byte(index.Name)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(chain)...)
+	key = append(key, []byte(index.Symbol)...)
+	key = append(key, []byte("/")...)
+
+	key = append(key, []byte(index.Uri)...)
 	key = append(key, []byte("/")...)
 
 	return key
 }
 
-func ItemKeyToIndex(key []byte) string {
-	return hexutil.Encode(key)
-}
+func (i *ItemIndex) Equal(o *ItemIndex) bool {
+	if o == nil || i == nil {
+		return i == o
+	}
 
-func ItemIndex(
-	tokenAddress string,
-	tokenId string,
-	chain string,
-) string {
-	return ItemKeyToIndex(ItemKey(tokenAddress, tokenId, chain))
+	return i.Collection == o.Collection && i.Name == o.Name && i.Symbol == o.Symbol && i.Uri == o.Uri
 }

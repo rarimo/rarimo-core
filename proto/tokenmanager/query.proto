@@ -93,8 +93,9 @@ message QueryAllCollectionResponse {
 }
 
 message QueryGetCollectionDataRequest {
-  string chain = 1;
-  string address = 2;
+  string collection = 1;
+  string chain = 2;
+  string address = 3;
 }
 
 message QueryGetCollectionDataResponse {

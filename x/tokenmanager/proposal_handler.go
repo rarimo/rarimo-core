@@ -11,18 +11,20 @@ import (
 func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
-		case *types.CreateTokenItemProposal:
-			return k.HandleCreateTokenItemProposal(ctx, c)
-		case *types.RemoveTokenItemProposal:
-			return k.RemoveTokenItemProposal(ctx, c)
 		case *types.SetNetworkProposal:
-			return k.SetNetworkProposal(ctx, c)
+			return k.HandleSetNetworkProposal(ctx, c)
+		case *types.UpdateTokenItemProposal:
+			return k.HandleUpdateTokenItemProposal(ctx, c)
+		case *types.RemoveTokenItemProposal:
+			return k.HandleRemoveTokenItemProposal(ctx, c)
 		case *types.CreateCollectionProposal:
 			return k.HandleCreateCollectionProposal(ctx, c)
-		case *types.PutCollectionNetworkAddressProposal:
-			return k.HandlePutCollectionNetworkAddressProposal(ctx, c)
-		case *types.RemoveCollectionNetworkAddressProposal:
-			return k.HandleRemoveCollectionNetworkAddressProposal(ctx, c)
+		case *types.UpdateCollectionDataProposal:
+			return k.HandleUpdateCollectionDataProposal(ctx, c)
+		case *types.AddCollectionDataProposal:
+			return k.HandleAddCollectionDataProposal(ctx, c)
+		case *types.RemoveCollectionDataProposal:
+			return k.HandleRemoveCollectionDataProposal(ctx, c)
 		case *types.RemoveCollectionProposal:
 			return k.HandleRemoveCollectionProposal(ctx, c)
 		default:

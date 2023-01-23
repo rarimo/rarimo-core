@@ -64,6 +64,22 @@ func (k msgServer) CreateTransferOperation(ctx context.Context, msg *types.MsgCr
 
 	itemKey := tokentypes.ItemKey(sourceChainParams.Address, depositInfo.TokenId, msg.FromChain)
 
+	// chain is ok
+
+	// token id
+	// evm+near: id on contract
+	// sol: token address
+	// evm -> sol: addr = pda(sol bridge addr, token id from evm), then seed = token_id
+
+	// collection address
+	// evm: contract address
+	// sol: collection nft address
+	// near: collection address
+
+	// MetadataMigrator
+	// - get(source item, destination): dest item
+	// - verify(source item, dest item): bool
+
 	_, err = k.ensureItem(ctx, itemKey, *collection, msg.FromChain, depositInfo.TokenId, collection.TokenType)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "error creating item: %s", err.Error())

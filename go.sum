@@ -40,6 +40,8 @@ cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RX
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3fOKtUw0Xmo=
 collectd.org v0.3.0/go.mod h1:A/8DzQBkF6abtvrT2j/AU/4tiBgJWYyh0y/oB/4MlWE=
+cosmossdk.io/errors v1.0.0-beta.7 h1:gypHW76pTQGVnHKo6QBkb4yFOJjC+sUGRc5Al3Odj1w=
+cosmossdk.io/errors v1.0.0-beta.7/go.mod h1:mz6FQMJRku4bY7aqS/Gwfcmr/ue91roMEKAmDUDpBfE=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 filippo.io/edwards25519 v1.0.0-rc.1 h1:m0VOOB23frXZvAOK44usCgLWvtsxIoMCTBGJZlpmGfU=
 filippo.io/edwards25519 v1.0.0-rc.1/go.mod h1:N1IkdkCkiLB6tki+MYJoSx2JTY9NUlxZE7eHn5EwJns=
@@ -1379,12 +1381,6 @@ gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.4 h1:2Iq+d2M4iSmEN8rmozCwZ/5c308GB1CACN
 gitlab.com/rarimo/cosmos-sdk v0.45.5-dev.4/go.mod h1:WOqtDxN3eCCmnYLVla10xG7lEXkFjpTaqm2a2WasgCc=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1 h1:/NTsZ61HpUSxJuzZp9nUbeVeMIIlmFGygFuVOBsUqlY=
 gitlab.com/rarimo/go-merkle v0.0.0-20221212103215-4a9612e1bed1/go.mod h1:O4/lUka2v/6HvcxNielMJ2HsTZaizQN6uBYimSIithE=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c h1:tUM3ze4Aj/7A6VylX8BpOvsqV3QE3vlVXu0LrRSNYns=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20221226160456-00efa34bb10c/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2 h1:2xCaoPatQWSHtzkImXJxsnxt4IMahOOBmQfDz4rLpJ0=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232058-211b204465f2/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c h1:tr3d1TinAqn2omLdDyBSAvAc00n33PuEYuys6vvE4FA=
-gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230110232345-4851af19ac5c/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230112211625-f781889f3678 h1:AaCGCITIG/AMUkrM49shCB1wByHrBEcILgWYzkei5Do=
 gitlab.com/rarimo/savers/saver-grpc-lib v0.0.0-20230112211625-f781889f3678/go.mod h1:WHW6TppAArVpRVGN+lQBBC5UWC0CdAiCKiFjUeWFJ30=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=

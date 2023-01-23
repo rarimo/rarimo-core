@@ -23,58 +23,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type CollectionChainParams struct {
-	Address  string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-	Decimals uint32 `protobuf:"varint,2,opt,name=decimals,proto3" json:"decimals,omitempty"`
-}
-
-func (m *CollectionChainParams) Reset()         { *m = CollectionChainParams{} }
-func (m *CollectionChainParams) String() string { return proto.CompactTextString(m) }
-func (*CollectionChainParams) ProtoMessage()    {}
-func (*CollectionChainParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2c1a25c2c4b34b82, []int{0}
-}
-func (m *CollectionChainParams) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *CollectionChainParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_CollectionChainParams.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *CollectionChainParams) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CollectionChainParams.Merge(m, src)
-}
-func (m *CollectionChainParams) XXX_Size() int {
-	return m.Size()
-}
-func (m *CollectionChainParams) XXX_DiscardUnknown() {
-	xxx_messageInfo_CollectionChainParams.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CollectionChainParams proto.InternalMessageInfo
-
-func (m *CollectionChainParams) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *CollectionChainParams) GetDecimals() uint32 {
-	if m != nil {
-		return m.Decimals
-	}
-	return 0
-}
-
 type CollectionMetadata struct {
 	Name        string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Symbol      string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
@@ -85,7 +33,7 @@ func (m *CollectionMetadata) Reset()         { *m = CollectionMetadata{} }
 func (m *CollectionMetadata) String() string { return proto.CompactTextString(m) }
 func (*CollectionMetadata) ProtoMessage()    {}
 func (*CollectionMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2c1a25c2c4b34b82, []int{1}
+	return fileDescriptor_2c1a25c2c4b34b82, []int{0}
 }
 func (m *CollectionMetadata) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -135,32 +83,26 @@ func (m *CollectionMetadata) GetMetadataURI() string {
 	return ""
 }
 
-type CollectionInfo struct {
-	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
-	// chainName => {address (hex), decimals}
-	ChainParams map[string]*CollectionChainParams `protobuf:"bytes,2,rep,name=chainParams,proto3" json:"chainParams,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// item_id ({chain_name+address+token_id} => item_index
-	Items map[string]string `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// type of tokens within the collection
-	TokenType Type `protobuf:"varint,4,opt,name=tokenType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
-	// basic metadata of the collection (name, symbol, meta uri)
-	Metadata *CollectionMetadata `protobuf:"bytes,5,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// defines whether tokens are wrapped
-	Wrapped bool `protobuf:"varint,6,opt,name=wrapped,proto3" json:"wrapped,omitempty"`
+type CollectionDataIndex struct {
+	Collection string `protobuf:"bytes,1,opt,name=collection,proto3" json:"collection,omitempty"`
+	// Chain name
+	Chain string `protobuf:"bytes,2,opt,name=chain,proto3" json:"chain,omitempty"`
+	// Collection address
+	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *CollectionInfo) Reset()         { *m = CollectionInfo{} }
-func (m *CollectionInfo) String() string { return proto.CompactTextString(m) }
-func (*CollectionInfo) ProtoMessage()    {}
-func (*CollectionInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2c1a25c2c4b34b82, []int{2}
+func (m *CollectionDataIndex) Reset()         { *m = CollectionDataIndex{} }
+func (m *CollectionDataIndex) String() string { return proto.CompactTextString(m) }
+func (*CollectionDataIndex) ProtoMessage()    {}
+func (*CollectionDataIndex) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2c1a25c2c4b34b82, []int{1}
 }
-func (m *CollectionInfo) XXX_Unmarshal(b []byte) error {
+func (m *CollectionDataIndex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CollectionInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CollectionDataIndex) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CollectionInfo.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CollectionDataIndex.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -170,136 +112,194 @@ func (m *CollectionInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *CollectionInfo) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CollectionInfo.Merge(m, src)
+func (m *CollectionDataIndex) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CollectionDataIndex.Merge(m, src)
 }
-func (m *CollectionInfo) XXX_Size() int {
+func (m *CollectionDataIndex) XXX_Size() int {
 	return m.Size()
 }
-func (m *CollectionInfo) XXX_DiscardUnknown() {
-	xxx_messageInfo_CollectionInfo.DiscardUnknown(m)
+func (m *CollectionDataIndex) XXX_DiscardUnknown() {
+	xxx_messageInfo_CollectionDataIndex.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CollectionInfo proto.InternalMessageInfo
+var xxx_messageInfo_CollectionDataIndex proto.InternalMessageInfo
 
-func (m *CollectionInfo) GetIndex() string {
+func (m *CollectionDataIndex) GetCollection() string {
 	if m != nil {
-		return m.Index
+		return m.Collection
 	}
 	return ""
 }
 
-func (m *CollectionInfo) GetChainParams() map[string]*CollectionChainParams {
+func (m *CollectionDataIndex) GetChain() string {
 	if m != nil {
-		return m.ChainParams
+		return m.Chain
+	}
+	return ""
+}
+
+func (m *CollectionDataIndex) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type CollectionData struct {
+	Index     *CollectionDataIndex `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	TokenType Type                 `protobuf:"varint,3,opt,name=tokenType,proto3,enum=rarimo.rarimocore.tokenmanager.Type" json:"tokenType,omitempty"`
+	Wrapped   bool                 `protobuf:"varint,4,opt,name=wrapped,proto3" json:"wrapped,omitempty"`
+	Decimals  uint32               `protobuf:"varint,5,opt,name=decimals,proto3" json:"decimals,omitempty"`
+}
+
+func (m *CollectionData) Reset()         { *m = CollectionData{} }
+func (m *CollectionData) String() string { return proto.CompactTextString(m) }
+func (*CollectionData) ProtoMessage()    {}
+func (*CollectionData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2c1a25c2c4b34b82, []int{2}
+}
+func (m *CollectionData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CollectionData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CollectionData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CollectionData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CollectionData.Merge(m, src)
+}
+func (m *CollectionData) XXX_Size() int {
+	return m.Size()
+}
+func (m *CollectionData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CollectionData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CollectionData proto.InternalMessageInfo
+
+func (m *CollectionData) GetIndex() *CollectionDataIndex {
+	if m != nil {
+		return m.Index
 	}
 	return nil
 }
 
-func (m *CollectionInfo) GetItems() map[string]string {
-	if m != nil {
-		return m.Items
-	}
-	return nil
-}
-
-func (m *CollectionInfo) GetTokenType() Type {
+func (m *CollectionData) GetTokenType() Type {
 	if m != nil {
 		return m.TokenType
 	}
 	return Type_NATIVE
 }
 
-func (m *CollectionInfo) GetMetadata() *CollectionMetadata {
-	if m != nil {
-		return m.Metadata
-	}
-	return nil
-}
-
-func (m *CollectionInfo) GetWrapped() bool {
+func (m *CollectionData) GetWrapped() bool {
 	if m != nil {
 		return m.Wrapped
 	}
 	return false
 }
 
+func (m *CollectionData) GetDecimals() uint32 {
+	if m != nil {
+		return m.Decimals
+	}
+	return 0
+}
+
+type Collection struct {
+	Index string              `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	Meta  *CollectionMetadata `protobuf:"bytes,2,opt,name=meta,proto3" json:"meta,omitempty"`
+}
+
+func (m *Collection) Reset()         { *m = Collection{} }
+func (m *Collection) String() string { return proto.CompactTextString(m) }
+func (*Collection) ProtoMessage()    {}
+func (*Collection) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2c1a25c2c4b34b82, []int{3}
+}
+func (m *Collection) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Collection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Collection.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Collection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Collection.Merge(m, src)
+}
+func (m *Collection) XXX_Size() int {
+	return m.Size()
+}
+func (m *Collection) XXX_DiscardUnknown() {
+	xxx_messageInfo_Collection.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Collection proto.InternalMessageInfo
+
+func (m *Collection) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+func (m *Collection) GetMeta() *CollectionMetadata {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*CollectionChainParams)(nil), "rarimo.rarimocore.tokenmanager.CollectionChainParams")
 	proto.RegisterType((*CollectionMetadata)(nil), "rarimo.rarimocore.tokenmanager.CollectionMetadata")
-	proto.RegisterType((*CollectionInfo)(nil), "rarimo.rarimocore.tokenmanager.CollectionInfo")
-	proto.RegisterMapType((map[string]*CollectionChainParams)(nil), "rarimo.rarimocore.tokenmanager.CollectionInfo.ChainParamsEntry")
-	proto.RegisterMapType((map[string]string)(nil), "rarimo.rarimocore.tokenmanager.CollectionInfo.ItemsEntry")
+	proto.RegisterType((*CollectionDataIndex)(nil), "rarimo.rarimocore.tokenmanager.CollectionDataIndex")
+	proto.RegisterType((*CollectionData)(nil), "rarimo.rarimocore.tokenmanager.CollectionData")
+	proto.RegisterType((*Collection)(nil), "rarimo.rarimocore.tokenmanager.Collection")
 }
 
 func init() { proto.RegisterFile("tokenmanager/collection.proto", fileDescriptor_2c1a25c2c4b34b82) }
 
 var fileDescriptor_2c1a25c2c4b34b82 = []byte{
-	// 459 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0x4f, 0x8b, 0xd4, 0x30,
-	0x18, 0xc6, 0x27, 0xf3, 0xcf, 0x99, 0xb7, 0xb8, 0x2c, 0x61, 0xd4, 0x50, 0xb0, 0x94, 0xc1, 0x43,
-	0x2f, 0xb6, 0x50, 0x11, 0x56, 0x2f, 0xc2, 0x2e, 0x1e, 0x06, 0x5d, 0x95, 0xa0, 0x17, 0x6f, 0x99,
-	0x36, 0x8e, 0x65, 0x9b, 0xa6, 0xa4, 0x59, 0xdd, 0x7e, 0x0b, 0xbf, 0x8e, 0xdf, 0xc0, 0xe3, 0x1e,
-	0x3d, 0xca, 0xcc, 0x17, 0x91, 0x36, 0xed, 0xb4, 0x23, 0xa2, 0xbb, 0xa7, 0xe4, 0x6d, 0xfa, 0xfc,
-	0x9e, 0xb7, 0xcf, 0xdb, 0xc0, 0x43, 0x2d, 0x2f, 0x78, 0x26, 0x58, 0xc6, 0x36, 0x5c, 0x05, 0x91,
-	0x4c, 0x53, 0x1e, 0xe9, 0x44, 0x66, 0x7e, 0xae, 0xa4, 0x96, 0xd8, 0x51, 0x4c, 0x25, 0x42, 0xfa,
-	0x66, 0x89, 0xa4, 0xe2, 0x7e, 0x5f, 0x60, 0x2f, 0x36, 0x72, 0x23, 0xeb, 0x57, 0x83, 0x6a, 0x67,
-	0x54, 0xf6, 0x83, 0x03, 0x68, 0xa2, 0xb9, 0x30, 0x07, 0xcb, 0x73, 0xb8, 0x77, 0xb6, 0xb7, 0x38,
-	0xfb, 0xcc, 0x92, 0xec, 0x1d, 0x53, 0x4c, 0x14, 0x98, 0xc0, 0x1d, 0x16, 0xc7, 0x8a, 0x17, 0x05,
-	0x41, 0x2e, 0xf2, 0xe6, 0xb4, 0x2d, 0xb1, 0x0d, 0xb3, 0x98, 0x47, 0x89, 0x60, 0x69, 0x41, 0x86,
-	0x2e, 0xf2, 0xee, 0xd2, 0x7d, 0xbd, 0x5c, 0x03, 0xee, 0x70, 0xe7, 0x5c, 0xb3, 0x98, 0x69, 0x86,
-	0x31, 0x8c, 0x33, 0x26, 0x78, 0x03, 0xaa, 0xf7, 0xf8, 0x3e, 0x4c, 0x8b, 0x52, 0xac, 0x65, 0x5a,
-	0x33, 0xe6, 0xb4, 0xa9, 0xb0, 0x0b, 0x96, 0x68, 0x74, 0x1f, 0xe8, 0x8a, 0x8c, 0xea, 0xc3, 0xfe,
-	0xa3, 0xe5, 0xf7, 0x31, 0x1c, 0x75, 0x26, 0xab, 0xec, 0x93, 0xc4, 0x0b, 0x98, 0x24, 0x59, 0xcc,
-	0xaf, 0x1a, 0x07, 0x53, 0x60, 0x06, 0x56, 0xd4, 0x7d, 0x11, 0x19, 0xba, 0x23, 0xcf, 0x0a, 0x5f,
-	0xf8, 0xff, 0x0e, 0xd0, 0x3f, 0x44, 0xfb, 0xbd, 0x4c, 0x5e, 0x66, 0x5a, 0x95, 0xb4, 0xcf, 0xc4,
-	0x6f, 0x61, 0x52, 0x85, 0x59, 0x90, 0x51, 0x0d, 0x7f, 0x76, 0x4b, 0xf8, 0xaa, 0xd2, 0x1a, 0xac,
-	0xe1, 0xe0, 0x53, 0x98, 0xd7, 0x82, 0xf7, 0x65, 0xce, 0xc9, 0xd8, 0x45, 0xde, 0x51, 0xf8, 0xe8,
-	0x7f, 0x50, 0x5d, 0xe6, 0x9c, 0x76, 0x32, 0xfc, 0x06, 0x66, 0x6d, 0x5e, 0x64, 0xe2, 0x22, 0xcf,
-	0x0a, 0xc3, 0x9b, 0xf7, 0xd5, 0x0e, 0x8d, 0xee, 0x19, 0xd5, 0xaf, 0xf0, 0x55, 0xb1, 0x3c, 0xe7,
-	0x31, 0x99, 0xba, 0xc8, 0x9b, 0xd1, 0xb6, 0xb4, 0x2f, 0xe1, 0xf8, 0xcf, 0x7c, 0xf0, 0x31, 0x8c,
-	0x2e, 0x78, 0xd9, 0x4c, 0xa2, 0xda, 0xe2, 0x57, 0x30, 0xf9, 0xc2, 0xd2, 0x4b, 0x5e, 0x4f, 0xda,
-	0x0a, 0x9f, 0xde, 0xbc, 0x99, 0x1e, 0x9c, 0x1a, 0xc6, 0xf3, 0xe1, 0x09, 0xb2, 0x4f, 0x00, 0xba,
-	0xe4, 0xfe, 0x62, 0xb8, 0xe8, 0x1b, 0xce, 0x7b, 0xca, 0xd3, 0xd7, 0x3f, 0xb6, 0x0e, 0xba, 0xde,
-	0x3a, 0xe8, 0xd7, 0xd6, 0x41, 0xdf, 0x76, 0xce, 0xe0, 0x7a, 0xe7, 0x0c, 0x7e, 0xee, 0x9c, 0xc1,
-	0xc7, 0x70, 0x93, 0xe8, 0x94, 0xad, 0xfd, 0x48, 0x8a, 0xc0, 0x34, 0xd6, 0x2c, 0x8f, 0xab, 0x06,
-	0x83, 0xab, 0xe0, 0xe0, 0x06, 0x55, 0x91, 0x17, 0xeb, 0x69, 0x7d, 0x87, 0x9e, 0xfc, 0x0e, 0x00,
-	0x00, 0xff, 0xff, 0xf6, 0x3e, 0x3f, 0x8d, 0xb3, 0x03, 0x00, 0x00,
-}
-
-func (m *CollectionChainParams) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *CollectionChainParams) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CollectionChainParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Decimals != 0 {
-		i = encodeVarintCollection(dAtA, i, uint64(m.Decimals))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintCollection(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	// 382 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xc1, 0x6a, 0xe3, 0x30,
+	0x10, 0x8d, 0x76, 0x93, 0x6c, 0x32, 0x61, 0x73, 0xd0, 0x86, 0xad, 0x09, 0x54, 0x18, 0xd3, 0x43,
+	0x2e, 0xb5, 0xc1, 0xf9, 0x83, 0xa4, 0x14, 0x02, 0xed, 0xc5, 0xb4, 0x97, 0xde, 0x64, 0x5b, 0xb8,
+	0x6e, 0x2d, 0xcb, 0xc8, 0x82, 0x26, 0x7f, 0xd1, 0xcf, 0xea, 0x31, 0x97, 0x42, 0x8f, 0x25, 0xf9,
+	0x91, 0x62, 0xd9, 0x8e, 0x63, 0x28, 0x6d, 0x4f, 0xd2, 0x1b, 0xcd, 0x7b, 0x6f, 0x66, 0x34, 0x70,
+	0xaa, 0xc4, 0x23, 0x4b, 0x39, 0x4d, 0x69, 0xc4, 0xa4, 0x13, 0x88, 0x24, 0x61, 0x81, 0x8a, 0x45,
+	0x6a, 0x67, 0x52, 0x28, 0x81, 0x89, 0xa4, 0x32, 0xe6, 0xc2, 0x2e, 0x8f, 0x40, 0x48, 0x66, 0x1f,
+	0x13, 0xa6, 0x93, 0x48, 0x44, 0x42, 0xa7, 0x3a, 0xc5, 0xad, 0x64, 0x4d, 0x4f, 0x5a, 0xa2, 0xb1,
+	0x62, 0xbc, 0x7c, 0xb0, 0x7c, 0xc0, 0xcb, 0x83, 0xc5, 0x35, 0x53, 0x34, 0xa4, 0x8a, 0x62, 0x0c,
+	0xdd, 0x94, 0x72, 0x66, 0x20, 0x13, 0xcd, 0x86, 0x9e, 0xbe, 0xe3, 0xff, 0xd0, 0xcf, 0x37, 0xdc,
+	0x17, 0x89, 0xf1, 0x4b, 0x47, 0x2b, 0x84, 0x4d, 0x18, 0xf1, 0x8a, 0x77, 0xeb, 0xad, 0x8c, 0xdf,
+	0xfa, 0xf1, 0x38, 0x64, 0x31, 0xf8, 0xd7, 0x78, 0x5c, 0x50, 0x45, 0x57, 0x69, 0xc8, 0xd6, 0x98,
+	0x00, 0x34, 0xdd, 0x55, 0x56, 0x47, 0x11, 0x3c, 0x81, 0x5e, 0x70, 0x4f, 0xe3, 0xb4, 0xf2, 0x2b,
+	0x01, 0x36, 0xe0, 0x0f, 0x0d, 0x43, 0xc9, 0xf2, 0xbc, 0xb2, 0xaa, 0xa1, 0xf5, 0x8a, 0x60, 0xdc,
+	0xf6, 0xc1, 0x2b, 0xe8, 0xc5, 0x85, 0x97, 0x56, 0x1f, 0xb9, 0x73, 0xfb, 0xeb, 0xe1, 0xd9, 0x9f,
+	0x94, 0xe9, 0x95, 0x0a, 0x78, 0x01, 0x43, 0x9d, 0x7a, 0xb3, 0xc9, 0x98, 0x76, 0x1e, 0xbb, 0x67,
+	0xdf, 0xc9, 0x15, 0xb9, 0x5e, 0x43, 0x2b, 0x6a, 0x7f, 0x92, 0x34, 0xcb, 0x58, 0x68, 0x74, 0x4d,
+	0x34, 0x1b, 0x78, 0x35, 0xc4, 0x53, 0x18, 0x84, 0x2c, 0x88, 0x39, 0x4d, 0x72, 0xa3, 0x67, 0xa2,
+	0xd9, 0x5f, 0xef, 0x80, 0xad, 0x07, 0x80, 0x65, 0x6b, 0x2a, 0x4d, 0x4b, 0xc3, 0xba, 0xba, 0x4b,
+	0xe8, 0x16, 0x13, 0xd7, 0xa3, 0x1a, 0xb9, 0xee, 0xcf, 0xfb, 0xac, 0xbf, 0xdc, 0xd3, 0xfc, 0xc5,
+	0xd5, 0xcb, 0x8e, 0xa0, 0xed, 0x8e, 0xa0, 0xf7, 0x1d, 0x41, 0xcf, 0x7b, 0xd2, 0xd9, 0xee, 0x49,
+	0xe7, 0x6d, 0x4f, 0x3a, 0x77, 0x6e, 0x14, 0xab, 0x84, 0xfa, 0x76, 0x20, 0xb8, 0x53, 0xca, 0x56,
+	0xc7, 0x79, 0x21, 0xef, 0xac, 0x9d, 0xd6, 0x86, 0xa9, 0x4d, 0xc6, 0x72, 0xbf, 0xaf, 0x77, 0x6c,
+	0xfe, 0x11, 0x00, 0x00, 0xff, 0xff, 0xd8, 0x93, 0x22, 0xd9, 0xd3, 0x02, 0x00, 0x00,
 }
 
 func (m *CollectionMetadata) Marshal() (dAtA []byte, err error) {
@@ -346,7 +346,7 @@ func (m *CollectionMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CollectionInfo) Marshal() (dAtA []byte, err error) {
+func (m *CollectionDataIndex) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -356,16 +356,65 @@ func (m *CollectionInfo) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CollectionInfo) MarshalTo(dAtA []byte) (int, error) {
+func (m *CollectionDataIndex) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CollectionInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CollectionDataIndex) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintCollection(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintCollection(dAtA, i, uint64(len(m.Chain)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Collection) > 0 {
+		i -= len(m.Collection)
+		copy(dAtA[i:], m.Collection)
+		i = encodeVarintCollection(dAtA, i, uint64(len(m.Collection)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CollectionData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CollectionData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CollectionData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Decimals != 0 {
+		i = encodeVarintCollection(dAtA, i, uint64(m.Decimals))
+		i--
+		dAtA[i] = 0x28
+	}
 	if m.Wrapped {
 		i--
 		if m.Wrapped {
@@ -374,11 +423,16 @@ func (m *CollectionInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0
 		}
 		i--
-		dAtA[i] = 0x30
+		dAtA[i] = 0x20
 	}
-	if m.Metadata != nil {
+	if m.TokenType != 0 {
+		i = encodeVarintCollection(dAtA, i, uint64(m.TokenType))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.Index != nil {
 		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Index.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -386,57 +440,42 @@ func (m *CollectionInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintCollection(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0xa
 	}
-	if m.TokenType != 0 {
-		i = encodeVarintCollection(dAtA, i, uint64(m.TokenType))
-		i--
-		dAtA[i] = 0x20
+	return len(dAtA) - i, nil
+}
+
+func (m *Collection) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
 	}
-	if len(m.Items) > 0 {
-		for k := range m.Items {
-			v := m.Items[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintCollection(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintCollection(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintCollection(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
-	if len(m.ChainParams) > 0 {
-		for k := range m.ChainParams {
-			v := m.ChainParams[k]
-			baseI := i
-			if v != nil {
-				{
-					size, err := v.MarshalToSizedBuffer(dAtA[:i])
-					if err != nil {
-						return 0, err
-					}
-					i -= size
-					i = encodeVarintCollection(dAtA, i, uint64(size))
-				}
-				i--
-				dAtA[i] = 0x12
+	return dAtA[:n], nil
+}
+
+func (m *Collection) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Collection) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintCollection(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintCollection(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x12
+			i -= size
+			i = encodeVarintCollection(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0x12
 	}
 	if len(m.Index) > 0 {
 		i -= len(m.Index)
@@ -459,22 +498,6 @@ func encodeVarintCollection(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *CollectionChainParams) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovCollection(uint64(l))
-	}
-	if m.Decimals != 0 {
-		n += 1 + sovCollection(uint64(m.Decimals))
-	}
-	return n
-}
-
 func (m *CollectionMetadata) Size() (n int) {
 	if m == nil {
 		return 0
@@ -496,7 +519,50 @@ func (m *CollectionMetadata) Size() (n int) {
 	return n
 }
 
-func (m *CollectionInfo) Size() (n int) {
+func (m *CollectionDataIndex) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Collection)
+	if l > 0 {
+		n += 1 + l + sovCollection(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovCollection(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovCollection(uint64(l))
+	}
+	return n
+}
+
+func (m *CollectionData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Index != nil {
+		l = m.Index.Size()
+		n += 1 + l + sovCollection(uint64(l))
+	}
+	if m.TokenType != 0 {
+		n += 1 + sovCollection(uint64(m.TokenType))
+	}
+	if m.Wrapped {
+		n += 2
+	}
+	if m.Decimals != 0 {
+		n += 1 + sovCollection(uint64(m.Decimals))
+	}
+	return n
+}
+
+func (m *Collection) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -506,36 +572,9 @@ func (m *CollectionInfo) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovCollection(uint64(l))
 	}
-	if len(m.ChainParams) > 0 {
-		for k, v := range m.ChainParams {
-			_ = k
-			_ = v
-			l = 0
-			if v != nil {
-				l = v.Size()
-				l += 1 + sovCollection(uint64(l))
-			}
-			mapEntrySize := 1 + len(k) + sovCollection(uint64(len(k))) + l
-			n += mapEntrySize + 1 + sovCollection(uint64(mapEntrySize))
-		}
-	}
-	if len(m.Items) > 0 {
-		for k, v := range m.Items {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + len(k) + sovCollection(uint64(len(k))) + 1 + len(v) + sovCollection(uint64(len(v)))
-			n += mapEntrySize + 1 + sovCollection(uint64(mapEntrySize))
-		}
-	}
-	if m.TokenType != 0 {
-		n += 1 + sovCollection(uint64(m.TokenType))
-	}
-	if m.Metadata != nil {
-		l = m.Metadata.Size()
+	if m.Meta != nil {
+		l = m.Meta.Size()
 		n += 1 + l + sovCollection(uint64(l))
-	}
-	if m.Wrapped {
-		n += 2
 	}
 	return n
 }
@@ -545,107 +584,6 @@ func sovCollection(x uint64) (n int) {
 }
 func sozCollection(x uint64) (n int) {
 	return sovCollection(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (m *CollectionChainParams) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowCollection
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: CollectionChainParams: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CollectionChainParams: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthCollection
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthCollection
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Decimals", wireType)
-			}
-			m.Decimals = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Decimals |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipCollection(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthCollection
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *CollectionMetadata) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -793,7 +731,7 @@ func (m *CollectionMetadata) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CollectionInfo) Unmarshal(dAtA []byte) error {
+func (m *CollectionDataIndex) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -816,10 +754,300 @@ func (m *CollectionInfo) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CollectionInfo: wiretype end group for non-group")
+			return fmt.Errorf("proto: CollectionDataIndex: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CollectionInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CollectionDataIndex: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Collection", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCollection
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Collection = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCollection
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCollection
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCollection(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CollectionData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCollection
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CollectionData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CollectionData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCollection
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Index == nil {
+				m.Index = &CollectionDataIndex{}
+			}
+			if err := m.Index.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenType", wireType)
+			}
+			m.TokenType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TokenType |= Type(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Wrapped", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Wrapped = bool(v != 0)
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Decimals", wireType)
+			}
+			m.Decimals = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCollection
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Decimals |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCollection(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCollection
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Collection) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCollection
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Collection: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Collection: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -856,7 +1084,7 @@ func (m *CollectionInfo) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChainParams", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -883,308 +1111,13 @@ func (m *CollectionInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ChainParams == nil {
-				m.ChainParams = make(map[string]*CollectionChainParams)
+			if m.Meta == nil {
+				m.Meta = &CollectionMetadata{}
 			}
-			var mapkey string
-			var mapvalue *CollectionChainParams
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowCollection
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					var stringLenmapkey uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowCollection
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapkey := int(stringLenmapkey)
-					if intStringLenmapkey < 0 {
-						return ErrInvalidLengthCollection
-					}
-					postStringIndexmapkey := iNdEx + intStringLenmapkey
-					if postStringIndexmapkey < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if postStringIndexmapkey > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-					iNdEx = postStringIndexmapkey
-				} else if fieldNum == 2 {
-					var mapmsglen int
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowCollection
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapmsglen |= int(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					if mapmsglen < 0 {
-						return ErrInvalidLengthCollection
-					}
-					postmsgIndex := iNdEx + mapmsglen
-					if postmsgIndex < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if postmsgIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = &CollectionChainParams{}
-					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
-						return err
-					}
-					iNdEx = postmsgIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := skipCollection(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.ChainParams[mapkey] = mapvalue
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthCollection
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthCollection
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Items == nil {
-				m.Items = make(map[string]string)
-			}
-			var mapkey string
-			var mapvalue string
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowCollection
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					var stringLenmapkey uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowCollection
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapkey := int(stringLenmapkey)
-					if intStringLenmapkey < 0 {
-						return ErrInvalidLengthCollection
-					}
-					postStringIndexmapkey := iNdEx + intStringLenmapkey
-					if postStringIndexmapkey < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if postStringIndexmapkey > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-					iNdEx = postStringIndexmapkey
-				} else if fieldNum == 2 {
-					var stringLenmapvalue uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowCollection
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapvalue |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapvalue := int(stringLenmapvalue)
-					if intStringLenmapvalue < 0 {
-						return ErrInvalidLengthCollection
-					}
-					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
-					if postStringIndexmapvalue < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if postStringIndexmapvalue > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
-					iNdEx = postStringIndexmapvalue
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := skipCollection(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return ErrInvalidLengthCollection
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.Items[mapkey] = mapvalue
-			iNdEx = postIndex
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TokenType", wireType)
-			}
-			m.TokenType = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.TokenType |= Type(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Metadata", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthCollection
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthCollection
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Metadata == nil {
-				m.Metadata = &CollectionMetadata{}
-			}
-			if err := m.Metadata.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Wrapped", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowCollection
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.Wrapped = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCollection(dAtA[iNdEx:])
