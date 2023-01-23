@@ -57,3 +57,17 @@ func (k Keeper) GetAllVote(ctx sdk.Context) (list []types.Vote) {
 
 	return
 }
+
+func (k Keeper) IterateVotes(ctx sdk.Context, operation string, f func(vote types.Vote) (stop bool)) {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, []byte(operation))
+
+	defer iterator.Close()
+	for ; iterator.Valid(); iterator.Next() {
+		var vote types.Vote
+		k.cdc.MustUnmarshal(iterator.Value(), &vote)
+		if f(vote) {
+			break
+		}
+	}
+}
