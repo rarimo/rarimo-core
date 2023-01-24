@@ -4,30 +4,25 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if k.checkCreatorIsValidator(ctx, msg.Creator) {
-		defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+
+	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
+		return nil, err
 	}
 
-	origin := origin.NewDefaultOriginBuilder().
-		SetTxHash(msg.Tx).
-		SetOpId(msg.EventId).
-		SetCurrentNetwork(msg.From.Chain).
-		Build().
-		GetOrigin()
-
-	index := hexutil.Encode(origin[:])
+	// Index is HASH(tx, event, chain, blockhash)
+	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain), big.NewInt(ctx.BlockHeight()).Bytes()))
 
 	if _, ok := k.GetOperation(ctx, index); ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")

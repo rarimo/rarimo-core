@@ -12,8 +12,8 @@ import (
 func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.checkCreatorIsValidator(ctx, msg.Creator) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a validator")
+	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
+		return nil, err
 	}
 
 	operation, ok := k.GetOperation(ctx, msg.Operation)
