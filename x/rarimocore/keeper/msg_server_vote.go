@@ -34,9 +34,8 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	}
 
 	type ValidatorVoteInfo struct {
-		BondedTokens    sdk.Int // Power of a Validator
-		DelegatorShares sdk.Dec // Total outstanding delegator shares
-		Vote            types.VoteType
+		BondedTokens sdk.Int // Power of a Validator
+		Vote         types.VoteType
 	}
 
 	validators := make(map[string]*ValidatorVoteInfo)
@@ -45,8 +44,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	k.staking.IterateBondedValidatorsByPower(ctx, func(index int64, validator stakingtypes.ValidatorI) (stop bool) {
 		addr := sdk.ValAddress(validator.GetOperator().Bytes())
 		validators[addr.String()] = &ValidatorVoteInfo{
-			BondedTokens:    validator.GetBondedTokens(),
-			DelegatorShares: validator.GetDelegatorShares(),
+			BondedTokens: validator.GetBondedTokens(),
 		}
 
 		return false
