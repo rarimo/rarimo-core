@@ -104,12 +104,13 @@ func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	}
 
 	op.Signed = true
+	k.SetOperation(ctx, op)
+
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
 	))
 
-	k.SetOperation(ctx, op)
 	return nil
 }
 

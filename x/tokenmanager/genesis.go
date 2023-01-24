@@ -11,15 +11,15 @@ import (
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the info
 	for _, collection := range genState.GetCollections() {
-		k.PutCollection(ctx, collection)
+		k.SetCollection(ctx, collection)
 	}
 
 	for _, item := range genState.Items {
-		k.PutItem(ctx, item)
+		k.SetItem(ctx, item)
 	}
 
 	for _, data := range genState.Datas {
-		k.PutCollectionData(ctx, data)
+		k.SetCollectionData(ctx, data)
 	}
 
 	// this line is used by starport scaffolding # genesis/module/init

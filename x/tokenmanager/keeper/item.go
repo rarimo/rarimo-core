@@ -6,7 +6,7 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
-func (k Keeper) PutItem(ctx sdk.Context, item types.Item) {
+func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 	if item.Index == nil {
 		return
 	}

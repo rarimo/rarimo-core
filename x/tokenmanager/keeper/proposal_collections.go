@@ -23,10 +23,10 @@ func (k Keeper) HandleCreateCollectionProposal(ctx sdk.Context, proposal *types.
 		col.Data = append(col.Data, data.Index)
 	}
 
-	k.PutCollection(ctx, col)
+	k.SetCollection(ctx, col)
 
 	for _, data := range proposal.Data {
-		k.PutCollectionData(ctx, *data)
+		k.SetCollectionData(ctx, *data)
 	}
 
 	return nil
@@ -40,13 +40,13 @@ func (k Keeper) HandleAddCollectionDataProposal(ctx sdk.Context, proposal *types
 		}
 
 		col.Data = append(col.Data, data.Index)
-		k.PutCollection(ctx, col)
+		k.SetCollection(ctx, col)
 
 		if _, ok := k.GetCollectionData(ctx, data.Index); ok {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("data with index %s already exists", data.Index))
 		}
 
-		k.PutCollectionData(ctx, *data)
+		k.SetCollectionData(ctx, *data)
 	}
 
 	return nil
@@ -58,7 +58,7 @@ func (k Keeper) HandleUpdateCollectionDataProposal(ctx sdk.Context, proposal *ty
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
 		}
 
-		k.PutCollectionData(ctx, *data)
+		k.SetCollectionData(ctx, *data)
 	}
 
 	return nil
@@ -88,7 +88,7 @@ func (k Keeper) HandleRemoveCollectionDataProposal(ctx sdk.Context, proposal *ty
 			}
 		}
 
-		k.PutCollection(ctx, col)
+		k.SetCollection(ctx, col)
 		k.RemoveCollectionData(ctx, index)
 	}
 

@@ -367,6 +367,7 @@ func New(
 		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
+		&app.GovKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 

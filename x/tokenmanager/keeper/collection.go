@@ -33,7 +33,7 @@ func (k Keeper) GetAllCollections(ctx sdk.Context) (list []types.Collection) {
 	return
 }
 
-func (k Keeper) PutCollection(ctx sdk.Context, collection types.Collection) {
+func (k Keeper) SetCollection(ctx sdk.Context, collection types.Collection) {
 	prefix.
 		NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CollectionKeyPrefix)).
 		Set(types.CollectionKey(collection.Index), k.cdc.MustMarshal(&collection))
@@ -94,7 +94,7 @@ func (k Keeper) GetAllCollectionData(ctx sdk.Context) (list []types.CollectionDa
 	return
 }
 
-func (k Keeper) PutCollectionData(ctx sdk.Context, data types.CollectionData) {
+func (k Keeper) SetCollectionData(ctx sdk.Context, data types.CollectionData) {
 	prefix.
 		NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CollectionDataKeyPrefix)).
 		Set(types.CollectionDataKey(data.Index), k.cdc.MustMarshal(&data))

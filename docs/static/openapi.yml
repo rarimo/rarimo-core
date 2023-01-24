@@ -30541,16 +30541,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
@@ -30973,7 +30963,7 @@ paths:
                       title: Corresponding to type details
                     signed:
                       type: boolean
-                    confirmed:
+                    approved:
                       type: boolean
                     creator:
                       type: string
@@ -31239,16 +31229,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
@@ -31449,7 +31429,7 @@ paths:
                     title: Corresponding to type details
                   signed:
                     type: boolean
-                  confirmed:
+                  approved:
                     type: boolean
                   creator:
                     type: string
@@ -54388,7 +54368,7 @@ definitions:
         title: Corresponding to type details
       signed:
         type: boolean
-      confirmed:
+      approved:
         type: boolean
       creator:
         type: string
@@ -54674,7 +54654,7 @@ definitions:
               title: Corresponding to type details
             signed:
               type: boolean
-            confirmed:
+            approved:
               type: boolean
             creator:
               type: string
@@ -54906,7 +54886,7 @@ definitions:
             title: Corresponding to type details
           signed:
             type: boolean
-          confirmed:
+          approved:
             type: boolean
           creator:
             type: string

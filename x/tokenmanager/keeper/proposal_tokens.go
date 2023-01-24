@@ -28,7 +28,7 @@ func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.U
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
 		}
 
-		k.PutItem(ctx, *newItem)
+		k.SetItem(ctx, *newItem)
 	}
 
 	return nil
