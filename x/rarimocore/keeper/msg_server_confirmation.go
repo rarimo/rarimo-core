@@ -40,6 +40,10 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s not found", index))
 		}
 
+		if !op.Approved {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is not approved", index))
+		}
+
 		if op.Signed {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is already signed", index))
 		}
