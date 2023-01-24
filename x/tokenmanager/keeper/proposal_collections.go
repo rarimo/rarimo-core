@@ -5,6 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/gogo/protobuf/proto"
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
@@ -78,7 +79,7 @@ func (k Keeper) HandleRemoveCollectionDataProposal(ctx sdk.Context, proposal *ty
 
 		// removing data index from collection
 		for i, colDataIndex := range col.Data {
-			if colDataIndex.Equal(index) {
+			if proto.Equal(colDataIndex, index) {
 				if i == len(col.Data)-1 {
 					col.Data = col.Data[:i]
 					break

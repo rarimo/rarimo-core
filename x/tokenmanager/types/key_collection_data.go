@@ -22,11 +22,3 @@ func CollectionDataKey(index *CollectionDataIndex) []byte {
 
 	return key
 }
-
-func (i *CollectionDataIndex) Equal(o *CollectionDataIndex) bool {
-	if o == nil || i == nil {
-		return i == o
-	}
-
-	return i.Chain == o.Chain && i.Address == o.Address
-}

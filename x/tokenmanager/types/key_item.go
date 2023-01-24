@@ -31,11 +31,3 @@ func ItemKey(
 
 	return key
 }
-
-func (i *ItemIndex) Equal(o *ItemIndex) bool {
-	if o == nil || i == nil {
-		return i == o
-	}
-
-	return i.Collection == o.Collection && i.Name == o.Name && i.Symbol == o.Symbol && i.Uri == o.Uri
-}

@@ -11,6 +11,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
@@ -20,6 +21,13 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
+
+	origin := origin.NewDefaultOriginBuilder().
+		SetTxHash(msg.Tx).
+		SetOpId(msg.EventId).
+		SetCurrentNetwork(msg.From.Chain).
+		Build().
+		GetOrigin()
 
 	// Index is HASH(tx, event, chain, blockhash)
 	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain), big.NewInt(ctx.BlockHeight()).Bytes()))
@@ -50,7 +58,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	}
 
 	var transferOp = types.Transfer{
-		Origin:     index,
+		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
 		Receiver:   msg.Receiver,
