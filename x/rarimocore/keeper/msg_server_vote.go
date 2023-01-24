@@ -73,13 +73,6 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	}
 
 	tallyParams := k.gov.GetTallyParams(ctx)
-	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
-
-	if percentVoting.LT(tallyParams.Quorum) {
-		// Still not enough validators to finish vote
-		return &types.MsgVoteResponse{}, nil
-	}
-
 	if yesResult.Quo(totalVotingPower).GT(tallyParams.Threshold) {
 		operation.Approved = true
 		k.SetOperation(ctx, operation)
