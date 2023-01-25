@@ -61,10 +61,6 @@ func validateNetwork(n *NetworkParams) error {
 		return fmt.Errorf("invalida network name")
 	}
 
-	if len(n.Types) == 0 {
-		return fmt.Errorf("invalida network types")
-	}
-
 	if len(n.Contract) == 0 {
 		return fmt.Errorf("invalida network contract address")
 	}

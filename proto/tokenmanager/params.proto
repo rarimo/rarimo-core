@@ -21,7 +21,6 @@ message NetworkParams {
   string name = 1;
   // contract address hex
   string contract = 2;
-  repeated NetworkTypeBinding types = 3;
   NetworkType type = 4;
 }
 
