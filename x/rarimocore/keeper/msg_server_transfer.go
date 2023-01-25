@@ -36,24 +36,13 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	collection, ok := k.tm.GetCollection(ctx, msg.Item.Collection)
+	currentData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.From.Chain, Address: msg.From.Address})
 	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "collection not found by index [%d]", msg.Item.Collection)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	var currentData, targetData tokentypes.CollectionData
-	for _, data := range collection.Data {
-		if data.Chain == msg.From.Chain {
-			currentData, _ = k.tm.GetCollectionData(ctx, data) // always exists
-		}
-
-		if data.Chain == msg.To.Chain {
-			targetData, _ = k.tm.GetCollectionData(ctx, data) // always exists
-		}
-	}
-
-	// Check if not found
-	if currentData.Collection == "" || targetData.Collection == "" {
+	targetData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.To.Chain, Address: msg.To.Address})
+	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
@@ -67,7 +56,6 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		BundleSalt: msg.BundleSalt,
 		From:       msg.From,
 		To:         msg.To,
-		Item:       msg.Item,
 		Meta:       msg.Meta,
 	}
 

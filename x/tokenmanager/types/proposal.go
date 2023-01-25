@@ -80,12 +80,6 @@ func (m *RemoveTokenItemProposal) ValidateBasic() error {
 		return err
 	}
 
-	for _, i := range m.Index {
-		if err := validateItemIndex(i); err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 

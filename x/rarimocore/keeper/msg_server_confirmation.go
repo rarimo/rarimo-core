@@ -68,7 +68,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		err := k.applyOperation(ctx, op)
+		err := k.ApplyOperation(ctx, op)
 		if err != nil {
 			return nil, err
 		}
@@ -88,16 +88,16 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
+func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, _ := pkg.GetTransfer(op)
-		if err := k.applyTransfer(ctx, transfer); err != nil {
+		if err := k.ApplyTransfer(ctx, transfer); err != nil {
 			return err
 		}
 	case types.OpType_CHANGE_PARTIES:
 		change, _ := pkg.GetChangeParties(op)
-		if err := k.applyChangeParties(ctx, change); err != nil {
+		if err := k.ApplyChangeParties(ctx, change); err != nil {
 			return err
 		}
 		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeParamsUpdated,
@@ -118,14 +118,14 @@ func (k msgServer) applyOperation(ctx sdk.Context, op types.Operation) error {
 	return nil
 }
 
-func (k msgServer) applyTransfer(ctx sdk.Context, _ *types.Transfer) error {
+func (k msgServer) ApplyTransfer(ctx sdk.Context, _ *types.Transfer) error {
 	if k.GetParams(ctx).IsUpdateRequired {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply transfer: parties update needed")
 	}
 	return nil
 }
 
-func (k msgServer) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
+func (k msgServer) ApplyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
 	params := k.GetParams(ctx)
 
 	hash := hexutil.Encode(eth.Keccak256(hexutil.MustDecode(op.NewPublicKey)))
@@ -175,27 +175,20 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 }
 
 func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.Transfer) (*operation.TransferContent, error) {
-	collection, ok := k.tm.GetCollection(ctx, transfer.Item.Collection)
+	data, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: transfer.To.Chain, Address: transfer.To.Address})
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	var collectionData tokentypes.CollectionData
-	for _, data := range collection.Data {
-		if collectionData.Index.Chain == data.Chain {
-			collectionData, ok = k.tm.GetCollectionData(ctx, data)
-			if !ok {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data not found")
-			}
-
-			break
-		}
-	}
-
-	item, ok := k.tm.GetItem(ctx, transfer.Item)
+	onChainItem, ok := k.tm.GetOnChainItem(ctx, transfer.To)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "item not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "on chain item not found")
 	}
 
-	return pkg.GetTransferContent(collectionData, item, transfer)
+	item, ok := k.tm.GetItem(ctx, onChainItem.Item)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "item not found")
+	}
+
+	return pkg.GetTransferContent(data, item, transfer)
 }

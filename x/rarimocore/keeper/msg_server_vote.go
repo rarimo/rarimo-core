@@ -6,7 +6,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {
@@ -72,14 +74,79 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 
 	tallyParams := k.gov.GetTallyParams(ctx)
 	if yesResult.Quo(totalVotingPower).GT(tallyParams.Threshold) {
-		operation.Approved = true
-		k.SetOperation(ctx, operation)
-
-		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationApproved,
-			sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
-			sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
-		))
+		if err := k.ApproveOperation(ctx, operation); err != nil {
+			return nil, err
+		}
 	}
 
 	return &types.MsgVoteResponse{}, nil
+}
+
+func (k msgServer) ApproveOperation(ctx sdk.Context, op types.Operation) error {
+	switch op.OperationType {
+	case types.OpType_TRANSFER:
+		transfer, _ := pkg.GetTransfer(op)
+		if err := k.ApproveTransferOperation(ctx, transfer); err != nil {
+			return err
+		}
+
+		op.Approved = true
+		k.SetOperation(ctx, op)
+	default:
+		// Nothing to do
+	}
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationApproved,
+		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+	))
+
+	return nil
+}
+
+func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transfer) error {
+	data, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: transfer.From.Chain, Address: transfer.From.Address})
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data does not exists")
+	}
+
+	from, ok := k.tm.GetOnChainItem(ctx, transfer.From)
+	if !ok {
+		// Item also does not exist
+		item := tokentypes.Item{
+			Index:      transfer.Origin,
+			Collection: data.Collection,
+			Meta:       transfer.Meta,
+			OnChain:    []*tokentypes.OnChainItemIndex{transfer.From},
+		}
+
+		k.tm.SetItem(ctx, item)
+
+		from = tokentypes.OnChainItem{
+			Index: transfer.From,
+			Item:  item.Index,
+		}
+
+		k.tm.SetOnChainItem(ctx, from)
+	}
+
+	to, ok := k.tm.GetOnChainItem(ctx, transfer.From)
+	if !ok {
+		item, ok := k.tm.GetItem(ctx, from.Item)
+		if !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "item does not exists but 'from' on chain item found")
+		}
+
+		item.OnChain = append(item.OnChain, transfer.To)
+		k.tm.SetItem(ctx, item)
+
+		to = tokentypes.OnChainItem{
+			Index: transfer.To,
+			Item:  item.Index,
+		}
+
+		k.tm.SetOnChainItem(ctx, to)
+	}
+
+	return nil
 }

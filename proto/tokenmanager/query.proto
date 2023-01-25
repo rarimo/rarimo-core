@@ -19,12 +19,22 @@ service Query {
   }
   // Queries a Item by index.
   rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
-    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{collection}";
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{index}";
   }
 
   // Queries a list of Item entries.
   rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item";
+  }
+
+  // Queries a Item by index.
+  rpc OnChainItem(QueryGetOnChainItemRequest) returns (QueryGetOnChainItemResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}";
+  }
+
+  // Queries a list of Item entries.
+  rpc OnChainItemAll(QueryAllOnChainItemRequest) returns (QueryAllOnChainItemResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item";
   }
 
   rpc Collection(QueryGetCollectionRequest) returns (QueryGetCollectionResponse) {
@@ -56,10 +66,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetItemRequest {
-  string collection = 1;
-  string name = 2;
-  string symbol = 3;
-  string uri = 4;
+  string index = 1;
 }
 
 message QueryGetItemResponse {
@@ -72,6 +79,25 @@ message QueryAllItemRequest {
 
 message QueryAllItemResponse {
   repeated Item item = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetOnChainItemRequest {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+}
+
+message QueryGetOnChainItemResponse {
+  OnChainItem item = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllOnChainItemRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 3;
+}
+
+message QueryAllOnChainItemResponse {
+  repeated OnChainItem item = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

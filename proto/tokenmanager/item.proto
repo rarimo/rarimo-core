@@ -14,28 +14,31 @@ enum Type {
   NEAR_NFT = 7;
 }
 
-message ItemIndex {
-  string collection = 1;
-  string name = 2;
-  string symbol = 3;
-  string uri = 4;
-}
-
 message ItemMetadata {
   string imageUri = 1;
   // Hash of the token image. Encoded into hex string. (optional)
   string imageHash = 2;
   // Seed is used to generate PDA address for Solana
   string seed = 3;
-}
-
-message ItemChainParams {
-  string chain = 1;
-  string tokenID = 2;
+  string name = 4;
+  string symbol = 5;
+  string uri = 6;
 }
 
 message Item {
-  ItemIndex index = 1;
-  ItemMetadata meta = 2;
-  repeated ItemChainParams chainParams = 3;
+  string index = 1;
+  string collection = 2;
+  ItemMetadata meta = 3;
+  repeated OnChainItemIndex onChain = 4;
+}
+
+message OnChainItemIndex {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+}
+
+message OnChainItem {
+  OnChainItemIndex index = 1;
+  string item = 2;
 }

@@ -24,7 +24,7 @@ message RemoveTokenItemProposal {
   string title = 1;
   string description = 2;
 
-  repeated ItemIndex index = 3;
+  repeated string index = 3;
 }
 
 message CreateCollectionProposal {

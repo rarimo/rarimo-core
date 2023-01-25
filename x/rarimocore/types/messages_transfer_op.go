@@ -21,9 +21,8 @@ func NewMsgCreateTransferOp(
 	amount string,
 	bundleData string,
 	bundleSalt string,
-	from *tokentypes.ItemChainParams,
-	to *tokentypes.ItemChainParams,
-	item *tokentypes.ItemIndex,
+	from *tokentypes.OnChainItemIndex,
+	to *tokentypes.OnChainItemIndex,
 	meta *tokentypes.ItemMetadata,
 ) *MsgCreateTransferOp {
 	return &MsgCreateTransferOp{
@@ -36,7 +35,6 @@ func NewMsgCreateTransferOp(
 		BundleSalt: bundleSalt,
 		From:       from,
 		To:         to,
-		Item:       item,
 		Meta:       meta,
 	}
 }
@@ -85,10 +83,6 @@ func (msg *MsgCreateTransferOp) ValidateBasic() error {
 
 	if msg.To == nil || msg.To.Chain == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid to")
-	}
-
-	if msg.Item == nil || msg.Item.Collection == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid item index")
 	}
 
 	return nil

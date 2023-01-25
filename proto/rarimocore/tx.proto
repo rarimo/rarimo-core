@@ -33,11 +33,9 @@ message MsgCreateTransferOp {
   string bundleData = 6;// hex-encoded
   string bundleSalt = 7;// hex-encoded
   // Information about current and target chains
-  rarimo.rarimocore.tokenmanager.ItemChainParams from = 8;
-  rarimo.rarimocore.tokenmanager.ItemChainParams to = 9;
-  // Information about token
-  rarimo.rarimocore.tokenmanager.ItemIndex item = 10;
-  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 8;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 9;
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 10; // Optional (if item currently does not exists)
 }
 
 message MsgCreateTransferOpResponse {}

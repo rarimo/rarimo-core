@@ -11,8 +11,8 @@ func validateItem(i *Item) error {
 		return fmt.Errorf("empty item")
 	}
 
-	if err := validateItemIndex(i.Index); err != nil {
-		return err
+	if len(i.Index) == 0 {
+		return fmt.Errorf("invalid item index")
 	}
 
 	if i.Meta == nil {
@@ -25,18 +25,6 @@ func validateItem(i *Item) error {
 
 	if _, err := hexutil.Decode(i.Meta.Seed); err != nil {
 		return fmt.Errorf("invalid seed, can not decode %s", err.Error())
-	}
-
-	return nil
-}
-
-func validateItemIndex(i *ItemIndex) error {
-	if i == nil {
-		return fmt.Errorf("empty item index")
-	}
-
-	if len(i.Collection) == 0 {
-		return fmt.Errorf("invalid collection")
 	}
 
 	return nil

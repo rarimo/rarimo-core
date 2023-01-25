@@ -36,6 +36,15 @@ func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.U
 
 func (k Keeper) HandleRemoveTokenItemProposal(ctx sdk.Context, proposal *types.RemoveTokenItemProposal) error {
 	for _, index := range proposal.Index {
+		item, ok := k.GetItem(ctx, index)
+		if !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
+		}
+
+		for _, onChainIndex := range item.OnChain {
+			k.RemoveOnChainItem(ctx, onChainIndex)
+		}
+
 		k.RemoveItem(ctx, index)
 	}
 

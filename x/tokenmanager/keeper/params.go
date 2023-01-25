@@ -29,20 +29,3 @@ func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param *types.NetworkPa
 
 	return param, ok
 }
-
-func (k Keeper) GetSaverType(ctx sdk.Context, name string, coreType types.Type) uint32 {
-	var params types.Params
-	k.paramstore.GetParamSet(ctx, &params)
-
-	for _, network := range params.Networks {
-		if network.Name == name {
-			for _, binding := range network.Types {
-				if binding.CoreType == uint32(coreType) {
-					return binding.SaverType
-				}
-			}
-		}
-	}
-
-	return 0
-}

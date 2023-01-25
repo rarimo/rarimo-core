@@ -26,47 +26,47 @@ func GetTransferContent(collectionData tokentypes.CollectionData, item tokentype
 	switch collectionData.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
-			SetName(item.Index.Name).
+			SetName(item.Meta.Name).
 			SetImageURI(item.Meta.ImageUri).
 			SetImageHash(item.Meta.ImageHash)
 	case tokentypes.Type_NATIVE:
 		builder.SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC20:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC721:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
-			SetURI(item.Index.Uri)
+			SetURI(item.Meta.Uri)
 	case tokentypes.Type_ERC1155:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
 			SetAmount(transfer.Amount).
-			SetURI(item.Index.Uri)
+			SetURI(item.Meta.Uri)
 	case tokentypes.Type_METAPLEX_FT:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount).
-			SetName(item.Index.Name).
-			SetSymbol(item.Index.Symbol).
-			SetURI(item.Index.Uri).
+			SetName(item.Meta.Name).
+			SetSymbol(item.Meta.Symbol).
+			SetURI(item.Meta.Uri).
 			SetDecimals(uint8(collectionData.Decimals))
 	case tokentypes.Type_METAPLEX_NFT:
 		builder.
-			SetAddress(collectionData.Index.Address).
+			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
-			SetName(item.Index.Name).
-			SetSymbol(item.Index.Symbol).
-			SetURI(item.Index.Uri)
+			SetName(item.Meta.Name).
+			SetSymbol(item.Meta.Symbol).
+			SetURI(item.Meta.Uri)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")
 	}
@@ -81,7 +81,7 @@ func GetTransferContent(collectionData tokentypes.CollectionData, item tokentype
 		TargetNetwork:  transfer.To.Chain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
 		Data:           builder.Build().GetContent(),
-		TargetContract: hexutil.MustDecode(collectionData.Index.Chain),
+		TargetContract: hexutil.MustDecode(transfer.To.Chain),
 		Bundle: bundle.NewDefaultBundleBuilder().
 			SetBundle(transfer.BundleData).
 			SetSalt(transfer.BundleSalt).
