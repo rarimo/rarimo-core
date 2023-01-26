@@ -51,6 +51,12 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 			// To change operation it should be unapproved or signed
 			return &types.MsgCreateTransferOpResponse{}, nil
 		}
+
+		// Otherwise - clear votes
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
 	}
 
 	k.SetOperation(
