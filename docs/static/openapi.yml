@@ -30541,6 +30541,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
@@ -31229,6 +31239,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
@@ -31860,6 +31880,871 @@ paths:
                         }
       tags:
         - Query
+  /rarimo/rarimo-core/rarimocore/transfer:
+    get:
+      operationId: RarimoRarimocoreRarimocoreTransfer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              transfer:
+                type: object
+                properties:
+                  origin:
+                    type: string
+                    title: >-
+                      hex-encoded keccak256 hash for tx||event||chain strings'
+                      bytes
+                  tx:
+                    type: string
+                    title: Deposit transaction data
+                  eventId:
+                    type: string
+                  receiver:
+                    type: string
+                    title: hex-encoded
+                  amount:
+                    type: string
+                    title: dec-encoded
+                  bundleData:
+                    type: string
+                    title: hex-encoded
+                  bundleSalt:
+                    type: string
+                    title: hex-encoded
+                  from:
+                    title: Information about current and target chains
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      address:
+                        type: string
+                      tokenID:
+                        type: string
+                  to:
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      address:
+                        type: string
+                      tokenID:
+                        type: string
+                  meta:
+                    description: Optional (if item currently does not exists
+                    title: Information about token
+                    type: object
+                    properties:
+                      imageUri:
+                        type: string
+                      imageHash:
+                        type: string
+                        title: >-
+                          Hash of the token image. Encoded into hex string.
+                          (optional)
+                      seed:
+                        type: string
+                        title: Seed is used to generate PDA address for Solana
+                      name:
+                        type: string
+                      symbol:
+                        type: string
+                      uri:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: msg.creator
+          in: query
+          required: false
+          type: string
+        - name: msg.tx
+          description: Information to identify transfer
+          in: query
+          required: false
+          type: string
+        - name: msg.eventId
+          in: query
+          required: false
+          type: string
+        - name: msg.receiver
+          description: Information about deposit
+          in: query
+          required: false
+          type: string
+        - name: msg.amount
+          in: query
+          required: false
+          type: string
+        - name: msg.bundleData
+          description: hex-encoded
+          in: query
+          required: false
+          type: string
+        - name: msg.bundleSalt
+          description: hex-encoded
+          in: query
+          required: false
+          type: string
+        - name: msg.from.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.from.address
+          in: query
+          required: false
+          type: string
+        - name: msg.from.tokenID
+          in: query
+          required: false
+          type: string
+        - name: msg.to.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.to.address
+          in: query
+          required: false
+          type: string
+        - name: msg.to.tokenID
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.imageUri
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.imageHash
+          description: Hash of the token image. Encoded into hex string. (optional)
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.seed
+          description: Seed is used to generate PDA address for Solana
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.name
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.symbol
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.uri
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
+  /rarimo/rarimo-core/rarimocore/vote:
+    get:
+      summary: Queries a list of Confirmation items.
+      operationId: RarimoRarimocoreRarimocoreVoteAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vote:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: object
+                      properties:
+                        operation:
+                          type: string
+                        validator:
+                          type: string
+                    vote:
+                      type: string
+                      enum:
+                        - 'YES'
+                        - 'NO'
+                      default: 'YES'
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/rarimocore/vote/{operation}/{validator}':
+    get:
+      summary: Queries a Vote by index.
+      operationId: RarimoRarimocoreRarimocoreVote
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vote:
+                type: object
+                properties:
+                  index:
+                    type: object
+                    properties:
+                      operation:
+                        type: string
+                      validator:
+                        type: string
+                  vote:
+                    type: string
+                    enum:
+                      - 'YES'
+                      - 'NO'
+                    default: 'YES'
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: operation
+          in: path
+          required: true
+          type: string
+        - name: validator
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /rarimo/rarimo-core/tokenmanager/collection:
     get:
       operationId: RarimoRarimocoreTokenmanagerCollectionAll
@@ -32290,16 +33175,9 @@ paths:
                   type: object
                   properties:
                     index:
-                      type: object
-                      properties:
-                        collection:
-                          type: string
-                        name:
-                          type: string
-                        symbol:
-                          type: string
-                        uri:
-                          type: string
+                      type: string
+                    collection:
+                      type: string
                     meta:
                       type: object
                       properties:
@@ -32313,12 +33191,20 @@ paths:
                         seed:
                           type: string
                           title: Seed is used to generate PDA address for Solana
-                    chainParams:
+                        name:
+                          type: string
+                        symbol:
+                          type: string
+                        uri:
+                          type: string
+                    onChain:
                       type: array
                       items:
                         type: object
                         properties:
                           chain:
+                            type: string
+                          address:
                             type: string
                           tokenID:
                             type: string
@@ -32426,7 +33312,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/rarimo/rarimo-core/tokenmanager/item/{collection}':
+  '/rarimo/rarimo-core/tokenmanager/item/{index}':
     get:
       summary: Queries a Item by index.
       operationId: RarimoRarimocoreTokenmanagerItem
@@ -32440,16 +33326,9 @@ paths:
                 type: object
                 properties:
                   index:
-                    type: object
-                    properties:
-                      collection:
-                        type: string
-                      name:
-                        type: string
-                      symbol:
-                        type: string
-                      uri:
-                        type: string
+                    type: string
+                  collection:
+                    type: string
                   meta:
                     type: object
                     properties:
@@ -32463,12 +33342,20 @@ paths:
                       seed:
                         type: string
                         title: Seed is used to generate PDA address for Solana
-                  chainParams:
+                      name:
+                        type: string
+                      symbol:
+                        type: string
+                      uri:
+                        type: string
+                  onChain:
                     type: array
                     items:
                       type: object
                       properties:
                         chain:
+                          type: string
+                        address:
                           type: string
                         tokenID:
                           type: string
@@ -32491,21 +33378,196 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: collection
+        - name: index
           in: path
           required: true
           type: string
-        - name: name
+      tags:
+        - Query
+  /rarimo/rarimo-core/tokenmanager/on-chain-item:
+    get:
+      summary: Queries a list of Item entries.
+      operationId: RarimoRarimocoreTokenmanagerOnChainItemAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              item:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: object
+                      properties:
+                        chain:
+                          type: string
+                        address:
+                          type: string
+                        tokenID:
+                          type: string
+                    item:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
           in: query
           required: false
           type: string
-        - name: symbol
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
           in: query
           required: false
           type: string
-        - name: uri
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
           in: query
           required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}':
+    get:
+      summary: Queries a Item by index.
+      operationId: RarimoRarimocoreTokenmanagerOnChainItem
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  index:
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      address:
+                        type: string
+                      tokenID:
+                        type: string
+                  item:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: chain
+          in: path
+          required: true
+          type: string
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: tokenID
+          in: path
+          required: true
           type: string
       tags:
         - Query
@@ -32534,17 +33596,6 @@ paths:
                         contract:
                           type: string
                           title: contract address hex
-                        types:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              coreType:
-                                type: integer
-                                format: int64
-                              saverType:
-                                type: integer
-                                format: int64
                         type:
                           type: string
                           enum:
@@ -32574,6 +33625,171 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  /rarimo/rarimo-core/tokenmanager/seed:
+    get:
+      operationId: RarimoRarimocoreTokenmanagerSeedAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              seed:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    seed:
+                      type: string
+                      title: index
+                    item:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/tokenmanager/seed/{seed}':
+    get:
+      operationId: RarimoRarimocoreTokenmanagerSeed
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              seed:
+                type: object
+                properties:
+                  seed:
+                    type: string
+                    title: index
+                  item:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: seed
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /tendermint/spn/monitoringp/connection_channel_id:
@@ -54188,6 +55404,64 @@ definitions:
     type: object
   rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
     type: object
+  rarimo.rarimocore.rarimocore.MsgCreateTransferOp:
+    type: object
+    properties:
+      creator:
+        type: string
+      tx:
+        type: string
+        title: Information to identify transfer
+      eventId:
+        type: string
+      receiver:
+        type: string
+        title: Information about deposit
+      amount:
+        type: string
+      bundleData:
+        type: string
+        title: hex-encoded
+      bundleSalt:
+        type: string
+        title: hex-encoded
+      from:
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+        title: Information about current and target chains
+      to:
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      meta:
+        title: Optional (if item currently does not exists)
+        type: object
+        properties:
+          imageUri:
+            type: string
+          imageHash:
+            type: string
+            title: Hash of the token image. Encoded into hex string. (optional)
+          seed:
+            type: string
+            title: Seed is used to generate PDA address for Solana
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
+            type: string
   rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgResignOperationResponse:
@@ -54686,6 +55960,52 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  rarimo.rarimocore.rarimocore.QueryAllVoteResponse:
+    type: object
+    properties:
+      vote:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: object
+              properties:
+                operation:
+                  type: string
+                validator:
+                  type: string
+            vote:
+              type: string
+              enum:
+                - 'YES'
+                - 'NO'
+              default: 'YES'
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   rarimo.rarimocore.rarimocore.QueryGetConfirmationResponse:
     type: object
     properties:
@@ -54893,6 +56213,89 @@ definitions:
           timestamp:
             type: string
             format: uint64
+  rarimo.rarimocore.rarimocore.QueryGetTransferResponse:
+    type: object
+    properties:
+      transfer:
+        type: object
+        properties:
+          origin:
+            type: string
+            title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
+          tx:
+            type: string
+            title: Deposit transaction data
+          eventId:
+            type: string
+          receiver:
+            type: string
+            title: hex-encoded
+          amount:
+            type: string
+            title: dec-encoded
+          bundleData:
+            type: string
+            title: hex-encoded
+          bundleSalt:
+            type: string
+            title: hex-encoded
+          from:
+            title: Information about current and target chains
+            type: object
+            properties:
+              chain:
+                type: string
+              address:
+                type: string
+              tokenID:
+                type: string
+          to:
+            type: object
+            properties:
+              chain:
+                type: string
+              address:
+                type: string
+              tokenID:
+                type: string
+          meta:
+            description: Optional (if item currently does not exists
+            title: Information about token
+            type: object
+            properties:
+              imageUri:
+                type: string
+              imageHash:
+                type: string
+                title: Hash of the token image. Encoded into hex string. (optional)
+              seed:
+                type: string
+                title: Seed is used to generate PDA address for Solana
+              name:
+                type: string
+              symbol:
+                type: string
+              uri:
+                type: string
+  rarimo.rarimocore.rarimocore.QueryGetVoteResponse:
+    type: object
+    properties:
+      vote:
+        type: object
+        properties:
+          index:
+            type: object
+            properties:
+              operation:
+                type: string
+              validator:
+                type: string
+          vote:
+            type: string
+            enum:
+              - 'YES'
+              - 'NO'
+            default: 'YES'
   rarimo.rarimocore.rarimocore.QueryParamsResponse:
     type: object
     properties:
@@ -54929,6 +56332,90 @@ definitions:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.rarimocore.Transfer:
+    type: object
+    properties:
+      origin:
+        type: string
+        title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
+      tx:
+        type: string
+        title: Deposit transaction data
+      eventId:
+        type: string
+      receiver:
+        type: string
+        title: hex-encoded
+      amount:
+        type: string
+        title: dec-encoded
+      bundleData:
+        type: string
+        title: hex-encoded
+      bundleSalt:
+        type: string
+        title: hex-encoded
+      from:
+        title: Information about current and target chains
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      to:
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      meta:
+        description: Optional (if item currently does not exists
+        title: Information about token
+        type: object
+        properties:
+          imageUri:
+            type: string
+          imageHash:
+            type: string
+            title: Hash of the token image. Encoded into hex string. (optional)
+          seed:
+            type: string
+            title: Seed is used to generate PDA address for Solana
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
+            type: string
+  rarimo.rarimocore.rarimocore.Vote:
+    type: object
+    properties:
+      index:
+        type: object
+        properties:
+          operation:
+            type: string
+          validator:
+            type: string
+      vote:
+        type: string
+        enum:
+          - 'YES'
+          - 'NO'
+        default: 'YES'
+  rarimo.rarimocore.rarimocore.VoteIndex:
+    type: object
+    properties:
+      operation:
+        type: string
+      validator:
+        type: string
   rarimo.rarimocore.rarimocore.VoteType:
     type: string
     enum:
@@ -54941,24 +56428,6 @@ definitions:
       - TRANSFER
       - CHANGE_PARTIES
     default: TRANSFER
-  rarimo.rarimocore.tokenmanager.ItemChainParams:
-    type: object
-    properties:
-      chain:
-        type: string
-      tokenID:
-        type: string
-  rarimo.rarimocore.tokenmanager.ItemIndex:
-    type: object
-    properties:
-      collection:
-        type: string
-      name:
-        type: string
-      symbol:
-        type: string
-      uri:
-        type: string
   rarimo.rarimocore.tokenmanager.ItemMetadata:
     type: object
     properties:
@@ -54970,6 +56439,21 @@ definitions:
       seed:
         type: string
         title: Seed is used to generate PDA address for Solana
+      name:
+        type: string
+      symbol:
+        type: string
+      uri:
+        type: string
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex:
+    type: object
+    properties:
+      chain:
+        type: string
+      address:
+        type: string
+      tokenID:
+        type: string
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
     properties:
@@ -55048,16 +56532,9 @@ definitions:
     type: object
     properties:
       index:
-        type: object
-        properties:
-          collection:
-            type: string
-          name:
-            type: string
-          symbol:
-            type: string
-          uri:
-            type: string
+        type: string
+      collection:
+        type: string
       meta:
         type: object
         properties:
@@ -55069,12 +56546,20 @@ definitions:
           seed:
             type: string
             title: Seed is used to generate PDA address for Solana
-      chainParams:
+          name:
+            type: string
+          symbol:
+            type: string
+          uri:
+            type: string
+      onChain:
         type: array
         items:
           type: object
           properties:
             chain:
+              type: string
+            address:
               type: string
             tokenID:
               type: string
@@ -55087,17 +56572,6 @@ definitions:
       contract:
         type: string
         title: contract address hex
-      types:
-        type: array
-        items:
-          type: object
-          properties:
-            coreType:
-              type: integer
-              format: int64
-            saverType:
-              type: integer
-              format: int64
       type:
         type: string
         enum:
@@ -55114,15 +56588,20 @@ definitions:
       - Near
       - Other
     default: EVM
-  rarimo.rarimocore.tokenmanager.NetworkTypeBinding:
+  rarimo.rarimocore.tokenmanager.OnChainItem:
     type: object
     properties:
-      coreType:
-        type: integer
-        format: int64
-      saverType:
-        type: integer
-        format: int64
+      index:
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      item:
+        type: string
   rarimo.rarimocore.tokenmanager.Params:
     type: object
     properties:
@@ -55137,17 +56616,6 @@ definitions:
             contract:
               type: string
               title: contract address hex
-            types:
-              type: array
-              items:
-                type: object
-                properties:
-                  coreType:
-                    type: integer
-                    format: int64
-                  saverType:
-                    type: integer
-                    format: int64
             type:
               type: string
               enum:
@@ -55282,16 +56750,9 @@ definitions:
           type: object
           properties:
             index:
-              type: object
-              properties:
-                collection:
-                  type: string
-                name:
-                  type: string
-                symbol:
-                  type: string
-                uri:
-                  type: string
+              type: string
+            collection:
+              type: string
             meta:
               type: object
               properties:
@@ -55303,15 +56764,105 @@ definitions:
                 seed:
                   type: string
                   title: Seed is used to generate PDA address for Solana
-            chainParams:
+                name:
+                  type: string
+                symbol:
+                  type: string
+                uri:
+                  type: string
+            onChain:
               type: array
               items:
                 type: object
                 properties:
                   chain:
                     type: string
+                  address:
+                    type: string
                   tokenID:
                     type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  rarimo.rarimocore.tokenmanager.QueryAllOnChainItemResponse:
+    type: object
+    properties:
+      item:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: object
+              properties:
+                chain:
+                  type: string
+                address:
+                  type: string
+                tokenID:
+                  type: string
+            item:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  rarimo.rarimocore.tokenmanager.QueryAllSeedResponse:
+    type: object
+    properties:
+      seed:
+        type: array
+        items:
+          type: object
+          properties:
+            seed:
+              type: string
+              title: index
+            item:
+              type: string
       pagination:
         type: object
         properties:
@@ -55406,16 +56957,9 @@ definitions:
         type: object
         properties:
           index:
-            type: object
-            properties:
-              collection:
-                type: string
-              name:
-                type: string
-              symbol:
-                type: string
-              uri:
-                type: string
+            type: string
+          collection:
+            type: string
           meta:
             type: object
             properties:
@@ -55427,15 +56971,51 @@ definitions:
               seed:
                 type: string
                 title: Seed is used to generate PDA address for Solana
-          chainParams:
+              name:
+                type: string
+              symbol:
+                type: string
+              uri:
+                type: string
+          onChain:
             type: array
             items:
               type: object
               properties:
                 chain:
                   type: string
+                address:
+                  type: string
                 tokenID:
                   type: string
+  rarimo.rarimocore.tokenmanager.QueryGetOnChainItemResponse:
+    type: object
+    properties:
+      item:
+        type: object
+        properties:
+          index:
+            type: object
+            properties:
+              chain:
+                type: string
+              address:
+                type: string
+              tokenID:
+                type: string
+          item:
+            type: string
+  rarimo.rarimocore.tokenmanager.QueryGetSeedResponse:
+    type: object
+    properties:
+      seed:
+        type: object
+        properties:
+          seed:
+            type: string
+            title: index
+          item:
+            type: string
   rarimo.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:
@@ -55454,17 +57034,6 @@ definitions:
                 contract:
                   type: string
                   title: contract address hex
-                types:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      coreType:
-                        type: integer
-                        format: int64
-                      saverType:
-                        type: integer
-                        format: int64
                 type:
                   type: string
                   enum:
@@ -55474,6 +57043,14 @@ definitions:
                     - Other
                   default: EVM
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.tokenmanager.Seed:
+    type: object
+    properties:
+      seed:
+        type: string
+        title: index
+      item:
+        type: string
   rarimo.rarimocore.tokenmanager.Type:
     type: string
     enum:

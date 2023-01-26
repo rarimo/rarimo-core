@@ -22,48 +22,15 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, err
 	}
 
-	origin := origin.NewDefaultOriginBuilder().
-		SetTxHash(msg.Tx).
-		SetOpId(msg.EventId).
-		SetCurrentNetwork(msg.From.Chain).
-		Build().
-		GetOrigin()
-
 	// Index is HASH(tx, event, chain, blockhash)
 	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain), big.NewInt(ctx.BlockHeight()).Bytes()))
 
-	if _, ok := k.GetOperation(ctx, index); ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+	transferOp, err := k.GetTransfer(ctx, msg)
+	if err != nil {
+		return nil, err
 	}
 
-	currentData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.From.Chain, Address: msg.From.Address})
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
-	}
-
-	targetData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.To.Chain, Address: msg.To.Address})
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
-	}
-
-	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
-	}
-
-	var transferOp = types.Transfer{
-		Origin:     hexutil.Encode(origin[:]),
-		Tx:         msg.Tx,
-		EventId:    msg.EventId,
-		Receiver:   msg.Receiver,
-		Amount:     castAmount(msg.Amount, uint8(currentData.Decimals), uint8(targetData.Decimals)),
-		BundleData: msg.BundleData,
-		BundleSalt: msg.BundleSalt,
-		From:       msg.From,
-		To:         msg.To,
-		Meta:       msg.Meta,
-	}
-
-	details, err := cosmostypes.NewAnyWithValue(&transferOp)
+	details, err := cosmostypes.NewAnyWithValue(transferOp)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
 	}
@@ -87,6 +54,42 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 	return &types.MsgCreateTransferOpResponse{}, nil
+}
+
+func (k Keeper) GetTransfer(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*types.Transfer, error) {
+	origin := origin.NewDefaultOriginBuilder().
+		SetTxHash(msg.Tx).
+		SetOpId(msg.EventId).
+		SetCurrentNetwork(msg.From.Chain).
+		Build().
+		GetOrigin()
+
+	currentData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.From.Chain, Address: msg.From.Address})
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
+	}
+
+	targetData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.To.Chain, Address: msg.To.Address})
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
+	}
+
+	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
+	}
+
+	return &types.Transfer{
+		Origin:     hexutil.Encode(origin[:]),
+		Tx:         msg.Tx,
+		EventId:    msg.EventId,
+		Receiver:   msg.Receiver,
+		Amount:     castAmount(msg.Amount, uint8(currentData.Decimals), uint8(targetData.Decimals)),
+		BundleData: msg.BundleData,
+		BundleSalt: msg.BundleSalt,
+		From:       msg.From,
+		To:         msg.To,
+		Meta:       msg.Meta,
+	}, nil
 }
 
 func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint8) string {
