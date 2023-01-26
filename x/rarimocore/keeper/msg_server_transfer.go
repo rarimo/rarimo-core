@@ -46,13 +46,8 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	_, ok = k.tm.GetOnChainItem(ctx, msg.From)
-	if !ok && msg.Meta == nil {
+	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
-	}
-
-	if ok && msg.Meta != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should not be provided")
 	}
 
 	var transferOp = types.Transfer{
