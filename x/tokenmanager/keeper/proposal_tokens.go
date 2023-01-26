@@ -24,8 +24,19 @@ func (k Keeper) HandleSetNetworkProposal(ctx sdk.Context, proposal *types.SetNet
 func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.UpdateTokenItemProposal) error {
 	for _, newItem := range proposal.Item {
 
-		if _, ok := k.GetItem(ctx, newItem.Index); !ok {
+		oldItem, ok := k.GetItem(ctx, newItem.Index)
+		if !ok {
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, "not found")
+		}
+
+		if oldItem.Meta.Seed != newItem.Meta.Seed {
+			k.RemoveSeed(ctx, oldItem.Meta.Seed)
+			if newItem.Meta.Seed != "" {
+				k.SetSeed(ctx, types.Seed{
+					Seed: newItem.Meta.Seed,
+					Item: newItem.Index,
+				})
+			}
 		}
 
 		k.SetItem(ctx, *newItem)
@@ -45,6 +56,7 @@ func (k Keeper) HandleRemoveTokenItemProposal(ctx sdk.Context, proposal *types.R
 			k.RemoveOnChainItem(ctx, onChainIndex)
 		}
 
+		k.RemoveSeed(ctx, item.Meta.Seed)
 		k.RemoveItem(ctx, index)
 	}
 

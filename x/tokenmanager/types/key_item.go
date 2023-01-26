@@ -10,6 +10,7 @@ const (
 	// ItemKeyPrefix is the prefix to retrieve all Item
 	ItemKeyPrefix        = "Item/value/"
 	OnChainItemKeyPrefix = "OnChainItem/value/"
+	SeedKeyPrefix        = "Seed/value/"
 )
 
 // ItemKey returns the store key to retrieve an Item from the index fields
@@ -34,6 +35,17 @@ func OnChainItemKey(index *OnChainItemIndex) []byte {
 	key = append(key, []byte("/")...)
 
 	key = append(key, []byte(index.TokenID)...)
+	key = append(key, []byte("/")...)
+
+	return key
+}
+
+func SeedKey(
+	seed string,
+) []byte {
+	var key []byte
+
+	key = append(key, []byte(seed)...)
 	key = append(key, []byte("/")...)
 
 	return key

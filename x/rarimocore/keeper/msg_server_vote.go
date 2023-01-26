@@ -120,6 +120,18 @@ func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Tra
 			OnChain:    []*tokentypes.OnChainItemIndex{transfer.From},
 		}
 
+		// Indexing seed and check if already exists. Meta not-nil validated during op creation
+		if item.Meta.Seed != "" {
+			if _, ok := k.tm.GetSeed(ctx, item.Meta.Seed); ok {
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "seed already exists")
+			}
+
+			k.tm.SetSeed(ctx, tokentypes.Seed{
+				Seed: item.Meta.Seed,
+				Item: item.Index,
+			})
+		}
+
 		k.tm.SetItem(ctx, item)
 
 		from = tokentypes.OnChainItem{

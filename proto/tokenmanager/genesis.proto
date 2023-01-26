@@ -16,5 +16,6 @@ message GenesisState {
   repeated CollectionData datas = 3 [(gogoproto.nullable) = false];
   repeated Item items = 4 [(gogoproto.nullable) = false];
   repeated OnChainItem onChainItems = 5 [(gogoproto.nullable) = false];
+  repeated Seed seeds = 6 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

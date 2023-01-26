@@ -104,3 +104,48 @@ func (k Keeper) OnChainItem(c context.Context, req *types.QueryGetOnChainItemReq
 
 	return &types.QueryGetOnChainItemResponse{Item: val}, nil
 }
+
+func (k Keeper) SeedAll(c context.Context, req *types.QueryAllSeedRequest) (*types.QueryAllSeedResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var seeds []types.Seed
+	ctx := sdk.UnwrapSDKContext(c)
+
+	store := ctx.KVStore(k.storeKey)
+	itemStore := prefix.NewStore(store, types.KeyPrefix(types.SeedKeyPrefix))
+
+	pageRes, err := query.Paginate(itemStore, req.Pagination, func(key []byte, value []byte) error {
+		var seed types.Seed
+		if err := k.cdc.Unmarshal(value, &seed); err != nil {
+			return err
+		}
+
+		seeds = append(seeds, seed)
+		return nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryAllSeedResponse{Seed: seeds, Pagination: pageRes}, nil
+}
+
+func (k Keeper) Seed(c context.Context, req *types.QueryGetSeedRequest) (*types.QueryGetSeedResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(c)
+
+	val, found := k.GetSeed(
+		ctx,
+		req.Seed,
+	)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	return &types.QueryGetSeedResponse{Seed: val}, nil
+}

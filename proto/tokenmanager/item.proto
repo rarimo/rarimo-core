@@ -25,6 +25,12 @@ message ItemMetadata {
   string uri = 6;
 }
 
+message Seed {
+  // index
+  string seed = 1;
+  string item = 2;
+}
+
 message Item {
   string index = 1;
   string collection = 2;

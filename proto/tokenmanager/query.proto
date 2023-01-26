@@ -53,6 +53,14 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data";
   }
 
+  rpc Seed(QueryGetSeedRequest) returns (QueryGetSeedResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/seed/{seed}";
+  }
+
+  rpc SeedAll(QueryAllSeedRequest) returns (QueryAllSeedResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/seed";
+  }
+
   // this line is used by starport scaffolding # 2
 }
 
@@ -133,6 +141,23 @@ message QueryAllCollectionDataRequest {
 
 message QueryAllCollectionDataResponse {
   repeated CollectionData data = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSeedRequest {
+  string seed = 1;
+}
+
+message QueryGetSeedResponse {
+  Seed seed = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSeedRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSeedResponse {
+  repeated Seed seed = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
