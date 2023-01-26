@@ -33,7 +33,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		Vote: msg.Vote,
 	})
 
-	if operation.Approved {
+	if operation.Status != types.OpStatus_INITIALIZED {
 		return &types.MsgVoteResponse{}, nil
 	}
 
@@ -75,13 +75,32 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	}
 
 	tallyParams := k.gov.GetTallyParams(ctx)
+
+	// If there is not enough quorum of votes, finish the flow
+	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
+	if percentVoting.LT(tallyParams.Quorum) {
+		return &types.MsgVoteResponse{}, nil
+	}
+
 	if yesResult.Quo(totalVotingPower).GT(tallyParams.Threshold) {
 		if err := k.ApproveOperation(ctx, operation); err != nil {
 			return nil, err
 		}
+
+		return &types.MsgVoteResponse{}, nil
+	}
+
+	if err := k.UnapproveOperation(ctx, operation); err != nil {
+		return nil, err
 	}
 
 	return &types.MsgVoteResponse{}, nil
+}
+
+func (k msgServer) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
+	op.Status = types.OpStatus_NOT_APPROVED
+	k.SetOperation(ctx, op)
+	return nil
 }
 
 func (k msgServer) ApproveOperation(ctx sdk.Context, op types.Operation) error {
@@ -92,7 +111,7 @@ func (k msgServer) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 			return err
 		}
 
-		op.Approved = true
+		op.Status = types.OpStatus_APPROVED
 		k.SetOperation(ctx, op)
 	default:
 		// Nothing to do
@@ -135,7 +154,6 @@ func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Tra
 		}
 
 		k.tm.SetItem(ctx, item)
-
 		from = tokentypes.OnChainItem{
 			Index: transfer.From,
 			Item:  item.Index,

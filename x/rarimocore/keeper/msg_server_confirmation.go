@@ -40,13 +40,10 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s not found", index))
 		}
 
-		if !op.Approved {
+		if op.Status != types.OpStatus_APPROVED {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is not approved", index))
 		}
 
-		if op.Signed {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("operation %s is already signed", index))
-		}
 		operations = append(operations, op)
 
 		content, err := k.getContent(ctx, op)
@@ -107,7 +104,7 @@ func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
 		// Nothing to do
 	}
 
-	op.Signed = true
+	op.Status = types.OpStatus_SIGNED
 	k.SetOperation(ctx, op)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,

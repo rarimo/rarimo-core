@@ -30971,10 +30971,14 @@ paths:
                               "value": "1.212s"
                             }
                       title: Corresponding to type details
-                    signed:
-                      type: boolean
-                    approved:
-                      type: boolean
+                    status:
+                      type: string
+                      enum:
+                        - INITIALIZED
+                        - APPROVED
+                        - NOT_APPROVED
+                        - SIGNED
+                      default: INITIALIZED
                     creator:
                       type: string
                     timestamp:
@@ -31447,10 +31451,14 @@ paths:
                             "value": "1.212s"
                           }
                     title: Corresponding to type details
-                  signed:
-                    type: boolean
-                  approved:
-                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                      - INITIALIZED
+                      - APPROVED
+                      - NOT_APPROVED
+                      - SIGNED
+                    default: INITIALIZED
                   creator:
                     type: string
                   timestamp:
@@ -31687,9 +31695,6 @@ paths:
                     type: boolean
                   lastSignature:
                     type: string
-                  availableResignBlockDelta:
-                    type: string
-                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -55464,8 +55469,6 @@ definitions:
             type: string
   rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
     type: object
-  rarimo.rarimocore.rarimocore.MsgResignOperationResponse:
-    type: object
   rarimo.rarimocore.rarimocore.MsgSetupInitialResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgVoteResponse:
@@ -55640,10 +55643,14 @@ definitions:
                 "value": "1.212s"
               }
         title: Corresponding to type details
-      signed:
-        type: boolean
-      approved:
-        type: boolean
+      status:
+        type: string
+        enum:
+          - INITIALIZED
+          - APPROVED
+          - NOT_APPROVED
+          - SIGNED
+        default: INITIALIZED
       creator:
         type: string
       timestamp:
@@ -55677,9 +55684,6 @@ definitions:
         type: boolean
       lastSignature:
         type: string
-      availableResignBlockDelta:
-        type: string
-        format: uint64
     description: Params defines the parameters for the module.
   rarimo.rarimocore.rarimocore.Party:
     type: object
@@ -55926,10 +55930,14 @@ definitions:
                       "value": "1.212s"
                     }
               title: Corresponding to type details
-            signed:
-              type: boolean
-            approved:
-              type: boolean
+            status:
+              type: string
+              enum:
+                - INITIALIZED
+                - APPROVED
+                - NOT_APPROVED
+                - SIGNED
+              default: INITIALIZED
             creator:
               type: string
             timestamp:
@@ -56204,10 +56212,14 @@ definitions:
                     "value": "1.212s"
                   }
             title: Corresponding to type details
-          signed:
-            type: boolean
-          approved:
-            type: boolean
+          status:
+            type: string
+            enum:
+              - INITIALIZED
+              - APPROVED
+              - NOT_APPROVED
+              - SIGNED
+            default: INITIALIZED
           creator:
             type: string
           timestamp:
@@ -56328,9 +56340,6 @@ definitions:
             type: boolean
           lastSignature:
             type: string
-          availableResignBlockDelta:
-            type: string
-            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.rarimocore.Transfer:
     type: object
@@ -56422,7 +56431,15 @@ definitions:
       - 'YES'
       - 'NO'
     default: 'YES'
-  rarimo.rarimocore.rarimocore.op_type:
+  rarimo.rarimocore.rarimocore.opStatus:
+    type: string
+    enum:
+      - INITIALIZED
+      - APPROVED
+      - NOT_APPROVED
+      - SIGNED
+    default: INITIALIZED
+  rarimo.rarimocore.rarimocore.opType:
     type: string
     enum:
       - TRANSFER

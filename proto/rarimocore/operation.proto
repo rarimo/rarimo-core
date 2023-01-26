@@ -5,19 +5,25 @@ import "google/protobuf/any.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
-enum op_type {
+enum opType {
   TRANSFER = 0;
   CHANGE_PARTIES = 1;
+}
+
+enum opStatus {
+  INITIALIZED = 0;
+  APPROVED = 1;
+  NOT_APPROVED = 2;
+  SIGNED = 3;
 }
 
 message Operation {
   // Should be in a hex format 0x...
   string index = 1;
-  op_type operationType = 2;
+  opType operationType = 2;
   // Corresponding to type details
   google.protobuf.Any details = 3;
-  bool signed = 4;
-  bool approved = 5;
-  string creator = 6;
-  uint64 timestamp = 7;
+  opStatus status = 4;
+  string creator = 5;
+  uint64 timestamp = 6;
 }

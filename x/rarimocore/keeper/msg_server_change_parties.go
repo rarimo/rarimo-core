@@ -36,8 +36,7 @@ func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *type
 		Index:         hexutil.Encode(content.CalculateHash()),
 		OperationType: types.OpType_CHANGE_PARTIES,
 		Details:       details,
-		Approved:      true, // Auto approve
-		Signed:        false,
+		Status:        types.OpStatus_APPROVED, // Auto approve
 		Creator:       msg.Creator,
 		Timestamp:     uint64(ctx.BlockHeight()),
 	}

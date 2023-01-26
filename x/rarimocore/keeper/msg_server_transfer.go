@@ -24,8 +24,8 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, err
 	}
 
-	// Index is HASH(tx, event, chain, blockhash)
-	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain), big.NewInt(ctx.BlockHeight()).Bytes()))
+	// Index is HASH(tx, event, chain)
+	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain)))
 
 	transferOp, err := k.GetTransfer(ctx, msg)
 	if err != nil {
@@ -41,9 +41,16 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Index:         index,
 		OperationType: types.OpType_TRANSFER,
 		Details:       details,
-		Signed:        false,
+		Status:        types.OpStatus_INITIALIZED,
 		Creator:       msg.Creator,
 		Timestamp:     uint64(ctx.BlockHeight()),
+	}
+
+	if op, ok := k.GetOperation(ctx, index); ok {
+		if op.Status == types.OpStatus_INITIALIZED || op.Status == types.OpStatus_APPROVED {
+			// To change operation it should be unapproved or signed
+			return &types.MsgCreateTransferOpResponse{}, nil
+		}
 	}
 
 	k.SetOperation(
