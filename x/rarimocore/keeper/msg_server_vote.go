@@ -14,6 +14,8 @@ import (
 func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+
 	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
