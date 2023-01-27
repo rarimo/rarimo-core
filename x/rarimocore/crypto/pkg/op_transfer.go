@@ -20,7 +20,7 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(collectionData tokentypes.CollectionData, item tokentypes.Item, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(collectionData tokentypes.CollectionData, item tokentypes.Item, params tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
 	switch collectionData.TokenType {
@@ -81,7 +81,7 @@ func GetTransferContent(collectionData tokentypes.CollectionData, item tokentype
 		TargetNetwork:  transfer.To.Chain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
 		Data:           builder.Build().GetContent(),
-		TargetContract: hexutil.MustDecode(transfer.To.Chain),
+		TargetContract: hexutil.MustDecode(params.Contract),
 		Bundle: bundle.NewDefaultBundleBuilder().
 			SetBundle(transfer.BundleData).
 			SetSalt(transfer.BundleSalt).

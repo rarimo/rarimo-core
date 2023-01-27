@@ -187,5 +187,10 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "item not found")
 	}
 
-	return pkg.GetTransferContent(data, item, transfer)
+	networkParams, ok := k.tm.GetNetwork(ctx, transfer.To.Chain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
+	}
+
+	return pkg.GetTransferContent(data, item, *networkParams, transfer)
 }
