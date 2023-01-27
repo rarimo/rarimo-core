@@ -49,6 +49,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		addr := sdk.ValAddress(validator.GetOperator().Bytes())
 		validators[addr.String()] = &ValidatorVoteInfo{
 			BondedTokens: validator.GetBondedTokens(),
+			Vote:         types.VoteType_NO,
 		}
 
 		return false
@@ -57,7 +58,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	// Setting votes in validators map
 	k.IterateVotes(ctx, msg.Operation, func(vote types.Vote) (stop bool) {
 		voter := sdk.MustAccAddressFromBech32(vote.Index.Validator)
-		if val, ok := validators[voter.String()]; ok {
+		if val, ok := validators[sdk.ValAddress(voter.Bytes()).String()]; ok {
 			val.Vote = vote.Vote
 		}
 		return false
