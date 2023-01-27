@@ -16,16 +16,13 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	k.paramstore.SetParamSet(ctx, &params)
 }
 
-func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param *types.NetworkParams, ok bool) {
-	var params types.Params
-	k.paramstore.GetParamSet(ctx, &params)
-
+func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param types.NetworkParams, ok bool) {
+	params := k.GetParams(ctx)
 	for _, network := range params.Networks {
 		if network.Name == name {
-			param, ok = network, true
-			break
+			return *network, true
 		}
 	}
 
-	return param, ok
+	return
 }

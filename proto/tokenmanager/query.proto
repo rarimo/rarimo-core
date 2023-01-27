@@ -17,6 +17,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/params";
   }
+
+  // Parameters queries the parameters of the module.
+  rpc NetworkParams(QueryNetworkParamsRequest) returns (QueryNetworkParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/network/{name}";
+  }
+
   // Queries a Item by index.
   rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{index}";
@@ -71,6 +77,16 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryNetworkParamsRequest {
+  string name = 1;
+}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryNetworkParamsResponse {
+  NetworkParams params = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetItemRequest {
