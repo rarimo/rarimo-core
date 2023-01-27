@@ -23,9 +23,9 @@ func (msgServer) disableFee(initial sdk.Gas, meter sdk.GasMeter) {
 }
 
 func (k msgServer) checkCreatorIsValidator(ctx sdk.Context, creator string) error {
-	addr, _ := sdk.ValAddressFromBech32(creator)
+	sender, _ := sdk.AccAddressFromBech32(creator)
 
-	if k.staking.Validator(ctx, addr) != nil {
+	if k.staking.Validator(ctx, sdk.ValAddress(sender.Bytes())) != nil {
 		return nil
 	}
 
