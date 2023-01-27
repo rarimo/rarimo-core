@@ -5,7 +5,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
@@ -33,48 +32,30 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		Vote: msg.Vote,
 	})
 
-	if operation.Status != types.OpStatus_INITIALIZED {
+	if operation.Status != types.OpStatus_INITIALIZED && operation.Status != types.OpStatus_NOT_APPROVED {
 		return &types.MsgVoteResponse{}, nil
 	}
 
-	type ValidatorVoteInfo struct {
-		BondedTokens sdk.Int // Power of a Validator
-		Vote         types.VoteType
-	}
-
-	validators := make(map[string]*ValidatorVoteInfo)
-
-	// Filling validators map with current validators
-	k.staking.IterateBondedValidatorsByPower(ctx, func(index int64, validator stakingtypes.ValidatorI) (stop bool) {
-		addr := sdk.ValAddress(validator.GetOperator().Bytes())
-		validators[addr.String()] = &ValidatorVoteInfo{
-			BondedTokens: validator.GetBondedTokens(),
-			Vote:         types.VoteType_NO,
-		}
-
-		return false
-	})
+	yesResult := sdk.ZeroDec()
+	noResult := sdk.ZeroDec()
 
 	// Setting votes in validators map
 	k.IterateVotes(ctx, msg.Operation, func(vote types.Vote) (stop bool) {
 		voter := sdk.MustAccAddressFromBech32(vote.Index.Validator)
-		if val, ok := validators[sdk.ValAddress(voter.Bytes()).String()]; ok {
-			val.Vote = vote.Vote
+
+		if validator := k.staking.Validator(ctx, sdk.ValAddress(voter)); validator != nil {
+			switch vote.Vote {
+			case types.VoteType_YES:
+				yesResult = yesResult.Add(validator.GetBondedTokens().ToDec())
+			case types.VoteType_NO:
+				noResult = noResult.Add(validator.GetBondedTokens().ToDec())
+			}
 		}
+
 		return false
 	})
 
-	totalVotingPower := sdk.ZeroDec()
-	yesResult := sdk.ZeroDec()
-
-	for _, validator := range validators {
-		votingPower := validator.BondedTokens.ToDec()
-		if validator.Vote == types.VoteType_YES {
-			yesResult = yesResult.Add(votingPower)
-		}
-		totalVotingPower = totalVotingPower.Add(votingPower)
-	}
-
+	totalVotingPower := yesResult.Add(noResult)
 	tallyParams := k.gov.GetTallyParams(ctx)
 
 	// If there is not enough quorum of votes, finish the flow
