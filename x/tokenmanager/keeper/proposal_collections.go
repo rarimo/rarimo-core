@@ -30,6 +30,14 @@ func (k Keeper) HandleCreateCollectionProposal(ctx sdk.Context, proposal *types.
 		k.SetCollectionData(ctx, *data)
 	}
 
+	for _, item := range proposal.Item {
+		k.SetItem(ctx, *item)
+	}
+
+	for _, item := range proposal.OnChainItem {
+		k.SetOnChainItem(ctx, *item)
+	}
+
 	return nil
 }
 

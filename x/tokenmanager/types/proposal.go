@@ -104,6 +104,12 @@ func (m *CreateCollectionProposal) ValidateBasic() error {
 		}
 	}
 
+	for _, i := range m.Item {
+		if err := validateItem(i); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

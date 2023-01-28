@@ -35,6 +35,8 @@ message CreateCollectionProposal {
   CollectionMetadata metadata = 4;
   // All supported networks described
   repeated CollectionData data = 5;
+  repeated Item item = 6;
+  repeated OnChainItem onChainItem = 7;
 }
 
 message UpdateCollectionDataProposal {
@@ -50,7 +52,6 @@ message AddCollectionDataProposal {
 
   repeated CollectionData data = 3;
 }
-
 
 message RemoveCollectionDataProposal {
   string title = 1;
