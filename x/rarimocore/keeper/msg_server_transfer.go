@@ -97,6 +97,7 @@ func (k Keeper) GetTransfer(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*t
 		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Tx,
 		EventId:    msg.EventId,
+		Sender:     msg.Sender,
 		Receiver:   msg.Receiver,
 		Amount:     castAmount(msg.Amount, uint8(currentData.Decimals), uint8(targetData.Decimals)),
 		BundleData: msg.BundleData,

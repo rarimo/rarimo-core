@@ -12,21 +12,22 @@ message Transfer {
   // Deposit transaction data
   string tx = 2;
   string eventId = 3;
+  string sender = 4;
 
   // hex-encoded
-  string receiver = 4;
+  string receiver = 5;
   // dec-encoded
-  string amount = 5;
+  string amount = 6;
 
   // hex-encoded
-  string bundleData = 6;
+  string bundleData = 7;
   // hex-encoded
-  string bundleSalt = 7;
+  string bundleSalt = 8;
 
   // Information about current and target chains
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 8;
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 9;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
   // Information about token
-  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 10; // Optional (if item currently does not exists
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists
 }
 
