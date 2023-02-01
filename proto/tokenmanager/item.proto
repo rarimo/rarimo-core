@@ -20,9 +20,7 @@ message ItemMetadata {
   string imageHash = 2;
   // Seed is used to generate PDA address for Solana
   string seed = 3;
-  string name = 4;
-  string symbol = 5;
-  string uri = 6;
+  string uri = 4;
 }
 
 message Seed {

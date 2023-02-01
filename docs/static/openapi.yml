@@ -30541,16 +30541,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
@@ -31243,16 +31233,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
@@ -31907,6 +31887,8 @@ paths:
                     title: Deposit transaction data
                   eventId:
                     type: string
+                  sender:
+                    type: string
                   receiver:
                     type: string
                     title: hex-encoded
@@ -31953,10 +31935,6 @@ paths:
                       seed:
                         type: string
                         title: Seed is used to generate PDA address for Solana
-                      name:
-                        type: string
-                      symbol:
-                        type: string
                       uri:
                         type: string
         default:
@@ -32158,6 +32136,10 @@ paths:
           in: query
           required: false
           type: string
+        - name: msg.sender
+          in: query
+          required: false
+          type: string
         - name: msg.receiver
           description: Information about deposit
           in: query
@@ -32212,14 +32194,6 @@ paths:
           type: string
         - name: msg.meta.seed
           description: Seed is used to generate PDA address for Solana
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.name
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.symbol
           in: query
           required: false
           type: string
@@ -32513,16 +32487,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -32878,16 +32842,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /rarimo/rarimo-core/tokenmanager/collection-data:
@@ -33021,16 +32975,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -33196,10 +33140,6 @@ paths:
                         seed:
                           type: string
                           title: Seed is used to generate PDA address for Solana
-                        name:
-                          type: string
-                        symbol:
-                          type: string
                         uri:
                           type: string
                     onChain:
@@ -33305,16 +33245,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/item/{index}':
@@ -33347,10 +33277,6 @@ paths:
                       seed:
                         type: string
                         title: Seed is used to generate PDA address for Solana
-                      name:
-                        type: string
-                      symbol:
-                        type: string
                       uri:
                         type: string
                   onChain:
@@ -33384,6 +33310,61 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/rarimo/rarimo-core/tokenmanager/network/{name}':
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarimoRarimocoreTokenmanagerNetworkParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    title: network name
+                  contract:
+                    type: string
+                    title: contract address hex
+                  type:
+                    type: string
+                    enum:
+                      - EVM
+                      - Solana
+                      - Near
+                      - Other
+                    default: EVM
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: name
           in: path
           required: true
           type: string
@@ -33504,16 +33485,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -33740,16 +33711,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -55419,6 +55380,8 @@ definitions:
         title: Information to identify transfer
       eventId:
         type: string
+      sender:
+        type: string
       receiver:
         type: string
         title: Information about deposit
@@ -55461,10 +55424,6 @@ definitions:
           seed:
             type: string
             title: Seed is used to generate PDA address for Solana
-          name:
-            type: string
-          symbol:
-            type: string
           uri:
             type: string
   rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
@@ -56239,6 +56198,8 @@ definitions:
             title: Deposit transaction data
           eventId:
             type: string
+          sender:
+            type: string
           receiver:
             type: string
             title: hex-encoded
@@ -56283,10 +56244,6 @@ definitions:
               seed:
                 type: string
                 title: Seed is used to generate PDA address for Solana
-              name:
-                type: string
-              symbol:
-                type: string
               uri:
                 type: string
   rarimo.rarimocore.rarimocore.QueryGetVoteResponse:
@@ -56352,6 +56309,8 @@ definitions:
         title: Deposit transaction data
       eventId:
         type: string
+      sender:
+        type: string
       receiver:
         type: string
         title: hex-encoded
@@ -56396,10 +56355,6 @@ definitions:
           seed:
             type: string
             title: Seed is used to generate PDA address for Solana
-          name:
-            type: string
-          symbol:
-            type: string
           uri:
             type: string
   rarimo.rarimocore.rarimocore.Vote:
@@ -56456,10 +56411,6 @@ definitions:
       seed:
         type: string
         title: Seed is used to generate PDA address for Solana
-      name:
-        type: string
-      symbol:
-        type: string
       uri:
         type: string
   rarimo.rarimocore.tokenmanager.OnChainItemIndex:
@@ -56563,10 +56514,6 @@ definitions:
           seed:
             type: string
             title: Seed is used to generate PDA address for Solana
-          name:
-            type: string
-          symbol:
-            type: string
           uri:
             type: string
       onChain:
@@ -56781,10 +56728,6 @@ definitions:
                 seed:
                   type: string
                   title: Seed is used to generate PDA address for Solana
-                name:
-                  type: string
-                symbol:
-                  type: string
                 uri:
                   type: string
             onChain:
@@ -56988,10 +56931,6 @@ definitions:
               seed:
                 type: string
                 title: Seed is used to generate PDA address for Solana
-              name:
-                type: string
-              symbol:
-                type: string
               uri:
                 type: string
           onChain:
@@ -57033,6 +56972,27 @@ definitions:
             title: index
           item:
             type: string
+  rarimo.rarimocore.tokenmanager.QueryNetworkParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          name:
+            type: string
+            title: network name
+          contract:
+            type: string
+            title: contract address hex
+          type:
+            type: string
+            enum:
+              - EVM
+              - Solana
+              - Near
+              - Other
+            default: EVM
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.tokenmanager.QueryParamsResponse:
     type: object
     properties:

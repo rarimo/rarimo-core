@@ -20,7 +20,7 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(collectionData tokentypes.CollectionData, item tokentypes.Item, params tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(collection tokentypes.Collection, collectionData tokentypes.CollectionData, item tokentypes.Item, params tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
 	switch collectionData.TokenType {
@@ -32,7 +32,7 @@ func GetTransferContent(collectionData tokentypes.CollectionData, item tokentype
 		builder.
 			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
-			SetName(item.Meta.Name).
+			SetName(collection.Meta.Name).
 			SetImageURI(item.Meta.ImageUri).
 			SetImageHash(item.Meta.ImageHash)
 	case tokentypes.Type_NATIVE:
@@ -56,16 +56,16 @@ func GetTransferContent(collectionData tokentypes.CollectionData, item tokentype
 		builder.
 			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount).
-			SetName(item.Meta.Name).
-			SetSymbol(item.Meta.Symbol).
+			SetName(collection.Meta.Name).
+			SetSymbol(collection.Meta.Symbol).
 			SetURI(item.Meta.Uri).
 			SetDecimals(uint8(collectionData.Decimals))
 	case tokentypes.Type_METAPLEX_NFT:
 		builder.
 			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
-			SetName(item.Meta.Name).
-			SetSymbol(item.Meta.Symbol).
+			SetName(collection.Meta.Name).
+			SetSymbol(collection.Meta.Symbol).
 			SetURI(item.Meta.Uri)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")

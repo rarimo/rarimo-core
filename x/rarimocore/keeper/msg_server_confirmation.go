@@ -177,6 +177,11 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
+	collection, ok := k.tm.GetCollection(ctx, data.Collection)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection not found")
+	}
+
 	onChainItem, ok := k.tm.GetOnChainItem(ctx, transfer.To)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "on chain item not found")
@@ -192,5 +197,5 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
 	}
 
-	return pkg.GetTransferContent(data, item, networkParams, transfer)
+	return pkg.GetTransferContent(collection, data, item, networkParams, transfer)
 }
