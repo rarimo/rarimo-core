@@ -99,26 +99,21 @@ func (k Keeper) CollectionDataAll(ctx context.Context, r *types.QueryAllCollecti
 	return &types.QueryAllCollectionDataResponse{Data: data, Pagination: pageRes}, nil
 }
 
-func (k Keeper) CollectionByOnChainItem(c context.Context, req *types.QueryGetCollectionByOnChainItemRequest) (*types.QueryGetCollectionByOnChainItemResponse, error) {
+func (k Keeper) CollectionByCollectionData(c context.Context, req *types.QueryGetCollectionByCollectionDataRequest) (*types.QueryGetCollectionByCollectionDataResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
-	onChainItem, found := k.GetOnChainItem(ctx, &types.OnChainItemIndex{Chain: req.Chain, Address: req.Address, TokenID: req.TokenID})
+	data, found := k.GetCollectionData(ctx, &types.CollectionDataIndex{Chain: req.Chain, Address: req.Address})
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	item, found := k.GetItem(ctx, onChainItem.Item)
+	collection, found := k.GetCollection(ctx, data.Collection)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	collection, found := k.GetCollection(ctx, item.Collection)
-	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
-	}
-
-	return &types.QueryGetCollectionByOnChainItemResponse{Collection: collection}, nil
+	return &types.QueryGetCollectionByCollectionDataResponse{Collection: collection}, nil
 }
