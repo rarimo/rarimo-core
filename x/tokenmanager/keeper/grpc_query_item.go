@@ -149,3 +149,48 @@ func (k Keeper) Seed(c context.Context, req *types.QueryGetSeedRequest) (*types.
 
 	return &types.QueryGetSeedResponse{Seed: val}, nil
 }
+
+func (k Keeper) ItemByOnChainItem(c context.Context, req *types.QueryGetItemByOnChainItemRequest) (*types.QueryGetItemByOnChainItemResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(c)
+
+	onChainItem, found := k.GetOnChainItem(ctx, &types.OnChainItemIndex{Chain: req.Chain, Address: req.Address, TokenID: req.TokenID})
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	item, found := k.GetItem(ctx, onChainItem.Item)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	return &types.QueryGetItemByOnChainItemResponse{Item: item}, nil
+}
+
+func (k Keeper) OnChainItemByOther(c context.Context, req *types.QueryGetOnChainItemByOtherRequest) (*types.QueryGetOnChainItemByOtherResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(c)
+
+	onChainItem, found := k.GetOnChainItem(ctx, &types.OnChainItemIndex{Chain: req.Chain, Address: req.Address, TokenID: req.TokenID})
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	item, found := k.GetItem(ctx, onChainItem.Item)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	for _, index := range item.OnChain {
+		if index.Chain == req.TargetChain {
+			onChainItem, _ = k.GetOnChainItem(ctx, index)
+			return &types.QueryGetOnChainItemByOtherResponse{Item: onChainItem}, nil
+		}
+	}
+
+	return nil, status.Error(codes.NotFound, "not found")
+}

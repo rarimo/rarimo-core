@@ -28,6 +28,11 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{index}";
   }
 
+  // Queries a Item by index.
+  rpc ItemByOnChainItem(QueryGetItemByOnChainItemRequest) returns (QueryGetItemByOnChainItemResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item/{chain}/{address}/{tokenID}";
+  }
+
   // Queries a list of Item entries.
   rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/item";
@@ -38,6 +43,11 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}";
   }
 
+  // Queries a Item by index.
+  rpc OnChainItemByOther(QueryGetOnChainItemByOtherRequest) returns (QueryGetOnChainItemByOtherResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}/{targetChain}";
+  }
+
   // Queries a list of Item entries.
   rpc OnChainItemAll(QueryAllOnChainItemRequest) returns (QueryAllOnChainItemResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item";
@@ -45,6 +55,10 @@ service Query {
 
   rpc Collection(QueryGetCollectionRequest) returns (QueryGetCollectionResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection/{index}";
+  }
+
+  rpc CollectionByOnChainItem(QueryGetCollectionByOnChainItemRequest) returns (QueryGetCollectionByOnChainItemResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection/{chain}/{address}/{tokenID}";
   }
 
   rpc CollectionAll(QueryAllCollectionRequest) returns (QueryAllCollectionResponse) {
@@ -97,6 +111,16 @@ message QueryGetItemResponse {
   Item item = 1 [(gogoproto.nullable) = false];
 }
 
+message QueryGetItemByOnChainItemRequest {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+}
+
+message QueryGetItemByOnChainItemResponse {
+  Item item = 1 [(gogoproto.nullable) = false];
+}
+
 message QueryAllItemRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
@@ -116,6 +140,17 @@ message QueryGetOnChainItemResponse {
   OnChainItem item = 1 [(gogoproto.nullable) = false];
 }
 
+message QueryGetOnChainItemByOtherRequest {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+  string targetChain = 4;
+}
+
+message QueryGetOnChainItemByOtherResponse {
+  OnChainItem item = 1 [(gogoproto.nullable) = false];
+}
+
 message QueryAllOnChainItemRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
@@ -130,6 +165,16 @@ message QueryGetCollectionRequest {
 }
 
 message QueryGetCollectionResponse {
+  Collection collection = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetCollectionByOnChainItemRequest {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+}
+
+message QueryGetCollectionByOnChainItemResponse {
   Collection collection = 1 [(gogoproto.nullable) = false];
 }
 
