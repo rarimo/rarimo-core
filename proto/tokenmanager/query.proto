@@ -61,13 +61,16 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection/{chain}/{address}";
   }
 
-
   rpc CollectionAll(QueryAllCollectionRequest) returns (QueryAllCollectionResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection";
   }
 
   rpc CollectionData(QueryGetCollectionDataRequest) returns (QueryGetCollectionDataResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data/{chain}/{address}";
+  }
+
+  rpc NativeCollectionData(QueryGetNativeCollectionDataRequest) returns (QueryGetNativeCollectionDataResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data/{collection}";
   }
 
   rpc CollectionDataAll(QueryAllCollectionDataRequest) returns (QueryAllCollectionDataResponse) {
@@ -193,6 +196,14 @@ message QueryGetCollectionDataRequest {
 }
 
 message QueryGetCollectionDataResponse {
+  CollectionData data = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetNativeCollectionDataRequest {
+  string collection = 1;
+}
+
+message QueryGetNativeCollectionDataResponse {
   CollectionData data = 1 [(gogoproto.nullable) = false];
 }
 

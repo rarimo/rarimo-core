@@ -117,3 +117,24 @@ func (k Keeper) CollectionByCollectionData(c context.Context, req *types.QueryGe
 
 	return &types.QueryGetCollectionByCollectionDataResponse{Collection: collection}, nil
 }
+
+func (k Keeper) NativeCollectionData(c context.Context, req *types.QueryGetNativeCollectionDataRequest) (*types.QueryGetNativeCollectionDataResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(c)
+
+	collection, found := k.GetCollection(ctx, req.Collection)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
+
+	for _, index := range collection.Data {
+		data, _ := k.GetCollectionData(ctx, index)
+		if !data.Wrapped {
+			return &types.QueryGetNativeCollectionDataResponse{Data: data}, nil
+		}
+	}
+
+	return nil, status.Error(codes.NotFound, "not found")
+}
