@@ -2,7 +2,7 @@ package data
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/binary"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
@@ -163,5 +163,8 @@ func (b *TransferDataBuilder) SetDecimals(d uint8) *TransferDataBuilder {
 }
 
 func intTo32Bytes(amount int) []byte {
-	return to32Bytes(amountBytes(fmt.Sprintf("%d", amount)))
+	buf := make([]byte, 4)
+	binary.LittleEndian.PutUint32(buf, uint32(amount))
+
+	return to32Bytes(buf)
 }
