@@ -26,10 +26,12 @@ func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams,
 	switch item.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
+			SetNetworkType(tokentypes.NetworkType_Near).
 			SetAddress(item.TokenAddress).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
+			SetNetworkType(tokentypes.NetworkType_Near).
 			SetAddress(item.TokenAddress).
 			SetId(item.TokenId).
 			SetName(item.Name).
@@ -71,20 +73,11 @@ func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams,
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")
 	}
 
-	var contentData operation.ContentData
-
-	switch item.TokenType {
-	case tokentypes.Type_NEAR_FT, tokentypes.Type_NEAR_NFT:
-		contentData = builder.Build().GetNearContent()
-	default:
-		contentData = builder.Build().GetContent()
-	}
-
 	return &operation.TransferContent{
 		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(transfer.Tx).SetOpId(transfer.EventId).SetCurrentNetwork(transfer.FromChain).Build().GetOrigin(),
 		TargetNetwork:  transfer.ToChain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
-		Data:           contentData,
+		Data:           builder.Build().GetContent(),
 		TargetContract: hexutil.MustDecode(params.Contract),
 		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.BundleData).SetSalt(transfer.BundleSalt).Build().GetBundle(),
 	}, nil

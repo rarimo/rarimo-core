@@ -3,6 +3,7 @@ package data
 import (
 	"bytes"
 	"fmt"
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
@@ -10,6 +11,9 @@ import (
 
 // TransferData defines the token transfer operation - from one network to another with full token metadata
 type TransferData struct {
+	// Network type chain to define hash function
+	networkType tokentypes.NetworkType
+
 	// Collection address on target chain
 	TargetAddress []byte
 	// TokenId on target chain
@@ -29,6 +33,15 @@ type TransferData struct {
 var _ Data = &TransferData{}
 
 func (t TransferData) GetContent() operation.ContentData {
+	switch t.networkType {
+	case tokentypes.NetworkType_Near:
+		return t.getNearContent()
+	default:
+		return t.getContent()
+	}
+}
+
+func (t TransferData) getContent() operation.ContentData {
 	return bytes.Join([][]byte{
 		t.TargetAddress,
 		[]byte(t.TargetName),
@@ -42,7 +55,7 @@ func (t TransferData) GetContent() operation.ContentData {
 	}, []byte{})
 }
 
-func (t TransferData) GetNearContent() operation.ContentData {
+func (t TransferData) getNearContent() operation.ContentData {
 	return bytes.Join([][]byte{
 		intTo32Bytes(len(t.TargetAddress)),
 		t.TargetAddress,
@@ -66,6 +79,8 @@ func (t TransferData) GetNearContent() operation.ContentData {
 }
 
 type TransferDataBuilder struct {
+	networkType tokentypes.NetworkType
+
 	address   []byte
 	id        []byte
 	amount    []byte
@@ -83,6 +98,8 @@ func NewTransferDataBuilder() *TransferDataBuilder {
 
 func (b *TransferDataBuilder) Build() *TransferData {
 	return &TransferData{
+		networkType: b.networkType,
+
 		TargetAddress:  b.address,
 		TargetId:       b.id,
 		Amount:         b.amount,
@@ -93,6 +110,11 @@ func (b *TransferDataBuilder) Build() *TransferData {
 		ImageHash:      b.imageHash,
 		TargetDecimals: b.decimals,
 	}
+}
+
+func (b *TransferDataBuilder) SetNetworkType(networkType tokentypes.NetworkType) *TransferDataBuilder {
+	b.networkType = networkType
+	return b
 }
 
 func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
