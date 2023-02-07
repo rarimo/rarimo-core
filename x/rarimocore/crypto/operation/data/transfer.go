@@ -11,7 +11,7 @@ import (
 
 // TransferData defines the token transfer operation - from one network to another with full token metadata
 type TransferData struct {
-	// Network type chain to define hash function
+	// Network type to define content hash function
 	networkType tokentypes.NetworkType
 
 	// Collection address on target chain
