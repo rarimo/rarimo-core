@@ -26,10 +26,12 @@ func GetTransferContent(collection tokentypes.Collection, collectionData tokenty
 	switch collectionData.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
+			SetNetworkType(tokentypes.NetworkType_Near).
 			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
+			SetNetworkType(tokentypes.NetworkType_Near).
 			SetAddress(transfer.To.Address).
 			SetId(transfer.To.TokenID).
 			SetName(collection.Meta.Name).
