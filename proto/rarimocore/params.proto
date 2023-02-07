@@ -25,5 +25,4 @@ message Params {
   repeated Party parties = 3;
   bool isUpdateRequired = 5;
   string lastSignature = 6;
-  uint64 availableResignBlockDelta = 8;
 }

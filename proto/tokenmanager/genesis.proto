@@ -3,8 +3,8 @@ package rarimo.rarimocore.tokenmanager;
 
 import "gogoproto/gogo.proto";
 import "tokenmanager/params.proto";
+import "tokenmanager/collection.proto";
 import "tokenmanager/item.proto";
-import "tokenmanager/info.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
@@ -12,7 +12,10 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 // GenesisState defines the tokenmanager module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated Item itemList = 2 [(gogoproto.nullable) = false];
-  repeated Info infoList = 3 [(gogoproto.nullable) = false];
+  repeated Collection collections = 2 [(gogoproto.nullable) = false];
+  repeated CollectionData datas = 3 [(gogoproto.nullable) = false];
+  repeated Item items = 4 [(gogoproto.nullable) = false];
+  repeated OnChainItem onChainItems = 5 [(gogoproto.nullable) = false];
+  repeated Seed seeds = 6 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

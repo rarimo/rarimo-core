@@ -1,0 +1,21 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "google/protobuf/any.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+enum VoteType {
+  YES = 0;
+  NO = 1;
+}
+
+message VoteIndex {
+  string operation = 1;
+  string validator = 2;
+}
+
+message Vote {
+  VoteIndex index = 1;
+  VoteType vote = 2;
+}

@@ -7,6 +7,9 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "rarimocore/params.proto";
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
+import "rarimocore/vote.proto";
+import "rarimocore/tx.proto";
+import "rarimocore/op_transfer.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
@@ -27,7 +30,7 @@ service Query {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation";
 	}
 
-// Queries a Confirmation by index.
+	// Queries a Confirmation by index.
 	rpc Confirmation(QueryGetConfirmationRequest) returns (QueryGetConfirmationResponse) {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation/{root}";
 	}
@@ -35,6 +38,20 @@ service Query {
 	// Queries a list of Confirmation items.
 	rpc ConfirmationAll(QueryAllConfirmationRequest) returns (QueryAllConfirmationResponse) {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/confirmation";
+	}
+
+	// Queries a Vote by index.
+	rpc Vote(QueryGetVoteRequest) returns (QueryGetVoteResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/vote/{operation}/{validator}";
+	}
+
+	// Queries a list of Confirmation items.
+	rpc VoteAll(QueryAllVoteRequest) returns (QueryAllVoteResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/vote";
+	}
+
+	rpc Transfer(QueryGetTransferRequest) returns (QueryGetTransferResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/transfer";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -81,6 +98,32 @@ message QueryAllConfirmationRequest {
 message QueryAllConfirmationResponse {
 	repeated Confirmation confirmation = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetVoteRequest {
+	string operation = 1;
+	string validator = 2;
+}
+
+message QueryGetVoteResponse {
+	Vote vote = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVoteRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVoteResponse {
+	repeated Vote vote = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetTransferRequest {
+	MsgCreateTransferOp msg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTransferResponse {
+	 Transfer transfer = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

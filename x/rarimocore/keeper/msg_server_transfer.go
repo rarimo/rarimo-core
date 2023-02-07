@@ -4,73 +4,35 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/crypto"
+	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/saver"
-	savermsg "gitlab.com/rarimo/savers/saver-grpc-lib/grpc"
 )
 
 func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if k.checkCreatorIsValidator(ctx, msg.Creator) {
-		defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+
+	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
+
+	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
+		return nil, err
 	}
 
-	origin := origin.NewDefaultOriginBuilder().
-		SetTxHash(msg.Tx).
-		SetOpId(msg.EventId).
-		SetCurrentNetwork(msg.FromChain).
-		Build().
-		GetOrigin()
+	// Index is HASH(tx, event, chain)
+	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain)))
 
-	index := hexutil.Encode(origin[:])
-
-	if _, isFound := k.GetOperation(ctx, index); isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
-	}
-
-	depositInfo, err := k.getDepositInfo(ctx, msg)
+	transferOp, err := k.GetTransfer(ctx, msg)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, ok := k.tm.GetNetwork(ctx, depositInfo.TargetNetwork); !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "network not found: %s", depositInfo.TargetNetwork)
-	}
-
-	currentItem, ok := k.tm.GetItem(ctx, depositInfo.TokenAddress, depositInfo.TokenId, msg.FromChain)
-	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "current token not found")
-	}
-
-	targetItem, ok := k.tm.GetItemByChain(ctx, currentItem.Index, depositInfo.TargetNetwork)
-	if !ok {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target token not found")
-	}
-
-	if _, err := hexutil.Decode(depositInfo.Receiver); err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver format")
-	}
-
-	var transferOp = types.Transfer{
-		Origin:     index,
-		Tx:         msg.Tx,
-		EventId:    msg.EventId,
-		FromChain:  msg.FromChain,
-		ToChain:    depositInfo.TargetNetwork,
-		Receiver:   depositInfo.Receiver,
-		Amount:     castAmount(depositInfo.Amount, uint8(currentItem.Decimals), uint8(targetItem.Decimals)),
-		BundleData: getBundle(depositInfo),
-		BundleSalt: getSalt(depositInfo),
-		TokenIndex: currentItem.Index,
-	}
-
-	details, err := cosmostypes.NewAnyWithValue(&transferOp)
+	details, err := cosmostypes.NewAnyWithValue(transferOp)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
 	}
@@ -79,9 +41,22 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		Index:         index,
 		OperationType: types.OpType_TRANSFER,
 		Details:       details,
-		Signed:        false,
+		Status:        types.OpStatus_INITIALIZED,
 		Creator:       msg.Creator,
 		Timestamp:     uint64(ctx.BlockHeight()),
+	}
+
+	if op, ok := k.GetOperation(ctx, index); ok {
+		if op.Status == types.OpStatus_INITIALIZED || op.Status == types.OpStatus_APPROVED {
+			// To change operation it should be unapproved or signed
+			return &types.MsgCreateTransferOpResponse{}, nil
+		}
+
+		// Otherwise - clear votes
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
 	}
 
 	k.SetOperation(
@@ -94,6 +69,43 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 	return &types.MsgCreateTransferOpResponse{}, nil
+}
+
+func (k Keeper) GetTransfer(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*types.Transfer, error) {
+	origin := origin.NewDefaultOriginBuilder().
+		SetTxHash(msg.Tx).
+		SetOpId(msg.EventId).
+		SetCurrentNetwork(msg.From.Chain).
+		Build().
+		GetOrigin()
+
+	currentData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.From.Chain, Address: msg.From.Address})
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
+	}
+
+	targetData, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: msg.To.Chain, Address: msg.To.Address})
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
+	}
+
+	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
+	}
+
+	return &types.Transfer{
+		Origin:     hexutil.Encode(origin[:]),
+		Tx:         msg.Tx,
+		EventId:    msg.EventId,
+		Sender:     msg.Sender,
+		Receiver:   msg.Receiver,
+		Amount:     castAmount(msg.Amount, uint8(currentData.Decimals), uint8(targetData.Decimals)),
+		BundleData: msg.BundleData,
+		BundleSalt: msg.BundleSalt,
+		From:       msg.From,
+		To:         msg.To,
+		Meta:       msg.Meta,
+	}, nil
 }
 
 func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint8) string {
@@ -116,40 +128,4 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 	}
 
 	return value.String()
-}
-
-func (k msgServer) getDepositInfo(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*savermsg.MsgDepositResponse, error) {
-	infoRequest := &savermsg.MsgTransactionInfoRequest{
-		Hash:    msg.Tx,
-		EventId: msg.EventId,
-		Type:    k.tm.GetSaverType(ctx, msg.FromChain, msg.TokenType),
-	}
-
-	saverClient, err := saver.GetClient(msg.FromChain)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error getting saver connection", err.Error())
-	}
-
-	depositInfo, err := saverClient.GetDepositInfo(ctx.Context(), infoRequest)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error searching deposit %s", err.Error())
-	}
-
-	return depositInfo, nil
-}
-
-func getSalt(response *savermsg.MsgDepositResponse) string {
-	if response.BundleData == "" || response.BundleSalt == "" {
-		return ""
-	}
-
-	return hexutil.Encode(crypto.Keccak256(hexutil.MustDecode(response.BundleSalt), hexutil.MustDecode(response.Receiver)))
-}
-
-func getBundle(response *savermsg.MsgDepositResponse) string {
-	if response.BundleSalt == "" {
-		return ""
-	}
-
-	return response.BundleData
 }

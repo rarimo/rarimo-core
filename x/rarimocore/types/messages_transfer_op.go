@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
@@ -16,15 +17,25 @@ func NewMsgCreateTransferOp(
 	creator string,
 	tx string,
 	eventId string,
-	fromChain string,
-	tokenType tokentypes.Type,
+	receiver string,
+	amount string,
+	bundleData string,
+	bundleSalt string,
+	from *tokentypes.OnChainItemIndex,
+	to *tokentypes.OnChainItemIndex,
+	meta *tokentypes.ItemMetadata,
 ) *MsgCreateTransferOp {
 	return &MsgCreateTransferOp{
-		Creator:   creator,
-		Tx:        tx,
-		EventId:   eventId,
-		FromChain: fromChain,
-		TokenType: tokenType,
+		Creator:    creator,
+		Tx:         tx,
+		EventId:    eventId,
+		Receiver:   receiver,
+		Amount:     amount,
+		BundleData: bundleData,
+		BundleSalt: bundleSalt,
+		From:       from,
+		To:         to,
+		Meta:       meta,
 	}
 }
 
@@ -50,9 +61,28 @@ func (msg *MsgCreateTransferOp) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateTransferOp) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.Receiver); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver address (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.BundleData); len(msg.BundleData) != 0 && err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle data (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.BundleSalt); len(msg.BundleSalt) != 0 && err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle salt (%s)", err)
+	}
+
+	if msg.From == nil || msg.From.Chain == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid from")
+	}
+
+	if msg.To == nil || msg.To.Chain == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid to")
 	}
 
 	return nil

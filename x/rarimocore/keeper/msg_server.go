@@ -22,9 +22,14 @@ func (msgServer) disableFee(initial sdk.Gas, meter sdk.GasMeter) {
 	meter.RefundGas(meter.GasConsumed()-initial, "Gas disabled for that message")
 }
 
-func (k msgServer) checkCreatorIsValidator(ctx sdk.Context, creator string) bool {
-	addr, _ := sdk.ValAddressFromBech32(creator)
-	return k.staking.Validator(ctx, addr) != nil
+func (k msgServer) checkCreatorIsValidator(ctx sdk.Context, creator string) error {
+	sender, _ := sdk.AccAddressFromBech32(creator)
+
+	if k.staking.Validator(ctx, sdk.ValAddress(sender.Bytes())) != nil {
+		return nil
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a validator")
 }
 
 func (k *Keeper) checkSenderIsAParty(ctx sdk.Context, sender string) error {

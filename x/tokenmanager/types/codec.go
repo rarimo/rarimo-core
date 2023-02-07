@@ -8,23 +8,30 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&SetTokenInfoProposal{}, "tokenmanager/SetTokenInfoProposal", nil)
-	cdc.RegisterConcrete(&SetTokenItemProposal{}, "tokenmanager/SetTokenItemProposal", nil)
-	cdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
-	cdc.RegisterConcrete(&RemoveTokenInfoProposal{}, "tokenmanager/RemoveTokenInfoProposal", nil)
 	cdc.RegisterConcrete(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal", nil)
+	cdc.RegisterConcrete(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal", nil)
+	cdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
+	cdc.RegisterConcrete(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal", nil)
+	cdc.RegisterConcrete(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal", nil)
+	cdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
+	cdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
+	cdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
-		&SetTokenInfoProposal{},
-		&SetTokenItemProposal{},
-		&RemoveTokenItemProposal{},
-		&RemoveTokenInfoProposal{},
 		&SetNetworkProposal{},
+		&UpdateTokenItemProposal{},
+		&RemoveTokenItemProposal{},
+		&CreateCollectionProposal{},
+		&UpdateCollectionDataProposal{},
+		&AddCollectionDataProposal{},
+		&RemoveCollectionDataProposal{},
+		&RemoveCollectionProposal{},
 	)
+
 	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

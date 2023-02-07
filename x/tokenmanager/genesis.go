@@ -9,13 +9,25 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// Set all the item
-	for _, elem := range genState.ItemList {
-		k.SetItem(ctx, elem)
-	}
 	// Set all the info
-	for _, elem := range genState.InfoList {
-		k.SetInfo(ctx, elem)
+	for _, collection := range genState.GetCollections() {
+		k.SetCollection(ctx, collection)
+	}
+
+	for _, item := range genState.Items {
+		k.SetItem(ctx, item)
+	}
+
+	for _, data := range genState.Datas {
+		k.SetCollectionData(ctx, data)
+	}
+
+	for _, item := range genState.OnChainItems {
+		k.SetOnChainItem(ctx, item)
+	}
+
+	for _, seed := range genState.Seeds {
+		k.SetSeed(ctx, seed)
 	}
 
 	// this line is used by starport scaffolding # genesis/module/init
@@ -26,9 +38,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
-
-	genesis.ItemList = k.GetAllItem(ctx)
-	genesis.InfoList = k.GetAllInfo(ctx)
+	genesis.Collections = k.GetAllCollections(ctx)
+	genesis.Datas = k.GetAllCollectionData(ctx)
+	genesis.Items = k.GetAllItem(ctx)
+	genesis.OnChainItems = k.GetAllOnChainItem(ctx)
+	genesis.Seeds = k.GetAllSeed(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -3,7 +3,7 @@ package rarimo.rarimocore.tokenmanager;
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-enum type {
+enum Type {
   NATIVE = 0;
   ERC20 = 1;
   ERC721 = 2;
@@ -14,23 +14,35 @@ enum type {
   NEAR_NFT = 7;
 }
 
-message Item {
-  // hex-encoded
-  string tokenAddress = 1;
-  // hex-encoded
-  string tokenId = 2;
-  string chain = 3;
-  string index = 4;
-  string name = 5;
-  string symbol = 6;
-  string uri = 7;
-  uint32 decimals = 8;
-  // Seed for deriving address for Solana networks. Encoded into hex string. (optional)
-  string seed = 9;
-  string imageUri = 10;
+message ItemMetadata {
+  string imageUri = 1;
   // Hash of the token image. Encoded into hex string. (optional)
-  string imageHash = 11;
-  type tokenType = 12;
-  bool wrapped = 13;
+  string imageHash = 2;
+  // Seed is used to generate PDA address for Solana
+  string seed = 3;
+  string uri = 4;
 }
 
+message Seed {
+  // index
+  string seed = 1;
+  string item = 2;
+}
+
+message Item {
+  string index = 1;
+  string collection = 2;
+  ItemMetadata meta = 3;
+  repeated OnChainItemIndex onChain = 4;
+}
+
+message OnChainItemIndex {
+  string chain = 1;
+  string address = 2;
+  string tokenID = 3;
+}
+
+message OnChainItem {
+  OnChainItemIndex index = 1;
+  string item = 2;
+}
