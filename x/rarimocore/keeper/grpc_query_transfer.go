@@ -13,6 +13,11 @@ func (k Keeper) Transfer(c context.Context, req *types.QueryGetTransferRequest) 
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
+
+	if err := req.Msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
 	ctx := sdk.UnwrapSDKContext(c)
 
 	transfer, err := k.GetTransfer(ctx, &req.Msg)
