@@ -1,41 +1,68 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
-import "tokenmanager/info.proto";
+import "tokenmanager/collection.proto";
 import "tokenmanager/item.proto";
 import "tokenmanager/params.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-
-message SetTokenInfoProposal {
+message SetNetworkProposal {
   string title = 1;
   string description = 2;
-  Info info = 3;
+  NetworkParams networkParams = 3;
 }
 
-message SetTokenItemProposal {
+message UpdateTokenItemProposal {
   string title = 1;
   string description = 2;
-  Item item = 3;
+
+  repeated Item item = 3;
 }
 
 message RemoveTokenItemProposal {
   string title = 1;
   string description = 2;
-  string tokenAddress = 3;
-  string tokenId = 4;
-  string network = 5;
+
+  repeated string index = 3;
 }
 
-message RemoveTokenInfoProposal {
+message CreateCollectionProposal {
   string title = 1;
   string description = 2;
+
   string index = 3;
+  CollectionMetadata metadata = 4;
+  // All supported networks described
+  repeated CollectionData data = 5;
+  repeated Item item = 6;
+  repeated OnChainItem onChainItem = 7;
 }
 
-message SetNetworkProposal {
+message UpdateCollectionDataProposal {
   string title = 1;
   string description = 2;
-  NetworkParams networkParams = 3;
+
+  repeated CollectionData data = 3;
+}
+
+message AddCollectionDataProposal {
+  string title = 1;
+  string description = 2;
+
+  repeated CollectionData data = 3;
+}
+
+message RemoveCollectionDataProposal {
+  string title = 1;
+  string description = 2;
+
+  repeated CollectionDataIndex index = 3;
+}
+
+message RemoveCollectionProposal {
+  string title = 1;
+  string description = 2;
+
+  string index = 3;
 }

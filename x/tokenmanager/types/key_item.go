@@ -8,24 +8,44 @@ var _ binary.ByteOrder
 
 const (
 	// ItemKeyPrefix is the prefix to retrieve all Item
-	ItemKeyPrefix = "Item/value/"
+	ItemKeyPrefix        = "Item/value/"
+	OnChainItemKeyPrefix = "OnChainItem/value/"
+	SeedKeyPrefix        = "Seed/value/"
 )
 
-// ItemKey returns the store key to retrieve a Item from the index fields
+// ItemKey returns the store key to retrieve an Item from the index fields
 func ItemKey(
-	tokenAddress string,
-	tokenId string,
-	chain string,
+	index string,
 ) []byte {
 	var key []byte
 
-	key = append(key, []byte(tokenAddress)...)
+	key = append(key, []byte(index)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(tokenId)...)
+	return key
+}
+
+func OnChainItemKey(index *OnChainItemIndex) []byte {
+	var key []byte
+
+	key = append(key, []byte(index.Chain)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(chain)...)
+	key = append(key, []byte(index.Address)...)
+	key = append(key, []byte("/")...)
+
+	key = append(key, []byte(index.TokenID)...)
+	key = append(key, []byte("/")...)
+
+	return key
+}
+
+func SeedKey(
+	seed string,
+) []byte {
+	var key []byte
+
+	key = append(key, []byte(seed)...)
 	key = append(key, []byte("/")...)
 
 	return key

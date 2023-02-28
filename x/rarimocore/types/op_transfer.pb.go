@@ -6,6 +6,7 @@ package types
 import (
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	types "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -26,19 +27,22 @@ type Transfer struct {
 	// hex-encoded keccak256 hash for tx||event||chain strings' bytes
 	Origin string `protobuf:"bytes,1,opt,name=origin,proto3" json:"origin,omitempty"`
 	// Deposit transaction data
-	Tx        string `protobuf:"bytes,2,opt,name=tx,proto3" json:"tx,omitempty"`
-	EventId   string `protobuf:"bytes,3,opt,name=eventId,proto3" json:"eventId,omitempty"`
-	FromChain string `protobuf:"bytes,4,opt,name=fromChain,proto3" json:"fromChain,omitempty"`
-	ToChain   string `protobuf:"bytes,5,opt,name=toChain,proto3" json:"toChain,omitempty"`
+	Tx      string `protobuf:"bytes,2,opt,name=tx,proto3" json:"tx,omitempty"`
+	EventId string `protobuf:"bytes,3,opt,name=eventId,proto3" json:"eventId,omitempty"`
+	Sender  string `protobuf:"bytes,4,opt,name=sender,proto3" json:"sender,omitempty"`
 	// hex-encoded
-	Receiver string `protobuf:"bytes,6,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	Receiver string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
 	// dec-encoded
-	Amount string `protobuf:"bytes,7,opt,name=amount,proto3" json:"amount,omitempty"`
+	Amount string `protobuf:"bytes,6,opt,name=amount,proto3" json:"amount,omitempty"`
 	// hex-encoded
-	BundleData string `protobuf:"bytes,8,opt,name=bundleData,proto3" json:"bundleData,omitempty"`
+	BundleData string `protobuf:"bytes,7,opt,name=bundleData,proto3" json:"bundleData,omitempty"`
 	// hex-encoded
-	BundleSalt string `protobuf:"bytes,9,opt,name=bundleSalt,proto3" json:"bundleSalt,omitempty"`
-	TokenIndex string `protobuf:"bytes,12,opt,name=tokenIndex,proto3" json:"tokenIndex,omitempty"`
+	BundleSalt string `protobuf:"bytes,8,opt,name=bundleSalt,proto3" json:"bundleSalt,omitempty"`
+	// Information about current and target chains
+	From *types.OnChainItemIndex `protobuf:"bytes,9,opt,name=from,proto3" json:"from,omitempty"`
+	To   *types.OnChainItemIndex `protobuf:"bytes,10,opt,name=to,proto3" json:"to,omitempty"`
+	// Information about token
+	Meta *types.ItemMetadata `protobuf:"bytes,11,opt,name=meta,proto3" json:"meta,omitempty"`
 }
 
 func (m *Transfer) Reset()         { *m = Transfer{} }
@@ -95,16 +99,9 @@ func (m *Transfer) GetEventId() string {
 	return ""
 }
 
-func (m *Transfer) GetFromChain() string {
+func (m *Transfer) GetSender() string {
 	if m != nil {
-		return m.FromChain
-	}
-	return ""
-}
-
-func (m *Transfer) GetToChain() string {
-	if m != nil {
-		return m.ToChain
+		return m.Sender
 	}
 	return ""
 }
@@ -137,11 +134,25 @@ func (m *Transfer) GetBundleSalt() string {
 	return ""
 }
 
-func (m *Transfer) GetTokenIndex() string {
+func (m *Transfer) GetFrom() *types.OnChainItemIndex {
 	if m != nil {
-		return m.TokenIndex
+		return m.From
 	}
-	return ""
+	return nil
+}
+
+func (m *Transfer) GetTo() *types.OnChainItemIndex {
+	if m != nil {
+		return m.To
+	}
+	return nil
+}
+
+func (m *Transfer) GetMeta() *types.ItemMetadata {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
 }
 
 func init() {
@@ -151,25 +162,29 @@ func init() {
 func init() { proto.RegisterFile("rarimocore/op_transfer.proto", fileDescriptor_5b795acb1df5370f) }
 
 var fileDescriptor_5b795acb1df5370f = []byte{
-	// 281 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x91, 0x31, 0x4e, 0xc3, 0x30,
-	0x14, 0x86, 0x93, 0x00, 0x69, 0x62, 0x21, 0x06, 0x0f, 0xc8, 0x42, 0x95, 0x85, 0x98, 0x58, 0x48,
-	0x90, 0xb8, 0x01, 0xb0, 0x94, 0x11, 0x98, 0x58, 0x90, 0x93, 0xb8, 0xc5, 0x22, 0xf1, 0x8b, 0xdc,
-	0xd7, 0x2a, 0xdc, 0x82, 0x91, 0x23, 0x31, 0x76, 0x64, 0x44, 0xc9, 0x45, 0x50, 0xec, 0xd0, 0x64,
-	0xb2, 0xff, 0xef, 0xf3, 0x93, 0x9e, 0xfc, 0x93, 0xb9, 0x11, 0x46, 0x55, 0x90, 0x83, 0x91, 0x29,
-	0xd4, 0xaf, 0x68, 0x84, 0x5e, 0x2f, 0xa5, 0x49, 0x6a, 0x03, 0x08, 0x74, 0xb0, 0xc9, 0xf8, 0x68,
-	0x72, 0xbd, 0xf8, 0x0a, 0x48, 0xf4, 0x3c, 0x0c, 0xd0, 0x53, 0x12, 0x82, 0x51, 0x2b, 0xa5, 0x99,
-	0x7f, 0xee, 0x5f, 0xc6, 0x8f, 0x43, 0xa2, 0x27, 0x24, 0xc0, 0x86, 0x05, 0x96, 0x05, 0xd8, 0x50,
-	0x46, 0x66, 0x72, 0x2b, 0x35, 0x2e, 0x0a, 0x76, 0x60, 0xe1, 0x7f, 0xa4, 0x73, 0x12, 0x2f, 0x0d,
-	0x54, 0x77, 0x6f, 0x42, 0x69, 0x76, 0x68, 0xdd, 0x08, 0xfa, 0x39, 0x04, 0xe7, 0x8e, 0xdc, 0xdc,
-	0x10, 0xe9, 0x19, 0x89, 0x8c, 0xcc, 0xa5, 0xda, 0x4a, 0xc3, 0x42, 0xab, 0xf6, 0xb9, 0xdf, 0x4a,
-	0x54, 0xb0, 0xd1, 0xc8, 0x66, 0x6e, 0x2b, 0x97, 0x28, 0x27, 0x24, 0xdb, 0xe8, 0xa2, 0x94, 0xf7,
-	0x02, 0x05, 0x8b, 0xac, 0x9b, 0x90, 0xd1, 0x3f, 0x89, 0x12, 0x59, 0x3c, 0xf5, 0x3d, 0xe9, 0x3d,
-	0xc2, 0xbb, 0xd4, 0x0b, 0x5d, 0xc8, 0x86, 0x1d, 0x3b, 0x3f, 0x92, 0xdb, 0x87, 0xef, 0x96, 0xfb,
-	0xbb, 0x96, 0xfb, 0xbf, 0x2d, 0xf7, 0x3f, 0x3b, 0xee, 0xed, 0x3a, 0xee, 0xfd, 0x74, 0xdc, 0x7b,
-	0xb9, 0x5e, 0x29, 0x2c, 0x45, 0x96, 0xe4, 0x50, 0xa5, 0xee, 0x2f, 0x87, 0xe3, 0xca, 0x76, 0xd0,
-	0xa4, 0x93, 0x42, 0xf0, 0xa3, 0x96, 0xeb, 0x2c, 0xb4, 0x5d, 0xdc, 0xfc, 0x05, 0x00, 0x00, 0xff,
-	0xff, 0x67, 0x32, 0xfd, 0xa2, 0xab, 0x01, 0x00, 0x00,
+	// 346 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xcf, 0x4e, 0x2a, 0x31,
+	0x14, 0xc6, 0x99, 0x81, 0xcb, 0x9f, 0x92, 0xdc, 0x45, 0x17, 0xf7, 0x36, 0xe4, 0xa6, 0x21, 0x77,
+	0xc5, 0x42, 0x67, 0x88, 0xbe, 0x00, 0x51, 0x36, 0x98, 0x18, 0x13, 0x74, 0xe5, 0xc6, 0x1c, 0x98,
+	0x03, 0x36, 0xd2, 0x96, 0x94, 0x03, 0x19, 0xdf, 0xc2, 0x67, 0xf0, 0x69, 0x5c, 0xb2, 0x74, 0x69,
+	0xe0, 0x45, 0xcc, 0x74, 0x46, 0x99, 0xc4, 0x85, 0x89, 0xab, 0xf6, 0xfb, 0xbe, 0x7e, 0xbf, 0xc5,
+	0xe9, 0x61, 0xff, 0x1c, 0x38, 0xa5, 0xed, 0xd4, 0x3a, 0x8c, 0xed, 0xf2, 0x8e, 0x1c, 0x98, 0xd5,
+	0x0c, 0x5d, 0xb4, 0x74, 0x96, 0x2c, 0x2f, 0xd2, 0xe8, 0xf0, 0xa8, 0x74, 0xed, 0xfc, 0x25, 0xfb,
+	0x80, 0x46, 0x83, 0x81, 0x39, 0xba, 0x58, 0x11, 0xea, 0xbc, 0xf6, 0xff, 0xb9, 0xca, 0x9a, 0x37,
+	0x05, 0x89, 0xff, 0x61, 0x75, 0xeb, 0xd4, 0x5c, 0x19, 0x11, 0x74, 0x83, 0x5e, 0x6b, 0x5c, 0x28,
+	0xfe, 0x9b, 0x85, 0x94, 0x8a, 0xd0, 0x7b, 0x21, 0xa5, 0x5c, 0xb0, 0x06, 0x6e, 0xd0, 0xd0, 0x28,
+	0x11, 0x55, 0x6f, 0x7e, 0xc8, 0x8c, 0xb0, 0x42, 0x93, 0xa0, 0x13, 0xb5, 0x9c, 0x90, 0x2b, 0xde,
+	0x61, 0x4d, 0x87, 0x53, 0x54, 0x1b, 0x74, 0xe2, 0x97, 0x4f, 0x3e, 0x75, 0xd6, 0x01, 0x6d, 0xd7,
+	0x86, 0x44, 0x3d, 0xef, 0xe4, 0x8a, 0x4b, 0xc6, 0x26, 0x6b, 0x93, 0x2c, 0x70, 0x08, 0x04, 0xa2,
+	0xe1, 0xb3, 0x92, 0x73, 0xc8, 0xaf, 0x61, 0x41, 0xa2, 0x59, 0xce, 0x33, 0x87, 0x0f, 0x59, 0x6d,
+	0xe6, 0xac, 0x16, 0xad, 0x6e, 0xd0, 0x6b, 0x9f, 0xf4, 0xa3, 0xaf, 0x03, 0x2a, 0x0f, 0x25, 0xba,
+	0x32, 0xe7, 0xf7, 0xa0, 0xcc, 0x88, 0x50, 0x8f, 0x4c, 0x82, 0xe9, 0xd8, 0xb7, 0xf9, 0x80, 0x85,
+	0x64, 0x05, 0xfb, 0x21, 0x23, 0x24, 0xcb, 0x07, 0xac, 0xa6, 0x91, 0x40, 0xb4, 0x3d, 0xe3, 0xe8,
+	0x3b, 0x46, 0x56, 0xbe, 0x44, 0x82, 0x04, 0x08, 0xc6, 0xbe, 0x79, 0x76, 0xf1, 0xb2, 0x93, 0xc1,
+	0x76, 0x27, 0x83, 0xb7, 0x9d, 0x0c, 0x9e, 0xf6, 0xb2, 0xb2, 0xdd, 0xcb, 0xca, 0xeb, 0x5e, 0x56,
+	0x6e, 0xfb, 0x73, 0x45, 0x0b, 0x98, 0x44, 0x53, 0xab, 0xe3, 0x1c, 0x58, 0x1c, 0xc7, 0x7e, 0x4d,
+	0xd2, 0xb8, 0xb4, 0x33, 0xf4, 0xb8, 0xc4, 0xd5, 0xa4, 0xee, 0xff, 0xfd, 0xf4, 0x3d, 0x00, 0x00,
+	0xff, 0xff, 0xe9, 0xb6, 0xb5, 0x88, 0x4e, 0x02, 0x00, 0x00,
 }
 
 func (m *Transfer) Marshal() (dAtA []byte, err error) {
@@ -192,52 +207,74 @@ func (m *Transfer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.TokenIndex) > 0 {
-		i -= len(m.TokenIndex)
-		copy(dAtA[i:], m.TokenIndex)
-		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.TokenIndex)))
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintOpTransfer(dAtA, i, uint64(size))
+		}
 		i--
-		dAtA[i] = 0x62
+		dAtA[i] = 0x5a
+	}
+	if m.To != nil {
+		{
+			size, err := m.To.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintOpTransfer(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.From != nil {
+		{
+			size, err := m.From.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintOpTransfer(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x4a
 	}
 	if len(m.BundleSalt) > 0 {
 		i -= len(m.BundleSalt)
 		copy(dAtA[i:], m.BundleSalt)
 		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.BundleSalt)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x42
 	}
 	if len(m.BundleData) > 0 {
 		i -= len(m.BundleData)
 		copy(dAtA[i:], m.BundleData)
 		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.BundleData)))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x3a
 	}
 	if len(m.Amount) > 0 {
 		i -= len(m.Amount)
 		copy(dAtA[i:], m.Amount)
 		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.Amount)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x32
 	}
 	if len(m.Receiver) > 0 {
 		i -= len(m.Receiver)
 		copy(dAtA[i:], m.Receiver)
 		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.Receiver)))
 		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.ToChain) > 0 {
-		i -= len(m.ToChain)
-		copy(dAtA[i:], m.ToChain)
-		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.ToChain)))
-		i--
 		dAtA[i] = 0x2a
 	}
-	if len(m.FromChain) > 0 {
-		i -= len(m.FromChain)
-		copy(dAtA[i:], m.FromChain)
-		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.FromChain)))
+	if len(m.Sender) > 0 {
+		i -= len(m.Sender)
+		copy(dAtA[i:], m.Sender)
+		i = encodeVarintOpTransfer(dAtA, i, uint64(len(m.Sender)))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -294,11 +331,7 @@ func (m *Transfer) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovOpTransfer(uint64(l))
 	}
-	l = len(m.FromChain)
-	if l > 0 {
-		n += 1 + l + sovOpTransfer(uint64(l))
-	}
-	l = len(m.ToChain)
+	l = len(m.Sender)
 	if l > 0 {
 		n += 1 + l + sovOpTransfer(uint64(l))
 	}
@@ -318,8 +351,16 @@ func (m *Transfer) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovOpTransfer(uint64(l))
 	}
-	l = len(m.TokenIndex)
-	if l > 0 {
+	if m.From != nil {
+		l = m.From.Size()
+		n += 1 + l + sovOpTransfer(uint64(l))
+	}
+	if m.To != nil {
+		l = m.To.Size()
+		n += 1 + l + sovOpTransfer(uint64(l))
+	}
+	if m.Meta != nil {
+		l = m.Meta.Size()
 		n += 1 + l + sovOpTransfer(uint64(l))
 	}
 	return n
@@ -458,7 +499,7 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FromChain", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Sender", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -486,41 +527,9 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FromChain = string(dAtA[iNdEx:postIndex])
+			m.Sender = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ToChain", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOpTransfer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthOpTransfer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthOpTransfer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ToChain = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Receiver", wireType)
 			}
@@ -552,7 +561,7 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			}
 			m.Receiver = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
@@ -584,7 +593,7 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			}
 			m.Amount = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BundleData", wireType)
 			}
@@ -616,7 +625,7 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			}
 			m.BundleData = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BundleSalt", wireType)
 			}
@@ -648,11 +657,11 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 			}
 			m.BundleSalt = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 12:
+		case 9:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TokenIndex", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowOpTransfer
@@ -662,23 +671,99 @@ func (m *Transfer) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthOpTransfer
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthOpTransfer
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TokenIndex = string(dAtA[iNdEx:postIndex])
+			if m.From == nil {
+				m.From = &types.OnChainItemIndex{}
+			}
+			if err := m.From.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field To", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowOpTransfer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthOpTransfer
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthOpTransfer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.To == nil {
+				m.To = &types.OnChainItemIndex{}
+			}
+			if err := m.To.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowOpTransfer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthOpTransfer
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthOpTransfer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &types.ItemMetadata{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	ProposalTypeAddSignerParty    = "add_signer_party"
-	ProposalTypeRemoveSignerParty = "remove_signer_party"
-	ProposalTypeReshareKeys       = "reshare_keys"
-	ProposalTypeChangeThreshold   = "change_threshold"
+	ProposalTypeAddSignerParty    = "AddSignerParty"
+	ProposalTypeRemoveSignerParty = "RemoveSignerParty"
+	ProposalTypeReshareKeys       = "ReshareKeys"
+	ProposalTypeChangeThreshold   = "ChangeThreshold"
 )
 
 func init() {

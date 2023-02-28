@@ -1,0 +1,36 @@
+syntax = "proto3";
+package rarimo.rarimocore.tokenmanager;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
+
+
+import "gogoproto/gogo.proto";
+import "tokenmanager/item.proto";
+
+
+message CollectionMetadata {
+  string name = 1;
+  string symbol = 2;
+  string metadataURI = 3;
+}
+
+message CollectionDataIndex {
+  // Chain name
+  string chain = 1;
+  // Collection contract address
+  string address = 2;
+}
+
+message CollectionData {
+  CollectionDataIndex index = 1;
+  string collection = 2;
+  Type tokenType = 3;
+  bool wrapped = 4;
+  uint32 decimals = 5;
+}
+
+message Collection {
+  string index = 1;
+  CollectionMetadata meta = 2;
+  repeated CollectionDataIndex data = 3;
+}

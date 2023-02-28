@@ -15,12 +15,11 @@ const (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	ParamKeyECDSA                  = []byte("KeyECDSA")
-	ParamThreshold                 = []byte("Threshold")
-	ParamParties                   = []byte("Parties")
-	ParamIsUpdateRequired          = []byte("IsUpdateRequired")
-	ParamLastSignature             = []byte("LastSignature")
-	ParamAvailableResignBlockDelta = []byte("AvailableResignBlockDelta")
+	ParamKeyECDSA         = []byte("KeyECDSA")
+	ParamThreshold        = []byte("Threshold")
+	ParamParties          = []byte("Parties")
+	ParamIsUpdateRequired = []byte("IsUpdateRequired")
+	ParamLastSignature    = []byte("LastSignature")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -48,7 +47,6 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
 		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
-		paramtypes.NewParamSetPair(ParamAvailableResignBlockDelta, &p.AvailableResignBlockDelta, validateAvailableResignBlockDelta),
 	}
 }
 

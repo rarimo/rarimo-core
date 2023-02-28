@@ -20,63 +20,74 @@ func GetTransfer(operation types.Operation) (*types.Transfer, error) {
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetTransferContent(item *tokentypes.Item, params *tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
+func GetTransferContent(collection tokentypes.Collection, collectionData tokentypes.CollectionData, item tokentypes.Item, params tokentypes.NetworkParams, transfer *types.Transfer) (*operation.TransferContent, error) {
 	builder := data.NewTransferDataBuilder()
 
-	switch item.TokenType {
+	switch collectionData.TokenType {
 	case tokentypes.Type_NEAR_FT:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetNetworkType(tokentypes.NetworkType_Near).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_NEAR_NFT:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetName(item.Name).
-			SetImageURI(item.ImageUri).
-			SetImageHash(item.ImageHash)
+			SetNetworkType(tokentypes.NetworkType_Near).
+			SetAddress(transfer.To.Address).
+			SetId(transfer.To.TokenID).
+			SetName(collection.Meta.Name).
+			SetImageURI(item.Meta.ImageUri).
+			SetImageHash(item.Meta.ImageHash)
 	case tokentypes.Type_NATIVE:
 		builder.SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC20:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount)
 	case tokentypes.Type_ERC721:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetURI(item.Uri)
+			SetAddress(transfer.To.Address).
+			SetId(transfer.To.TokenID).
+			SetURI(item.Meta.Uri)
 	case tokentypes.Type_ERC1155:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
+			SetAddress(transfer.To.Address).
+			SetId(transfer.To.TokenID).
 			SetAmount(transfer.Amount).
-			SetURI(item.Uri)
+			SetURI(item.Meta.Uri)
 	case tokentypes.Type_METAPLEX_FT:
 		builder.
-			SetAddress(item.TokenAddress).
+			SetAddress(transfer.To.Address).
 			SetAmount(transfer.Amount).
-			SetName(item.Name).
-			SetSymbol(item.Symbol).
-			SetURI(item.Uri).
-			SetDecimals(uint8(item.Decimals))
+			SetName(collection.Meta.Name).
+			SetSymbol(collection.Meta.Symbol).
+			SetURI(item.Meta.Uri).
+			SetDecimals(uint8(collectionData.Decimals))
 	case tokentypes.Type_METAPLEX_NFT:
 		builder.
-			SetAddress(item.TokenAddress).
-			SetId(item.TokenId).
-			SetName(item.Name).
-			SetSymbol(item.Symbol).
-			SetURI(item.Uri)
+			SetAddress(transfer.To.Address).
+			SetId(transfer.To.TokenID).
+			SetName(collection.Meta.Name).
+			SetSymbol(collection.Meta.Symbol).
+			SetURI(item.Meta.Uri)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "unsupported token type")
 	}
 
 	return &operation.TransferContent{
-		Origin:         origin.NewDefaultOriginBuilder().SetTxHash(transfer.Tx).SetOpId(transfer.EventId).SetCurrentNetwork(transfer.FromChain).Build().GetOrigin(),
-		TargetNetwork:  transfer.ToChain,
+		Origin: origin.NewDefaultOriginBuilder().
+			SetTxHash(transfer.Tx).
+			SetOpId(transfer.EventId).
+			SetCurrentNetwork(transfer.From.Chain).
+			Build().
+			GetOrigin(),
+		TargetNetwork:  transfer.To.Chain,
 		Receiver:       hexutil.MustDecode(transfer.Receiver),
 		Data:           builder.Build().GetContent(),
 		TargetContract: hexutil.MustDecode(params.Contract),
-		Bundle:         bundle.NewDefaultBundleBuilder().SetBundle(transfer.BundleData).SetSalt(transfer.BundleSalt).Build().GetBundle(),
+		Bundle: bundle.NewDefaultBundleBuilder().
+			SetBundle(transfer.BundleData).
+			SetSalt(transfer.BundleSalt).
+			Build().
+			GetBundle(),
 	}, nil
 }

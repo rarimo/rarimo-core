@@ -5,6 +5,7 @@ import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "tokenmanager/item.proto";
 import "rarimocore/params.proto";
+import "rarimocore/vote.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
@@ -16,16 +17,25 @@ service Msg {
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
   rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
-  rpc ResignOperation(MsgResignOperation) returns (MsgResignOperationResponse);
+  rpc Vote(MsgVote) returns(MsgVoteResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgCreateTransferOp {
   string creator = 1;
+  // Information to identify transfer
   string tx = 2;
   string eventId = 3;
-  string fromChain = 4;
-  rarimo.rarimocore.tokenmanager.type tokenType = 5;
+  string sender = 4;
+  // Information about deposit
+  string receiver = 5;
+  string amount = 6;
+  string bundleData = 7;// hex-encoded
+  string bundleSalt = 8;// hex-encoded
+  // Information about current and target chains
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
 }
 
 message MsgCreateTransferOpResponse {}
@@ -64,15 +74,12 @@ message MsgChangePartyAddress {
 
 message MsgChangePartyAddressResponse {}
 
-
-message MsgResignOperation {
+message MsgVote{
   string creator = 1;
-  // index of change op that was accepted on block X where operation to resign was accepted on X >= block >= X - Params.availableResignBlockDelta
-  string changeOpIndex = 2;
-  // index of operation to be resigned
-  string opIndex = 3;
+  string operation = 2;
+  VoteType vote = 3;
 }
 
-message MsgResignOperationResponse {}
+message MsgVoteResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
