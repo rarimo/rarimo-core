@@ -55,16 +55,19 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		return false
 	})
 
+	params := k.GetParams(ctx)
+	quorum, _ := sdk.NewDecFromStr(params.VoteQuorum)
+	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
+
 	totalVotingPower := yesResult.Add(noResult)
-	tallyParams := k.gov.GetTallyParams(ctx)
 
 	// If there is not enough quorum of votes, finish the flow
 	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
-	if percentVoting.LT(tallyParams.Quorum) {
+	if percentVoting.LT(quorum) {
 		return &types.MsgVoteResponse{}, nil
 	}
 
-	if yesResult.Quo(totalVotingPower).GT(tallyParams.Threshold) {
+	if yesResult.Quo(totalVotingPower).GT(threshold) {
 		if err := k.ApproveOperation(ctx, operation); err != nil {
 			return nil, err
 		}
