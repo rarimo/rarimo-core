@@ -33,7 +33,6 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	tmkeeper *tmkeeper.Keeper,
 	staking *stakingkeeper.Keeper,
-	gov *govkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -47,7 +46,6 @@ func NewKeeper(
 		memKey:     memKey,
 		tm:         tmkeeper,
 		staking:    staking,
-		gov:        gov,
 	}
 }
 
