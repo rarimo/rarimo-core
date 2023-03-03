@@ -36,6 +36,12 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		return &types.MsgVoteResponse{}, nil
 	}
 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+		sdk.NewAttribute(types.AttributeKeyVotingChoice, msg.Vote.String()),
+	))
+
 	yesResult := sdk.ZeroDec()
 	noResult := sdk.ZeroDec()
 
@@ -85,6 +91,12 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 func (k msgServer) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
 	op.Status = types.OpStatus_NOT_APPROVED
 	k.SetOperation(ctx, op)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationRejected,
+		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+	))
+
 	return nil
 }
 
