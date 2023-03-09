@@ -148,15 +148,27 @@ func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Tra
 				Seed: item.Meta.Seed,
 				Item: item.Index,
 			})
+			ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeSeedCreated,
+				sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, item.Index),
+				sdk.NewAttribute(tokentypes.AttributeKeySeed, item.Meta.Seed),
+			))
 		}
 
 		k.tm.SetItem(ctx, item)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeItemCreated,
+			sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, item.Index),
+		))
+
 		from = tokentypes.OnChainItem{
 			Index: transfer.From,
 			Item:  item.Index,
 		}
 
 		k.tm.SetOnChainItem(ctx, from)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeOnChainItemCreated,
+			sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, from.Item),
+			sdk.NewAttribute(tokentypes.AttributeKeyOnChainItemChain, from.Index.Chain),
+		))
 	}
 
 	to, ok := k.tm.GetOnChainItem(ctx, transfer.From)
@@ -175,6 +187,10 @@ func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Tra
 		}
 
 		k.tm.SetOnChainItem(ctx, to)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeOnChainItemCreated,
+			sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, to.Item),
+			sdk.NewAttribute(tokentypes.AttributeKeyOnChainItemChain, to.Index.Chain),
+		))
 	}
 
 	return nil
