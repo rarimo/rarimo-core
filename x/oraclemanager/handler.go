@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // NewHandler ...

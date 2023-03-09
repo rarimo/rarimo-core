@@ -3,8 +3,6 @@ package keeper
 import (
 	"testing"
 
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -15,6 +13,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
+	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 func OraclemanagerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -37,10 +37,10 @@ func OraclemanagerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		"OraclemanagerParams",
 	)
 	k := keeper.NewKeeper(
-	    cdc,
-	    storeKey,
-	    memStoreKey,
-	    paramsSubspace, 
+		cdc,
+		storeKey,
+		memStoreKey,
+		paramsSubspace,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

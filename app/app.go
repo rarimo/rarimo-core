@@ -100,16 +100,16 @@ import (
 
 	"gitlab.com/rarimo/rarimo-core/docs"
 
+	oraclemanagermodule "gitlab.com/rarimo/rarimo-core/x/oraclemanager"
+	oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
+	oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	rarimocoremodule "gitlab.com/rarimo/rarimo-core/x/rarimocore"
 	rarimocoremodulekeeper "gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
 	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokenmanagermodule "gitlab.com/rarimo/rarimo-core/x/tokenmanager"
 	tokenmanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
 	tokenmanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
-	oraclemanagermodule "gitlab.com/rarimo/rarimo-core/x/oraclemanager"
-		oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
-		oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-// this line is used by starport scaffolding # stargate/app/moduleImport
+	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
@@ -166,7 +166,7 @@ var (
 		rarimocoremodule.AppModuleBasic{},
 		tokenmanagermodule.AppModuleBasic{},
 		oraclemanagermodule.AppModuleBasic{},
-// this line is used by starport scaffolding # stargate/app/moduleBasic
+		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
@@ -241,9 +241,9 @@ type App struct {
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
 	TokenmanagerKeeper tokenmanagermodulekeeper.Keeper
-	
-		OraclemanagerKeeper oraclemanagermodulekeeper.Keeper
-// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+
+	OraclemanagerKeeper oraclemanagermodulekeeper.Keeper
+	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
 	mm *module.Manager
@@ -282,7 +282,7 @@ func New(
 		rarimocoremoduletypes.StoreKey,
 		tokenmanagermoduletypes.StoreKey,
 		oraclemanagermoduletypes.StoreKey,
-// this line is used by starport scaffolding # stargate/app/storeKey
+		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -427,17 +427,15 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	
-		app.OraclemanagerKeeper = *oraclemanagermodulekeeper.NewKeeper(
-			appCodec,
-			keys[oraclemanagermoduletypes.StoreKey],
-			keys[oraclemanagermoduletypes.MemStoreKey],
-			app.GetSubspace(oraclemanagermoduletypes.ModuleName),
-			
-			)
-		oraclemanagerModule := oraclemanagermodule.NewAppModule(appCodec, app.OraclemanagerKeeper, app.AccountKeeper, app.BankKeeper)
+	app.OraclemanagerKeeper = *oraclemanagermodulekeeper.NewKeeper(
+		appCodec,
+		keys[oraclemanagermoduletypes.StoreKey],
+		keys[oraclemanagermoduletypes.MemStoreKey],
+		app.GetSubspace(oraclemanagermoduletypes.ModuleName),
+	)
+	oraclemanagerModule := oraclemanagermodule.NewAppModule(appCodec, app.OraclemanagerKeeper, app.AccountKeeper, app.BankKeeper)
 
-		// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
@@ -481,7 +479,7 @@ func New(
 		tokenmanagerModule,
 		rarimocoreModule,
 		oraclemanagerModule,
-// this line is used by starport scaffolding # stargate/app/appModule
+		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -511,7 +509,7 @@ func New(
 		tokenmanagermoduletypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/beginBlockers
+		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -537,7 +535,7 @@ func New(
 		tokenmanagermoduletypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/endBlockers
+		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -568,7 +566,7 @@ func New(
 		tokenmanagermoduletypes.ModuleName,
 		rarimocoremoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
-// this line is used by starport scaffolding # stargate/app/initGenesis
+		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -595,7 +593,7 @@ func New(
 		tokenmanagerModule,
 		rarimocoreModule,
 		oraclemanagerModule,
-// this line is used by starport scaffolding # stargate/app/appModule
+		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
 
@@ -787,7 +785,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(rarimocoremoduletypes.ModuleName)
 	paramsKeeper.Subspace(tokenmanagermoduletypes.ModuleName)
 	paramsKeeper.Subspace(oraclemanagermoduletypes.ModuleName)
-// this line is used by starport scaffolding # stargate/app/paramSubspace
+	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
 }

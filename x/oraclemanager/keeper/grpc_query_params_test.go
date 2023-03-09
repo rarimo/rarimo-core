@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	testkeeper 	"gitlab.com/rarimo/rarimo-core/testutil/keeper"
+	testkeeper "gitlab.com/rarimo/rarimo-core/testutil/keeper"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
