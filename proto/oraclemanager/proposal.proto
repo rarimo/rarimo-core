@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarimo.rarimocore.oraclemanager;
+
+import "oraclemanager/oracle.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+
+message OracleUnfreezeProposal {
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
+}
+

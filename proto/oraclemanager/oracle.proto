@@ -1,0 +1,30 @@
+syntax = "proto3";
+package rarimo.rarimocore.oraclemanager;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+
+enum OracleStatus {
+  Inactive = 0;
+  Active = 1;
+  Jailed = 2;
+  Freezed = 3;
+  Slashed = 4;
+}
+
+message OracleIndex {
+  string chain = 1;
+  string account = 2;
+}
+
+message Oracle {
+  OracleIndex index = 1;
+  OracleStatus status = 2;
+  string stake = 3;
+  uint64 missedCount = 4;
+  uint64 violationsCount = 5;
+  uint64 freezeEndBlock = 6;
+  uint64 votesCount = 7;
+  uint64 createOperationsCount = 8;
+}

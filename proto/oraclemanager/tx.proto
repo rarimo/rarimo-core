@@ -1,0 +1,67 @@
+syntax = "proto3";
+package rarimo.rarimocore.oraclemanager;
+
+import "tokenmanager/item.proto";
+import "rarimocore/vote.proto";
+import "oraclemanager/oracle.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc Stake(MsgStake) returns (MsgStakeResponse);
+  rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
+  rpc CreateTransferOperation(MsgCreateTransfer) returns (MsgCreateTransferResponse);
+  rpc Vote(MsgVote) returns(MsgVoteResponse);
+  rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
+}
+
+message MsgStake {
+  OracleIndex index = 1;
+  string amount = 2;
+}
+
+message MsgStakeResponse {
+}
+
+message MsgUnstake {
+  string account = 1;
+  string chain = 2;
+}
+
+message MsgUnstakeResponse {
+}
+
+
+message MsgCreateTransfer {
+  string creator = 1;
+  // Information to identify transfer
+  string tx = 2;
+  string eventId = 3;
+  string sender = 4;
+  // Information about deposit
+  string receiver = 5;
+  string amount = 6;
+  string bundleData = 7;// hex-encoded
+  string bundleSalt = 8;// hex-encoded
+  // Information about current and target chains
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
+  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
+}
+
+message MsgCreateTransferResponse {}
+
+message MsgVote{
+  string creator = 1;
+  string operation = 2;
+  rarimo.rarimocore.rarimocore.VoteType vote = 3;
+}
+
+message MsgVoteResponse {}
+
+message MsgUnjail{
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
+}
+
+message MsgUnjailResponse {}
