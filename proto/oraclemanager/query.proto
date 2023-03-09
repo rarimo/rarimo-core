@@ -35,7 +35,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetTransferRequest {
-  rarimo.rarimocore.oraclemanager.MsgCreateTransfer msg = 1 [(gogoproto.nullable) = false];
+  rarimo.rarimocore.oraclemanager.MsgCreateTransferOp msg = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetTransferResponse {

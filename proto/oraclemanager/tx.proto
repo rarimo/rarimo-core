@@ -11,7 +11,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
-  rpc CreateTransferOperation(MsgCreateTransfer) returns (MsgCreateTransferResponse);
+  rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -33,7 +33,7 @@ message MsgUnstakeResponse {
 }
 
 
-message MsgCreateTransfer {
+message MsgCreateTransferOp {
   string creator = 1;
   // Information to identify transfer
   string tx = 2;
@@ -50,7 +50,7 @@ message MsgCreateTransfer {
   rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
 }
 
-message MsgCreateTransferResponse {}
+message MsgCreateTransferOpResponse {}
 
 message MsgVote{
   string creator = 1;
