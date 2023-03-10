@@ -17,7 +17,7 @@ service Msg {
 }
 
 message MsgStake {
-  OracleIndex index = 1;
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
   string amount = 2;
 }
 
@@ -25,8 +25,7 @@ message MsgStakeResponse {
 }
 
 message MsgUnstake {
-  string account = 1;
-  string chain = 2;
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
 }
 
 message MsgUnstakeResponse {
@@ -53,7 +52,7 @@ message MsgCreateTransferOp {
 message MsgCreateTransferOpResponse {}
 
 message MsgVote{
-  string creator = 1;
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
   string operation = 2;
   rarimo.rarimocore.rarimocore.VoteType vote = 3;
 }

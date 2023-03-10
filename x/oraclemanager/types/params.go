@@ -1,11 +1,23 @@
 package types
 
 import (
+	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gopkg.in/yaml.v2"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
+
+var (
+	ParamKeyMinOracleStake      = []byte("KeyMinOracleStake")
+	ParamKeyCheckOperationDelta = []byte("KeyCheckOperationDelta")
+	ParamKeyMaxViolationsCount  = []byte("KeyMaxViolationsCount")
+	ParamKeyMaxMissedCount      = []byte("KeyMaxMissedCount")
+	ParamKeySlashedFreezeBlocks = []byte("KeySlashedFreezeBlocks")
+	ParamKeyMinOraclesCount     = []byte("KeyMinOraclesCount")
+	ParamKeyStakeDenom          = []byte("KeyStakeDenom")
+)
 
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
@@ -24,7 +36,15 @@ func DefaultParams() Params {
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
-	return paramtypes.ParamSetPairs{}
+	return paramtypes.ParamSetPairs{
+		paramtypes.NewParamSetPair(ParamKeyMinOracleStake, &p.MinOracleStake, validateKeyMinOracleStake),
+		paramtypes.NewParamSetPair(ParamKeyCheckOperationDelta, &p.CheckOperationDelta, validateBlocks),
+		paramtypes.NewParamSetPair(ParamKeyMaxViolationsCount, &p.MaxViolationsCount, validateCount),
+		paramtypes.NewParamSetPair(ParamKeyMaxMissedCount, &p.MaxMissedCount, validateCount),
+		paramtypes.NewParamSetPair(ParamKeySlashedFreezeBlocks, &p.SlashedFreezeBlocks, validateBlocks),
+		paramtypes.NewParamSetPair(ParamKeyMinOraclesCount, &p.MinOraclesCount, validateCount),
+		paramtypes.NewParamSetPair(ParamKeyStakeDenom, &p.StakeDenom, validateDenom),
+	}
 }
 
 // Validate validates the set of params
@@ -32,8 +52,46 @@ func (p Params) Validate() error {
 	return nil
 }
 
-// String implements the Stringer interface.
-func (p Params) String() string {
-	out, _ := yaml.Marshal(p)
-	return string(out)
+func validateKeyMinOracleStake(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if _, ok := sdk.NewIntFromString(v); !ok {
+		return fmt.Errorf("invalid amount")
+	}
+
+	return nil
+}
+
+func validateBlocks(i interface{}) error {
+	_, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	return nil
+}
+
+func validateCount(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return fmt.Errorf("invalid count")
+	}
+
+	return nil
+}
+
+func validateDenom(i interface{}) error {
+	_, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	return nil
 }

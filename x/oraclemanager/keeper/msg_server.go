@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
@@ -15,3 +16,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 }
 
 var _ types.MsgServer = msgServer{}
+
+func (msgServer) disableFee(initial sdk.Gas, meter sdk.GasMeter) {
+	meter.RefundGas(meter.GasConsumed()-initial, "Gas disabled for that message")
+}

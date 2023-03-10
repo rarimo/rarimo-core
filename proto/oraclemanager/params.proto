@@ -13,4 +13,5 @@ message Params {
   uint64 maxMissedCount = 4;
   uint64 slashedFreezeBlocks = 5;
   uint64 minOraclesCount = 6;
+  string stakeDenom = 7;
 }

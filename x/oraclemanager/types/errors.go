@@ -1,12 +1,10 @@
 package types
 
-// DONTCOVER
-
 import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// x/oraclemanager module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrOracleNotFound = sdkerrors.Register(ModuleName, 1100, "invalid oracle: does not exist")
+	ErrInactiveOracle = sdkerrors.Register(ModuleName, 1101, "oracle is not active")
 )
