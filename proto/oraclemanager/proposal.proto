@@ -6,6 +6,8 @@ import "oraclemanager/oracle.proto";
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 
 message OracleUnfreezeProposal {
-  rarimo.rarimocore.oraclemanager.OracleIndex index = 1;
+  string title = 1;
+  string description = 2;
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 3;
 }
 

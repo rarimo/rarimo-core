@@ -102,12 +102,12 @@ import (
 
 	oraclemanagermodule "gitlab.com/rarimo/rarimo-core/x/oraclemanager"
 	oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
-	oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	rarimocoremodule "gitlab.com/rarimo/rarimo-core/x/rarimocore"
 	rarimocoremodulekeeper "gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
 	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokenmanagermodule "gitlab.com/rarimo/rarimo-core/x/tokenmanager"
 	tokenmanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
+	oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	tokenmanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
@@ -387,7 +387,8 @@ func New(
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper)).
 		AddRoute(tokenmanagermoduletypes.RouterKey, tokenmanagermodule.NewProposalHandler(app.TokenmanagerKeeper)).
-		AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper))
+		AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper)).
+		AddRoute(oraclemanagermoduletypes.RouterKey, oraclemanagermodule.NewProposalHandler(app.OraclemanagerKeeper))
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
@@ -432,6 +433,9 @@ func New(
 		keys[oraclemanagermoduletypes.StoreKey],
 		keys[oraclemanagermoduletypes.MemStoreKey],
 		app.GetSubspace(oraclemanagermoduletypes.ModuleName),
+		app.RarimocoreKeeper,
+		app.BankKeeper,
+		app.AccountKeeper,
 	)
 	oraclemanagerModule := oraclemanagermodule.NewAppModule(appCodec, app.OraclemanagerKeeper, app.AccountKeeper, app.BankKeeper)
 
