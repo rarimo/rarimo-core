@@ -1,0 +1,41 @@
+syntax = "proto3";
+package rarimo.rarimocore.bridge;
+
+import "tokenmanager/item.proto";
+import "cosmos/base/v1beta1/coin.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc DepositNative(MsgDepositNative) returns (MsgDepositNativeResponse);
+  rpc WithdrawNative(MsgWithdrawNative) returns (MsgWithdrawNativeResponse);
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgDepositNative {
+  string creator = 1;
+  // Random 32 bytes slice encoded to the hex string
+  string seed = 2;
+  // Information about deposit
+  string receiver = 3;
+  cosmos.base.v1beta1.Coin amount = 4;
+  string bundleData = 5;// hex-encoded
+  string bundleSalt = 6;// hex-encoded
+  // Information about target chain
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7;
+}
+
+message MsgDepositNativeResponse {}
+
+
+message MsgWithdrawNative {
+  string creator = 1;
+  // Evidence information
+  string origin = 2;
+}
+
+message MsgWithdrawNativeResponse {}
+
+// this line is used by starport scaffolding # proto/tx/message
