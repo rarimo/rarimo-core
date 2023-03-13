@@ -6,7 +6,7 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
-func (k *Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleUnfreezeProposal) error {
+func (k Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleUnfreezeProposal) error {
 	oracle, ok := k.GetOracle(ctx, proposal.Index)
 	if !ok {
 		return types.ErrOracleNotFound
@@ -18,6 +18,7 @@ func (k *Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleU
 
 	oracle.ViolationsCount = 0
 	oracle.Status = types.OracleStatus_Active
+	k.SetOracle(ctx, oracle)
 
 	return nil
 }

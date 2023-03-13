@@ -11,6 +11,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
+	// REQUIRES: validated from/to
 	transfer, err := k.rarimo.GetTransfer(ctx, msg)
 	if err != nil {
 		return nil, err

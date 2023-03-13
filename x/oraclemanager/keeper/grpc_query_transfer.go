@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -20,7 +20,7 @@ func (k Keeper) Transfer(c context.Context, req *types.QueryGetTransferRequest) 
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	transfer, err := k.GetTransfer(ctx, &req.Msg)
+	transfer, err := k.rarimo.GetTransfer(ctx, &req.Msg)
 	if err != nil {
 		return nil, err
 	}

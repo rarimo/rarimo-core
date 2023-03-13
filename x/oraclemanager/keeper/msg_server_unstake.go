@@ -36,5 +36,7 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 
 	oracle.Status = types.OracleStatus_Inactive
 	oracle.Stake = sdk.ZeroInt().String()
+	k.SetOracle(ctx, oracle)
+
 	return &types.MsgUnstakeResponse{}, nil
 }

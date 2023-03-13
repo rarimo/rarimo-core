@@ -59,3 +59,18 @@ func (k Keeper) GetAllOracle(ctx sdk.Context) (list []types.Oracle) {
 
 	return
 }
+
+func (k Keeper) GetOracleForChain(ctx sdk.Context, chain string) (list []types.Oracle) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OracleKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte(chain))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Oracle
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}

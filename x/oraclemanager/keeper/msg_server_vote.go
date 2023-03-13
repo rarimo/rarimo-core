@@ -12,6 +12,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
+	// REQUIRES: validated index
 	oracle, ok := k.GetOracle(ctx, msg.Index)
 	if !ok {
 		return nil, types.ErrOracleNotFound
