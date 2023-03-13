@@ -14,7 +14,7 @@ func (k Keeper) Transfer(c context.Context, req *types.QueryGetTransferRequest) 
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	if err := req.Msg.ValidateBasic(); err != nil {
+	if err := req.Msg.ValidateBody(); err != nil {
 		return nil, err
 	}
 

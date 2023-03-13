@@ -31632,6 +31632,10 @@ paths:
                     type: boolean
                   lastSignature:
                     type: string
+                  voteQuorum:
+                    type: string
+                  voteThreshold:
+                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -33370,6 +33374,82 @@ paths:
           in: query
           required: false
           type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/tokenmanager/item/{chain}/{address}/{tokenID}':
+    get:
+      summary: Queries a Item by index.
+      operationId: RarimoRarimocoreTokenmanagerItemByOnChainItem
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              item:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  collection:
+                    type: string
+                  meta:
+                    type: object
+                    properties:
+                      imageUri:
+                        type: string
+                      imageHash:
+                        type: string
+                        title: >-
+                          Hash of the token image. Encoded into hex string.
+                          (optional)
+                      seed:
+                        type: string
+                        title: Seed is used to generate PDA address for Solana
+                      uri:
+                        type: string
+                  onChain:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chain:
+                          type: string
+                        address:
+                          type: string
+                        tokenID:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: chain
+          in: path
+          required: true
+          type: string
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: tokenID
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/item/{chain}/{address}/{tokenID}':
@@ -55715,6 +55795,10 @@ definitions:
         type: boolean
       lastSignature:
         type: string
+      voteQuorum:
+        type: string
+      voteThreshold:
+        type: string
     description: Params defines the parameters for the module.
   rarimo.rarimocore.rarimocore.Party:
     type: object
@@ -56368,6 +56452,10 @@ definitions:
           isUpdateRequired:
             type: boolean
           lastSignature:
+            type: string
+          voteQuorum:
+            type: string
+          voteThreshold:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.rarimocore.Transfer:

@@ -36,6 +36,12 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		return &types.MsgVoteResponse{}, nil
 	}
 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+		sdk.NewAttribute(types.AttributeKeyVotingChoice, msg.Vote.String()),
+	))
+
 	yesResult := sdk.ZeroDec()
 	noResult := sdk.ZeroDec()
 
@@ -55,16 +61,19 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		return false
 	})
 
+	params := k.GetParams(ctx)
+	quorum, _ := sdk.NewDecFromStr(params.VoteQuorum)
+	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
+
 	totalVotingPower := yesResult.Add(noResult)
-	tallyParams := k.gov.GetTallyParams(ctx)
 
 	// If there is not enough quorum of votes, finish the flow
 	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
-	if percentVoting.LT(tallyParams.Quorum) {
+	if percentVoting.LT(quorum) {
 		return &types.MsgVoteResponse{}, nil
 	}
 
-	if yesResult.Quo(totalVotingPower).GT(tallyParams.Threshold) {
+	if yesResult.Quo(totalVotingPower).GT(threshold) {
 		if err := k.ApproveOperation(ctx, operation); err != nil {
 			return nil, err
 		}
@@ -82,6 +91,12 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 func (k msgServer) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
 	op.Status = types.OpStatus_NOT_APPROVED
 	k.SetOperation(ctx, op)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationRejected,
+		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+	))
+
 	return nil
 }
 

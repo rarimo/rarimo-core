@@ -65,6 +65,10 @@ func (msg *MsgCreateTransferOp) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
+	return msg.ValidateBody()
+}
+
+func (msg *MsgCreateTransferOp) ValidateBody() error {
 	if _, err := hexutil.Decode(msg.Receiver); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver address (%s)", err)
 	}
