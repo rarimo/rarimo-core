@@ -10,7 +10,7 @@ import (
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
-func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawNative) (*types.MsgDepositNativeResponse, error) {
+func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawNative) (*types.MsgWithdrawNativeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	creatorAddr, err := sdk.AccAddressFromBech32(msg.Creator)
@@ -60,5 +60,5 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 
 	k.SetHash(ctx, types.Hash{Index: msg.Origin})
 
-	return &types.MsgDepositNativeResponse{}, nil
+	return &types.MsgWithdrawNativeResponse{}, nil
 }

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -9,12 +10,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) HashAll(ctx sdk.Context, req *types.QueryAllHashRequest) (*types.QueryAllHashResponse, error) {
+func (k Keeper) HashAll(goCtx context.Context, req *types.QueryAllHashRequest) (*types.QueryAllHashResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	var hashes []types.Hash
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(k.storeKey)
 	hashStore := prefix.NewStore(store, types.KeyPrefix(types.HashKeyPrefix))
@@ -36,10 +39,12 @@ func (k Keeper) HashAll(ctx sdk.Context, req *types.QueryAllHashRequest) (*types
 	return &types.QueryAllHashResponse{Hash: hashes, Pagination: pageRes}, nil
 }
 
-func (k Keeper) Hash(ctx sdk.Context, req *types.QueryGetHashRequest) (*types.QueryGetHashResponse, error) {
+func (k Keeper) Hash(goCtx context.Context, req *types.QueryGetHashRequest) (*types.QueryGetHashResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	val, found := k.GetHash(
 		ctx,
