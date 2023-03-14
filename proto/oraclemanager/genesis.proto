@@ -3,6 +3,7 @@ package rarimo.rarimocore.oraclemanager;
 
 import "gogoproto/gogo.proto";
 import "oraclemanager/params.proto";
+import "oraclemanager/oracle.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
@@ -10,5 +11,6 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 // GenesisState defines the oraclemanager module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Oracle oracles = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }
