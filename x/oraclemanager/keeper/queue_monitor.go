@@ -39,3 +39,8 @@ func (k Keeper) MonitorQueueIterator(ctx sdk.Context, endBlock uint64) sdk.Itera
 	store := ctx.KVStore(k.storeKey)
 	return sdk.KVStorePrefixIterator(store, types.MonitorOperationQueueByBlockKey(endBlock))
 }
+
+func (k Keeper) AddToMonitor(ctx sdk.Context, operation rarimotypes.Operation) {
+	params := k.GetParams(ctx)
+	k.AddToMonitorQueue(ctx, uint64(ctx.BlockHeight())+params.CheckOperationDelta, operation.Index)
+}

@@ -57,6 +57,11 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) error {
 		return nil
 	}
 
+	if operation.Status == types.OpStatus_INITIALIZED {
+		// Firstly moving from initialized to approved/unapproved status
+		k.oracle.AddToMonitor(ctx, operation)
+	}
+
 	if yesResult.Quo(totalVotingPower).GT(threshold) {
 		if err := k.ApproveOperation(ctx, operation); err != nil {
 			return err

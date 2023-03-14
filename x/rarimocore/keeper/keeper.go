@@ -6,6 +6,7 @@ import (
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/tendermint/tendermint/libs/log"
+	oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
 	tmkeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -23,6 +24,7 @@ type (
 		tm         *tmkeeper.Keeper
 		staking    *stakingkeeper.Keeper
 		gov        *govkeeper.Keeper
+		oracle     *oraclemanagermodulekeeper.Keeper
 	}
 )
 
@@ -33,6 +35,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	tmkeeper *tmkeeper.Keeper,
 	staking *stakingkeeper.Keeper,
+	oracle *oraclemanagermodulekeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -46,6 +49,7 @@ func NewKeeper(
 		memKey:     memKey,
 		tm:         tmkeeper,
 		staking:    staking,
+		oracle:     oracle,
 	}
 }
 

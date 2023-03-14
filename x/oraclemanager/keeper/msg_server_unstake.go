@@ -38,5 +38,10 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	oracle.Stake = sdk.ZeroInt().String()
 	k.SetOracle(ctx, oracle)
 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleDeactivated,
+		sdk.NewAttribute(types.AttributeKeyChain, msg.Index.Chain),
+		sdk.NewAttribute(types.AttributeKeyAccount, msg.Index.Account),
+	))
+
 	return &types.MsgUnstakeResponse{}, nil
 }

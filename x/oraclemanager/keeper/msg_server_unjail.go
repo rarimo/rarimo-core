@@ -24,5 +24,11 @@ func (k msgServer) Unjail(goCtx context.Context, msg *types.MsgUnjail) (*types.M
 	oracle.Status = types.OracleStatus_Active
 	oracle.MissedCount = 0
 	k.SetOracle(ctx, oracle)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleActivated,
+		sdk.NewAttribute(types.AttributeKeyChain, msg.Index.Chain),
+		sdk.NewAttribute(types.AttributeKeyAccount, msg.Index.Account),
+	))
+
 	return &types.MsgUnjailResponse{}, nil
 }

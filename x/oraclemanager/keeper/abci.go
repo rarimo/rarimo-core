@@ -73,6 +73,12 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 
 		oracle.Status = types.OracleStatus_Slashed
 		k.SetOracle(ctx, oracle)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleSlashed,
+			sdk.NewAttribute(types.AttributeKeyChain, oracle.Index.Chain),
+			sdk.NewAttribute(types.AttributeKeyAccount, oracle.Index.Account),
+		))
+
 		return false
 	})
 }
@@ -87,6 +93,11 @@ func (k Keeper) NoteViolation(ctx sdk.Context, index *types.OracleIndex) {
 			oracle.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.SlashedFreezeBlocks
 
 			k.AddToFreezedQueue(ctx, uint64(ctx.BlockHeight()), index)
+
+			ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleFreezed,
+				sdk.NewAttribute(types.AttributeKeyChain, index.Chain),
+				sdk.NewAttribute(types.AttributeKeyAccount, index.Account),
+			))
 		}
 		k.SetOracle(ctx, oracle)
 	}
@@ -98,6 +109,11 @@ func (k Keeper) NoteMissed(ctx sdk.Context, index *types.OracleIndex) {
 		oracle.MissedCount = oracle.MissedCount + 1
 		if oracle.MissedCount == params.MaxMissedCount {
 			oracle.Status = types.OracleStatus_Jailed
+
+			ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleJailed,
+				sdk.NewAttribute(types.AttributeKeyChain, index.Chain),
+				sdk.NewAttribute(types.AttributeKeyAccount, index.Account),
+			))
 		}
 
 		k.SetOracle(ctx, oracle)

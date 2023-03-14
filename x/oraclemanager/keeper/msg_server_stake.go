@@ -43,5 +43,10 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		Stake:  msg.Amount,
 	})
 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleActivated,
+		sdk.NewAttribute(types.AttributeKeyChain, msg.Index.Chain),
+		sdk.NewAttribute(types.AttributeKeyAccount, msg.Index.Account),
+	))
+
 	return &types.MsgStakeResponse{}, nil
 }

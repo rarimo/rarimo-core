@@ -19,7 +19,7 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
-		rarimo     rarimokeeper.Keeper
+		rarimo     *rarimokeeper.Keeper
 		bank       types.BankKeeper
 		ak         types.AccountKeeper
 	}
@@ -30,7 +30,7 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-	rarimo rarimokeeper.Keeper,
+	rarimo *rarimokeeper.Keeper,
 	bank bankkeeper.Keeper,
 	ak types.AccountKeeper,
 ) *Keeper {

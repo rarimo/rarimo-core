@@ -375,6 +375,7 @@ func New(
 		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
+		&app.OraclemanagerKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -433,7 +434,7 @@ func New(
 		keys[oraclemanagermoduletypes.StoreKey],
 		keys[oraclemanagermoduletypes.MemStoreKey],
 		app.GetSubspace(oraclemanagermoduletypes.ModuleName),
-		app.RarimocoreKeeper,
+		&app.RarimocoreKeeper,
 		app.BankKeeper,
 		app.AccountKeeper,
 	)
