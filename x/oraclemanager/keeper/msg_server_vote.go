@@ -30,8 +30,14 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		Vote: msg.Vote,
 	}
 
-	if err := k.rarimo.CreateVote(ctx, vote); err != nil {
+	firstUpdate, err := k.rarimo.CreateVote(ctx, vote)
+	if err != nil {
 		return nil, err
+	}
+
+	if firstUpdate {
+		params := k.GetParams(ctx)
+		k.AddToMonitorQueue(ctx, uint64(ctx.BlockHeight())+params.CheckOperationDelta, msg.Operation)
 	}
 
 	oracle.VotesCount = oracle.VotesCount + 1

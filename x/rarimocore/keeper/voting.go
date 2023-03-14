@@ -8,16 +8,16 @@ import (
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
-func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) error {
+func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 	operation, ok := k.GetOperation(ctx, vote.Index.Operation)
 	if !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "operation not found")
+		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "operation not found")
 	}
 
 	k.SetVote(ctx, vote)
 
 	if operation.Status != types.OpStatus_INITIALIZED && operation.Status != types.OpStatus_NOT_APPROVED {
-		return nil
+		return false, nil
 	}
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
@@ -54,27 +54,29 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) error {
 	// If there is not enough quorum of votes, finish the flow
 	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
 	if percentVoting.LT(quorum) {
-		return nil
+		return false, nil
 	}
+
+	var firstUpdate = false
 
 	if operation.Status == types.OpStatus_INITIALIZED {
 		// Firstly moving from initialized to approved/unapproved status
-		k.oracle.AddToMonitor(ctx, operation)
+		firstUpdate = true
 	}
 
 	if yesResult.Quo(totalVotingPower).GT(threshold) {
 		if err := k.ApproveOperation(ctx, operation); err != nil {
-			return err
+			return false, err
 		}
 
-		return nil
+		return firstUpdate, nil
 	}
 
 	if err := k.UnapproveOperation(ctx, operation); err != nil {
-		return err
+		return false, err
 	}
 
-	return nil
+	return firstUpdate, nil
 }
 
 func (k Keeper) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
