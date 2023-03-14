@@ -24,7 +24,7 @@ func NewMsgVote(oracle, chain, operation string, vote types.VoteType) *MsgVote {
 }
 
 func (msg *MsgVote) Route() string {
-	return types.RouterKey
+	return RouterKey
 }
 
 func (msg *MsgVote) Type() string {
@@ -40,7 +40,7 @@ func (msg *MsgVote) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgVote) GetSignBytes() []byte {
-	bz := types.ModuleCdc.MustMarshalJSON(msg)
+	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 

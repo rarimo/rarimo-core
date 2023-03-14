@@ -3,7 +3,6 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 const (
@@ -22,7 +21,7 @@ func NewMsgUnjail(oracle, chain string) *MsgUnjail {
 }
 
 func (msg *MsgUnjail) Route() string {
-	return types.RouterKey
+	return RouterKey
 }
 
 func (msg *MsgUnjail) Type() string {
@@ -38,7 +37,7 @@ func (msg *MsgUnjail) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgUnjail) GetSignBytes() []byte {
-	bz := types.ModuleCdc.MustMarshalJSON(msg)
+	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 

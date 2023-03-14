@@ -4,7 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
@@ -41,7 +40,7 @@ func NewMsgCreateTransferOp(
 }
 
 func (msg *MsgCreateTransferOp) Route() string {
-	return types.RouterKey
+	return RouterKey
 }
 
 func (msg *MsgCreateTransferOp) Type() string {
@@ -57,7 +56,7 @@ func (msg *MsgCreateTransferOp) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgCreateTransferOp) GetSignBytes() []byte {
-	bz := types.ModuleCdc.MustMarshalJSON(msg)
+	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
