@@ -13,10 +13,7 @@ import (
 func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawNative) (*types.MsgWithdrawNativeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	creatorAddr, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
+	creatorAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	op, found := k.rarimocoreKeeper.GetOperation(ctx, msg.Origin)
 	if !found {
@@ -38,6 +35,10 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 	transfer, err := pkg.GetTransfer(op)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to get transfer (%s)", msg.Origin)
+	}
+
+	if ctx.ChainID() != transfer.To.Chain {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target chain id does not match to the current chain (%s)", msg.Origin)
 	}
 
 	amount, ok := sdk.NewIntFromString(transfer.Amount)

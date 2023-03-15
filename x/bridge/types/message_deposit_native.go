@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
@@ -54,9 +55,24 @@ func (msg *MsgDepositNative) GetSignBytes() []byte {
 }
 
 func (msg *MsgDepositNative) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.Receiver); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid receiver address (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.BundleData); len(msg.BundleData) != 0 && err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle data (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.BundleSalt); len(msg.BundleSalt) != 0 && err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle salt (%s)", err)
+	}
+
+	if msg.To == nil || msg.To.Chain == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid to")
 	}
 
 	return nil

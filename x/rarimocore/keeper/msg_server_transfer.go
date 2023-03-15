@@ -20,10 +20,6 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 
 	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
-	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
-		return nil, err
-	}
-
 	// Index is HASH(tx, event, chain)
 	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain)))
 

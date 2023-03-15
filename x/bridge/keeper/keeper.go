@@ -18,9 +18,8 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		rarimocoreKeeper   types.RarimocoreKeeper
-		tokenmanagerKeeper types.TokenmanagerKeeper
-		bankKeeper         types.BankKeeper
+		rarimocoreKeeper types.RarimocoreKeeper
+		bankKeeper       types.BankKeeper
 	}
 )
 
@@ -31,7 +30,6 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 
 	bankKeeper types.BankKeeper,
-	tokenmanagerKeeper types.TokenmanagerKeeper,
 	rarimocoreKeeper types.RarimocoreKeeper,
 
 ) *Keeper {
@@ -42,13 +40,12 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:                cdc,
-		storeKey:           storeKey,
-		memKey:             memKey,
-		paramstore:         ps,
-		bankKeeper:         bankKeeper,
-		tokenmanagerKeeper: tokenmanagerKeeper,
-		rarimocoreKeeper:   rarimocoreKeeper,
+		cdc:              cdc,
+		storeKey:         storeKey,
+		memKey:           memKey,
+		paramstore:       ps,
+		bankKeeper:       bankKeeper,
+		rarimocoreKeeper: rarimocoreKeeper,
 	}
 }
 
