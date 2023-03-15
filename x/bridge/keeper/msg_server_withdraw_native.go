@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -28,7 +28,7 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 	}
 
 	if op.Status != rarimocoretypes.OpStatus_SIGNED {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation is not approved (%s)", msg.Origin)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation is not signed (%s)", msg.Origin)
 	}
 
 	if _, found := k.GetHash(ctx, msg.Origin); found {
@@ -44,15 +44,22 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 	if !ok {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "failed to parse amount (%s)", transfer.Amount)
 	}
-	// TODO: test this
-	denom, err := sdktypes.GetBaseDenom()
+
+	params := k.GetParams(ctx)
+
+	receiver, err := hexutil.Decode(transfer.Receiver)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to get base denom")
+		return nil, sdkerrors.Wrapf(err, "failed to decode receiver (%s)", transfer.Receiver)
 	}
 
-	err = k.bankKeeper.MintTokens(ctx, creatorAddr, sdk.Coins{{
+	receiverAddress, err := sdk.AccAddressFromBech32(string(receiver))
+	if err != nil {
+		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", string(receiver))
+	}
+
+	err = k.bankKeeper.MintTokens(ctx, receiverAddress, sdk.Coins{{
 		Amount: amount,
-		Denom:  denom,
+		Denom:  params.GetWithdrawDenom(),
 	}})
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to mint tokens for address (%s)", creatorAddr.String())

@@ -11,6 +11,7 @@ import (
 	operationorigin "gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"strings"
 )
 
 func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNative) (*types.MsgDepositNativeResponse, error) {
@@ -33,6 +34,21 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Build().
 		GetOrigin()
 
+	params := k.tokenmanagerKeeper.GetParams(ctx)
+
+	var network *tokenmanagertypes.NetworkParams
+
+	for _, n := range params.Networks {
+		if strings.ToLower(n.Name) == strings.ToLower(ctx.ChainID()) {
+			network = n
+			break
+		}
+	}
+
+	if network == nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "native network %s not found in tokenmanager params", ctx.ChainID())
+	}
+
 	transfer := &rarimocoretypes.Transfer{
 		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Seed,
@@ -43,7 +59,7 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		BundleData: msg.BundleData,
 		BundleSalt: msg.BundleSalt,
 		From: &tokenmanagertypes.OnChainItemIndex{
-			Chain: ctx.ChainID(),
+			Chain: network.Name,
 		},
 		To: msg.To,
 	}

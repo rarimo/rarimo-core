@@ -4,7 +4,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
+
+type TokenmanagerKeeper interface {
+	GetParams(ctx sdk.Context) (params tokenmanagertypes.Params)
+}
 
 type RarimocoreKeeper interface {
 	SetOperation(ctx sdk.Context, op rarimocoretypes.Operation)

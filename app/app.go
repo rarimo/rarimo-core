@@ -434,8 +434,9 @@ func New(
 		keys[bridgemoduletypes.MemStoreKey],
 		app.GetSubspace(bridgemoduletypes.ModuleName),
 
-		app.RarimocoreKeeper,
 		app.BankKeeper,
+		app.TokenmanagerKeeper,
+		app.RarimocoreKeeper,
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 

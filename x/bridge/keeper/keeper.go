@@ -9,29 +9,31 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
-	
 )
 
 type (
 	Keeper struct {
-		
-		cdc      	codec.BinaryCodec
-		storeKey 	sdk.StoreKey
-		memKey   	sdk.StoreKey
-		paramstore	paramtypes.Subspace
-		
-        rarimocoreKeeper types.RarimocoreKeeper
-        bankKeeper types.BankKeeper
+		cdc        codec.BinaryCodec
+		storeKey   sdk.StoreKey
+		memKey     sdk.StoreKey
+		paramstore paramtypes.Subspace
+
+		rarimocoreKeeper   types.RarimocoreKeeper
+		tokenmanagerKeeper types.TokenmanagerKeeper
+		bankKeeper         types.BankKeeper
 	}
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey sdk.StoreKey,
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-    
-    rarimocoreKeeper types.RarimocoreKeeper,bankKeeper types.BankKeeper,
+
+	bankKeeper types.BankKeeper,
+	tokenmanagerKeeper types.TokenmanagerKeeper,
+	rarimocoreKeeper types.RarimocoreKeeper,
+
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -39,12 +41,14 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		
-		cdc:      	cdc,
-		storeKey: 	storeKey,
-		memKey:   	memKey,
-		paramstore:	ps,
-		rarimocoreKeeper: rarimocoreKeeper,bankKeeper: bankKeeper,
+
+		cdc:                cdc,
+		storeKey:           storeKey,
+		memKey:             memKey,
+		paramstore:         ps,
+		bankKeeper:         bankKeeper,
+		tokenmanagerKeeper: tokenmanagerKeeper,
+		rarimocoreKeeper:   rarimocoreKeeper,
 	}
 }
 
