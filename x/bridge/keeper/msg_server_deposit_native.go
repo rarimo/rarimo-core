@@ -27,13 +27,6 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		return nil, sdkerrors.Wrapf(err, "failed to burn tokens for address (%s)", creatorAddr.String())
 	}
 
-	origin := operationorigin.NewDefaultOriginBuilder().
-		SetTxHash(msg.Seed).
-		SetOpId("").
-		SetCurrentNetwork(ctx.ChainID()).
-		Build().
-		GetOrigin()
-
 	params := k.tokenmanagerKeeper.GetParams(ctx)
 
 	var network *tokenmanagertypes.NetworkParams
@@ -44,10 +37,16 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 			break
 		}
 	}
-
 	if network == nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrLogic, "native network %s not found in tokenmanager params", ctx.ChainID())
 	}
+
+	origin := operationorigin.NewDefaultOriginBuilder().
+		SetTxHash(msg.Seed).
+		SetOpId("").
+		SetCurrentNetwork(network.Name).
+		Build().
+		GetOrigin()
 
 	transfer := &rarimocoretypes.Transfer{
 		Origin:     hexutil.Encode(origin[:]),
