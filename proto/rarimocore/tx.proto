@@ -3,42 +3,21 @@ package rarimo.rarimocore.rarimocore;
 
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
-import "tokenmanager/item.proto";
 import "rarimocore/params.proto";
-import "rarimocore/vote.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
   rpc CreateChangePartiesOperation(MsgCreateChangePartiesOp) returns (MsgCreateChangePartiesOpResponse);
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
   rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
-  rpc Vote(MsgVote) returns(MsgVoteResponse);
+
   // this line is used by starport scaffolding # proto/tx/rpc
 }
-
-message MsgCreateTransferOp {
-  string creator = 1;
-  // Information to identify transfer
-  string tx = 2;
-  string eventId = 3;
-  string sender = 4;
-  // Information about deposit
-  string receiver = 5;
-  string amount = 6;
-  string bundleData = 7;// hex-encoded
-  string bundleSalt = 8;// hex-encoded
-  // Information about current and target chains
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
-  rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
-}
-
-message MsgCreateTransferOpResponse {}
 
 message MsgCreateConfirmation {
   string creator = 1;
@@ -73,13 +52,5 @@ message MsgChangePartyAddress {
 }
 
 message MsgChangePartyAddressResponse {}
-
-message MsgVote{
-  string creator = 1;
-  string operation = 2;
-  VoteType vote = 3;
-}
-
-message MsgVoteResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

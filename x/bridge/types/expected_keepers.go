@@ -1,14 +1,13 @@
 package types
 
 import (
-	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 type RarimocoreKeeper interface {
-	CreateTransferOperation(goCtx context.Context, msg *rarimocoretypes.MsgCreateTransferOp) (*rarimocoretypes.MsgCreateTransferOpResponse, error)
+	CreateTransferOperation(ctx sdk.Context, creator string, transfer *rarimocoretypes.Transfer, approved bool) error
 	GetOperation(ctx sdk.Context, index string) (val rarimocoretypes.Operation, found bool)
 	// Methods imported from rarimocore should be defined here
 }

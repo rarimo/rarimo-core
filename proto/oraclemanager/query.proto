@@ -1,0 +1,84 @@
+syntax = "proto3";
+package rarimo.rarimocore.oraclemanager;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "oraclemanager/params.proto";
+import "oraclemanager/tx.proto";
+import "oraclemanager/oracle.proto";
+import "rarimocore/op_transfer.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/params";
+  }
+
+  rpc Transfer(QueryGetTransferRequest) returns (QueryGetTransferResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/transfer";
+  }
+
+  rpc OracleAll(QueryGetAllOracleRequest) returns (QueryGetAllOracleResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/oracle";
+  }
+
+  rpc Oracle(QueryGetOracleRequest) returns (QueryGetOracleResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/oracle/{chain}/{address}";
+  }
+
+  rpc OracleForChain(QueryGetOracleForChainRequest) returns (QueryGetOracleForChainResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/oracle/{chain}";
+  }
+
+  // this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTransferRequest {
+  rarimo.rarimocore.oraclemanager.MsgCreateTransferOp msg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTransferResponse {
+  rarimo.rarimocore.rarimocore.Transfer transfer = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAllOracleRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryGetAllOracleResponse {
+  repeated Oracle oracle = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetOracleRequest {
+  string chain = 1;
+  string address = 2;
+}
+
+message QueryGetOracleResponse {
+  Oracle oracle = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetOracleForChainRequest {
+  string chain = 1;
+}
+
+message QueryGetOracleForChainResponse {
+  repeated Oracle oracle = 1 [(gogoproto.nullable) = false];
+}
+
+// this line is used by starport scaffolding # 3

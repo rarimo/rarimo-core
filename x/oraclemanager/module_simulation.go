@@ -1,4 +1,4 @@
-package rarimocore
+package oraclemanager
 
 import (
 	"math/rand"
@@ -10,14 +10,14 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"gitlab.com/rarimo/rarimo-core/testutil/sample"
-	rarimocoresimulation "gitlab.com/rarimo/rarimo-core/x/rarimocore/simulation"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	oraclemanagersimulation "gitlab.com/rarimo/rarimo-core/x/oraclemanager/simulation"
+	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = rarimocoresimulation.FindAccount
+	_ = oraclemanagersimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
@@ -33,11 +33,11 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
-	rarimocoreGenesis := types.GenesisState{
+	oraclemanagerGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&rarimocoreGenesis)
+	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&oraclemanagerGenesis)
 }
 
 // ProposalContents doesn't return any content functions for governance proposals
