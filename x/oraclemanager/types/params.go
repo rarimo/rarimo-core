@@ -17,6 +17,8 @@ var (
 	ParamKeySlashedFreezeBlocks = []byte("KeySlashedFreezeBlocks")
 	ParamKeyMinOraclesCount     = []byte("KeyMinOraclesCount")
 	ParamKeyStakeDenom          = []byte("KeyStakeDenom")
+	ParamVoteQuorum             = []byte("VoteQuorum")
+	ParamVoteThreshold          = []byte("VoteThreshold")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -44,6 +46,8 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamKeySlashedFreezeBlocks, &p.SlashedFreezeBlocks, validateBlocks),
 		paramtypes.NewParamSetPair(ParamKeyMinOraclesCount, &p.MinOraclesCount, validateCount),
 		paramtypes.NewParamSetPair(ParamKeyStakeDenom, &p.StakeDenom, validateDenom),
+		paramtypes.NewParamSetPair(ParamVoteQuorum, &p.VoteQuorum, validateVoteQuorum),
+		paramtypes.NewParamSetPair(ParamVoteThreshold, &p.VoteThreshold, validateVoteThreshold),
 	}
 }
 
@@ -94,4 +98,22 @@ func validateDenom(i interface{}) error {
 	}
 
 	return nil
+}
+
+func validateVoteQuorum(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	_, err := sdk.NewDecFromStr(v)
+	return err
+}
+
+func validateVoteThreshold(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+	_, err := sdk.NewDecFromStr(v)
+	return err
 }
