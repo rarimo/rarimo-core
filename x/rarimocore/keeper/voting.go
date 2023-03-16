@@ -26,57 +26,7 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		sdk.NewAttribute(types.AttributeKeyVotingChoice, vote.Vote.String()),
 	))
 
-	yesResult := sdk.ZeroDec()
-	noResult := sdk.ZeroDec()
-
-	// Setting votes in validators map
-	k.IterateVotes(ctx, vote.Index.Operation, func(vote types.Vote) (stop bool) {
-		voter := sdk.MustAccAddressFromBech32(vote.Index.Validator)
-
-		if validator := k.staking.Validator(ctx, sdk.ValAddress(voter)); validator != nil {
-			switch vote.Vote {
-			case types.VoteType_YES:
-				yesResult = yesResult.Add(validator.GetBondedTokens().ToDec())
-			case types.VoteType_NO:
-				noResult = noResult.Add(validator.GetBondedTokens().ToDec())
-			}
-		}
-
-		return false
-	})
-
-	params := k.GetParams(ctx)
-	quorum, _ := sdk.NewDecFromStr(params.VoteQuorum)
-	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
-
-	totalVotingPower := yesResult.Add(noResult)
-
-	// If there is not enough quorum of votes, finish the flow
-	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
-	if percentVoting.LT(quorum) {
-		return false, nil
-	}
-
-	var firstUpdate = false
-
-	if operation.Status == types.OpStatus_INITIALIZED {
-		// Firstly moving from initialized to approved/unapproved status
-		firstUpdate = true
-	}
-
-	if yesResult.Quo(totalVotingPower).GT(threshold) {
-		if err := k.ApproveOperation(ctx, operation); err != nil {
-			return false, err
-		}
-
-		return firstUpdate, nil
-	}
-
-	if err := k.UnapproveOperation(ctx, operation); err != nil {
-		return false, err
-	}
-
-	return firstUpdate, nil
+	return true, nil
 }
 
 func (k Keeper) UnapproveOperation(ctx sdk.Context, op types.Operation) error {

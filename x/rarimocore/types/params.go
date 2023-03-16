@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
@@ -21,8 +20,6 @@ var (
 	ParamParties          = []byte("Parties")
 	ParamIsUpdateRequired = []byte("IsUpdateRequired")
 	ParamLastSignature    = []byte("LastSignature")
-	ParamVoteQuorum       = []byte("VoteQuorum")
-	ParamVoteThreshold    = []byte("VoteThreshold")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -50,8 +47,6 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
 		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
-		paramtypes.NewParamSetPair(ParamVoteQuorum, &p.VoteQuorum, validateVoteQuorum),
-		paramtypes.NewParamSetPair(ParamVoteThreshold, &p.VoteThreshold, validateVoteThreshold),
 	}
 }
 
@@ -123,23 +118,5 @@ func validateLastSignature(i interface{}) error {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 	_, err := hexutil.Decode(v)
-	return err
-}
-
-func validateVoteQuorum(i interface{}) error {
-	v, ok := i.(string)
-	if !ok {
-		return fmt.Errorf("invalid parameter type: %T", i)
-	}
-	_, err := sdk.NewDecFromStr(v)
-	return err
-}
-
-func validateVoteThreshold(i interface{}) error {
-	v, ok := i.(string)
-	if !ok {
-		return fmt.Errorf("invalid parameter type: %T", i)
-	}
-	_, err := sdk.NewDecFromStr(v)
 	return err
 }
