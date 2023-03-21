@@ -52,12 +52,14 @@ func (k Keeper) collectVotes(ctx sdk.Context, index string) error {
 	switch operation.OperationType {
 	case rarimotypes.OpType_TRANSFER:
 		return k.collectTransferVotes(ctx, operation)
+	default:
+		// Nothing to do
 	}
 	return nil
 }
 
 func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Operation) error {
-	transfer, _ := pkg.GetTransfer(operation)
+	transfer, _ := pkg.GetTransfer(operation) // error handled before
 	yesResult := sdk.ZeroInt()
 	noResult := sdk.ZeroInt()
 	totalPowerForChain := sdk.ZeroInt()

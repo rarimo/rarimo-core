@@ -2,6 +2,8 @@ syntax = "proto3";
 package rarimo.rarimocore.oraclemanager;
 
 import "oraclemanager/oracle.proto";
+import "gogoproto/gogo.proto";
+import "oraclemanager/params.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 
@@ -11,3 +13,8 @@ message OracleUnfreezeProposal {
   rarimo.rarimocore.oraclemanager.OracleIndex index = 3;
 }
 
+message ChangeParamsProposal {
+  string title = 1;
+  string description = 2;
+  Params params = 3 [(gogoproto.nullable) = false];
+}

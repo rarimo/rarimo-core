@@ -25,14 +25,14 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
 
-	gov.RegisterProposalTypeCodec(&SetNetworkProposal{}, "rarimocore/SetNetworkProposal")
-	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "rarimocore/UpdateTokenItemProposal")
-	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "rarimocore/RemoveTokenItemProposal")
-	gov.RegisterProposalTypeCodec(&CreateCollectionProposal{}, "rarimocore/CreateCollectionProposal")
-	gov.RegisterProposalTypeCodec(&UpdateCollectionDataProposal{}, "rarimocore/UpdateCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&AddCollectionDataProposal{}, "rarimocore/AddCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&RemoveCollectionDataProposal{}, "rarimocore/RemoveCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&RemoveCollectionProposal{}, "rarimocore/RemoveCollectionProposal")
+	gov.RegisterProposalTypeCodec(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal")
+	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal")
+	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal")
+	gov.RegisterProposalTypeCodec(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal")
+	gov.RegisterProposalTypeCodec(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal")
+	gov.RegisterProposalTypeCodec(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal")
+	gov.RegisterProposalTypeCodec(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal")
+	gov.RegisterProposalTypeCodec(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal")
 }
 
 // Implements Proposal Interface

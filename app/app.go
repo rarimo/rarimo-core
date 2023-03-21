@@ -175,14 +175,14 @@ var (
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		distrtypes.ModuleName:          nil,
-		minttypes.ModuleName:           {authtypes.Minter},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:            {authtypes.Burner},
-		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		bridgemoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner},
+		authtypes.FeeCollectorName:          nil,
+		distrtypes.ModuleName:               nil,
+		minttypes.ModuleName:                {authtypes.Minter},
+		stakingtypes.BondedPoolName:         {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName:      {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:                 {authtypes.Burner},
+		ibctransfertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
+		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
 		oraclemanagermoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
@@ -397,7 +397,8 @@ func New(
 		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper)).
 		AddRoute(tokenmanagermoduletypes.RouterKey, tokenmanagermodule.NewProposalHandler(app.TokenmanagerKeeper)).
 		AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper)).
-		AddRoute(oraclemanagermoduletypes.RouterKey, oraclemanagermodule.NewProposalHandler(app.OraclemanagerKeeper))
+		AddRoute(oraclemanagermoduletypes.RouterKey, oraclemanagermodule.NewProposalHandler(app.OraclemanagerKeeper)).
+		AddRoute(bridgemoduletypes.RouterKey, bridgemodule.NewProposalHandler(app.BridgeKeeper))
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(

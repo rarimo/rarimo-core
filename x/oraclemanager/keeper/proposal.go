@@ -22,3 +22,8 @@ func (k Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleUn
 
 	return nil
 }
+
+func (k Keeper) ChangeParamsProposal(ctx sdk.Context, proposal *types.ChangeParamsProposal) error {
+	k.SetParams(ctx, proposal.Params)
+	return nil
+}
