@@ -8,6 +8,12 @@ enum ParamsUpdateType {
   OTHER = 1;
 }
 
+enum PartyStatus {
+  Active = 0;
+  Frozen = 1;
+  Slashed = 2;
+}
+
 message Party {
   // PublicKey in hex format
   string pubKey = 1;
@@ -15,7 +21,10 @@ message Party {
   string address = 2;
   // Rarimo core account
   string account = 3;
-  bool verified = 4;
+  PartyStatus status = 4;
+  uint64 violationsCount = 5;
+  uint64 freezeEndBlock = 6;
+  string delegator = 7;
 }
 
 // Params defines the parameters for the module.
@@ -25,4 +34,8 @@ message Params {
   repeated Party parties = 3;
   bool isUpdateRequired = 5;
   string lastSignature = 6;
+  string stakeAmount = 7;
+  string stakeDenom = 8;
+  uint64 maxViolationsCount = 9;
+  uint64 freezeBlocksPeriod = 10;
 }

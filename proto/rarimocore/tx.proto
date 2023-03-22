@@ -4,6 +4,7 @@ package rarimo.rarimocore.rarimocore;
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/params.proto";
+import "rarimocore/violdation_report.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -15,9 +16,37 @@ service Msg {
   rpc CreateConfirmation(MsgCreateConfirmation) returns (MsgCreateConfirmationResponse);
   rpc SetupInitial(MsgSetupInitial) returns (MsgSetupInitialResponse);
   rpc ChangePartyAddress(MsgChangePartyAddress) returns (MsgChangePartyAddressResponse);
+  rpc Stake(MsgStake) returns (MsgStakeResponse);
+  rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
+  rpc ReportViolation(MsgCreateViolationReport) returns (MsgCreateViolationReportResponse);
 
   // this line is used by starport scaffolding # proto/tx/rpc
 }
+
+message MsgCreateViolationReport {
+  string creator = 1;
+  string sessionId = 2;
+  rarimo.rarimocore.rarimocore.ViolationType violationType = 3;
+  string offender = 4;
+  // Optional message
+  string msg = 5;
+}
+
+message MsgCreateViolationReportResponse {}
+
+message MsgStake {
+  string account = 1;
+  string address = 2;
+  string trialPublicKey = 3;
+}
+
+message MsgStakeResponse {}
+
+message MsgUnstake {
+  string account = 1;
+}
+
+message MsgUnstakeResponse {}
 
 message MsgCreateConfirmation {
   string creator = 1;
