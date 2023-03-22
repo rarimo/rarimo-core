@@ -10,19 +10,30 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
+	cdc.RegisterConcrete(&MsgStake{}, "rarimocore/Stake", nil)
+	cdc.RegisterConcrete(&MsgUnstake{}, "rarimocore/Unstake", nil)
+	cdc.RegisterConcrete(&MsgCreateViolationReport{}, "rarimocore/CreateViolationReport", nil)
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
 	cdc.RegisterConcrete(&MsgCreateChangePartiesOp{}, "rarimocore/CreateChangeParties", nil)
 	cdc.RegisterConcrete(&MsgSetupInitial{}, "rarimocore/SetupInitial", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
 	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
-	cdc.RegisterConcrete(&AddSignerPartyProposal{}, "rarimocore/AddSignerPartyProposal", nil)
-	cdc.RegisterConcrete(&RemoveSignerPartyProposal{}, "rarimocore/RemoveSignerPartyProposal", nil)
+	cdc.RegisterConcrete(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal", nil)
 	cdc.RegisterConcrete(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal", nil)
 	cdc.RegisterConcrete(&ChangeThresholdProposal{}, "rarimocore/ChangeThresholdProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgStake{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateViolationReport{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUnstake{},
+	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateConfirmation{},
 	)
@@ -34,11 +45,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
-		&AddSignerPartyProposal{},
-	)
-	registry.RegisterImplementations(
-		(*govtypes.Content)(nil),
-		&RemoveSignerPartyProposal{},
+		&UnfreezeSignerPartyProposal{},
 	)
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
@@ -59,6 +66,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		"rarimo.rarimocore.rarimocore.ChangeParties",
 		(*proto.Message)(nil),
 		&ChangeParties{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.rarimocore.ViolationReport",
+		(*proto.Message)(nil),
+		&ViolationReport{},
 	)
 	// this line is used by starport scaffolding # 3
 
