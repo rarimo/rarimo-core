@@ -22,100 +22,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type AddSignerPartyProposal struct {
-	Title          string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Description    string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Account        string `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
-	Address        string `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
-	TrialPublicKey string `protobuf:"bytes,5,opt,name=trialPublicKey,proto3" json:"trialPublicKey,omitempty"`
-}
-
-func (m *AddSignerPartyProposal) Reset()         { *m = AddSignerPartyProposal{} }
-func (m *AddSignerPartyProposal) String() string { return proto.CompactTextString(m) }
-func (*AddSignerPartyProposal) ProtoMessage()    {}
-func (*AddSignerPartyProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d8fc3ea03d8b2bc9, []int{0}
-}
-func (m *AddSignerPartyProposal) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *AddSignerPartyProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_AddSignerPartyProposal.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *AddSignerPartyProposal) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AddSignerPartyProposal.Merge(m, src)
-}
-func (m *AddSignerPartyProposal) XXX_Size() int {
-	return m.Size()
-}
-func (m *AddSignerPartyProposal) XXX_DiscardUnknown() {
-	xxx_messageInfo_AddSignerPartyProposal.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_AddSignerPartyProposal proto.InternalMessageInfo
-
-func (m *AddSignerPartyProposal) GetTitle() string {
-	if m != nil {
-		return m.Title
-	}
-	return ""
-}
-
-func (m *AddSignerPartyProposal) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
-func (m *AddSignerPartyProposal) GetAccount() string {
-	if m != nil {
-		return m.Account
-	}
-	return ""
-}
-
-func (m *AddSignerPartyProposal) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *AddSignerPartyProposal) GetTrialPublicKey() string {
-	if m != nil {
-		return m.TrialPublicKey
-	}
-	return ""
-}
-
-type RemoveSignerPartyProposal struct {
+type UnfreezeSignerPartyProposal struct {
 	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	Account     string `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
 }
 
-func (m *RemoveSignerPartyProposal) Reset()         { *m = RemoveSignerPartyProposal{} }
-func (m *RemoveSignerPartyProposal) String() string { return proto.CompactTextString(m) }
-func (*RemoveSignerPartyProposal) ProtoMessage()    {}
-func (*RemoveSignerPartyProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d8fc3ea03d8b2bc9, []int{1}
+func (m *UnfreezeSignerPartyProposal) Reset()         { *m = UnfreezeSignerPartyProposal{} }
+func (m *UnfreezeSignerPartyProposal) String() string { return proto.CompactTextString(m) }
+func (*UnfreezeSignerPartyProposal) ProtoMessage()    {}
+func (*UnfreezeSignerPartyProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d8fc3ea03d8b2bc9, []int{0}
 }
-func (m *RemoveSignerPartyProposal) XXX_Unmarshal(b []byte) error {
+func (m *UnfreezeSignerPartyProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RemoveSignerPartyProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UnfreezeSignerPartyProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RemoveSignerPartyProposal.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UnfreezeSignerPartyProposal.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -125,33 +49,33 @@ func (m *RemoveSignerPartyProposal) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *RemoveSignerPartyProposal) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RemoveSignerPartyProposal.Merge(m, src)
+func (m *UnfreezeSignerPartyProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UnfreezeSignerPartyProposal.Merge(m, src)
 }
-func (m *RemoveSignerPartyProposal) XXX_Size() int {
+func (m *UnfreezeSignerPartyProposal) XXX_Size() int {
 	return m.Size()
 }
-func (m *RemoveSignerPartyProposal) XXX_DiscardUnknown() {
-	xxx_messageInfo_RemoveSignerPartyProposal.DiscardUnknown(m)
+func (m *UnfreezeSignerPartyProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_UnfreezeSignerPartyProposal.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RemoveSignerPartyProposal proto.InternalMessageInfo
+var xxx_messageInfo_UnfreezeSignerPartyProposal proto.InternalMessageInfo
 
-func (m *RemoveSignerPartyProposal) GetTitle() string {
+func (m *UnfreezeSignerPartyProposal) GetTitle() string {
 	if m != nil {
 		return m.Title
 	}
 	return ""
 }
 
-func (m *RemoveSignerPartyProposal) GetDescription() string {
+func (m *UnfreezeSignerPartyProposal) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *RemoveSignerPartyProposal) GetAccount() string {
+func (m *UnfreezeSignerPartyProposal) GetAccount() string {
 	if m != nil {
 		return m.Account
 	}
@@ -167,7 +91,7 @@ func (m *ReshareKeysProposal) Reset()         { *m = ReshareKeysProposal{} }
 func (m *ReshareKeysProposal) String() string { return proto.CompactTextString(m) }
 func (*ReshareKeysProposal) ProtoMessage()    {}
 func (*ReshareKeysProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d8fc3ea03d8b2bc9, []int{2}
+	return fileDescriptor_d8fc3ea03d8b2bc9, []int{1}
 }
 func (m *ReshareKeysProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -220,7 +144,7 @@ func (m *ChangeThresholdProposal) Reset()         { *m = ChangeThresholdProposal
 func (m *ChangeThresholdProposal) String() string { return proto.CompactTextString(m) }
 func (*ChangeThresholdProposal) ProtoMessage()    {}
 func (*ChangeThresholdProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d8fc3ea03d8b2bc9, []int{3}
+	return fileDescriptor_d8fc3ea03d8b2bc9, []int{2}
 }
 func (m *ChangeThresholdProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -271,8 +195,7 @@ func (m *ChangeThresholdProposal) GetThreshold() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*AddSignerPartyProposal)(nil), "rarimo.rarimocore.rarimocore.AddSignerPartyProposal")
-	proto.RegisterType((*RemoveSignerPartyProposal)(nil), "rarimo.rarimocore.rarimocore.RemoveSignerPartyProposal")
+	proto.RegisterType((*UnfreezeSignerPartyProposal)(nil), "rarimo.rarimocore.rarimocore.UnfreezeSignerPartyProposal")
 	proto.RegisterType((*ReshareKeysProposal)(nil), "rarimo.rarimocore.rarimocore.ReshareKeysProposal")
 	proto.RegisterType((*ChangeThresholdProposal)(nil), "rarimo.rarimocore.rarimocore.ChangeThresholdProposal")
 }
@@ -280,29 +203,26 @@ func init() {
 func init() { proto.RegisterFile("rarimocore/proposal.proto", fileDescriptor_d8fc3ea03d8b2bc9) }
 
 var fileDescriptor_d8fc3ea03d8b2bc9 = []byte{
-	// 298 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x92, 0xc1, 0x4a, 0x33, 0x31,
-	0x14, 0x85, 0x9b, 0xff, 0xb7, 0x4a, 0x23, 0xba, 0x18, 0x45, 0x53, 0x28, 0xa1, 0xcc, 0x42, 0xdc,
-	0xd8, 0x0a, 0x3e, 0x81, 0xba, 0xb3, 0x08, 0x65, 0x74, 0xe5, 0x2e, 0x4d, 0x2e, 0x9d, 0x40, 0x66,
-	0xee, 0x70, 0x93, 0x8a, 0xf3, 0x16, 0x3e, 0x88, 0x0f, 0xe2, 0xb2, 0x4b, 0x97, 0xd2, 0xbe, 0x88,
-	0x90, 0x69, 0x69, 0x71, 0x5b, 0x70, 0x95, 0x9c, 0xf3, 0xdd, 0xe4, 0x9e, 0xc5, 0xe1, 0x5d, 0x52,
-	0x64, 0x0b, 0xd4, 0x48, 0x30, 0xac, 0x08, 0x2b, 0xf4, 0xca, 0x0d, 0x2a, 0xc2, 0x80, 0x49, 0xaf,
-	0x41, 0x83, 0xcd, 0xc4, 0xd6, 0x35, 0xfd, 0x60, 0xfc, 0xec, 0xd6, 0x98, 0x27, 0x3b, 0x2d, 0x81,
-	0xc6, 0x8a, 0x42, 0x3d, 0x5e, 0x3d, 0x4f, 0x4e, 0x79, 0x3b, 0xd8, 0xe0, 0x40, 0xb0, 0x3e, 0xbb,
-	0xec, 0x64, 0x8d, 0x48, 0xfa, 0xfc, 0xd0, 0x80, 0xd7, 0x64, 0xab, 0x60, 0xb1, 0x14, 0xff, 0x22,
-	0xdb, 0xb6, 0x12, 0xc1, 0x0f, 0x94, 0xd6, 0x38, 0x2b, 0x83, 0xf8, 0x1f, 0xe9, 0x5a, 0x46, 0x62,
-	0x0c, 0x81, 0xf7, 0x62, 0x6f, 0x45, 0x1a, 0x99, 0x5c, 0xf0, 0xe3, 0x40, 0x56, 0xb9, 0xf1, 0x6c,
-	0xe2, 0xac, 0x1e, 0x41, 0x2d, 0xda, 0x71, 0xe0, 0x97, 0x9b, 0x16, 0xbc, 0x9b, 0x41, 0x81, 0xaf,
-	0xf0, 0x27, 0x81, 0xd3, 0x47, 0x7e, 0x92, 0x81, 0xcf, 0x15, 0xc1, 0x08, 0x6a, 0xbf, 0xeb, 0xa2,
-	0x14, 0xf9, 0xf9, 0x7d, 0xae, 0xca, 0x29, 0x3c, 0xe7, 0x04, 0x3e, 0x47, 0x67, 0x76, 0xce, 0xde,
-	0xe3, 0x9d, 0xb0, 0xfe, 0x2c, 0xa6, 0x3f, 0xca, 0x36, 0xc6, 0xdd, 0xc3, 0xe7, 0x42, 0xb2, 0xf9,
-	0x42, 0xb2, 0xef, 0x85, 0x64, 0xef, 0x4b, 0xd9, 0x9a, 0x2f, 0x65, 0xeb, 0x6b, 0x29, 0x5b, 0x2f,
-	0xd7, 0x53, 0x1b, 0x9c, 0x9a, 0x0c, 0x34, 0x16, 0xc3, 0xa6, 0x0e, 0xab, 0xe3, 0x2a, 0x76, 0xe8,
-	0x6d, 0xb8, 0x55, 0xa8, 0x50, 0x57, 0xe0, 0x27, 0xfb, 0xb1, 0x4e, 0x37, 0x3f, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0x0c, 0xbc, 0x0a, 0xdd, 0x6b, 0x02, 0x00, 0x00,
+	// 255 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x51, 0xc1, 0x4a, 0xc4, 0x30,
+	0x10, 0x6d, 0x14, 0x95, 0x8d, 0x78, 0xa9, 0x82, 0x15, 0x97, 0xb0, 0xf4, 0xe4, 0xc5, 0x56, 0xf0,
+	0x0f, 0xf4, 0xa6, 0x08, 0x4b, 0xd5, 0x8b, 0xb7, 0x6c, 0x76, 0x6c, 0x03, 0xdd, 0x4c, 0x98, 0x44,
+	0xb0, 0x7e, 0x85, 0x9f, 0xe5, 0x71, 0x8f, 0x1e, 0xa5, 0xfd, 0x11, 0x21, 0xdd, 0x65, 0x7b, 0xef,
+	0x29, 0x79, 0xef, 0x0d, 0x6f, 0x1e, 0xf3, 0xf8, 0x05, 0x49, 0xd2, 0x2b, 0x54, 0x48, 0x90, 0x5b,
+	0x42, 0x8b, 0x4e, 0xd6, 0x99, 0x25, 0xf4, 0x18, 0x4f, 0x7b, 0x29, 0xdb, 0x4d, 0x0c, 0xbe, 0x29,
+	0xf2, 0xcb, 0x57, 0xf3, 0x4e, 0x00, 0x5f, 0xf0, 0xac, 0x4b, 0x03, 0x34, 0x97, 0xe4, 0x9b, 0xf9,
+	0xc6, 0x22, 0x3e, 0xe3, 0x07, 0x5e, 0xfb, 0x1a, 0x12, 0x36, 0x63, 0x57, 0x93, 0xa2, 0x07, 0xf1,
+	0x8c, 0x1f, 0x2f, 0xc1, 0x29, 0xd2, 0xd6, 0x6b, 0x34, 0xc9, 0x5e, 0xd0, 0x86, 0x54, 0x9c, 0xf0,
+	0x23, 0xa9, 0x14, 0x7e, 0x18, 0x9f, 0xec, 0x07, 0x75, 0x0b, 0xd3, 0x27, 0x7e, 0x5a, 0x80, 0xab,
+	0x24, 0xc1, 0x23, 0x34, 0x6e, 0xec, 0xa2, 0x14, 0xf9, 0xf9, 0x7d, 0x25, 0x4d, 0x09, 0x2f, 0x15,
+	0x81, 0xab, 0xb0, 0x5e, 0x8e, 0xce, 0x3e, 0xe5, 0x13, 0xbf, 0x35, 0x0b, 0xe9, 0x4f, 0x8a, 0x1d,
+	0x71, 0xf7, 0xf0, 0xd3, 0x0a, 0xb6, 0x6e, 0x05, 0xfb, 0x6b, 0x05, 0xfb, 0xee, 0x44, 0xb4, 0xee,
+	0x44, 0xf4, 0xdb, 0x89, 0xe8, 0xed, 0xa6, 0xd4, 0xbe, 0x96, 0x8b, 0x4c, 0xe1, 0x2a, 0xef, 0x2f,
+	0xbc, 0x79, 0xae, 0x43, 0x2d, 0x9f, 0xf9, 0xa0, 0x23, 0xdf, 0x58, 0x70, 0x8b, 0xc3, 0xd0, 0xd0,
+	0xed, 0x7f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x0c, 0x6c, 0xe1, 0xe9, 0xbe, 0x01, 0x00, 0x00,
 }
 
-func (m *AddSignerPartyProposal) Marshal() (dAtA []byte, err error) {
+func (m *UnfreezeSignerPartyProposal) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -312,70 +232,12 @@ func (m *AddSignerPartyProposal) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *AddSignerPartyProposal) MarshalTo(dAtA []byte) (int, error) {
+func (m *UnfreezeSignerPartyProposal) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *AddSignerPartyProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.TrialPublicKey) > 0 {
-		i -= len(m.TrialPublicKey)
-		copy(dAtA[i:], m.TrialPublicKey)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.TrialPublicKey)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Account) > 0 {
-		i -= len(m.Account)
-		copy(dAtA[i:], m.Account)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Account)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Title) > 0 {
-		i -= len(m.Title)
-		copy(dAtA[i:], m.Title)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *RemoveSignerPartyProposal) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *RemoveSignerPartyProposal) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RemoveSignerPartyProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UnfreezeSignerPartyProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -494,36 +356,7 @@ func encodeVarintProposal(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *AddSignerPartyProposal) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Title)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Description)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Account)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Address)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.TrialPublicKey)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	return n
-}
-
-func (m *RemoveSignerPartyProposal) Size() (n int) {
+func (m *UnfreezeSignerPartyProposal) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -587,7 +420,7 @@ func sovProposal(x uint64) (n int) {
 func sozProposal(x uint64) (n int) {
 	return sovProposal(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *AddSignerPartyProposal) Unmarshal(dAtA []byte) error {
+func (m *UnfreezeSignerPartyProposal) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -610,220 +443,10 @@ func (m *AddSignerPartyProposal) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: AddSignerPartyProposal: wiretype end group for non-group")
+			return fmt.Errorf("proto: UnfreezeSignerPartyProposal: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: AddSignerPartyProposal: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Title = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Description = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Account = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TrialPublicKey", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TrialPublicKey = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipProposal(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *RemoveSignerPartyProposal) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowProposal
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: RemoveSignerPartyProposal: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RemoveSignerPartyProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UnfreezeSignerPartyProposal: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

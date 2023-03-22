@@ -1,8 +1,6 @@
 syntax = "proto3";
 package rarimo.rarimocore.rarimocore;
 
-import "google/protobuf/any.proto";
-
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
 enum VoteType {

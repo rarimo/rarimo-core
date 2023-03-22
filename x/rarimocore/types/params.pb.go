@@ -47,14 +47,45 @@ func (ParamsUpdateType) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_997c11d1d0285e72, []int{0}
 }
 
+type PartyStatus int32
+
+const (
+	PartyStatus_Active  PartyStatus = 0
+	PartyStatus_Frozen  PartyStatus = 1
+	PartyStatus_Slashed PartyStatus = 2
+)
+
+var PartyStatus_name = map[int32]string{
+	0: "Active",
+	1: "Frozen",
+	2: "Slashed",
+}
+
+var PartyStatus_value = map[string]int32{
+	"Active":  0,
+	"Frozen":  1,
+	"Slashed": 2,
+}
+
+func (x PartyStatus) String() string {
+	return proto.EnumName(PartyStatus_name, int32(x))
+}
+
+func (PartyStatus) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_997c11d1d0285e72, []int{1}
+}
+
 type Party struct {
 	// PublicKey in hex format
 	PubKey string `protobuf:"bytes,1,opt,name=pubKey,proto3" json:"pubKey,omitempty"`
 	// Server address connect to
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// Rarimo core account
-	Account  string `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
-	Verified bool   `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`
+	Account         string      `protobuf:"bytes,3,opt,name=account,proto3" json:"account,omitempty"`
+	Status          PartyStatus `protobuf:"varint,4,opt,name=status,proto3,enum=rarimo.rarimocore.rarimocore.PartyStatus" json:"status,omitempty"`
+	ViolationsCount uint64      `protobuf:"varint,5,opt,name=violationsCount,proto3" json:"violationsCount,omitempty"`
+	FreezeEndBlock  uint64      `protobuf:"varint,6,opt,name=freezeEndBlock,proto3" json:"freezeEndBlock,omitempty"`
+	Delegator       string      `protobuf:"bytes,7,opt,name=delegator,proto3" json:"delegator,omitempty"`
 }
 
 func (m *Party) Reset()         { *m = Party{} }
@@ -111,20 +142,45 @@ func (m *Party) GetAccount() string {
 	return ""
 }
 
-func (m *Party) GetVerified() bool {
+func (m *Party) GetStatus() PartyStatus {
 	if m != nil {
-		return m.Verified
+		return m.Status
 	}
-	return false
+	return PartyStatus_Active
+}
+
+func (m *Party) GetViolationsCount() uint64 {
+	if m != nil {
+		return m.ViolationsCount
+	}
+	return 0
+}
+
+func (m *Party) GetFreezeEndBlock() uint64 {
+	if m != nil {
+		return m.FreezeEndBlock
+	}
+	return 0
+}
+
+func (m *Party) GetDelegator() string {
+	if m != nil {
+		return m.Delegator
+	}
+	return ""
 }
 
 // Params defines the parameters for the module.
 type Params struct {
-	KeyECDSA         string   `protobuf:"bytes,1,opt,name=keyECDSA,proto3" json:"keyECDSA,omitempty"`
-	Threshold        uint64   `protobuf:"varint,2,opt,name=threshold,proto3" json:"threshold,omitempty"`
-	Parties          []*Party `protobuf:"bytes,3,rep,name=parties,proto3" json:"parties,omitempty"`
-	IsUpdateRequired bool     `protobuf:"varint,5,opt,name=isUpdateRequired,proto3" json:"isUpdateRequired,omitempty"`
-	LastSignature    string   `protobuf:"bytes,6,opt,name=lastSignature,proto3" json:"lastSignature,omitempty"`
+	KeyECDSA           string   `protobuf:"bytes,1,opt,name=keyECDSA,proto3" json:"keyECDSA,omitempty"`
+	Threshold          uint64   `protobuf:"varint,2,opt,name=threshold,proto3" json:"threshold,omitempty"`
+	Parties            []*Party `protobuf:"bytes,3,rep,name=parties,proto3" json:"parties,omitempty"`
+	IsUpdateRequired   bool     `protobuf:"varint,5,opt,name=isUpdateRequired,proto3" json:"isUpdateRequired,omitempty"`
+	LastSignature      string   `protobuf:"bytes,6,opt,name=lastSignature,proto3" json:"lastSignature,omitempty"`
+	StakeAmount        string   `protobuf:"bytes,7,opt,name=stakeAmount,proto3" json:"stakeAmount,omitempty"`
+	StakeDenom         string   `protobuf:"bytes,8,opt,name=stakeDenom,proto3" json:"stakeDenom,omitempty"`
+	MaxViolationsCount uint64   `protobuf:"varint,9,opt,name=maxViolationsCount,proto3" json:"maxViolationsCount,omitempty"`
+	FreezeBlocksPeriod uint64   `protobuf:"varint,10,opt,name=freezeBlocksPeriod,proto3" json:"freezeBlocksPeriod,omitempty"`
 }
 
 func (m *Params) Reset()         { *m = Params{} }
@@ -195,8 +251,37 @@ func (m *Params) GetLastSignature() string {
 	return ""
 }
 
+func (m *Params) GetStakeAmount() string {
+	if m != nil {
+		return m.StakeAmount
+	}
+	return ""
+}
+
+func (m *Params) GetStakeDenom() string {
+	if m != nil {
+		return m.StakeDenom
+	}
+	return ""
+}
+
+func (m *Params) GetMaxViolationsCount() uint64 {
+	if m != nil {
+		return m.MaxViolationsCount
+	}
+	return 0
+}
+
+func (m *Params) GetFreezeBlocksPeriod() uint64 {
+	if m != nil {
+		return m.FreezeBlocksPeriod
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterEnum("rarimo.rarimocore.rarimocore.ParamsUpdateType", ParamsUpdateType_name, ParamsUpdateType_value)
+	proto.RegisterEnum("rarimo.rarimocore.rarimocore.PartyStatus", PartyStatus_name, PartyStatus_value)
 	proto.RegisterType((*Party)(nil), "rarimo.rarimocore.rarimocore.Party")
 	proto.RegisterType((*Params)(nil), "rarimo.rarimocore.rarimocore.Params")
 }
@@ -204,29 +289,39 @@ func init() {
 func init() { proto.RegisterFile("rarimocore/params.proto", fileDescriptor_997c11d1d0285e72) }
 
 var fileDescriptor_997c11d1d0285e72 = []byte{
-	// 350 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0xcd, 0x4e, 0x2a, 0x31,
-	0x18, 0x9d, 0x5e, 0x60, 0x80, 0xde, 0xdc, 0x9b, 0x49, 0x17, 0xda, 0x18, 0x32, 0x21, 0xe8, 0x82,
-	0x90, 0x30, 0x18, 0x5d, 0xbb, 0x40, 0x9c, 0x48, 0x34, 0x51, 0x32, 0xe0, 0xc6, 0x8d, 0x29, 0x33,
-	0x15, 0x1a, 0x81, 0xd6, 0xb6, 0x63, 0x9c, 0xb7, 0xf0, 0xb1, 0x5c, 0x92, 0xb8, 0x71, 0x69, 0xe0,
-	0x45, 0x8c, 0x9d, 0xe1, 0xc7, 0x98, 0xb8, 0x6a, 0xcf, 0x39, 0xdf, 0x97, 0xef, 0x9c, 0x1c, 0xb8,
-	0x2b, 0x89, 0x64, 0x53, 0x1e, 0x72, 0x49, 0x5b, 0x82, 0x48, 0x32, 0x55, 0x9e, 0x90, 0x5c, 0x73,
-	0x54, 0x49, 0x05, 0x6f, 0xa3, 0x6f, 0x7d, 0x6b, 0x1c, 0x16, 0x7a, 0x44, 0xea, 0x04, 0xed, 0x40,
-	0x5b, 0xc4, 0xc3, 0x4b, 0x9a, 0x60, 0x50, 0x05, 0xf5, 0x72, 0x90, 0x21, 0x84, 0x61, 0x91, 0x44,
-	0x91, 0xa4, 0x4a, 0xe1, 0x3f, 0x46, 0x58, 0x41, 0xa3, 0x84, 0x21, 0x8f, 0x67, 0x1a, 0xe7, 0x32,
-	0x25, 0x85, 0x68, 0x0f, 0x96, 0x9e, 0xa8, 0x64, 0xf7, 0x8c, 0x46, 0x38, 0x5f, 0x05, 0xf5, 0x52,
-	0xb0, 0xc6, 0xb5, 0x37, 0x00, 0xed, 0x9e, 0xf1, 0xf7, 0x35, 0xf6, 0x40, 0x13, 0xbf, 0x73, 0xd6,
-	0x6f, 0x67, 0x47, 0xd7, 0x18, 0x55, 0x60, 0x59, 0x8f, 0x25, 0x55, 0x63, 0x3e, 0x89, 0xcc, 0xe1,
-	0x7c, 0xb0, 0x21, 0xd0, 0x09, 0x2c, 0x0a, 0x22, 0x35, 0xa3, 0x0a, 0xe7, 0xaa, 0xb9, 0xfa, 0xdf,
-	0xa3, 0x7d, 0xef, 0xb7, 0x94, 0x9e, 0x89, 0x18, 0xac, 0x76, 0x50, 0x03, 0x3a, 0x4c, 0xdd, 0x88,
-	0x88, 0x68, 0x1a, 0xd0, 0xc7, 0x98, 0x49, 0x1a, 0xe1, 0x82, 0xf1, 0xf9, 0x83, 0x47, 0x07, 0xf0,
-	0xdf, 0x84, 0x28, 0xdd, 0x67, 0xa3, 0x19, 0xd1, 0xb1, 0xa4, 0xd8, 0x36, 0x4e, 0xbf, 0x93, 0x8d,
-	0x26, 0x74, 0xd2, 0x50, 0xe9, 0xf6, 0x20, 0x11, 0x14, 0xfd, 0x87, 0xb0, 0xd3, 0x6d, 0x5f, 0x9d,
-	0xfb, 0x77, 0x7d, 0x7f, 0xe0, 0x58, 0xa8, 0x0c, 0x0b, 0xd7, 0x83, 0xae, 0x1f, 0x38, 0xe0, 0xf4,
-	0xe2, 0x75, 0xe1, 0x82, 0xf9, 0xc2, 0x05, 0x1f, 0x0b, 0x17, 0xbc, 0x2c, 0x5d, 0x6b, 0xbe, 0x74,
-	0xad, 0xf7, 0xa5, 0x6b, 0xdd, 0x1e, 0x8e, 0x98, 0x9e, 0x90, 0xa1, 0x17, 0xf2, 0x69, 0x2b, 0x0d,
-	0x90, 0x3d, 0x4d, 0xd3, 0xec, 0x73, 0x6b, 0xab, 0x66, 0x9d, 0x08, 0xaa, 0x86, 0xb6, 0xa9, 0xf9,
-	0xf8, 0x33, 0x00, 0x00, 0xff, 0xff, 0xf1, 0x86, 0xb9, 0x8b, 0x01, 0x02, 0x00, 0x00,
+	// 506 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0xcf, 0x8f, 0xd2, 0x40,
+	0x14, 0xa6, 0xfc, 0x28, 0xf0, 0x88, 0xd8, 0xcc, 0x41, 0x27, 0x66, 0xd3, 0x90, 0xd5, 0x18, 0x24,
+	0xd9, 0x62, 0xf0, 0xec, 0x81, 0x65, 0xd1, 0x8d, 0x26, 0x4a, 0x0a, 0x7a, 0xf0, 0x62, 0x86, 0xf6,
+	0x09, 0x13, 0xda, 0x4e, 0x9d, 0x19, 0x36, 0xcb, 0xfe, 0x01, 0x9e, 0xfd, 0xb3, 0x3c, 0xee, 0xd1,
+	0xa3, 0x81, 0xbf, 0xc1, 0xbb, 0x61, 0xca, 0x4a, 0x65, 0x8d, 0xf1, 0xd4, 0xf9, 0xbe, 0xef, 0xbd,
+	0xf6, 0x7d, 0xdf, 0xf4, 0xc1, 0x7d, 0xc9, 0x24, 0x8f, 0x45, 0x20, 0x24, 0x76, 0x53, 0x26, 0x59,
+	0xac, 0xbc, 0x54, 0x0a, 0x2d, 0xc8, 0x51, 0x26, 0x78, 0x7b, 0x3d, 0x77, 0x3c, 0xfe, 0x52, 0x84,
+	0xca, 0x88, 0x49, 0xbd, 0x22, 0xf7, 0xc0, 0x4e, 0x97, 0xd3, 0xd7, 0xb8, 0xa2, 0x56, 0xcb, 0x6a,
+	0xd7, 0xfd, 0x1d, 0x22, 0x14, 0xaa, 0x2c, 0x0c, 0x25, 0x2a, 0x45, 0x8b, 0x46, 0xb8, 0x81, 0x46,
+	0x09, 0x02, 0xb1, 0x4c, 0x34, 0x2d, 0xed, 0x94, 0x0c, 0x92, 0x3e, 0xd8, 0x4a, 0x33, 0xbd, 0x54,
+	0xb4, 0xdc, 0xb2, 0xda, 0xcd, 0xde, 0x13, 0xef, 0x5f, 0x43, 0x78, 0x66, 0x80, 0xb1, 0x69, 0xf0,
+	0x77, 0x8d, 0xa4, 0x0d, 0x77, 0x2f, 0xb8, 0x88, 0x98, 0xe6, 0x22, 0x51, 0x03, 0xf3, 0x91, 0x4a,
+	0xcb, 0x6a, 0x97, 0xfd, 0x43, 0x9a, 0x3c, 0x86, 0xe6, 0x27, 0x89, 0x78, 0x85, 0xc3, 0x24, 0x3c,
+	0x8d, 0x44, 0xb0, 0xa0, 0xb6, 0x29, 0x3c, 0x60, 0xc9, 0x11, 0xd4, 0x43, 0x8c, 0x70, 0xc6, 0xb4,
+	0x90, 0xb4, 0x6a, 0x06, 0xde, 0x13, 0xc7, 0x3f, 0x8b, 0x60, 0x8f, 0x4c, 0x6e, 0xe4, 0x01, 0xd4,
+	0x16, 0xb8, 0x1a, 0x0e, 0xce, 0xc6, 0xfd, 0x5d, 0x16, 0xbf, 0xf1, 0xf6, 0x25, 0x7a, 0x2e, 0x51,
+	0xcd, 0x45, 0x14, 0x9a, 0x3c, 0xca, 0xfe, 0x9e, 0x20, 0xcf, 0xa1, 0x9a, 0x32, 0xa9, 0x39, 0x2a,
+	0x5a, 0x6a, 0x95, 0xda, 0x8d, 0xde, 0xc3, 0xff, 0x30, 0xee, 0xdf, 0xf4, 0x90, 0x0e, 0x38, 0x5c,
+	0xbd, 0x4b, 0x43, 0xa6, 0xd1, 0xc7, 0xcf, 0x4b, 0x2e, 0x31, 0x34, 0xa6, 0x6b, 0xfe, 0x2d, 0x9e,
+	0x3c, 0x82, 0x3b, 0x11, 0x53, 0x7a, 0xcc, 0x67, 0x09, 0xd3, 0x4b, 0x89, 0xc6, 0x74, 0xdd, 0xff,
+	0x93, 0x24, 0x2d, 0x68, 0x28, 0xcd, 0x16, 0xd8, 0x8f, 0x4d, 0x82, 0x99, 0xeb, 0x3c, 0x45, 0x5c,
+	0x00, 0x03, 0xcf, 0x30, 0x11, 0x31, 0xad, 0x99, 0x82, 0x1c, 0x43, 0x3c, 0x20, 0x31, 0xbb, 0x7c,
+	0x7f, 0x70, 0x15, 0x75, 0xe3, 0xfc, 0x2f, 0xca, 0xb6, 0x3e, 0xcb, 0xdd, 0x84, 0xae, 0x46, 0x28,
+	0xb9, 0x08, 0x29, 0x64, 0xf5, 0xb7, 0x95, 0xce, 0x09, 0x38, 0x59, 0xec, 0x99, 0xbf, 0xc9, 0x2a,
+	0x45, 0xd2, 0x04, 0x18, 0x9c, 0xf7, 0xdf, 0xbc, 0x1c, 0x7e, 0x1c, 0x0f, 0x27, 0x4e, 0x81, 0xd4,
+	0xa1, 0xf2, 0x76, 0x72, 0x3e, 0xf4, 0x1d, 0xab, 0xd3, 0x83, 0x46, 0xee, 0x6f, 0x21, 0x00, 0x76,
+	0x3f, 0xd0, 0xfc, 0x02, 0x9d, 0xc2, 0xf6, 0xfc, 0x42, 0x8a, 0x2b, 0x4c, 0x1c, 0x8b, 0x34, 0xa0,
+	0x3a, 0x8e, 0x98, 0x9a, 0x63, 0xe8, 0x14, 0x4f, 0x5f, 0x7d, 0x5b, 0xbb, 0xd6, 0xf5, 0xda, 0xb5,
+	0x7e, 0xac, 0x5d, 0xeb, 0xeb, 0xc6, 0x2d, 0x5c, 0x6f, 0xdc, 0xc2, 0xf7, 0x8d, 0x5b, 0xf8, 0xf0,
+	0x74, 0xc6, 0x75, 0xc4, 0xa6, 0x5e, 0x20, 0xe2, 0x6e, 0x76, 0x2d, 0xbb, 0xc7, 0x89, 0xd9, 0xa3,
+	0xcb, 0x6e, 0x6e, 0xa9, 0xf4, 0x2a, 0x45, 0x35, 0xb5, 0xcd, 0x52, 0x3d, 0xfb, 0x15, 0x00, 0x00,
+	0xff, 0xff, 0x97, 0xba, 0x18, 0xb5, 0x6f, 0x03, 0x00, 0x00,
 }
 
 func (m *Party) Marshal() (dAtA []byte, err error) {
@@ -249,13 +344,25 @@ func (m *Party) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Verified {
+	if len(m.Delegator) > 0 {
+		i -= len(m.Delegator)
+		copy(dAtA[i:], m.Delegator)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Delegator)))
 		i--
-		if m.Verified {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
+		dAtA[i] = 0x3a
+	}
+	if m.FreezeEndBlock != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.FreezeEndBlock))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.ViolationsCount != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.ViolationsCount))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.Status != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.Status))
 		i--
 		dAtA[i] = 0x20
 	}
@@ -303,6 +410,30 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.FreezeBlocksPeriod != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.FreezeBlocksPeriod))
+		i--
+		dAtA[i] = 0x50
+	}
+	if m.MaxViolationsCount != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.MaxViolationsCount))
+		i--
+		dAtA[i] = 0x48
+	}
+	if len(m.StakeDenom) > 0 {
+		i -= len(m.StakeDenom)
+		copy(dAtA[i:], m.StakeDenom)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.StakeDenom)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.StakeAmount) > 0 {
+		i -= len(m.StakeAmount)
+		copy(dAtA[i:], m.StakeAmount)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.StakeAmount)))
+		i--
+		dAtA[i] = 0x3a
+	}
 	if len(m.LastSignature) > 0 {
 		i -= len(m.LastSignature)
 		copy(dAtA[i:], m.LastSignature)
@@ -378,8 +509,18 @@ func (m *Party) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovParams(uint64(l))
 	}
-	if m.Verified {
-		n += 2
+	if m.Status != 0 {
+		n += 1 + sovParams(uint64(m.Status))
+	}
+	if m.ViolationsCount != 0 {
+		n += 1 + sovParams(uint64(m.ViolationsCount))
+	}
+	if m.FreezeEndBlock != 0 {
+		n += 1 + sovParams(uint64(m.FreezeEndBlock))
+	}
+	l = len(m.Delegator)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
 	}
 	return n
 }
@@ -409,6 +550,20 @@ func (m *Params) Size() (n int) {
 	l = len(m.LastSignature)
 	if l > 0 {
 		n += 1 + l + sovParams(uint64(l))
+	}
+	l = len(m.StakeAmount)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	l = len(m.StakeDenom)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	if m.MaxViolationsCount != 0 {
+		n += 1 + sovParams(uint64(m.MaxViolationsCount))
+	}
+	if m.FreezeBlocksPeriod != 0 {
+		n += 1 + sovParams(uint64(m.FreezeBlocksPeriod))
 	}
 	return n
 }
@@ -546,9 +701,9 @@ func (m *Party) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Verified", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var v int
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowParams
@@ -558,12 +713,81 @@ func (m *Party) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= int(b&0x7F) << shift
+				m.Status |= PartyStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Verified = bool(v != 0)
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ViolationsCount", wireType)
+			}
+			m.ViolationsCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ViolationsCount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FreezeEndBlock", wireType)
+			}
+			m.FreezeEndBlock = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.FreezeEndBlock |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Delegator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Delegator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])
@@ -751,6 +975,108 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			}
 			m.LastSignature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakeAmount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StakeAmount = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakeDenom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StakeDenom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxViolationsCount", wireType)
+			}
+			m.MaxViolationsCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.MaxViolationsCount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FreezeBlocksPeriod", wireType)
+			}
+			m.FreezeBlocksPeriod = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.FreezeBlocksPeriod |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])

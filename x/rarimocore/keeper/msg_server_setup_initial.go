@@ -11,7 +11,7 @@ import (
 func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitial) (*types.MsgSetupInitialResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
+	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
 
@@ -26,15 +26,17 @@ func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitia
 			params.Parties[i].PubKey = msg.PartyPublicKey
 		}
 
-		params.Parties[i].Verified = (params.KeyECDSA == msg.NewPublicKey && params.Parties[i].Verified) || (params.Parties[i].Account == msg.Creator)
-		if params.Parties[i].Verified {
+		isActive := (params.KeyECDSA == msg.NewPublicKey) || (params.Parties[i].Account == msg.Creator)
+
+		if isActive {
 			verifications++
 		}
 	}
 
 	params.KeyECDSA = msg.NewPublicKey
-	if verifications == len(params.Parties) {
-		params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
+	activePartiesAmount := k.getActivePartiesAmount(ctx)
+	if verifications == activePartiesAmount {
+		params.Threshold = uint64(crypto.GetThreshold(activePartiesAmount))
 		params.IsUpdateRequired = false
 	}
 

@@ -5,40 +5,27 @@ import (
 )
 
 const (
-	ProposalTypeAddSignerParty    = "AddSignerParty"
-	ProposalTypeRemoveSignerParty = "RemoveSignerParty"
-	ProposalTypeReshareKeys       = "ReshareKeys"
-	ProposalTypeChangeThreshold   = "ChangeThreshold"
+	ProposalTypeUnfreezeSignerParty = "UnfreezeSignerParty"
+	ProposalTypeReshareKeys         = "ReshareKeys"
+	ProposalTypeChangeThreshold     = "ChangeThreshold"
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeAddSignerParty)
-	gov.RegisterProposalType(ProposalTypeRemoveSignerParty)
+	gov.RegisterProposalType(ProposalTypeUnfreezeSignerParty)
 	gov.RegisterProposalType(ProposalTypeReshareKeys)
 	gov.RegisterProposalType(ProposalTypeChangeThreshold)
-	gov.RegisterProposalTypeCodec(&AddSignerPartyProposal{}, "rarimocore/AddSignerPartyProposal")
-	gov.RegisterProposalTypeCodec(&RemoveSignerPartyProposal{}, "rarimocore/RemoveSignerPartyProposal")
+	gov.RegisterProposalTypeCodec(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal")
 	gov.RegisterProposalTypeCodec(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal")
 	gov.RegisterProposalTypeCodec(&ChangeThresholdProposal{}, "rarimocore/ChangeThresholdProposal")
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &AddSignerPartyProposal{}
+var _ gov.Content = &UnfreezeSignerPartyProposal{}
 
-func (m *AddSignerPartyProposal) ProposalRoute() string { return RouterKey }
-func (m *AddSignerPartyProposal) ProposalType() string  { return ProposalTypeAddSignerParty }
+func (m *UnfreezeSignerPartyProposal) ProposalRoute() string { return RouterKey }
+func (m *UnfreezeSignerPartyProposal) ProposalType() string  { return ProposalTypeUnfreezeSignerParty }
 
-func (m *AddSignerPartyProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &RemoveSignerPartyProposal{}
-
-func (m *RemoveSignerPartyProposal) ProposalRoute() string { return RouterKey }
-func (m *RemoveSignerPartyProposal) ProposalType() string  { return ProposalTypeRemoveSignerParty }
-
-func (m *RemoveSignerPartyProposal) ValidateBasic() error {
+func (m *UnfreezeSignerPartyProposal) ValidateBasic() error {
 	return gov.ValidateAbstract(m)
 }
 

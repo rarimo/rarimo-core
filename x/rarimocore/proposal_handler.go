@@ -11,10 +11,8 @@ import (
 func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
-		case *types.AddSignerPartyProposal:
-			return k.AddSignerPartyProposal(ctx, c)
-		case *types.RemoveSignerPartyProposal:
-			return k.RemoveSignerPartyProposal(ctx, c)
+		case *types.UnfreezeSignerPartyProposal:
+			return k.UnfreezeSignerPartyProposal(ctx, c)
 		case *types.ReshareKeysProposal:
 			return k.ReshareKeysProposal(ctx, c)
 		case *types.ChangeThresholdProposal:

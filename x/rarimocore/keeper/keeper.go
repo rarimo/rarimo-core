@@ -2,15 +2,10 @@ package keeper
 
 import (
 	"fmt"
-
-	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
-	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	"github.com/tendermint/tendermint/libs/log"
-	tmkeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/tendermint/tendermint/libs/log"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
@@ -20,9 +15,9 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
-		tm         *tmkeeper.Keeper
-		staking    *stakingkeeper.Keeper
-		gov        *govkeeper.Keeper
+		tm         types.TokenmanagerKeeper
+		staking    types.StakingKeeper
+		bank       types.BankKeeper
 	}
 )
 
@@ -31,8 +26,9 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-	tmkeeper *tmkeeper.Keeper,
-	staking *stakingkeeper.Keeper,
+	tmkeeper types.TokenmanagerKeeper,
+	staking types.StakingKeeper,
+	bank types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -46,6 +42,7 @@ func NewKeeper(
 		memKey:     memKey,
 		tm:         tmkeeper,
 		staking:    staking,
+		bank:       bank,
 	}
 }
 

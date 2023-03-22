@@ -4,7 +4,7 @@ package rarimo.rarimocore.rarimocore;
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/params.proto";
-import "rarimocore/violdation_report.proto";
+import "rarimocore/violation_report.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -35,15 +35,17 @@ message MsgCreateViolationReport {
 message MsgCreateViolationReportResponse {}
 
 message MsgStake {
-  string account = 1;
-  string address = 2;
-  string trialPublicKey = 3;
+  string creator = 1;
+  string account = 2;
+  string address = 3;
+  string trialPublicKey = 4;
 }
 
 message MsgStakeResponse {}
 
 message MsgUnstake {
-  string account = 1;
+  string creator = 1;
+  string account = 2;
 }
 
 message MsgUnstakeResponse {}

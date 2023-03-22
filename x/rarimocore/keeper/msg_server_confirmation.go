@@ -20,11 +20,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(err, "invalid signature")
 	}
 
-	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
-		return nil, err
+	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
+		return nil, sdkerrors.Wrap(err, "creator is not an active party")
 	}
 
 	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
@@ -48,7 +48,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		content, err := k.getContent(ctx, op)
 		if err != nil {
-			return nil, err
+			return nil, sdkerrors.Wrap(err, "failed to get content")
 		}
 		contents = append(contents, content)
 	}
@@ -140,13 +140,11 @@ func (k msgServer) ApplyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 		}
 
 		params.Parties[i].PubKey = op.Parties[i].PubKey
-		params.Parties[i].Verified = true
+		params.Parties[i].Status = op.Parties[i].Status
 	}
 
 	params.KeyECDSA = op.NewPublicKey
-	params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
-	params.IsUpdateRequired = false
-	k.SetParams(ctx, params)
+	k.UpdateParams(ctx, params)
 	return nil
 }
 
