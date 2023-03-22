@@ -17,6 +17,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUnjail{}, "oraclemanager/Unjail", nil)
 	cdc.RegisterConcrete(&MsgVote{}, "oraclemanager/Vote", nil)
 	cdc.RegisterConcrete(&OracleUnfreezeProposal{}, "oraclemanager/OracleUnfreezeProposal", nil)
+	cdc.RegisterConcrete(&ChangeParamsProposal{}, "oraclemanager/ChangeParamsProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +40,10 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
 		&OracleUnfreezeProposal{},
+	)
+	registry.RegisterImplementations(
+		(*govtypes.Content)(nil),
+		&ChangeParamsProposal{},
 	)
 	// this line is used by starport scaffolding # 3
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
