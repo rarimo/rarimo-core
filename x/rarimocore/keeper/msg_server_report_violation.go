@@ -48,8 +48,9 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 				if party.ViolationsCount+1 == params.MaxViolationsCount {
 					t.SetPartyStatus(ctx, msg.Offender, types.PartyStatus_Frozen)
 				}
+
+				return t.IncrementPartyViolationsCounter(ctx, msg.Offender)
 			}
-			return t.IncrementPartyViolationsCounter(ctx, msg.Offender)
 		}
 		return false
 	})
