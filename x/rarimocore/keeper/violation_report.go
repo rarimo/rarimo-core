@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -56,9 +57,9 @@ func (k Keeper) GetAllViolationReport(ctx sdk.Context) (list []types.ViolationRe
 
 func (k Keeper) IterateViolationReports(ctx sdk.Context, sessionId, offender string, f func(report types.ViolationReport) (stop bool)) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ViolationReportKeyPrefix))
+	storePrefix := bytes.Join([][]byte{[]byte(sessionId), []byte(offender)}, []byte("/"))
 
-	// TODO: fix me
-	iterator := sdk.KVStorePrefixIterator(store, []byte(operation))
+	iterator := sdk.KVStorePrefixIterator(store, storePrefix)
 
 	defer iterator.Close()
 	for ; iterator.Valid(); iterator.Next() {

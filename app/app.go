@@ -384,7 +384,6 @@ func New(
 		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
-		// FIX: why can pass by reference?
 		app.BankKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
