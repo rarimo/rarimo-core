@@ -54,17 +54,18 @@ func (k Keeper) GetAllViolationReport(ctx sdk.Context) (list []types.ViolationRe
 	return
 }
 
-//
-//func (k Keeper) IterateViolationReports(ctx sdk.Context, operation string, f func(report types.ViolationReport) (stop bool)) {
-//	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.VoteKeyPrefix))
-//	iterator := sdk.KVStorePrefixIterator(store, []byte(operation))
-//
-//	defer iterator.Close()
-//	for ; iterator.Valid(); iterator.Next() {
-//		var vote types.Vote
-//		k.cdc.MustUnmarshal(iterator.Value(), &vote)
-//		if f(vote) {
-//			break
-//		}
-//	}
-//}
+func (k Keeper) IterateViolationReports(ctx sdk.Context, sessionId, offender string, f func(report types.ViolationReport) (stop bool)) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ViolationReportKeyPrefix))
+
+	// TODO: fix me
+	iterator := sdk.KVStorePrefixIterator(store, []byte(operation))
+
+	defer iterator.Close()
+	for ; iterator.Valid(); iterator.Next() {
+		var report types.ViolationReport
+		k.cdc.MustUnmarshal(iterator.Value(), &report)
+		if f(report) {
+			break
+		}
+	}
+}

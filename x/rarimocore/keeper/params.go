@@ -35,6 +35,50 @@ func (k Keeper) UpdateLastSignature(ctx sdk.Context, sig string) {
 	k.SetParams(ctx, params)
 }
 
+func (k Keeper) SetPartyStatus(ctx sdk.Context, account string, status types.PartyStatus) (changed bool) {
+	params := k.GetParams(ctx)
+
+	var party *types.Party
+
+	for _, p := range params.Parties {
+		if p.Account == account {
+			party = p
+			break
+		}
+	}
+
+	if party == nil {
+		return false
+	}
+
+	party.Status = status
+	k.SetParams(ctx, params)
+
+	return true
+}
+
+func (k Keeper) IncrementPartyViolationsCounter(ctx sdk.Context, account string) (ok bool) {
+	params := k.GetParams(ctx)
+
+	var party *types.Party
+
+	for _, p := range params.Parties {
+		if p.Account == account {
+			party = p
+			break
+		}
+	}
+
+	if party == nil {
+		return false
+	}
+
+	party.ViolationsCount++
+	k.SetParams(ctx, params)
+
+	return true
+}
+
 func (k Keeper) getActivePartiesAmount(ctx sdk.Context) int {
 	activePartyCount := 0
 	params := k.GetParams(ctx)

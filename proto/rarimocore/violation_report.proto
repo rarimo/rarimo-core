@@ -12,12 +12,12 @@ enum ViolationType {
 message ViolationReportIndex {
   string sessionId = 1;
   string offender = 2;
+  ViolationType violationType = 3;
 }
 
 message ViolationReport {
   ViolationReportIndex index = 1;
-  ViolationType violationType = 2;
-  string sender = 3;
+  string sender = 2;
   // Optional message
-  string msg = 4;
+  string msg = 3;
 }
