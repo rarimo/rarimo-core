@@ -1,0 +1,58 @@
+syntax = "proto3";
+package rarimo.rarimocore.bridge;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "bridge/params.proto";
+import "bridge/hash.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/bridge/params";
+  }
+  rpc HashAll(QueryAllHashRequest) returns (QueryAllHashResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/bridge/hash";
+  }
+
+  rpc Hash(QueryGetHashRequest) returns (QueryGetHashResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/bridge/hash/{index}";
+  }
+  // this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryHashAllRequest is request type for the Query/Hashes RPC method.
+message QueryAllHashRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryAllHashResponse {
+  // params holds all the parameters of this module.
+  repeated Hash hash = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetHashRequest {
+  string index = 1;
+}
+
+message QueryGetHashResponse {
+  Hash hash = 1 [(gogoproto.nullable) = false];
+}
+
+// this line is used by starport scaffolding # 3

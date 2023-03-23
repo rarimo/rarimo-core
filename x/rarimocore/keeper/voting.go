@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"context"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
@@ -10,85 +8,28 @@ import (
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
-func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
-
-	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
-		return nil, err
-	}
-
-	operation, ok := k.GetOperation(ctx, msg.Operation)
+func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
+	operation, ok := k.GetOperation(ctx, vote.Index.Operation)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "operation not found")
+		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "operation not found")
 	}
 
-	k.SetVote(ctx, types.Vote{
-		Index: &types.VoteIndex{
-			Operation: msg.Operation,
-			Validator: msg.Creator,
-		},
-		Vote: msg.Vote,
-	})
+	k.SetVote(ctx, vote)
 
 	if operation.Status != types.OpStatus_INITIALIZED && operation.Status != types.OpStatus_NOT_APPROVED {
-		return &types.MsgVoteResponse{}, nil
+		return false, nil
 	}
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
-		sdk.NewAttribute(types.AttributeKeyVotingChoice, msg.Vote.String()),
+		sdk.NewAttribute(types.AttributeKeyVotingChoice, vote.Vote.String()),
 	))
 
-	yesResult := sdk.ZeroDec()
-	noResult := sdk.ZeroDec()
-
-	// Setting votes in validators map
-	k.IterateVotes(ctx, msg.Operation, func(vote types.Vote) (stop bool) {
-		voter := sdk.MustAccAddressFromBech32(vote.Index.Validator)
-
-		if validator := k.staking.Validator(ctx, sdk.ValAddress(voter)); validator != nil {
-			switch vote.Vote {
-			case types.VoteType_YES:
-				yesResult = yesResult.Add(validator.GetBondedTokens().ToDec())
-			case types.VoteType_NO:
-				noResult = noResult.Add(validator.GetBondedTokens().ToDec())
-			}
-		}
-
-		return false
-	})
-
-	params := k.GetParams(ctx)
-	quorum, _ := sdk.NewDecFromStr(params.VoteQuorum)
-	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
-
-	totalVotingPower := yesResult.Add(noResult)
-
-	// If there is not enough quorum of votes, finish the flow
-	percentVoting := totalVotingPower.Quo(k.staking.TotalBondedTokens(ctx).ToDec())
-	if percentVoting.LT(quorum) {
-		return &types.MsgVoteResponse{}, nil
-	}
-
-	if yesResult.Quo(totalVotingPower).GT(threshold) {
-		if err := k.ApproveOperation(ctx, operation); err != nil {
-			return nil, err
-		}
-
-		return &types.MsgVoteResponse{}, nil
-	}
-
-	if err := k.UnapproveOperation(ctx, operation); err != nil {
-		return nil, err
-	}
-
-	return &types.MsgVoteResponse{}, nil
+	return true, nil
 }
 
-func (k msgServer) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
+func (k Keeper) UnapproveOperation(ctx sdk.Context, op types.Operation) error {
 	op.Status = types.OpStatus_NOT_APPROVED
 	k.SetOperation(ctx, op)
 
@@ -100,7 +41,7 @@ func (k msgServer) UnapproveOperation(ctx sdk.Context, op types.Operation) error
 	return nil
 }
 
-func (k msgServer) ApproveOperation(ctx sdk.Context, op types.Operation) error {
+func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, _ := pkg.GetTransfer(op)
@@ -122,7 +63,7 @@ func (k msgServer) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 	return nil
 }
 
-func (k msgServer) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transfer) error {
+func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transfer) error {
 	data, ok := k.tm.GetCollectionData(ctx, &tokentypes.CollectionDataIndex{Chain: transfer.From.Chain, Address: transfer.From.Address})
 	if !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data does not exists")

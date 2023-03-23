@@ -8,7 +8,6 @@ import (
 	fmt "fmt"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
-	types "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -28,169 +27,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgCreateTransferOp struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	// Information to identify transfer
-	Tx      string `protobuf:"bytes,2,opt,name=tx,proto3" json:"tx,omitempty"`
-	EventId string `protobuf:"bytes,3,opt,name=eventId,proto3" json:"eventId,omitempty"`
-	Sender  string `protobuf:"bytes,4,opt,name=sender,proto3" json:"sender,omitempty"`
-	// Information about deposit
-	Receiver   string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
-	Amount     string `protobuf:"bytes,6,opt,name=amount,proto3" json:"amount,omitempty"`
-	BundleData string `protobuf:"bytes,7,opt,name=bundleData,proto3" json:"bundleData,omitempty"`
-	BundleSalt string `protobuf:"bytes,8,opt,name=bundleSalt,proto3" json:"bundleSalt,omitempty"`
-	// Information about current and target chains
-	From *types.OnChainItemIndex `protobuf:"bytes,9,opt,name=from,proto3" json:"from,omitempty"`
-	To   *types.OnChainItemIndex `protobuf:"bytes,10,opt,name=to,proto3" json:"to,omitempty"`
-	Meta *types.ItemMetadata     `protobuf:"bytes,11,opt,name=meta,proto3" json:"meta,omitempty"`
-}
-
-func (m *MsgCreateTransferOp) Reset()         { *m = MsgCreateTransferOp{} }
-func (m *MsgCreateTransferOp) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateTransferOp) ProtoMessage()    {}
-func (*MsgCreateTransferOp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{0}
-}
-func (m *MsgCreateTransferOp) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgCreateTransferOp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgCreateTransferOp.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgCreateTransferOp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateTransferOp.Merge(m, src)
-}
-func (m *MsgCreateTransferOp) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgCreateTransferOp) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateTransferOp.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgCreateTransferOp proto.InternalMessageInfo
-
-func (m *MsgCreateTransferOp) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetTx() string {
-	if m != nil {
-		return m.Tx
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetEventId() string {
-	if m != nil {
-		return m.EventId
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetSender() string {
-	if m != nil {
-		return m.Sender
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetReceiver() string {
-	if m != nil {
-		return m.Receiver
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetAmount() string {
-	if m != nil {
-		return m.Amount
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetBundleData() string {
-	if m != nil {
-		return m.BundleData
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetBundleSalt() string {
-	if m != nil {
-		return m.BundleSalt
-	}
-	return ""
-}
-
-func (m *MsgCreateTransferOp) GetFrom() *types.OnChainItemIndex {
-	if m != nil {
-		return m.From
-	}
-	return nil
-}
-
-func (m *MsgCreateTransferOp) GetTo() *types.OnChainItemIndex {
-	if m != nil {
-		return m.To
-	}
-	return nil
-}
-
-func (m *MsgCreateTransferOp) GetMeta() *types.ItemMetadata {
-	if m != nil {
-		return m.Meta
-	}
-	return nil
-}
-
-type MsgCreateTransferOpResponse struct {
-}
-
-func (m *MsgCreateTransferOpResponse) Reset()         { *m = MsgCreateTransferOpResponse{} }
-func (m *MsgCreateTransferOpResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateTransferOpResponse) ProtoMessage()    {}
-func (*MsgCreateTransferOpResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{1}
-}
-func (m *MsgCreateTransferOpResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgCreateTransferOpResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgCreateTransferOpResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgCreateTransferOpResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateTransferOpResponse.Merge(m, src)
-}
-func (m *MsgCreateTransferOpResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgCreateTransferOpResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateTransferOpResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgCreateTransferOpResponse proto.InternalMessageInfo
-
 type MsgCreateConfirmation struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	// hex-encoded
@@ -204,7 +40,7 @@ func (m *MsgCreateConfirmation) Reset()         { *m = MsgCreateConfirmation{} }
 func (m *MsgCreateConfirmation) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateConfirmation) ProtoMessage()    {}
 func (*MsgCreateConfirmation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{2}
+	return fileDescriptor_d9dffb74ddf0d475, []int{0}
 }
 func (m *MsgCreateConfirmation) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -268,7 +104,7 @@ func (m *MsgCreateConfirmationResponse) Reset()         { *m = MsgCreateConfirma
 func (m *MsgCreateConfirmationResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateConfirmationResponse) ProtoMessage()    {}
 func (*MsgCreateConfirmationResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{3}
+	return fileDescriptor_d9dffb74ddf0d475, []int{1}
 }
 func (m *MsgCreateConfirmationResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -308,7 +144,7 @@ func (m *MsgCreateChangePartiesOp) Reset()         { *m = MsgCreateChangeParties
 func (m *MsgCreateChangePartiesOp) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateChangePartiesOp) ProtoMessage()    {}
 func (*MsgCreateChangePartiesOp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{4}
+	return fileDescriptor_d9dffb74ddf0d475, []int{2}
 }
 func (m *MsgCreateChangePartiesOp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -372,7 +208,7 @@ func (m *MsgCreateChangePartiesOpResponse) Reset()         { *m = MsgCreateChang
 func (m *MsgCreateChangePartiesOpResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateChangePartiesOpResponse) ProtoMessage()    {}
 func (*MsgCreateChangePartiesOpResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{5}
+	return fileDescriptor_d9dffb74ddf0d475, []int{3}
 }
 func (m *MsgCreateChangePartiesOpResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -411,7 +247,7 @@ func (m *MsgSetupInitial) Reset()         { *m = MsgSetupInitial{} }
 func (m *MsgSetupInitial) String() string { return proto.CompactTextString(m) }
 func (*MsgSetupInitial) ProtoMessage()    {}
 func (*MsgSetupInitial) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{6}
+	return fileDescriptor_d9dffb74ddf0d475, []int{4}
 }
 func (m *MsgSetupInitial) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -468,7 +304,7 @@ func (m *MsgSetupInitialResponse) Reset()         { *m = MsgSetupInitialResponse
 func (m *MsgSetupInitialResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetupInitialResponse) ProtoMessage()    {}
 func (*MsgSetupInitialResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{7}
+	return fileDescriptor_d9dffb74ddf0d475, []int{5}
 }
 func (m *MsgSetupInitialResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -506,7 +342,7 @@ func (m *MsgChangePartyAddress) Reset()         { *m = MsgChangePartyAddress{} }
 func (m *MsgChangePartyAddress) String() string { return proto.CompactTextString(m) }
 func (*MsgChangePartyAddress) ProtoMessage()    {}
 func (*MsgChangePartyAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{8}
+	return fileDescriptor_d9dffb74ddf0d475, []int{6}
 }
 func (m *MsgChangePartyAddress) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -556,7 +392,7 @@ func (m *MsgChangePartyAddressResponse) Reset()         { *m = MsgChangePartyAdd
 func (m *MsgChangePartyAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgChangePartyAddressResponse) ProtoMessage()    {}
 func (*MsgChangePartyAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{9}
+	return fileDescriptor_d9dffb74ddf0d475, []int{7}
 }
 func (m *MsgChangePartyAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -585,105 +421,7 @@ func (m *MsgChangePartyAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgChangePartyAddressResponse proto.InternalMessageInfo
 
-type MsgVote struct {
-	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Operation string   `protobuf:"bytes,2,opt,name=operation,proto3" json:"operation,omitempty"`
-	Vote      VoteType `protobuf:"varint,3,opt,name=vote,proto3,enum=rarimo.rarimocore.rarimocore.VoteType" json:"vote,omitempty"`
-}
-
-func (m *MsgVote) Reset()         { *m = MsgVote{} }
-func (m *MsgVote) String() string { return proto.CompactTextString(m) }
-func (*MsgVote) ProtoMessage()    {}
-func (*MsgVote) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{10}
-}
-func (m *MsgVote) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgVote) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgVote.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgVote) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgVote.Merge(m, src)
-}
-func (m *MsgVote) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgVote) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgVote.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgVote proto.InternalMessageInfo
-
-func (m *MsgVote) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgVote) GetOperation() string {
-	if m != nil {
-		return m.Operation
-	}
-	return ""
-}
-
-func (m *MsgVote) GetVote() VoteType {
-	if m != nil {
-		return m.Vote
-	}
-	return VoteType_YES
-}
-
-type MsgVoteResponse struct {
-}
-
-func (m *MsgVoteResponse) Reset()         { *m = MsgVoteResponse{} }
-func (m *MsgVoteResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgVoteResponse) ProtoMessage()    {}
-func (*MsgVoteResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d9dffb74ddf0d475, []int{11}
-}
-func (m *MsgVoteResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgVoteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgVoteResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgVoteResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgVoteResponse.Merge(m, src)
-}
-func (m *MsgVoteResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgVoteResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgVoteResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgVoteResponse proto.InternalMessageInfo
-
 func init() {
-	proto.RegisterType((*MsgCreateTransferOp)(nil), "rarimo.rarimocore.rarimocore.MsgCreateTransferOp")
-	proto.RegisterType((*MsgCreateTransferOpResponse)(nil), "rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse")
 	proto.RegisterType((*MsgCreateConfirmation)(nil), "rarimo.rarimocore.rarimocore.MsgCreateConfirmation")
 	proto.RegisterType((*MsgCreateConfirmationResponse)(nil), "rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse")
 	proto.RegisterType((*MsgCreateChangePartiesOp)(nil), "rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOp")
@@ -692,63 +430,44 @@ func init() {
 	proto.RegisterType((*MsgSetupInitialResponse)(nil), "rarimo.rarimocore.rarimocore.MsgSetupInitialResponse")
 	proto.RegisterType((*MsgChangePartyAddress)(nil), "rarimo.rarimocore.rarimocore.MsgChangePartyAddress")
 	proto.RegisterType((*MsgChangePartyAddressResponse)(nil), "rarimo.rarimocore.rarimocore.MsgChangePartyAddressResponse")
-	proto.RegisterType((*MsgVote)(nil), "rarimo.rarimocore.rarimocore.MsgVote")
-	proto.RegisterType((*MsgVoteResponse)(nil), "rarimo.rarimocore.rarimocore.MsgVoteResponse")
 }
 
 func init() { proto.RegisterFile("rarimocore/tx.proto", fileDescriptor_d9dffb74ddf0d475) }
 
 var fileDescriptor_d9dffb74ddf0d475 = []byte{
-	// 779 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xcf, 0x4f, 0x1b, 0x47,
-	0x14, 0x66, 0x6d, 0xd7, 0xe0, 0x07, 0x72, 0xd5, 0x41, 0x94, 0xed, 0xd6, 0x6c, 0xad, 0xad, 0x8a,
-	0x38, 0x14, 0x9b, 0x1a, 0xb5, 0x52, 0x8b, 0x54, 0x41, 0x4d, 0x0f, 0x6e, 0x65, 0x41, 0x6c, 0x94,
-	0x43, 0x94, 0xcb, 0xd8, 0x7e, 0x2c, 0xab, 0x78, 0x67, 0x56, 0xb3, 0x63, 0x6c, 0x1f, 0x72, 0x0d,
-	0xb7, 0x28, 0xa7, 0xfc, 0x1b, 0x39, 0xe4, 0x9f, 0xc8, 0x91, 0x63, 0x8e, 0x11, 0xfc, 0x23, 0xd1,
-	0xfe, 0xf4, 0x62, 0x9b, 0xc5, 0x70, 0xf2, 0xce, 0xf7, 0xbd, 0xef, 0xbd, 0xef, 0xf9, 0xcd, 0x5b,
-	0x2d, 0xac, 0x0b, 0x2a, 0x2c, 0x9b, 0x77, 0xb9, 0xc0, 0xaa, 0x1c, 0x55, 0x1c, 0xc1, 0x25, 0x27,
-	0xa5, 0x00, 0xac, 0x4c, 0xb8, 0xc4, 0xa3, 0xa6, 0x25, 0x24, 0xdc, 0x41, 0x41, 0xa5, 0xc5, 0x59,
-	0xa0, 0xd4, 0xb6, 0x12, 0x5c, 0x97, 0xb3, 0x73, 0x4b, 0xd8, 0x49, 0x7a, 0x53, 0xf2, 0x57, 0xc8,
-	0x6c, 0xca, 0xa8, 0x89, 0xa2, 0x6a, 0x49, 0xb4, 0x23, 0x22, 0xa1, 0x73, 0xa8, 0xa0, 0xb6, 0x1b,
-	0x12, 0x1b, 0x09, 0xe2, 0x92, 0x4b, 0x0c, 0x60, 0xe3, 0x43, 0x16, 0xd6, 0x9b, 0xae, 0x59, 0x17,
-	0x48, 0x25, 0x9e, 0x09, 0xca, 0xdc, 0x73, 0x14, 0x27, 0x0e, 0x51, 0x61, 0xb9, 0xeb, 0x61, 0x5c,
-	0xa8, 0x4a, 0x59, 0xd9, 0x29, 0xb4, 0xa2, 0x23, 0x29, 0x42, 0x46, 0x8e, 0xd4, 0x8c, 0x0f, 0x66,
-	0xe4, 0xc8, 0x8b, 0xc4, 0x4b, 0x64, 0xb2, 0xd1, 0x53, 0xb3, 0x41, 0x64, 0x78, 0x24, 0xdf, 0x43,
-	0xde, 0x45, 0xd6, 0x43, 0xa1, 0xe6, 0x7c, 0x22, 0x3c, 0x11, 0x0d, 0x56, 0x04, 0x76, 0xd1, 0xba,
-	0x44, 0xa1, 0x7e, 0xe3, 0x33, 0xf1, 0xd9, 0xd3, 0x50, 0x9b, 0x0f, 0x98, 0x54, 0xf3, 0x81, 0x26,
-	0x38, 0x11, 0x1d, 0xa0, 0x33, 0x60, 0xbd, 0x3e, 0x1e, 0x53, 0x49, 0xd5, 0x65, 0x9f, 0x4b, 0x20,
-	0x13, 0xbe, 0x4d, 0xfb, 0x52, 0x5d, 0x49, 0xf2, 0x1e, 0x42, 0x8e, 0x21, 0x77, 0x2e, 0xb8, 0xad,
-	0x16, 0xca, 0xca, 0xce, 0x6a, 0x6d, 0xaf, 0x32, 0x3b, 0x98, 0xe4, 0x3f, 0x5a, 0x39, 0x61, 0xf5,
-	0x0b, 0x6a, 0xb1, 0x86, 0x44, 0xbb, 0xc1, 0x7a, 0x38, 0x6a, 0xf9, 0x6a, 0x72, 0x08, 0x19, 0xc9,
-	0x55, 0x78, 0x62, 0x8e, 0x8c, 0xe4, 0xe4, 0x10, 0x72, 0x36, 0x4a, 0xaa, 0xae, 0xfa, 0x39, 0x7e,
-	0x7d, 0x28, 0x87, 0x27, 0x6e, 0xa2, 0xa4, 0x3d, 0x2a, 0x69, 0xcb, 0x57, 0x1a, 0x5b, 0xf0, 0xe3,
-	0x9c, 0x81, 0xb5, 0xd0, 0x75, 0x38, 0x73, 0xd1, 0xb8, 0x52, 0x60, 0x23, 0xe6, 0xeb, 0x89, 0x9b,
-	0x93, 0x32, 0x52, 0x02, 0x39, 0xc1, 0xb9, 0x0c, 0x87, 0xea, 0x3f, 0x7b, 0xd1, 0x96, 0xe7, 0x1a,
-	0x5d, 0x35, 0x5b, 0xce, 0x7a, 0xd1, 0xe1, 0x91, 0x6c, 0x43, 0xd1, 0xb5, 0x4c, 0x46, 0xe5, 0x40,
-	0xe0, 0xbf, 0xf5, 0xe3, 0xf6, 0x51, 0x38, 0xde, 0x29, 0xd4, 0xf8, 0x09, 0xb6, 0xe6, 0x1a, 0x89,
-	0xad, 0x7e, 0x54, 0x40, 0x9d, 0x44, 0x5c, 0x50, 0x66, 0xe2, 0x29, 0x15, 0xd2, 0x42, 0x37, 0xf5,
-	0x02, 0x1e, 0x40, 0x9e, 0xe1, 0xb0, 0x8d, 0x9e, 0xdf, 0xec, 0xce, 0x6a, 0xed, 0xe7, 0x4a, 0xda,
-	0x96, 0x55, 0xbc, 0x94, 0xe3, 0x56, 0x28, 0x21, 0x06, 0xac, 0x31, 0x1c, 0x9e, 0x0e, 0x3a, 0x7d,
-	0xab, 0xfb, 0x3f, 0x8e, 0xc3, 0x2b, 0x7b, 0x07, 0x23, 0x25, 0x28, 0xc4, 0xad, 0x84, 0xbd, 0x4d,
-	0x00, 0xc3, 0x80, 0xf2, 0x7d, 0xa6, 0xe3, 0xce, 0x86, 0xf0, 0x6d, 0xd3, 0x35, 0xdb, 0x28, 0x07,
-	0x4e, 0x83, 0x59, 0xd2, 0xa2, 0xfd, 0x94, 0x7e, 0xb6, 0xa1, 0xe8, 0x78, 0x1e, 0x27, 0xa6, 0x82,
-	0x39, 0x4c, 0xa1, 0x8b, 0x58, 0x37, 0x7e, 0x80, 0xcd, 0xa9, 0xc2, 0xb1, 0xa7, 0x67, 0xc1, 0xbd,
-	0x88, 0x1d, 0x8f, 0x8f, 0x7a, 0x3d, 0x81, 0xae, 0x9b, 0xe2, 0x4c, 0x07, 0x60, 0x38, 0x0c, 0xe3,
-	0x42, 0x57, 0x09, 0x24, 0x9a, 0xf0, 0x4c, 0xca, 0xb8, 0xe6, 0x6b, 0x58, 0x6e, 0xba, 0xe6, 0x73,
-	0x2e, 0x31, 0xa5, 0x4a, 0x09, 0x0a, 0xf1, 0xdb, 0x2f, 0x2c, 0x32, 0x01, 0xc8, 0x5f, 0x90, 0xf3,
-	0x5e, 0x57, 0x7e, 0xb7, 0xc5, 0xda, 0x76, 0xfa, 0xac, 0xbd, 0x4a, 0x67, 0x63, 0x07, 0x5b, 0xbe,
-	0xc6, 0xf8, 0xce, 0x1f, 0x83, 0x07, 0x46, 0x8e, 0x6a, 0x6f, 0xf3, 0x90, 0x6d, 0xba, 0x26, 0xb9,
-	0x52, 0x60, 0x73, 0x7a, 0x87, 0xa2, 0x92, 0xbf, 0xa5, 0x17, 0x99, 0xb3, 0x7d, 0xda, 0x9f, 0x8f,
-	0x96, 0x44, 0x8e, 0xc8, 0x7b, 0x05, 0x4a, 0x73, 0x6f, 0x53, 0x64, 0xe7, 0x8f, 0x05, 0x73, 0x4f,
-	0xc9, 0xb5, 0xbf, 0x9f, 0xa6, 0x8b, 0x8d, 0xbd, 0x51, 0x80, 0xcc, 0x79, 0x8d, 0xec, 0x2f, 0x9a,
-	0x36, 0x21, 0xd2, 0x0e, 0x9e, 0x20, 0x8a, 0x8d, 0x48, 0x58, 0xbb, 0xb3, 0x4a, 0xbb, 0x0f, 0x26,
-	0x4b, 0x86, 0x6b, 0xbf, 0x3f, 0x2a, 0xfc, 0x6e, 0xfb, 0xb3, 0xdb, 0xb2, 0x40, 0xfb, 0x33, 0xa2,
-	0x45, 0xda, 0xbf, 0x77, 0x89, 0xc8, 0x4b, 0xc8, 0xf9, 0x1b, 0xf4, 0xcb, 0x83, 0x49, 0xbc, 0x30,
-	0x6d, 0x77, 0xa1, 0xb0, 0x28, 0xfb, 0x3f, 0xff, 0x7d, 0xba, 0xd1, 0x95, 0xeb, 0x1b, 0x5d, 0xf9,
-	0x72, 0xa3, 0x2b, 0xef, 0x6e, 0xf5, 0xa5, 0xeb, 0x5b, 0x7d, 0xe9, 0xf3, 0xad, 0xbe, 0xf4, 0x62,
-	0xcf, 0xb4, 0x64, 0x9f, 0x76, 0x2a, 0x5d, 0x6e, 0x57, 0x83, 0x04, 0xe1, 0xcf, 0xae, 0xff, 0x11,
-	0x31, 0xaa, 0x26, 0xbf, 0x78, 0xc6, 0x0e, 0xba, 0x9d, 0xbc, 0xff, 0x4d, 0xb1, 0xff, 0x35, 0x00,
-	0x00, 0xff, 0xff, 0x93, 0x34, 0x59, 0x61, 0x0c, 0x09, 0x00, 0x00,
+	// 498 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0x8e, 0x71, 0x54, 0xd4, 0xa1, 0x2a, 0xd2, 0x22, 0x54, 0x63, 0xa5, 0x26, 0x32, 0x52, 0xd5,
+	0x4b, 0x1d, 0xd4, 0x0a, 0x2e, 0x95, 0x90, 0x4a, 0xe0, 0x00, 0x28, 0xa2, 0x24, 0x37, 0x6e, 0x1b,
+	0x67, 0x30, 0x2b, 0x25, 0xbb, 0xd6, 0xee, 0x46, 0x49, 0x5e, 0x00, 0xae, 0x9c, 0x78, 0x04, 0x5e,
+	0x80, 0x97, 0xe0, 0xd8, 0x23, 0x47, 0x94, 0xbc, 0x08, 0xf2, 0x4f, 0x9c, 0xcd, 0x9f, 0x09, 0x3d,
+	0x79, 0xf7, 0x9b, 0xf9, 0x66, 0xbf, 0x6f, 0x77, 0x3c, 0xf0, 0x40, 0x52, 0xc9, 0x06, 0x22, 0x14,
+	0x12, 0x1b, 0x7a, 0x1c, 0xc4, 0x52, 0x68, 0x41, 0x6a, 0x19, 0x18, 0x2c, 0x62, 0xc6, 0xd2, 0x75,
+	0x0d, 0x8a, 0x88, 0x51, 0x52, 0xcd, 0x04, 0xcf, 0x98, 0xee, 0xb1, 0x11, 0x0b, 0x05, 0xff, 0xc4,
+	0xe4, 0xc0, 0x0c, 0x1f, 0x19, 0xe1, 0x98, 0x4a, 0x3a, 0x50, 0x59, 0xc0, 0xff, 0x6a, 0xc1, 0xc3,
+	0x96, 0x8a, 0x9a, 0x12, 0xa9, 0xc6, 0xa6, 0x41, 0x24, 0x0e, 0xdc, 0x0d, 0x13, 0x54, 0x48, 0xc7,
+	0xaa, 0x5b, 0xa7, 0xfb, 0xed, 0xf9, 0x96, 0x10, 0xa8, 0x4a, 0x21, 0xb4, 0x73, 0x27, 0x85, 0xd3,
+	0x75, 0x92, 0xcd, 0x78, 0x0f, 0xc7, 0xa8, 0x1c, 0xbb, 0x6e, 0x27, 0xd9, 0xf9, 0x96, 0x9c, 0xc0,
+	0xa1, 0x62, 0x11, 0xa7, 0x7a, 0x28, 0xf1, 0x75, 0xf3, 0x55, 0xe7, 0xca, 0xa9, 0xa6, 0xbc, 0x15,
+	0xd4, 0x7f, 0x0c, 0xc7, 0x1b, 0x85, 0xb4, 0x51, 0xc5, 0x82, 0x2b, 0xf4, 0x7f, 0x5a, 0xe0, 0x2c,
+	0x32, 0x3e, 0x53, 0x1e, 0xe1, 0x35, 0x95, 0x9a, 0xa1, 0x7a, 0x1f, 0x97, 0xa8, 0xbd, 0x84, 0x3d,
+	0x8e, 0xa3, 0x0e, 0x26, 0x7a, 0xed, 0xd3, 0x7b, 0xe7, 0x4f, 0x82, 0xb2, 0x4b, 0x0e, 0x92, 0x92,
+	0x93, 0x76, 0x4e, 0x21, 0x3e, 0x1c, 0x70, 0x1c, 0x5d, 0x0f, 0xbb, 0x7d, 0x16, 0xbe, 0xc3, 0x89,
+	0x63, 0xa7, 0xb5, 0x97, 0x30, 0x52, 0x83, 0xfd, 0xc2, 0x4a, 0xee, 0x6d, 0x01, 0xf8, 0x3e, 0xd4,
+	0xb7, 0x89, 0x2e, 0x9c, 0x8d, 0xe0, 0x7e, 0x4b, 0x45, 0x1d, 0xd4, 0xc3, 0xf8, 0x0d, 0x67, 0x9a,
+	0xd1, 0x7e, 0x89, 0x9f, 0x13, 0x38, 0x8c, 0x13, 0x8d, 0x0b, 0x51, 0xd9, 0x3b, 0xac, 0xa0, 0xbb,
+	0x48, 0xf7, 0x1f, 0xc1, 0xd1, 0xca, 0xc1, 0x85, 0xa6, 0x0f, 0x59, 0x5f, 0x14, 0x8a, 0x27, 0x57,
+	0xbd, 0x9e, 0x44, 0xa5, 0x4a, 0x94, 0x79, 0x00, 0x1c, 0x47, 0x79, 0x5e, 0xae, 0xca, 0x40, 0xe6,
+	0x2f, 0xbc, 0x56, 0x72, 0x7e, 0xe6, 0xf9, 0x8f, 0x2a, 0xd8, 0x2d, 0x15, 0x91, 0xef, 0x16, 0xd4,
+	0x36, 0xde, 0x58, 0xde, 0xf3, 0xe4, 0x79, 0xf9, 0x1b, 0x6e, 0xbb, 0x70, 0xf7, 0xc5, 0xed, 0x78,
+	0x73, 0x81, 0xe4, 0x8b, 0x05, 0x64, 0xc3, 0xaf, 0x72, 0xb1, 0x6b, 0x59, 0x83, 0xe4, 0x5e, 0xde,
+	0x82, 0x54, 0x08, 0xd1, 0x70, 0xb0, 0xd4, 0x2e, 0x67, 0xff, 0x2c, 0x66, 0xa6, 0xbb, 0xcf, 0xfe,
+	0x2b, 0x7d, 0xd9, 0xfe, 0x7a, 0x47, 0xec, 0x60, 0x7f, 0x8d, 0xb4, 0x8b, 0xfd, 0xad, 0x8d, 0xf2,
+	0xf2, 0xed, 0xaf, 0xa9, 0x67, 0xdd, 0x4c, 0x3d, 0xeb, 0xcf, 0xd4, 0xb3, 0xbe, 0xcd, 0xbc, 0xca,
+	0xcd, 0xcc, 0xab, 0xfc, 0x9e, 0x79, 0x95, 0x8f, 0x4f, 0x23, 0xa6, 0xfb, 0xb4, 0x1b, 0x84, 0x62,
+	0xd0, 0xc8, 0xca, 0xe5, 0x9f, 0xb3, 0x74, 0xf6, 0x8d, 0x1b, 0xe6, 0xd8, 0x9d, 0xc4, 0xa8, 0xba,
+	0x7b, 0xe9, 0x20, 0xbc, 0xf8, 0x1b, 0x00, 0x00, 0xff, 0xff, 0x92, 0x4c, 0xa4, 0xe5, 0x91, 0x05,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -763,12 +482,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	CreateTransferOperation(ctx context.Context, in *MsgCreateTransferOp, opts ...grpc.CallOption) (*MsgCreateTransferOpResponse, error)
 	CreateChangePartiesOperation(ctx context.Context, in *MsgCreateChangePartiesOp, opts ...grpc.CallOption) (*MsgCreateChangePartiesOpResponse, error)
 	CreateConfirmation(ctx context.Context, in *MsgCreateConfirmation, opts ...grpc.CallOption) (*MsgCreateConfirmationResponse, error)
 	SetupInitial(ctx context.Context, in *MsgSetupInitial, opts ...grpc.CallOption) (*MsgSetupInitialResponse, error)
 	ChangePartyAddress(ctx context.Context, in *MsgChangePartyAddress, opts ...grpc.CallOption) (*MsgChangePartyAddressResponse, error)
-	Vote(ctx context.Context, in *MsgVote, opts ...grpc.CallOption) (*MsgVoteResponse, error)
 }
 
 type msgClient struct {
@@ -777,15 +494,6 @@ type msgClient struct {
 
 func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
-}
-
-func (c *msgClient) CreateTransferOperation(ctx context.Context, in *MsgCreateTransferOp, opts ...grpc.CallOption) (*MsgCreateTransferOpResponse, error) {
-	out := new(MsgCreateTransferOpResponse)
-	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/CreateTransferOperation", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *msgClient) CreateChangePartiesOperation(ctx context.Context, in *MsgCreateChangePartiesOp, opts ...grpc.CallOption) (*MsgCreateChangePartiesOpResponse, error) {
@@ -824,32 +532,18 @@ func (c *msgClient) ChangePartyAddress(ctx context.Context, in *MsgChangePartyAd
 	return out, nil
 }
 
-func (c *msgClient) Vote(ctx context.Context, in *MsgVote, opts ...grpc.CallOption) (*MsgVoteResponse, error) {
-	out := new(MsgVoteResponse)
-	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.rarimocore.Msg/Vote", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	CreateTransferOperation(context.Context, *MsgCreateTransferOp) (*MsgCreateTransferOpResponse, error)
 	CreateChangePartiesOperation(context.Context, *MsgCreateChangePartiesOp) (*MsgCreateChangePartiesOpResponse, error)
 	CreateConfirmation(context.Context, *MsgCreateConfirmation) (*MsgCreateConfirmationResponse, error)
 	SetupInitial(context.Context, *MsgSetupInitial) (*MsgSetupInitialResponse, error)
 	ChangePartyAddress(context.Context, *MsgChangePartyAddress) (*MsgChangePartyAddressResponse, error)
-	Vote(context.Context, *MsgVote) (*MsgVoteResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) CreateTransferOperation(ctx context.Context, req *MsgCreateTransferOp) (*MsgCreateTransferOpResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateTransferOperation not implemented")
-}
 func (*UnimplementedMsgServer) CreateChangePartiesOperation(ctx context.Context, req *MsgCreateChangePartiesOp) (*MsgCreateChangePartiesOpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateChangePartiesOperation not implemented")
 }
@@ -862,30 +556,9 @@ func (*UnimplementedMsgServer) SetupInitial(ctx context.Context, req *MsgSetupIn
 func (*UnimplementedMsgServer) ChangePartyAddress(ctx context.Context, req *MsgChangePartyAddress) (*MsgChangePartyAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePartyAddress not implemented")
 }
-func (*UnimplementedMsgServer) Vote(ctx context.Context, req *MsgVote) (*MsgVoteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Vote not implemented")
-}
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
-}
-
-func _Msg_CreateTransferOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateTransferOp)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateTransferOperation(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/CreateTransferOperation",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateTransferOperation(ctx, req.(*MsgCreateTransferOp))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_CreateChangePartiesOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -960,32 +633,10 @@ func _Msg_ChangePartyAddress_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_Vote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgVote)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).Vote(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/rarimo.rarimocore.rarimocore.Msg/Vote",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).Vote(ctx, req.(*MsgVote))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "rarimo.rarimocore.rarimocore.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "CreateTransferOperation",
-			Handler:    _Msg_CreateTransferOperation_Handler,
-		},
 		{
 			MethodName: "CreateChangePartiesOperation",
 			Handler:    _Msg_CreateChangePartiesOperation_Handler,
@@ -1002,151 +653,9 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			MethodName: "ChangePartyAddress",
 			Handler:    _Msg_ChangePartyAddress_Handler,
 		},
-		{
-			MethodName: "Vote",
-			Handler:    _Msg_Vote_Handler,
-		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "rarimocore/tx.proto",
-}
-
-func (m *MsgCreateTransferOp) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgCreateTransferOp) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgCreateTransferOp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Meta != nil {
-		{
-			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x5a
-	}
-	if m.To != nil {
-		{
-			size, err := m.To.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x52
-	}
-	if m.From != nil {
-		{
-			size, err := m.From.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.BundleSalt) > 0 {
-		i -= len(m.BundleSalt)
-		copy(dAtA[i:], m.BundleSalt)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.BundleSalt)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.BundleData) > 0 {
-		i -= len(m.BundleData)
-		copy(dAtA[i:], m.BundleData)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.BundleData)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if len(m.Amount) > 0 {
-		i -= len(m.Amount)
-		copy(dAtA[i:], m.Amount)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Amount)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Receiver) > 0 {
-		i -= len(m.Receiver)
-		copy(dAtA[i:], m.Receiver)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Receiver)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Sender) > 0 {
-		i -= len(m.Sender)
-		copy(dAtA[i:], m.Sender)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Sender)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.EventId) > 0 {
-		i -= len(m.EventId)
-		copy(dAtA[i:], m.EventId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.EventId)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Tx) > 0 {
-		i -= len(m.Tx)
-		copy(dAtA[i:], m.Tx)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Tx)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgCreateTransferOpResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgCreateTransferOpResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgCreateTransferOpResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
 }
 
 func (m *MsgCreateConfirmation) Marshal() (dAtA []byte, err error) {
@@ -1433,71 +942,6 @@ func (m *MsgChangePartyAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgVote) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgVote) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgVote) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Vote != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Vote))
-		i--
-		dAtA[i] = 0x18
-	}
-	if len(m.Operation) > 0 {
-		i -= len(m.Operation)
-		copy(dAtA[i:], m.Operation)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Operation)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgVoteResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgVoteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgVoteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1509,68 +953,6 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgCreateTransferOp) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Tx)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.EventId)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Sender)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Receiver)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Amount)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.BundleData)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.BundleSalt)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.From != nil {
-		l = m.From.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.To != nil {
-		l = m.To.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Meta != nil {
-		l = m.Meta.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgCreateTransferOpResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
 func (m *MsgCreateConfirmation) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1699,504 +1081,11 @@ func (m *MsgChangePartyAddressResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgVote) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Operation)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Vote != 0 {
-		n += 1 + sovTx(uint64(m.Vote))
-	}
-	return n
-}
-
-func (m *MsgVoteResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
 func sovTx(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (m *MsgCreateTransferOp) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateTransferOp: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateTransferOp: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Tx", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Tx = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EventId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.EventId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Sender", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Sender = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Receiver", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Receiver = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Amount = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 7:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BundleData", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.BundleData = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 8:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BundleSalt", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.BundleSalt = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 9:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.From == nil {
-				m.From = &types.OnChainItemIndex{}
-			}
-			if err := m.From.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 10:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field To", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.To == nil {
-				m.To = &types.OnChainItemIndex{}
-			}
-			if err := m.To.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 11:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Meta == nil {
-				m.Meta = &types.ItemMetadata{}
-			}
-			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgCreateTransferOpResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateTransferOpResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateTransferOpResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *MsgCreateConfirmation) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -2993,189 +1882,6 @@ func (m *MsgChangePartyAddressResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgChangePartyAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgVote) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgVote: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgVote: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Operation", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Operation = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
-			}
-			m.Vote = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Vote |= VoteType(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgVoteResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgVoteResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgVoteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

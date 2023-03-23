@@ -1,0 +1,19 @@
+syntax = "proto3";
+package rarimo.rarimocore.oraclemanager;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+
+// Params defines the parameters for the module.
+message Params {
+  string minOracleStake = 1;
+  uint64 checkOperationDelta = 2;
+  uint64 maxViolationsCount = 3;
+  uint64 maxMissedCount = 4;
+  uint64 slashedFreezeBlocks = 5;
+  uint64 minOraclesCount = 6;
+  string stakeDenom = 7;
+  string voteQuorum = 8;
+  string voteThreshold = 9;
+}

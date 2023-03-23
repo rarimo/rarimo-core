@@ -9,6 +9,13 @@ import (
 
 func (k Keeper) AddSignerPartyProposal(ctx sdk.Context, proposal *types.AddSignerPartyProposal) error {
 	params := k.GetParams(ctx)
+
+	for _, party := range params.Parties {
+		if party.Account == proposal.Account {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: already exists")
+		}
+	}
+
 	params.Parties = append(params.Parties, &types.Party{
 		PubKey:   proposal.TrialPublicKey,
 		Address:  proposal.Address,
@@ -50,6 +57,7 @@ func (k Keeper) ChangeThresholdProposal(ctx sdk.Context, proposal *types.ChangeT
 		params.Threshold = uint64(proposal.Threshold)
 		params.IsUpdateRequired = true
 		k.SetParams(ctx, params)
+		return nil
 	}
 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid threshold: must be less the N")
 }

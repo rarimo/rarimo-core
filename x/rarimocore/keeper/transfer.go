@@ -1,13 +1,13 @@
 package keeper
 
 import (
-	"context"
 	"math/big"
 
+	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/ethereum/go-ethereum/crypto"
+	oracletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
-	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -15,26 +15,13 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
-func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.MsgCreateTransferOp) (*types.MsgCreateTransferOpResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
-
-	if err := k.checkCreatorIsValidator(ctx, msg.Creator); err != nil {
-		return nil, err
-	}
-
+func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfer *types.Transfer, approved bool) error {
 	// Index is HASH(tx, event, chain)
-	index := hexutil.Encode(crypto.Keccak256([]byte(msg.Tx), []byte(msg.EventId), []byte(msg.From.Chain)))
+	index := hexutil.Encode(crypto.Keccak256([]byte(transfer.Tx), []byte(transfer.EventId), []byte(transfer.From.Chain)))
 
-	transferOp, err := k.GetTransfer(ctx, msg)
+	details, err := cosmostypes.NewAnyWithValue(transfer)
 	if err != nil {
-		return nil, err
-	}
-
-	details, err := cosmostypes.NewAnyWithValue(transferOp)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
 	}
 
 	var operation = types.Operation{
@@ -42,14 +29,17 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		OperationType: types.OpType_TRANSFER,
 		Details:       details,
 		Status:        types.OpStatus_INITIALIZED,
-		Creator:       msg.Creator,
+		Creator:       creator,
 		Timestamp:     uint64(ctx.BlockHeight()),
+	}
+
+	if approved {
+		operation.Status = types.OpStatus_APPROVED
 	}
 
 	if op, ok := k.GetOperation(ctx, index); ok {
 		if op.Status == types.OpStatus_INITIALIZED || op.Status == types.OpStatus_APPROVED {
-			// To change operation it should be unapproved or signed
-			return &types.MsgCreateTransferOpResponse{}, nil
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved or signed")
 		}
 
 		// Otherwise - clear votes
@@ -68,10 +58,11 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
-	return &types.MsgCreateTransferOpResponse{}, nil
+
+	return nil
 }
 
-func (k Keeper) GetTransfer(ctx sdk.Context, msg *types.MsgCreateTransferOp) (*types.Transfer, error) {
+func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferOp) (*types.Transfer, error) {
 	origin := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).
 		SetOpId(msg.EventId).
