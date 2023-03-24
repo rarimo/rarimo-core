@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	ProposalTypeAddSignerParty    = "AddSignerParty"
-	ProposalTypeRemoveSignerParty = "RemoveSignerParty"
-	ProposalTypeReshareKeys       = "ReshareKeys"
-	ProposalTypeChangeThreshold   = "ChangeThreshold"
+	ProposalTypeAddSignerParty    = "rarimocore/AddSignerParty"
+	ProposalTypeRemoveSignerParty = "rarimocore/RemoveSignerParty"
+	ProposalTypeReshareKeys       = "rarimocore/ReshareKeys"
+	ProposalTypeChangeThreshold   = "rarimocore/ChangeThreshold"
 )
 
 func init() {

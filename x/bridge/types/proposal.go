@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	ProposalTypeChangeParams = "ChangeParams"
+	ProposalTypeChangeParams = "bridge/ChangeParams"
 )
 
 func init() {
