@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	ProposalTypeOracleUnfreeze = "OracleUnfreeze"
-	ProposalTypeChangeParams   = "ChangeParams"
+	ProposalTypeOracleUnfreeze = "oraclemanager/OracleUnfreeze"
+	ProposalTypeChangeParams   = "oraclemanager/ChangeParams"
 )
 
 func init() {

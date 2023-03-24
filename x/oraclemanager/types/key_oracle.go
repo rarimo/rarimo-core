@@ -20,7 +20,7 @@ func OracleKey(
 	key = append(key, []byte(index.Chain)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(index.Chain)...)
+	key = append(key, []byte(index.Account)...)
 	key = append(key, []byte("/")...)
 
 	return key

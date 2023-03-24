@@ -5,9 +5,9 @@ import (
 )
 
 const (
-	ProposalTypeUnfreezeSignerParty = "UnfreezeSignerParty"
-	ProposalTypeReshareKeys         = "ReshareKeys"
-	ProposalTypeChangeThreshold     = "ChangeThreshold"
+	ProposalTypeUnfreezeSignerParty = "rarimocore/UnfreezeSignerParty"
+	ProposalTypeReshareKeys       = "rarimocore/ReshareKeys"
+	ProposalTypeChangeThreshold   = "rarimocore/ChangeThreshold"
 )
 
 func init() {
