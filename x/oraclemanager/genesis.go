@@ -12,6 +12,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// this line is used by starport scaffolding # genesis/module/init
 	for _, elem := range genState.Oracles {
 		k.SetOracle(ctx, elem)
+		if elem.Status == types.OracleStatus_Freezed {
+			k.AddToFreezedQueue(ctx, elem.FreezeEndBlock, elem.Index)
+		}
 	}
 
 	k.SetParams(ctx, genState.Params)
