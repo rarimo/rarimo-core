@@ -5,14 +5,14 @@ import (
 )
 
 const (
-	ProposalTypeSetNetwork           = "SetNetwork"
-	ProposalTypeUpdateTokenItem      = "UpdateTokenItem"
-	ProposalTypeRemoveTokenItem      = "RemoveTokenItem"
-	ProposalTypeCreateCollection     = "CreateCollection"
-	ProposalTypeUpdateCollectionData = "UpdateCollectionData"
-	ProposalTypeAddCollectionData    = "AddCollectionData"
-	ProposalTypeRemoveCollectionData = "RemoveCollectionData"
-	ProposalTypeRemoveCollection     = "RemoveCollection"
+	ProposalTypeSetNetwork           = "tokenmanager/SetNetwork"
+	ProposalTypeUpdateTokenItem      = "tokenmanager/UpdateTokenItem"
+	ProposalTypeRemoveTokenItem      = "tokenmanager/RemoveTokenItem"
+	ProposalTypeCreateCollection     = "tokenmanager/CreateCollection"
+	ProposalTypeUpdateCollectionData = "tokenmanager/UpdateCollectionData"
+	ProposalTypeAddCollectionData    = "tokenmanager/AddCollectionData"
+	ProposalTypeRemoveCollectionData = "tokenmanager/RemoveCollectionData"
+	ProposalTypeRemoveCollection     = "tokenmanager/RemoveCollection"
 )
 
 func init() {
