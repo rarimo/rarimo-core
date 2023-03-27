@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/binary"
-	"fmt"
 )
 
 var _ binary.ByteOrder
@@ -24,7 +23,10 @@ func ViolationReportKey(
 	key = append(key, []byte(index.Offender)...)
 	key = append(key, []byte("/")...)
 
-	key = append(key, []byte(fmt.Sprintf("%d", index.ViolationType))...)
+	key = append(key, []byte(index.ViolationType.String())...)
+	key = append(key, []byte("/")...)
+
+	key = append(key, []byte(index.Sender)...)
 	key = append(key, []byte("/")...)
 
 	return key

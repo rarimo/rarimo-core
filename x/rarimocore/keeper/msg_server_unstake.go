@@ -27,6 +27,10 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: not found")
 	}
 
+	if msg.Creator != party.Account || msg.Creator != party.Delegator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid party account: not authorized")
+	}
+
 	if party.Status == types.PartyStatus_Frozen || party.Status == types.PartyStatus_Slashed {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: frozen or slashed party cannot unstake")
 	}

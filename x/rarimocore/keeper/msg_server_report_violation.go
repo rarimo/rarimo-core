@@ -18,25 +18,29 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		return nil, sdkerrors.Wrap(err, "only active party can be reported")
 	}
 
-	_, found := t.GetViolationReport(ctx, types.NewViolationReportIndex(msg.SessionId, msg.Offender, msg.ViolationType))
+	index := types.NewViolationReportIndex(msg.SessionId, msg.Offender, msg.Creator, msg.ViolationType)
+
+	_, found := t.GetViolationReport(ctx, index)
 	if found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "session_id: %s, offender: %s, violation_type: %s", msg.SessionId, msg.Offender, msg.ViolationType)
+		return nil, sdkerrors.Wrapf(
+			sdkerrors.ErrConflict,
+			"session_id: %s, offender: %s, sender: %s violation_type: %s",
+			msg.SessionId,
+			msg.Offender,
+			msg.Creator,
+			msg.ViolationType,
+		)
 	}
 
 	t.SetViolationReport(ctx, types.ViolationReport{
-		Index: &types.ViolationReportIndex{
-			SessionId:     msg.SessionId,
-			Offender:      msg.Offender,
-			ViolationType: msg.ViolationType,
-		},
-		Sender: msg.Creator,
-		Msg:    msg.Msg,
+		Index: index,
+		Msg:   msg.Msg,
 	})
 
 	reports := 0
 	params := t.GetParams(ctx)
 
-	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, func(report types.ViolationReport) (stop bool) {
+	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, msg.ViolationType, func(report types.ViolationReport) (stop bool) {
 		reports++
 
 		if uint64(reports) == params.Threshold {

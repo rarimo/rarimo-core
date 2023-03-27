@@ -39,8 +39,8 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		Account: msg.Account,
 		Status:  types.PartyStatus_Active,
 	}
-	
-	if msg.Creator != msg.Address {
+
+	if msg.Creator != msg.Account {
 		party.Delegator = msg.Creator
 	}
 

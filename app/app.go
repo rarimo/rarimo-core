@@ -183,6 +183,7 @@ var (
 		govtypes.ModuleName:                 {authtypes.Burner},
 		ibctransfertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
 		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
+		rarimocoremoduletypes.ModuleName:    nil,
 		oraclemanagermoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}

@@ -13,11 +13,11 @@ message ViolationReportIndex {
   string sessionId = 1;
   string offender = 2;
   ViolationType violationType = 3;
+  string sender = 4;
 }
 
 message ViolationReport {
   ViolationReportIndex index = 1;
-  string sender = 2;
   // Optional message
   string msg = 3;
 }
