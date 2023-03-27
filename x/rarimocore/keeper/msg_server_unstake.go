@@ -15,13 +15,7 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 		return nil, err
 	}
 
-	var party *types.Party
-
-	for _, p := range params.Parties {
-		if p.Account == msg.Account {
-			party = p
-		}
-	}
+	party := getPartyByAccount(msg.Account, params.Parties)
 
 	if party == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: not found")

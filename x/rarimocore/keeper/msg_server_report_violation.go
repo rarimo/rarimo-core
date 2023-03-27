@@ -20,8 +20,7 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 
 	index := types.NewViolationReportIndex(msg.SessionId, msg.Offender, msg.Creator, msg.ViolationType)
 
-	_, found := t.GetViolationReport(ctx, index)
-	if found {
+	if _, found := t.GetViolationReport(ctx, index); found {
 		return nil, sdkerrors.Wrapf(
 			sdkerrors.ErrConflict,
 			"session_id: %s, offender: %s, sender: %s violation_type: %s",
@@ -37,27 +36,46 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		Msg:   msg.Msg,
 	})
 
-	reports := 0
 	params := t.GetParams(ctx)
+	reports := 0
 
 	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, msg.ViolationType, func(report types.ViolationReport) (stop bool) {
 		reports++
-
-		if uint64(reports) == params.Threshold {
-			for _, party := range params.Parties {
-				if party.Account != msg.Offender {
-					continue
-				}
-
-				if party.ViolationsCount+1 == params.MaxViolationsCount {
-					t.SetPartyStatus(ctx, msg.Offender, types.PartyStatus_Frozen)
-				}
-
-				return t.IncrementPartyViolationsCounter(ctx, msg.Offender)
-			}
-		}
-		return false
+		return uint64(reports) > params.Threshold
 	})
 
+	party := getPartyByAccount(msg.Offender, params.Parties)
+
+	if uint64(reports) == params.Threshold {
+		party.ViolationsCount++
+	}
+	if party.ViolationsCount == params.MaxViolationsCount {
+		party.Status = types.PartyStatus_Frozen
+		party.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.FreezeBlocksPeriod
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypePartyFrozen,
+			sdk.NewAttribute(types.AttributeKeyPartyAccount, party.Account),
+		))
+	}
+
+	t.UpdateParams(ctx, params)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewViolationReport,
+		sdk.NewAttribute(types.AttributeKeySessionId, msg.SessionId),
+		sdk.NewAttribute(sdk.AttributeKeySender, msg.Offender),
+		sdk.NewAttribute(types.AttributeKeyPartyAccount, msg.Offender),
+		sdk.NewAttribute(types.AttributeKeyViolationType, msg.ViolationType.String()),
+	))
+
 	return &types.MsgCreateViolationReportResponse{}, nil
+}
+
+func getPartyByAccount(account string, parties []*types.Party) *types.Party {
+	for _, party := range parties {
+		if party.Account == account {
+			return party
+		}
+	}
+
+	return nil
 }

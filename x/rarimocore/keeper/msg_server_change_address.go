@@ -12,13 +12,12 @@ func (k msgServer) ChangePartyAddress(goCtx context.Context, msg *types.MsgChang
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
-	for _, party := range params.Parties {
-		if party.Account == msg.Creator {
-			party.Address = msg.NewAddress
-			k.SetParams(ctx, params)
-			return &types.MsgChangePartyAddressResponse{}, nil
-		}
+	party := getPartyByAccount(msg.Creator, params.Parties)
+	if party == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "party not found")
 	}
 
-	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "party not found")
+	party.Address = msg.NewAddress
+	k.SetParams(ctx, params)
+	return &types.MsgChangePartyAddressResponse{}, nil
 }

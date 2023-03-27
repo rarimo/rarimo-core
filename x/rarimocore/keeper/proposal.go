@@ -28,6 +28,8 @@ func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.Unf
 	}
 
 	frozenSignerParty.Status = types.PartyStatus_Active
+	frozenSignerParty.ViolationsCount = 0
+	frozenSignerParty.FreezeEndBlock = 0
 
 	k.UpdateParams(ctx, params)
 

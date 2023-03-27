@@ -18,8 +18,11 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 }
 
 func (k Keeper) UpdateParams(ctx sdk.Context, params types.Params) {
-	params.Threshold = uint64(crypto.GetThreshold(k.getActivePartiesAmount(ctx)))
-	params.IsUpdateRequired = true
+	currentParams := k.GetParams(ctx)
+	activePartiesAmount := getActivePartiesAmount(params.Parties)
+
+	params.Threshold = uint64(crypto.GetThreshold(activePartiesAmount))
+	params.IsUpdateRequired = activePartiesAmount != getActivePartiesAmount(currentParams.Parties)
 
 	k.SetParams(ctx, params)
 }
@@ -35,55 +38,15 @@ func (k Keeper) UpdateLastSignature(ctx sdk.Context, sig string) {
 	k.SetParams(ctx, params)
 }
 
-func (k Keeper) SetPartyStatus(ctx sdk.Context, account string, status types.PartyStatus) (changed bool) {
-	params := k.GetParams(ctx)
-
-	var party *types.Party
-
-	for _, p := range params.Parties {
-		if p.Account == account {
-			party = p
-			break
-		}
-	}
-
-	if party == nil {
-		return false
-	}
-
-	party.Status = status
-	k.SetParams(ctx, params)
-
-	return true
-}
-
-func (k Keeper) IncrementPartyViolationsCounter(ctx sdk.Context, account string) (ok bool) {
-	params := k.GetParams(ctx)
-
-	var party *types.Party
-
-	for _, p := range params.Parties {
-		if p.Account == account {
-			party = p
-			break
-		}
-	}
-
-	if party == nil {
-		return false
-	}
-
-	party.ViolationsCount++
-	k.SetParams(ctx, params)
-
-	return true
-}
-
 func (k Keeper) getActivePartiesAmount(ctx sdk.Context) int {
-	activePartyCount := 0
 	params := k.GetParams(ctx)
+	return getActivePartiesAmount(params.Parties)
+}
 
-	for _, party := range params.Parties {
+func getActivePartiesAmount(parties []*types.Party) int {
+	activePartyCount := 0
+
+	for _, party := range parties {
 		if party.Status == types.PartyStatus_Active {
 			activePartyCount++
 		}
