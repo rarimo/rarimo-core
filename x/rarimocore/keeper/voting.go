@@ -79,22 +79,6 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 			OnChain:    []*tokentypes.OnChainItemIndex{transfer.From},
 		}
 
-		// Indexing seed and check if already exists. Meta not-nil validated during op creation
-		if item.Meta.Seed != "" {
-			if _, ok := k.tm.GetSeed(ctx, item.Meta.Seed); ok {
-				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "seed already exists")
-			}
-
-			k.tm.SetSeed(ctx, tokentypes.Seed{
-				Seed: item.Meta.Seed,
-				Item: item.Index,
-			})
-			ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeSeedCreated,
-				sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, item.Index),
-				sdk.NewAttribute(tokentypes.AttributeKeySeed, item.Meta.Seed),
-			))
-		}
-
 		k.tm.SetItem(ctx, item)
 		ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeItemCreated,
 			sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, item.Index),
@@ -110,6 +94,22 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 			sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, from.Item),
 			sdk.NewAttribute(tokentypes.AttributeKeyOnChainItemChain, from.Index.Chain),
 		))
+
+		// Indexing seed and check if already exists. Meta not-nil validated during op creation
+		if item.Meta.Seed != "" {
+			if _, ok := k.tm.GetSeed(ctx, item.Meta.Seed); ok {
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "seed already exists")
+			}
+
+			k.tm.SetSeed(ctx, tokentypes.Seed{
+				Seed: item.Meta.Seed,
+				Item: item.Index,
+			})
+			ctx.EventManager().EmitEvent(sdk.NewEvent(tokentypes.EventTypeSeedCreated,
+				sdk.NewAttribute(tokentypes.AttributeKeyItemIndex, item.Index),
+				sdk.NewAttribute(tokentypes.AttributeKeySeed, item.Meta.Seed),
+			))
+		}
 	}
 
 	to, ok := k.tm.GetOnChainItem(ctx, transfer.From)
