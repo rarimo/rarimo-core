@@ -55,9 +55,9 @@ func (k Keeper) GetAllViolationReport(ctx sdk.Context) (list []types.ViolationRe
 	return
 }
 
-func (k Keeper) IterateViolationReports(ctx sdk.Context, sessionId, offender string, violationType types.ViolationType, f func(report types.ViolationReport) (stop bool)) {
+func (k Keeper) IterateViolationReports(ctx sdk.Context, sessionId, offender string, f func(report types.ViolationReport) (stop bool)) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ViolationReportKeyPrefix))
-	storePrefix := bytes.Join([][]byte{[]byte(sessionId), []byte(offender), []byte(violationType.String())}, []byte("/"))
+	storePrefix := bytes.Join([][]byte{[]byte(sessionId), []byte(offender)}, []byte("/"))
 
 	iterator := sdk.KVStorePrefixIterator(store, storePrefix)
 

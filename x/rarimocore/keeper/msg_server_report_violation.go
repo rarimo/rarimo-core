@@ -37,16 +37,19 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 	})
 
 	params := t.GetParams(ctx)
-	reports := 0
+	reports := map[string]uint64{}
 
-	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, msg.ViolationType, func(report types.ViolationReport) (stop bool) {
-		reports++
-		return uint64(reports) > params.Threshold
+	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, func(report types.ViolationReport) (stop bool) {
+		if _, exist := reports[msg.Creator]; !exist {
+			reports[msg.Creator] = 1
+		}
+
+		return countReports(reports) > params.Threshold
 	})
 
 	party := getPartyByAccount(msg.Offender, params.Parties)
 
-	if uint64(reports) == params.Threshold {
+	if countReports(reports) == params.Threshold {
 		party.ViolationsCount++
 	}
 	if party.ViolationsCount == params.MaxViolationsCount {
@@ -78,4 +81,14 @@ func getPartyByAccount(account string, parties []*types.Party) *types.Party {
 	}
 
 	return nil
+}
+
+func countReports(reports map[string]uint64) uint64 {
+	reportsAmount := uint64(0)
+
+	for range reports {
+		reportsAmount++
+	}
+
+	return reportsAmount
 }
