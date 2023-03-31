@@ -57173,12 +57173,6 @@ definitions:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarimo.rarimocore.multisig.manageOpType:
-    type: string
-    enum:
-      - ADD
-      - REMOVE
-    default: ADD
   rarimo.rarimocore.oraclemanager.MsgCreateTransferOp:
     type: object
     properties:
