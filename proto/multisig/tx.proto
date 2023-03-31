@@ -1,0 +1,42 @@
+syntax = "proto3";
+package rarimo.rarimocore.multisig;
+
+import "google/protobuf/any.proto";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc SubmitOperation(MsgSubmitOperation) returns (MsgSubmitOperationResponse);
+  rpc CreateGroup(MsgCreateGroup) returns (MsgCreateGroupResponse);
+  rpc ChangeGroup(MsgChangeGroup) returns (MsgChangeGroupResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateGroup {
+  string creator = 1;
+  repeated string members = 2;
+  uint64 threshold = 3;
+}
+
+message MsgCreateGroupResponse {}
+
+message MsgSubmitOperation {
+  string creator = 1;
+  string group = 2;
+  repeated google.protobuf.Any messages = 3;
+}
+
+message MsgSubmitOperationResponse {}
+
+message MsgChangeGroup {
+  string creator = 1;
+  string group = 2;
+  repeated string members = 3;
+  uint64 threshold = 4;
+}
+
+message MsgChangeGroupResponse {}
+// this line is used by starport scaffolding # proto/tx/message

@@ -1,0 +1,56 @@
+syntax = "proto3";
+package rarimo.rarimocore.multisig;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "multisig/params.proto";
+import "multisig/group.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/params";
+  }
+
+  rpc GroupAll(QueryAllGroupRequest) returns (QueryAllGroupResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/group";
+  }
+
+  rpc Group(QueryGetGroupRequest) returns (QueryGetGroupResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/group/{account}";
+  }
+  // this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllGroupRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllGroupResponse {
+  repeated Group group = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetGroupRequest {
+  string account = 1;
+}
+
+message QueryGetGroupResponse {
+  Group group = 1 [(gogoproto.nullable) = false];
+}
+
+// this line is used by starport scaffolding # 3
