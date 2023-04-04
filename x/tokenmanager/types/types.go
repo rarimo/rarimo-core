@@ -1,21 +1,21 @@
 package types
 
 const (
-	EventTypeCollectionCreated = "collection_created"
-	EventTypeCollectionRemoved = "collection_removed"
+	EventTypeCollectionCreated = "collection_created" // emitted only from proposals
+	EventTypeCollectionRemoved = "collection_removed" // emitted only from proposals
 
-	EventTypeCollectionDataCreated = "collection_data_created"
-	EventTypeCollectionDataUpdated = "collection_data_updated"
-	EventTypeCollectionDataRemoved = "collection_data_removed"
+	EventTypeCollectionDataCreated = "collection_data_created" // emitted only from proposals
+	EventTypeCollectionDataUpdated = "collection_data_updated" // emitted only from proposals
+	EventTypeCollectionDataRemoved = "collection_data_removed" // emitted only from proposals
 
-	EventTypeItemCreated = "item_created"
-	EventTypeItemRemoved = "item_removed"
+	EventTypeItemCreated = "item_created" // emitted from both transactions and proposals
+	EventTypeItemRemoved = "item_removed" // emitted only from proposals
 
-	EventTypeSeedCreated = "seed_created"
-	EventTypeSeedRemoved = "seed_removed"
+	EventTypeSeedCreated = "seed_created" // emitted from both transactions and proposals
+	EventTypeSeedRemoved = "seed_removed" // emitted only from proposals
 
-	EventTypeOnChainItemCreated = "on_chain_item_created"
-	EventTypeOnChainItemRemoved = "on_chain_item_removed"
+	EventTypeOnChainItemCreated = "on_chain_item_created" // emitted from both transactions and proposals
+	EventTypeOnChainItemRemoved = "on_chain_item_removed" // emitted only from proposals
 
 	AttributeKeyCollectionIndex     = "collection_index"
 	AttributeKeyCollectionDataChain = "collection_data.chain"
