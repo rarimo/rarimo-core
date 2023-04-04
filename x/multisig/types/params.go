@@ -6,12 +6,15 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var ErrInvalidGroupSequence = fmt.Errorf("group sequence cannot 0")
+var ErrInvalidPeriod = fmt.Errorf("period cannot be 0")
 
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	ParamGroupSequence = []byte("GroupSequence")
+	ParamGroupSequence    = []byte("GroupSequence")
+	ParamProposalSequence = []byte("ProposalSequence")
+	ParamPrunePeriod      = []byte("PrunePeriod")
+	ParamVotingPeriod     = []byte("VotingPeriod")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -32,7 +35,10 @@ func DefaultParams() Params {
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(ParamGroupSequence, &p.GroupSequence, validateGroupSequence),
+		paramtypes.NewParamSetPair(ParamGroupSequence, &p.GroupSequence, validateSequence),
+		paramtypes.NewParamSetPair(ParamProposalSequence, &p.ProposalSequence, validateSequence),
+		paramtypes.NewParamSetPair(ParamPrunePeriod, &p.PrunePeriod, validatePeriod),
+		paramtypes.NewParamSetPair(ParamVotingPeriod, &p.VotingPeriod, validatePeriod),
 	}
 }
 
@@ -47,14 +53,23 @@ func (p Params) String() string {
 	return string(out)
 }
 
-func validateGroupSequence(i interface{}) error {
+func validateSequence(i interface{}) error {
+	_, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	return nil
+}
+
+func validatePeriod(i interface{}) error {
 	v, ok := i.(uint64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
 
 	if v == 0 {
-		return ErrInvalidGroupSequence
+		return ErrInvalidPeriod
 	}
 
 	return nil
