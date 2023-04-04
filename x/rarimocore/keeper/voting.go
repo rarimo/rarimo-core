@@ -112,7 +112,7 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		}
 	}
 
-	to, ok := k.tm.GetOnChainItem(ctx, transfer.From)
+	to, ok := k.tm.GetOnChainItem(ctx, transfer.To)
 	if !ok {
 		item, ok := k.tm.GetItem(ctx, from.Item)
 		if !ok {
