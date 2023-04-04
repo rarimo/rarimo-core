@@ -24,8 +24,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgChangeGroup:
 			res, err := msgServer.ChangeGroup(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSubmitOperation:
-			res, err := msgServer.SubmitOperation(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSubmitProposal:
+			res, err := msgServer.SubmitProposal(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgVote:
+			res, err := msgServer.Vote(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		// this line is used by starport scaffolding # 1
 		default:

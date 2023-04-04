@@ -12,7 +12,8 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgChangeGroup{}, "multisig/ChangeGroup", nil)
 	cdc.RegisterConcrete(&MsgCreateGroup{}, "multisig/CreateGroup", nil)
-	cdc.RegisterConcrete(&MsgSubmitOperation{}, "multisig/MsgSubmitOperation", nil)
+	cdc.RegisterConcrete(&MsgSubmitProposal{}, "multisig/MsgSubmitProposal", nil)
+	cdc.RegisterConcrete(&MsgVote{}, "multisig/MsgVote", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -26,7 +27,11 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSubmitOperation{},
+		&MsgSubmitProposal{},
+	)
+
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgVote{},
 	)
 	// this line is used by starport scaffolding # 3
 

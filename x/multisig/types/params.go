@@ -21,9 +21,7 @@ func ParamKeyTable() paramtypes.KeyTable {
 
 // NewParams creates a new Params instance
 func NewParams() Params {
-	return Params{
-		GroupSequence: 1,
-	}
+	return Params{}
 }
 
 // DefaultParams returns a default set of parameters

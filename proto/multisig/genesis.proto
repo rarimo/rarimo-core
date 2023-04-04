@@ -4,6 +4,7 @@ package rarimo.rarimocore.multisig;
 import "gogoproto/gogo.proto";
 import "multisig/params.proto";
 import "multisig/group.proto";
+import "multisig/proposal.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
@@ -12,5 +13,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Group groupList = 2 [(gogoproto.nullable) = false];
+  repeated Proposal proposalList = 3 [(gogoproto.nullable) = false];
+  repeated Vote voteList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

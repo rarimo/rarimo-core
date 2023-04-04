@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "multisig/params.proto";
 import "multisig/group.proto";
+import "multisig/proposal.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
@@ -24,6 +25,28 @@ service Query {
   rpc Group(QueryGetGroupRequest) returns (QueryGetGroupResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/multisig/group/{account}";
   }
+
+  rpc Proposal(QueryGetProposalRequest) returns (QueryGetProposalResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/proposal/{proposalId}";
+  };
+
+  rpc ProposalAll(QueryAllProposalRequest) returns (QueryAllProposalResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/proposal";
+  };
+
+  rpc Vote(QueryGetVoteRequest) returns (QueryGetVoteResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/vote/{proposalId}/{voter}";
+  };
+
+  rpc VoteAll(QueryAllVoteRequest) returns (QueryAllVoteResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/vote";
+  };
+
+  // VotesByProposal queries a vote by proposal.
+  rpc VotesByProposal(QueryVotesByProposalRequest) returns (QueryVotesByProposalResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/multisig/vote/{proposalId}";
+  };
+
   // this line is used by starport scaffolding # 2
 }
 
@@ -52,5 +75,51 @@ message QueryGetGroupRequest {
 message QueryGetGroupResponse {
   Group group = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetProposalRequest {
+  uint64 proposalId = 1;
+}
+
+message QueryGetProposalResponse {
+  Proposal proposal = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllProposalRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllProposalResponse {
+  repeated Proposal proposal = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetVoteRequest {
+  uint64 proposalId = 1;
+  string voter = 2;
+}
+
+message QueryGetVoteResponse {
+  Vote vote = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVoteRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVoteResponse {
+  repeated Vote vote = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVotesByProposalRequest {
+  uint64 proposalId = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryVotesByProposalResponse {
+  repeated Vote vote = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 
 // this line is used by starport scaffolding # 3

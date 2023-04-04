@@ -9,4 +9,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
   uint64 groupSequence = 1;
+  uint64 proposalSequence = 2;
+  uint64 prunePeriod = 3;
+  uint64 votingPeriod = 4;
 }

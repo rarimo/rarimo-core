@@ -15,20 +15,20 @@ func (k Keeper) GroupAll(goCtx context.Context, req *types.QueryAllGroupRequest)
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var hashes []types.Group
+	var groups []types.Group
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(k.storeKey)
-	hashStore := prefix.NewStore(store, types.KeyPrefix(types.GroupKeyPrefix))
+	groupStore := prefix.NewStore(store, types.KeyPrefix(types.GroupKeyPrefix))
 
-	pageRes, err := query.Paginate(hashStore, req.Pagination, func(key []byte, value []byte) error {
-		var hash types.Group
-		if err := k.cdc.Unmarshal(value, &hash); err != nil {
+	pageRes, err := query.Paginate(groupStore, req.Pagination, func(key []byte, value []byte) error {
+		var group types.Group
+		if err := k.cdc.Unmarshal(value, &group); err != nil {
 			return err
 		}
 
-		hashes = append(hashes, hash)
+		groups = append(groups, group)
 		return nil
 	})
 
@@ -36,7 +36,7 @@ func (k Keeper) GroupAll(goCtx context.Context, req *types.QueryAllGroupRequest)
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllGroupResponse{Group: hashes, Pagination: pageRes}, nil
+	return &types.QueryAllGroupResponse{Group: groups, Pagination: pageRes}, nil
 }
 
 func (k Keeper) Group(goCtx context.Context, req *types.QueryGetGroupRequest) (*types.QueryGetGroupResponse, error) {
