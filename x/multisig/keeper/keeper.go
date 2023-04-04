@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -17,6 +18,7 @@ type (
 		storeKey      sdk.StoreKey
 		memKey        sdk.StoreKey
 		paramstore    paramtypes.Subspace
+		router        *baseapp.MsgServiceRouter
 		accountKeeper types.AccountKeeper
 	}
 )
@@ -26,6 +28,7 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
+	router *baseapp.MsgServiceRouter,
 	accountKeeper types.AccountKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -38,6 +41,7 @@ func NewKeeper(
 		storeKey:      storeKey,
 		memKey:        memKey,
 		paramstore:    ps,
+		router:        router,
 		accountKeeper: accountKeeper,
 	}
 }

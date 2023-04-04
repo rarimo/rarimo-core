@@ -9,8 +9,11 @@ import (
 
 func (k msgServer) ChangeGroup(goCtx context.Context, msg *types.MsgChangeGroup) (*types.MsgChangeGroupResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	err := ensureMsgAuthZ([]sdk.Msg{msg}, msg.Group)
+	if err != nil {
+		return nil, err
+	}
 
-	// TODO: check is was called by the module
 	group, found := k.GetGroup(ctx, msg.Group)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "group (%s) not found", msg.Group)

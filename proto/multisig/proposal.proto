@@ -53,9 +53,9 @@ message Proposal {
 // TallyResult represents the sum of votes for each vote option.
 message TallyResult {
   // Sum of yes votes.
-  string yesCount = 1;
+  uint64 yesCount = 1;
   // Sum of no votes.
-  string noCount = 3;
+  uint64 noCount = 3;
 }
 
 // Vote represents a vote for a proposal.
