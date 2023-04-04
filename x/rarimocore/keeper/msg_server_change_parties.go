@@ -38,7 +38,7 @@ func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *type
 		Details:       details,
 		Status:        types.OpStatus_APPROVED, // Auto approve
 		Creator:       msg.Creator,
-		Timestamp:     uint64(ctx.BlockHeight()),
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
 	k.SetOperation(
