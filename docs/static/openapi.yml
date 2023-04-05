@@ -31123,9 +31123,11 @@ paths:
                       properties:
                         yesCount:
                           type: string
+                          format: uint64
                           description: Sum of yes votes.
                         noCount:
                           type: string
+                          format: uint64
                           description: Sum of no votes.
                     votingEndBlock:
                       type: string
@@ -31631,9 +31633,11 @@ paths:
                     properties:
                       yesCount:
                         type: string
+                        format: uint64
                         description: Sum of yes votes.
                       noCount:
                         type: string
+                        format: uint64
                         description: Sum of no votes.
                   votingEndBlock:
                     type: string
@@ -58943,9 +58947,11 @@ definitions:
         properties:
           yesCount:
             type: string
+            format: uint64
             description: Sum of yes votes.
           noCount:
             type: string
+            format: uint64
             description: Sum of no votes.
       votingEndBlock:
         type: string
@@ -59228,9 +59234,11 @@ definitions:
               properties:
                 yesCount:
                   type: string
+                  format: uint64
                   description: Sum of yes votes.
                 noCount:
                   type: string
+                  format: uint64
                   description: Sum of no votes.
             votingEndBlock:
               type: string
@@ -59553,9 +59561,11 @@ definitions:
             properties:
               yesCount:
                 type: string
+                format: uint64
                 description: Sum of yes votes.
               noCount:
                 type: string
+                format: uint64
                 description: Sum of no votes.
           votingEndBlock:
             type: string
@@ -59843,9 +59853,11 @@ definitions:
     properties:
       yesCount:
         type: string
+        format: uint64
         description: Sum of yes votes.
       noCount:
         type: string
+        format: uint64
         description: Sum of no votes.
     description: TallyResult represents the sum of votes for each vote option.
   rarimo.rarimocore.multisig.Vote:
