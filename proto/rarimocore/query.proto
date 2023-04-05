@@ -49,11 +49,6 @@ service Query {
 	rpc VoteAll(QueryAllVoteRequest) returns (QueryAllVoteResponse) {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/vote";
 	}
-
-	rpc Transfer(QueryGetTransferRequest) returns (QueryGetTransferResponse) {
-		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/transfer";
-	}
-
 // this line is used by starport scaffolding # 2
 }
 
@@ -116,14 +111,6 @@ message QueryAllVoteRequest {
 message QueryAllVoteResponse {
 	repeated Vote vote = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetTransferRequest {
-	MsgCreateTransferOp msg = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetTransferResponse {
-	 Transfer transfer = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

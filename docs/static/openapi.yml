@@ -2624,20 +2624,13 @@ paths:
             type: object
             properties:
               balance:
+                description: balance is the balance of the coin.
                 type: object
                 properties:
                   denom:
                     type: string
                   amount:
                     type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
             description: >-
               QueryBalanceResponse is the response type for the Query/Balance
               RPC method.
@@ -2871,6 +2864,9 @@ paths:
             type: object
             properties:
               metadata:
+                description: >-
+                  metadata describes and provides all the client information for
+                  the requested token.
                 type: object
                 properties:
                   description:
@@ -2938,9 +2934,6 @@ paths:
 
 
                       Since: cosmos-sdk 0.43
-                description: |-
-                  Metadata represents a struct that describes
-                  a basic token.
             description: >-
               QueryDenomMetadataResponse is the response type for the
               Query/DenomMetadata RPC
@@ -3302,20 +3295,13 @@ paths:
             type: object
             properties:
               amount:
+                description: amount is the supply of the coin.
                 type: object
                 properties:
                   denom:
                     type: string
                   amount:
                     type: string
-                description: >-
-                  Coin defines a token with a denomination and an amount.
-
-
-                  NOTE: The amount field is an Int which implements the custom
-                  method
-
-                  signatures required by gogoproto.
             description: >-
               QuerySupplyOfResponse is the response type for the Query/SupplyOf
               RPC method.
@@ -3424,44 +3410,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   data:
                     type: object
@@ -3533,7 +3508,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -3591,7 +3565,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -3680,48 +3653,35 @@ paths:
                                             last_commit_hash:
                                               type: string
                                               format: byte
-                                              description: >-
-                                                commit from validators from the last
-                                                block
                                               title: hashes of block data
                                             data_hash:
                                               type: string
                                               format: byte
-                                              title: transactions
                                             validators_hash:
                                               type: string
                                               format: byte
-                                              description: validators for the current block
                                               title: >-
                                                 hashes from the app output from the prev
                                                 block
                                             next_validators_hash:
                                               type: string
                                               format: byte
-                                              title: validators for the next block
                                             consensus_hash:
                                               type: string
                                               format: byte
-                                              title: consensus params for current block
                                             app_hash:
                                               type: string
                                               format: byte
-                                              title: state after txs from the previous block
                                             last_results_hash:
                                               type: string
                                               format: byte
-                                              title: >-
-                                                root hash of all results from the txs
-                                                from the previous block
                                             evidence_hash:
                                               type: string
                                               format: byte
-                                              description: evidence included in the block
                                               title: consensus info
                                             proposer_address:
                                               type: string
                                               format: byte
-                                              title: original proposer of the block
                                           description: >-
                                             Header defines the structure of a
                                             Tendermint block header.
@@ -4204,44 +4164,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   data:
                     type: object
@@ -4313,7 +4262,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -4371,7 +4319,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -4460,48 +4407,35 @@ paths:
                                             last_commit_hash:
                                               type: string
                                               format: byte
-                                              description: >-
-                                                commit from validators from the last
-                                                block
                                               title: hashes of block data
                                             data_hash:
                                               type: string
                                               format: byte
-                                              title: transactions
                                             validators_hash:
                                               type: string
                                               format: byte
-                                              description: validators for the current block
                                               title: >-
                                                 hashes from the app output from the prev
                                                 block
                                             next_validators_hash:
                                               type: string
                                               format: byte
-                                              title: validators for the next block
                                             consensus_hash:
                                               type: string
                                               format: byte
-                                              title: consensus params for current block
                                             app_hash:
                                               type: string
                                               format: byte
-                                              title: state after txs from the previous block
                                             last_results_hash:
                                               type: string
                                               format: byte
-                                              title: >-
-                                                root hash of all results from the txs
-                                                from the previous block
                                             evidence_hash:
                                               type: string
                                               format: byte
-                                              description: evidence included in the block
                                               title: consensus info
                                             proposer_address:
                                               type: string
                                               format: byte
-                                              title: original proposer of the block
                                           description: >-
                                             Header defines the structure of a
                                             Tendermint block header.
@@ -10413,6 +10347,7 @@ paths:
             type: object
             properties:
               deposit:
+                description: deposit defines the requested deposit.
                 type: object
                 properties:
                   proposal_id:
@@ -10437,11 +10372,6 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
-                description: >-
-                  Deposit defines an amount deposited by an account address to
-                  an active
-
-                  proposal.
             description: >-
               QueryDepositResponse is the response type for the Query/Deposit
               RPC method.
@@ -11223,6 +11153,7 @@ paths:
             type: object
             properties:
               vote:
+                description: vote defined the queried vote.
                 type: object
                 properties:
                   proposal_id:
@@ -11280,11 +11211,6 @@ paths:
 
                         Since: cosmos-sdk 0.43
                     title: 'Since: cosmos-sdk 0.43'
-                description: >-
-                  Vote defines a vote on a governance proposal.
-
-                  A Vote consists of a proposal ID, the voter, and the vote
-                  option.
             description: >-
               QueryVoteResponse is the response type for the Query/Vote RPC
               method.
@@ -12395,10 +12321,7 @@ paths:
                             description: >-
                               RedelegationEntry defines a redelegation object
                               with relevant metadata.
-                          description: |-
-                            entries are the redelegation entries.
-
-                            redelegation entries
+                          description: entries are the redelegation entries.
                       description: >-
                         Redelegation contains the list of a particular
                         delegator's redelegating bonds
@@ -12798,10 +12721,7 @@ paths:
                         description: >-
                           UnbondingDelegationEntry defines an unbonding object
                           with relevant metadata.
-                      description: |-
-                        entries are the unbonding delegation entries.
-
-                        unbonding delegation entries
+                      description: entries are the unbonding delegation entries.
                   description: >-
                     UnbondingDelegation stores all of a single delegator's
                     unbonding bonds
@@ -14253,44 +14173,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   valset:
                     type: array
@@ -16979,10 +16888,7 @@ paths:
                       description: >-
                         UnbondingDelegationEntry defines an unbonding object
                         with relevant metadata.
-                    description: |-
-                      entries are the unbonding delegation entries.
-
-                      unbonding delegation entries
+                    description: entries are the unbonding delegation entries.
                 description: >-
                   UnbondingDelegation stores all of a single delegator's
                   unbonding bonds
@@ -17248,10 +17154,7 @@ paths:
                         description: >-
                           UnbondingDelegationEntry defines an unbonding object
                           with relevant metadata.
-                      description: |-
-                        entries are the unbonding delegation entries.
-
-                        unbonding delegation entries
+                      description: entries are the unbonding delegation entries.
                   description: >-
                     UnbondingDelegation stores all of a single delegator's
                     unbonding bonds
@@ -17591,7 +17494,6 @@ paths:
                                 format: byte
                               index:
                                 type: boolean
-                                title: nondeterministic
                             description: >-
                               EventAttribute is a single key-value pair,
                               associated with an event.
@@ -18379,7 +18281,6 @@ paths:
                                 format: byte
                               index:
                                 type: boolean
-                                title: nondeterministic
                             description: >-
                               EventAttribute is a single key-value pair,
                               associated with an event.
@@ -30254,6 +30155,1549 @@ paths:
           format: uint64
       tags:
         - Query
+  /rarimo/rarimo-core/bridge/hash:
+    get:
+      operationId: RarimoRarimocoreBridgeHashAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              hash:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                      title: hex-encoded
+                description: params holds all the parameters of this module.
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/bridge/hash/{index}':
+    get:
+      operationId: RarimoRarimocoreBridgeHash
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              hash:
+                type: object
+                properties:
+                  index:
+                    type: string
+                    title: hex-encoded
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /rarimo/rarimo-core/bridge/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarimoRarimocoreBridgeParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  withdrawDenom:
+                    type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /rarimo/rarimo-core/oraclemanager/oracle:
+    get:
+      operationId: RarimoRarimocoreOraclemanagerOracleAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              oracle:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: object
+                      properties:
+                        chain:
+                          type: string
+                        account:
+                          type: string
+                    status:
+                      type: string
+                      enum:
+                        - Inactive
+                        - Active
+                        - Jailed
+                        - Freezed
+                        - Slashed
+                      default: Inactive
+                    stake:
+                      type: string
+                    missedCount:
+                      type: string
+                      format: uint64
+                    violationsCount:
+                      type: string
+                      format: uint64
+                    freezeEndBlock:
+                      type: string
+                      format: uint64
+                    votesCount:
+                      type: string
+                      format: uint64
+                    createOperationsCount:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/rarimo/rarimo-core/oraclemanager/oracle/{chain}':
+    get:
+      operationId: RarimoRarimocoreOraclemanagerOracleForChain
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              oracle:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: object
+                      properties:
+                        chain:
+                          type: string
+                        account:
+                          type: string
+                    status:
+                      type: string
+                      enum:
+                        - Inactive
+                        - Active
+                        - Jailed
+                        - Freezed
+                        - Slashed
+                      default: Inactive
+                    stake:
+                      type: string
+                    missedCount:
+                      type: string
+                      format: uint64
+                    violationsCount:
+                      type: string
+                      format: uint64
+                    freezeEndBlock:
+                      type: string
+                      format: uint64
+                    votesCount:
+                      type: string
+                      format: uint64
+                    createOperationsCount:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: chain
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/rarimo/rarimo-core/oraclemanager/oracle/{chain}/{address}':
+    get:
+      operationId: RarimoRarimocoreOraclemanagerOracle
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              oracle:
+                type: object
+                properties:
+                  index:
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      account:
+                        type: string
+                  status:
+                    type: string
+                    enum:
+                      - Inactive
+                      - Active
+                      - Jailed
+                      - Freezed
+                      - Slashed
+                    default: Inactive
+                  stake:
+                    type: string
+                  missedCount:
+                    type: string
+                    format: uint64
+                  violationsCount:
+                    type: string
+                    format: uint64
+                  freezeEndBlock:
+                    type: string
+                    format: uint64
+                  votesCount:
+                    type: string
+                    format: uint64
+                  createOperationsCount:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: chain
+          in: path
+          required: true
+          type: string
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /rarimo/rarimo-core/oraclemanager/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarimoRarimocoreOraclemanagerParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  minOracleStake:
+                    type: string
+                  checkOperationDelta:
+                    type: string
+                    format: uint64
+                  maxViolationsCount:
+                    type: string
+                    format: uint64
+                  maxMissedCount:
+                    type: string
+                    format: uint64
+                  slashedFreezeBlocks:
+                    type: string
+                    format: uint64
+                  minOraclesCount:
+                    type: string
+                    format: uint64
+                  stakeDenom:
+                    type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      tags:
+        - Query
+  /rarimo/rarimo-core/oraclemanager/transfer:
+    get:
+      operationId: RarimoRarimocoreOraclemanagerTransfer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              transfer:
+                type: object
+                properties:
+                  origin:
+                    type: string
+                    title: >-
+                      hex-encoded keccak256 hash for tx||event||chain strings'
+                      bytes
+                  tx:
+                    type: string
+                    title: Deposit transaction data
+                  eventId:
+                    type: string
+                  sender:
+                    type: string
+                  receiver:
+                    type: string
+                    title: hex-encoded
+                  amount:
+                    type: string
+                    title: dec-encoded
+                  bundleData:
+                    type: string
+                    title: hex-encoded
+                  bundleSalt:
+                    type: string
+                    title: hex-encoded
+                  from:
+                    title: Information about current and target chains
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      address:
+                        type: string
+                      tokenID:
+                        type: string
+                  to:
+                    type: object
+                    properties:
+                      chain:
+                        type: string
+                      address:
+                        type: string
+                      tokenID:
+                        type: string
+                  meta:
+                    description: Optional (if item currently does not exists
+                    title: Information about token
+                    type: object
+                    properties:
+                      imageUri:
+                        type: string
+                      imageHash:
+                        type: string
+                        title: >-
+                          Hash of the token image. Encoded into hex string.
+                          (optional)
+                      seed:
+                        type: string
+                        title: Seed is used to generate PDA address for Solana
+                      uri:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                      description: >-
+                        A URL/resource name that uniquely identifies the type of
+                        the serialized
+
+                        protocol buffer message. This string must contain at
+                        least
+
+                        one "/" character. The last segment of the URL's path
+                        must represent
+
+                        the fully qualified name of the type (as in
+
+                        `path/google.protobuf.Duration`). The name should be in
+                        a canonical form
+
+                        (e.g., leading "." is not accepted).
+
+
+                        In practice, teams usually precompile into the binary
+                        all types that they
+
+                        expect it to use in the context of Any. However, for
+                        URLs which use the
+
+                        scheme `http`, `https`, or no scheme, one can optionally
+                        set up a type
+
+                        server that maps type URLs to message definitions as
+                        follows:
+
+
+                        * If no scheme is provided, `https` is assumed.
+
+                        * An HTTP GET on the URL must yield a
+                        [google.protobuf.Type][]
+                          value in binary format, or produce an error.
+                        * Applications are allowed to cache lookup results based
+                        on the
+                          URL, or have them precompiled into a binary to avoid any
+                          lookup. Therefore, binary compatibility needs to be preserved
+                          on changes to types. (Use versioned type names to manage
+                          breaking changes.)
+
+                        Note: this functionality is not currently available in
+                        the official
+
+                        protobuf release, and it is not used for type URLs
+                        beginning with
+
+                        type.googleapis.com.
+
+
+                        Schemes other than `http`, `https` (or the empty scheme)
+                        might be
+
+                        used with implementation specific semantics.
+                  additionalProperties: {}
+                  description: >-
+                    `Any` contains an arbitrary serialized protocol buffer
+                    message along with a
+
+                    URL that describes the type of the serialized message.
+
+
+                    Protobuf library provides support to pack/unpack Any values
+                    in the form
+
+                    of utility functions or additional generated methods of the
+                    Any type.
+
+
+                    Example 1: Pack and unpack a message in C++.
+
+                        Foo foo = ...;
+                        Any any;
+                        any.PackFrom(foo);
+                        ...
+                        if (any.UnpackTo(&foo)) {
+                          ...
+                        }
+
+                    Example 2: Pack and unpack a message in Java.
+
+                        Foo foo = ...;
+                        Any any = Any.pack(foo);
+                        ...
+                        if (any.is(Foo.class)) {
+                          foo = any.unpack(Foo.class);
+                        }
+
+                     Example 3: Pack and unpack a message in Python.
+
+                        foo = Foo(...)
+                        any = Any()
+                        any.Pack(foo)
+                        ...
+                        if any.Is(Foo.DESCRIPTOR):
+                          any.Unpack(foo)
+                          ...
+
+                     Example 4: Pack and unpack a message in Go
+
+                         foo := &pb.Foo{...}
+                         any, err := anypb.New(foo)
+                         if err != nil {
+                           ...
+                         }
+                         ...
+                         foo := &pb.Foo{}
+                         if err := any.UnmarshalTo(foo); err != nil {
+                           ...
+                         }
+
+                    The pack methods provided by protobuf library will by
+                    default use
+
+                    'type.googleapis.com/full.type.name' as the type URL and the
+                    unpack
+
+                    methods only use the fully qualified type name after the
+                    last '/'
+
+                    in the type URL, for example "foo.bar.com/x/y.z" will yield
+                    type
+
+                    name "y.z".
+
+
+
+                    JSON
+
+                    ====
+
+                    The JSON representation of an `Any` value uses the regular
+
+                    representation of the deserialized, embedded message, with
+                    an
+
+                    additional field `@type` which contains the type URL.
+                    Example:
+
+                        package google.profile;
+                        message Person {
+                          string first_name = 1;
+                          string last_name = 2;
+                        }
+
+                        {
+                          "@type": "type.googleapis.com/google.profile.Person",
+                          "firstName": <string>,
+                          "lastName": <string>
+                        }
+
+                    If the embedded message type is well-known and has a custom
+                    JSON
+
+                    representation, that representation will be embedded adding
+                    a field
+
+                    `value` which holds the custom JSON in addition to the
+                    `@type`
+
+                    field. Example (for message [google.protobuf.Duration][]):
+
+                        {
+                          "@type": "type.googleapis.com/google.protobuf.Duration",
+                          "value": "1.212s"
+                        }
+      parameters:
+        - name: msg.creator
+          in: query
+          required: false
+          type: string
+        - name: msg.tx
+          description: Information to identify transfer
+          in: query
+          required: false
+          type: string
+        - name: msg.eventId
+          in: query
+          required: false
+          type: string
+        - name: msg.sender
+          in: query
+          required: false
+          type: string
+        - name: msg.receiver
+          description: Information about deposit
+          in: query
+          required: false
+          type: string
+        - name: msg.amount
+          in: query
+          required: false
+          type: string
+        - name: msg.bundleData
+          description: hex-encoded
+          in: query
+          required: false
+          type: string
+        - name: msg.bundleSalt
+          description: hex-encoded
+          in: query
+          required: false
+          type: string
+        - name: msg.from.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.from.address
+          in: query
+          required: false
+          type: string
+        - name: msg.from.tokenID
+          in: query
+          required: false
+          type: string
+        - name: msg.to.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.to.address
+          in: query
+          required: false
+          type: string
+        - name: msg.to.tokenID
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.imageUri
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.imageHash
+          description: Hash of the token image. Encoded into hex string. (optional)
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.seed
+          description: Seed is used to generate PDA address for Solana
+          in: query
+          required: false
+          type: string
+        - name: msg.meta.uri
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /rarimo/rarimo-core/rarimocore/confirmation:
     get:
       summary: Queries a list of Confirmation items.
@@ -30538,16 +31982,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31243,16 +32677,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
@@ -31889,344 +33313,6 @@ paths:
                         }
       tags:
         - Query
-  /rarimo/rarimo-core/rarimocore/transfer:
-    get:
-      operationId: RarimoRarimocoreRarimocoreTransfer
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              transfer:
-                type: object
-                properties:
-                  origin:
-                    type: string
-                    title: >-
-                      hex-encoded keccak256 hash for tx||event||chain strings'
-                      bytes
-                  tx:
-                    type: string
-                    title: Deposit transaction data
-                  eventId:
-                    type: string
-                  sender:
-                    type: string
-                  receiver:
-                    type: string
-                    title: hex-encoded
-                  amount:
-                    type: string
-                    title: dec-encoded
-                  bundleData:
-                    type: string
-                    title: hex-encoded
-                  bundleSalt:
-                    type: string
-                    title: hex-encoded
-                  from:
-                    title: Information about current and target chains
-                    type: object
-                    properties:
-                      chain:
-                        type: string
-                      address:
-                        type: string
-                      tokenID:
-                        type: string
-                  to:
-                    type: object
-                    properties:
-                      chain:
-                        type: string
-                      address:
-                        type: string
-                      tokenID:
-                        type: string
-                  meta:
-                    description: Optional (if item currently does not exists
-                    title: Information about token
-                    type: object
-                    properties:
-                      imageUri:
-                        type: string
-                      imageHash:
-                        type: string
-                        title: >-
-                          Hash of the token image. Encoded into hex string.
-                          (optional)
-                      seed:
-                        type: string
-                        title: Seed is used to generate PDA address for Solana
-                      uri:
-                        type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                      description: >-
-                        A URL/resource name that uniquely identifies the type of
-                        the serialized
-
-                        protocol buffer message. This string must contain at
-                        least
-
-                        one "/" character. The last segment of the URL's path
-                        must represent
-
-                        the fully qualified name of the type (as in
-
-                        `path/google.protobuf.Duration`). The name should be in
-                        a canonical form
-
-                        (e.g., leading "." is not accepted).
-
-
-                        In practice, teams usually precompile into the binary
-                        all types that they
-
-                        expect it to use in the context of Any. However, for
-                        URLs which use the
-
-                        scheme `http`, `https`, or no scheme, one can optionally
-                        set up a type
-
-                        server that maps type URLs to message definitions as
-                        follows:
-
-
-                        * If no scheme is provided, `https` is assumed.
-
-                        * An HTTP GET on the URL must yield a
-                        [google.protobuf.Type][]
-                          value in binary format, or produce an error.
-                        * Applications are allowed to cache lookup results based
-                        on the
-                          URL, or have them precompiled into a binary to avoid any
-                          lookup. Therefore, binary compatibility needs to be preserved
-                          on changes to types. (Use versioned type names to manage
-                          breaking changes.)
-
-                        Note: this functionality is not currently available in
-                        the official
-
-                        protobuf release, and it is not used for type URLs
-                        beginning with
-
-                        type.googleapis.com.
-
-
-                        Schemes other than `http`, `https` (or the empty scheme)
-                        might be
-
-                        used with implementation specific semantics.
-                  additionalProperties: {}
-                  description: >-
-                    `Any` contains an arbitrary serialized protocol buffer
-                    message along with a
-
-                    URL that describes the type of the serialized message.
-
-
-                    Protobuf library provides support to pack/unpack Any values
-                    in the form
-
-                    of utility functions or additional generated methods of the
-                    Any type.
-
-
-                    Example 1: Pack and unpack a message in C++.
-
-                        Foo foo = ...;
-                        Any any;
-                        any.PackFrom(foo);
-                        ...
-                        if (any.UnpackTo(&foo)) {
-                          ...
-                        }
-
-                    Example 2: Pack and unpack a message in Java.
-
-                        Foo foo = ...;
-                        Any any = Any.pack(foo);
-                        ...
-                        if (any.is(Foo.class)) {
-                          foo = any.unpack(Foo.class);
-                        }
-
-                     Example 3: Pack and unpack a message in Python.
-
-                        foo = Foo(...)
-                        any = Any()
-                        any.Pack(foo)
-                        ...
-                        if any.Is(Foo.DESCRIPTOR):
-                          any.Unpack(foo)
-                          ...
-
-                     Example 4: Pack and unpack a message in Go
-
-                         foo := &pb.Foo{...}
-                         any, err := anypb.New(foo)
-                         if err != nil {
-                           ...
-                         }
-                         ...
-                         foo := &pb.Foo{}
-                         if err := any.UnmarshalTo(foo); err != nil {
-                           ...
-                         }
-
-                    The pack methods provided by protobuf library will by
-                    default use
-
-                    'type.googleapis.com/full.type.name' as the type URL and the
-                    unpack
-
-                    methods only use the fully qualified type name after the
-                    last '/'
-
-                    in the type URL, for example "foo.bar.com/x/y.z" will yield
-                    type
-
-                    name "y.z".
-
-
-
-                    JSON
-
-                    ====
-
-                    The JSON representation of an `Any` value uses the regular
-
-                    representation of the deserialized, embedded message, with
-                    an
-
-                    additional field `@type` which contains the type URL.
-                    Example:
-
-                        package google.profile;
-                        message Person {
-                          string first_name = 1;
-                          string last_name = 2;
-                        }
-
-                        {
-                          "@type": "type.googleapis.com/google.profile.Person",
-                          "firstName": <string>,
-                          "lastName": <string>
-                        }
-
-                    If the embedded message type is well-known and has a custom
-                    JSON
-
-                    representation, that representation will be embedded adding
-                    a field
-
-                    `value` which holds the custom JSON in addition to the
-                    `@type`
-
-                    field. Example (for message [google.protobuf.Duration][]):
-
-                        {
-                          "@type": "type.googleapis.com/google.protobuf.Duration",
-                          "value": "1.212s"
-                        }
-      parameters:
-        - name: msg.creator
-          in: query
-          required: false
-          type: string
-        - name: msg.tx
-          description: Information to identify transfer
-          in: query
-          required: false
-          type: string
-        - name: msg.eventId
-          in: query
-          required: false
-          type: string
-        - name: msg.sender
-          in: query
-          required: false
-          type: string
-        - name: msg.receiver
-          description: Information about deposit
-          in: query
-          required: false
-          type: string
-        - name: msg.amount
-          in: query
-          required: false
-          type: string
-        - name: msg.bundleData
-          description: hex-encoded
-          in: query
-          required: false
-          type: string
-        - name: msg.bundleSalt
-          description: hex-encoded
-          in: query
-          required: false
-          type: string
-        - name: msg.from.chain
-          in: query
-          required: false
-          type: string
-        - name: msg.from.address
-          in: query
-          required: false
-          type: string
-        - name: msg.from.tokenID
-          in: query
-          required: false
-          type: string
-        - name: msg.to.chain
-          in: query
-          required: false
-          type: string
-        - name: msg.to.address
-          in: query
-          required: false
-          type: string
-        - name: msg.to.tokenID
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.imageUri
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.imageHash
-          description: Hash of the token image. Encoded into hex string. (optional)
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.seed
-          description: Seed is used to generate PDA address for Solana
-          in: query
-          required: false
-          type: string
-        - name: msg.meta.uri
-          in: query
-          required: false
-          type: string
-      tags:
-        - Query
   /rarimo/rarimo-core/rarimocore/vote:
     get:
       summary: Queries a list of Confirmation items.
@@ -32511,16 +33597,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -32876,6 +33952,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   /rarimo/rarimo-core/tokenmanager/collection-data:
@@ -33009,6 +34095,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -33407,6 +34503,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/item/{chain}/{address}/{tokenID}':
@@ -33726,6 +34832,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}':
@@ -34010,6 +35126,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -36230,17 +37356,13 @@ definitions:
     type: object
     properties:
       balance:
+        description: balance is the balance of the coin.
         type: object
         properties:
           denom:
             type: string
           amount:
             type: string
-        description: |-
-          Coin defines a token with a denomination and an amount.
-
-          NOTE: The amount field is an Int which implements the custom method
-          signatures required by gogoproto.
     description: >-
       QueryBalanceResponse is the response type for the Query/Balance RPC
       method.
@@ -36248,6 +37370,9 @@ definitions:
     type: object
     properties:
       metadata:
+        description: >-
+          metadata describes and provides all the client information for the
+          requested token.
         type: object
         properties:
           description:
@@ -36310,9 +37435,6 @@ definitions:
 
 
               Since: cosmos-sdk 0.43
-        description: |-
-          Metadata represents a struct that describes
-          a basic token.
     description: >-
       QueryDenomMetadataResponse is the response type for the
       Query/DenomMetadata RPC
@@ -36486,17 +37608,13 @@ definitions:
     type: object
     properties:
       amount:
+        description: amount is the supply of the coin.
         type: object
         properties:
           denom:
             type: string
           amount:
             type: string
-        description: |-
-          Coin defines a token with a denomination and an amount.
-
-          NOTE: The amount field is an Int which implements the custom method
-          signatures required by gogoproto.
     description: >-
       QuerySupplyOfResponse is the response type for the Query/SupplyOf RPC
       method.
@@ -36638,42 +37756,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -36742,7 +37851,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -36800,7 +37908,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -36889,48 +37996,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -37213,42 +38307,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -37317,7 +38402,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -37375,7 +38459,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -37464,48 +38547,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -38547,42 +39617,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       data:
         type: object
@@ -38651,7 +39712,6 @@ definitions:
                                   format: byte
                               title: PartsetHeader
                           title: BlockID
-                          description: zero if vote is nil.
                         timestamp:
                           type: string
                           format: date-time
@@ -38709,7 +39769,6 @@ definitions:
                                   format: byte
                               title: PartsetHeader
                           title: BlockID
-                          description: zero if vote is nil.
                         timestamp:
                           type: string
                           format: date-time
@@ -38797,46 +39856,35 @@ definitions:
                                 last_commit_hash:
                                   type: string
                                   format: byte
-                                  description: commit from validators from the last block
                                   title: hashes of block data
                                 data_hash:
                                   type: string
                                   format: byte
-                                  title: transactions
                                 validators_hash:
                                   type: string
                                   format: byte
-                                  description: validators for the current block
                                   title: >-
                                     hashes from the app output from the prev
                                     block
                                 next_validators_hash:
                                   type: string
                                   format: byte
-                                  title: validators for the next block
                                 consensus_hash:
                                   type: string
                                   format: byte
-                                  title: consensus params for current block
                                 app_hash:
                                   type: string
                                   format: byte
-                                  title: state after txs from the previous block
                                 last_results_hash:
                                   type: string
                                   format: byte
-                                  title: >-
-                                    root hash of all results from the txs from
-                                    the previous block
                                 evidence_hash:
                                   type: string
                                   format: byte
-                                  description: evidence included in the block
                                   title: consensus info
                                 proposer_address:
                                   type: string
                                   format: byte
-                                  title: original proposer of the block
                               description: >-
                                 Header defines the structure of a Tendermint
                                 block header.
@@ -39203,7 +40251,6 @@ definitions:
                     format: byte
                 title: PartsetHeader
             title: BlockID
-            description: zero if vote is nil.
           timestamp:
             type: string
             format: date-time
@@ -39260,7 +40307,6 @@ definitions:
                     format: byte
                 title: PartsetHeader
             title: BlockID
-            description: zero if vote is nil.
           timestamp:
             type: string
             format: date-time
@@ -39335,7 +40381,6 @@ definitions:
                         format: byte
                     title: PartsetHeader
                 title: BlockID
-                description: zero if vote is nil.
               timestamp:
                 type: string
                 format: date-time
@@ -39392,7 +40437,6 @@ definitions:
                         format: byte
                     title: PartsetHeader
                 title: BlockID
-                description: zero if vote is nil.
               timestamp:
                 type: string
                 format: date-time
@@ -39480,44 +40524,33 @@ definitions:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   commit:
                     type: object
@@ -39721,7 +40754,6 @@ definitions:
                               format: byte
                           title: PartsetHeader
                       title: BlockID
-                      description: zero if vote is nil.
                     timestamp:
                       type: string
                       format: date-time
@@ -39779,7 +40811,6 @@ definitions:
                               format: byte
                           title: PartsetHeader
                       title: BlockID
-                      description: zero if vote is nil.
                     timestamp:
                       type: string
                       format: date-time
@@ -39867,44 +40898,33 @@ definitions:
                             last_commit_hash:
                               type: string
                               format: byte
-                              description: commit from validators from the last block
                               title: hashes of block data
                             data_hash:
                               type: string
                               format: byte
-                              title: transactions
                             validators_hash:
                               type: string
                               format: byte
-                              description: validators for the current block
                               title: hashes from the app output from the prev block
                             next_validators_hash:
                               type: string
                               format: byte
-                              title: validators for the next block
                             consensus_hash:
                               type: string
                               format: byte
-                              title: consensus params for current block
                             app_hash:
                               type: string
                               format: byte
-                              title: state after txs from the previous block
                             last_results_hash:
                               type: string
                               format: byte
-                              title: >-
-                                root hash of all results from the txs from the
-                                previous block
                             evidence_hash:
                               type: string
                               format: byte
-                              description: evidence included in the block
                               title: consensus info
                             proposer_address:
                               type: string
                               format: byte
-                              title: original proposer of the block
                           description: >-
                             Header defines the structure of a Tendermint block
                             header.
@@ -40108,42 +41128,33 @@ definitions:
       last_commit_hash:
         type: string
         format: byte
-        description: commit from validators from the last block
         title: hashes of block data
       data_hash:
         type: string
         format: byte
-        title: transactions
       validators_hash:
         type: string
         format: byte
-        description: validators for the current block
         title: hashes from the app output from the prev block
       next_validators_hash:
         type: string
         format: byte
-        title: validators for the next block
       consensus_hash:
         type: string
         format: byte
-        title: consensus params for current block
       app_hash:
         type: string
         format: byte
-        title: state after txs from the previous block
       last_results_hash:
         type: string
         format: byte
-        title: root hash of all results from the txs from the previous block
       evidence_hash:
         type: string
         format: byte
-        description: evidence included in the block
         title: consensus info
       proposer_address:
         type: string
         format: byte
-        title: original proposer of the block
     description: Header defines the structure of a Tendermint block header.
   tendermint.types.LightBlock:
     type: object
@@ -40200,42 +41211,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           commit:
             type: object
@@ -40404,44 +41406,33 @@ definitions:
                   last_commit_hash:
                     type: string
                     format: byte
-                    description: commit from validators from the last block
                     title: hashes of block data
                   data_hash:
                     type: string
                     format: byte
-                    title: transactions
                   validators_hash:
                     type: string
                     format: byte
-                    description: validators for the current block
                     title: hashes from the app output from the prev block
                   next_validators_hash:
                     type: string
                     format: byte
-                    title: validators for the next block
                   consensus_hash:
                     type: string
                     format: byte
-                    title: consensus params for current block
                   app_hash:
                     type: string
                     format: byte
-                    title: state after txs from the previous block
                   last_results_hash:
                     type: string
                     format: byte
-                    title: >-
-                      root hash of all results from the txs from the previous
-                      block
                   evidence_hash:
                     type: string
                     format: byte
-                    description: evidence included in the block
                     title: consensus info
                   proposer_address:
                     type: string
                     format: byte
-                    title: original proposer of the block
                 description: Header defines the structure of a Tendermint block header.
               commit:
                 type: object
@@ -40654,42 +41645,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       commit:
         type: object
@@ -40876,7 +41858,6 @@ definitions:
                 format: byte
             title: PartsetHeader
         title: BlockID
-        description: zero if vote is nil.
       timestamp:
         type: string
         format: date-time
@@ -42310,6 +43291,7 @@ definitions:
     type: object
     properties:
       deposit:
+        description: deposit defines the requested deposit.
         type: object
         properties:
           proposal_id:
@@ -42334,9 +43316,6 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-        description: |-
-          Deposit defines an amount deposited by an account address to an active
-          proposal.
     description: >-
       QueryDepositResponse is the response type for the Query/Deposit RPC
       method.
@@ -42988,6 +43967,7 @@ definitions:
     type: object
     properties:
       vote:
+        description: vote defined the queried vote.
         type: object
         properties:
           proposal_id:
@@ -43042,9 +44022,6 @@ definitions:
 
                 Since: cosmos-sdk 0.43
             title: 'Since: cosmos-sdk 0.43'
-        description: |-
-          Vote defines a vote on a governance proposal.
-          A Vote consists of a proposal ID, the voter, and the vote option.
     description: QueryVoteResponse is the response type for the Query/Vote RPC method.
   cosmos.gov.v1beta1.QueryVotesResponse:
     type: object
@@ -43785,42 +44762,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       valset:
         type: array
@@ -44353,10 +45321,7 @@ definitions:
                 description: >-
                   UnbondingDelegationEntry defines an unbonding object with
                   relevant metadata.
-              description: |-
-                entries are the unbonding delegation entries.
-
-                unbonding delegation entries
+              description: entries are the unbonding delegation entries.
           description: >-
             UnbondingDelegation stores all of a single delegator's unbonding
             bonds
@@ -45044,42 +46009,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           valset:
             type: array
@@ -45481,10 +46437,7 @@ definitions:
                     description: >-
                       RedelegationEntry defines a redelegation object with
                       relevant metadata.
-                  description: |-
-                    entries are the redelegation entries.
-
-                    redelegation entries
+                  description: entries are the redelegation entries.
               description: >-
                 Redelegation contains the list of a particular delegator's
                 redelegating bonds
@@ -45603,10 +46556,7 @@ definitions:
               description: >-
                 UnbondingDelegationEntry defines an unbonding object with
                 relevant metadata.
-            description: |-
-              entries are the unbonding delegation entries.
-
-              unbonding delegation entries
+            description: entries are the unbonding delegation entries.
         description: |-
           UnbondingDelegation stores all of a single delegator's unbonding bonds
           for a single validator in an time-ordered list.
@@ -46018,10 +46968,7 @@ definitions:
                 description: >-
                   UnbondingDelegationEntry defines an unbonding object with
                   relevant metadata.
-              description: |-
-                entries are the unbonding delegation entries.
-
-                unbonding delegation entries
+              description: entries are the unbonding delegation entries.
           description: >-
             UnbondingDelegation stores all of a single delegator's unbonding
             bonds
@@ -46410,10 +47357,7 @@ definitions:
           description: >-
             RedelegationEntry defines a redelegation object with relevant
             metadata.
-        description: |-
-          entries are the redelegation entries.
-
-          redelegation entries
+        description: entries are the redelegation entries.
     description: >-
       Redelegation contains the list of a particular delegator's redelegating
       bonds
@@ -46526,10 +47470,7 @@ definitions:
               description: >-
                 RedelegationEntry defines a redelegation object with relevant
                 metadata.
-            description: |-
-              entries are the redelegation entries.
-
-              redelegation entries
+            description: entries are the redelegation entries.
         description: >-
           Redelegation contains the list of a particular delegator's
           redelegating bonds
@@ -46619,10 +47560,7 @@ definitions:
           description: >-
             UnbondingDelegationEntry defines an unbonding object with relevant
             metadata.
-        description: |-
-          entries are the unbonding delegation entries.
-
-          unbonding delegation entries
+        description: entries are the unbonding delegation entries.
     description: |-
       UnbondingDelegation stores all of a single delegator's unbonding bonds
       for a single validator in an time-ordered list.
@@ -47017,7 +47955,6 @@ definitions:
                     format: byte
                   index:
                     type: boolean
-                    title: nondeterministic
                 description: >-
                   EventAttribute is a single key-value pair, associated with an
                   event.
@@ -47325,7 +48262,6 @@ definitions:
                     format: byte
                   index:
                     type: boolean
-                    title: nondeterministic
                 description: >-
                   EventAttribute is a single key-value pair, associated with an
                   event.
@@ -47809,7 +48745,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -47974,42 +48909,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -48078,7 +49004,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -48136,7 +49061,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -48225,48 +49149,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -48781,7 +49692,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -49104,7 +50014,6 @@ definitions:
                           format: byte
                         index:
                           type: boolean
-                          title: nondeterministic
                       description: >-
                         EventAttribute is a single key-value pair, associated
                         with an event.
@@ -49553,7 +50462,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -50712,7 +51620,6 @@ definitions:
               format: byte
             index:
               type: boolean
-              title: nondeterministic
           description: 'EventAttribute is a single key-value pair, associated with an event.'
     description: >-
       Event allows application developers to attach additional information to
@@ -50732,7 +51639,6 @@ definitions:
         format: byte
       index:
         type: boolean
-        title: nondeterministic
     description: 'EventAttribute is a single key-value pair, associated with an event.'
   cosmos.upgrade.v1beta1.ModuleVersion:
     type: object
@@ -55647,29 +56553,89 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  rarimo.rarimocore.rarimocore.Confirmation:
+  rarimo.rarimocore.bridge.Hash:
     type: object
     properties:
-      root:
+      index:
         type: string
         title: hex-encoded
-      indexes:
+  rarimo.rarimocore.bridge.MsgDepositNativeResponse:
+    type: object
+  rarimo.rarimocore.bridge.MsgWithdrawNativeResponse:
+    type: object
+  rarimo.rarimocore.bridge.Params:
+    type: object
+    properties:
+      withdrawDenom:
+        type: string
+    description: Params defines the parameters for the module.
+  rarimo.rarimocore.bridge.QueryAllHashResponse:
+    type: object
+    properties:
+      hash:
         type: array
         items:
-          type: string
-        title: hex-encoded
-      signatureECDSA:
+          type: object
+          properties:
+            index:
+              type: string
+              title: hex-encoded
+        description: params holds all the parameters of this module.
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.bridge.QueryGetHashResponse:
+    type: object
+    properties:
+      hash:
+        type: object
+        properties:
+          index:
+            type: string
+            title: hex-encoded
+  rarimo.rarimocore.bridge.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          withdrawDenom:
+            type: string
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex:
+    type: object
+    properties:
+      chain:
         type: string
-        title: hex-encoded
-      creator:
+      address:
         type: string
-  rarimo.rarimocore.rarimocore.MsgChangePartyAddressResponse:
-    type: object
-  rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse:
-    type: object
-  rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
-    type: object
-  rarimo.rarimocore.rarimocore.MsgCreateTransferOp:
+      tokenID:
+        type: string
+  rarimo.rarimocore.oraclemanager.MsgCreateTransferOp:
     type: object
     properties:
       creator:
@@ -55725,11 +56691,427 @@ definitions:
             title: Seed is used to generate PDA address for Solana
           uri:
             type: string
-  rarimo.rarimocore.rarimocore.MsgCreateTransferOpResponse:
+  rarimo.rarimocore.oraclemanager.MsgCreateTransferOpResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.MsgStakeResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.MsgUnjailResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.MsgUnstakeResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.MsgVoteResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.Oracle:
+    type: object
+    properties:
+      index:
+        type: object
+        properties:
+          chain:
+            type: string
+          account:
+            type: string
+      status:
+        type: string
+        enum:
+          - Inactive
+          - Active
+          - Jailed
+          - Freezed
+          - Slashed
+        default: Inactive
+      stake:
+        type: string
+      missedCount:
+        type: string
+        format: uint64
+      violationsCount:
+        type: string
+        format: uint64
+      freezeEndBlock:
+        type: string
+        format: uint64
+      votesCount:
+        type: string
+        format: uint64
+      createOperationsCount:
+        type: string
+        format: uint64
+  rarimo.rarimocore.oraclemanager.OracleIndex:
+    type: object
+    properties:
+      chain:
+        type: string
+      account:
+        type: string
+  rarimo.rarimocore.oraclemanager.OracleStatus:
+    type: string
+    enum:
+      - Inactive
+      - Active
+      - Jailed
+      - Freezed
+      - Slashed
+    default: Inactive
+  rarimo.rarimocore.oraclemanager.Params:
+    type: object
+    properties:
+      minOracleStake:
+        type: string
+      checkOperationDelta:
+        type: string
+        format: uint64
+      maxViolationsCount:
+        type: string
+        format: uint64
+      maxMissedCount:
+        type: string
+        format: uint64
+      slashedFreezeBlocks:
+        type: string
+        format: uint64
+      minOraclesCount:
+        type: string
+        format: uint64
+      stakeDenom:
+        type: string
+    description: Params defines the parameters for the module.
+  rarimo.rarimocore.oraclemanager.QueryGetAllOracleResponse:
+    type: object
+    properties:
+      oracle:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: object
+              properties:
+                chain:
+                  type: string
+                account:
+                  type: string
+            status:
+              type: string
+              enum:
+                - Inactive
+                - Active
+                - Jailed
+                - Freezed
+                - Slashed
+              default: Inactive
+            stake:
+              type: string
+            missedCount:
+              type: string
+              format: uint64
+            violationsCount:
+              type: string
+              format: uint64
+            freezeEndBlock:
+              type: string
+              format: uint64
+            votesCount:
+              type: string
+              format: uint64
+            createOperationsCount:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  rarimo.rarimocore.oraclemanager.QueryGetOracleForChainResponse:
+    type: object
+    properties:
+      oracle:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: object
+              properties:
+                chain:
+                  type: string
+                account:
+                  type: string
+            status:
+              type: string
+              enum:
+                - Inactive
+                - Active
+                - Jailed
+                - Freezed
+                - Slashed
+              default: Inactive
+            stake:
+              type: string
+            missedCount:
+              type: string
+              format: uint64
+            violationsCount:
+              type: string
+              format: uint64
+            freezeEndBlock:
+              type: string
+              format: uint64
+            votesCount:
+              type: string
+              format: uint64
+            createOperationsCount:
+              type: string
+              format: uint64
+  rarimo.rarimocore.oraclemanager.QueryGetOracleResponse:
+    type: object
+    properties:
+      oracle:
+        type: object
+        properties:
+          index:
+            type: object
+            properties:
+              chain:
+                type: string
+              account:
+                type: string
+          status:
+            type: string
+            enum:
+              - Inactive
+              - Active
+              - Jailed
+              - Freezed
+              - Slashed
+            default: Inactive
+          stake:
+            type: string
+          missedCount:
+            type: string
+            format: uint64
+          violationsCount:
+            type: string
+            format: uint64
+          freezeEndBlock:
+            type: string
+            format: uint64
+          votesCount:
+            type: string
+            format: uint64
+          createOperationsCount:
+            type: string
+            format: uint64
+  rarimo.rarimocore.oraclemanager.QueryGetTransferResponse:
+    type: object
+    properties:
+      transfer:
+        type: object
+        properties:
+          origin:
+            type: string
+            title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
+          tx:
+            type: string
+            title: Deposit transaction data
+          eventId:
+            type: string
+          sender:
+            type: string
+          receiver:
+            type: string
+            title: hex-encoded
+          amount:
+            type: string
+            title: dec-encoded
+          bundleData:
+            type: string
+            title: hex-encoded
+          bundleSalt:
+            type: string
+            title: hex-encoded
+          from:
+            title: Information about current and target chains
+            type: object
+            properties:
+              chain:
+                type: string
+              address:
+                type: string
+              tokenID:
+                type: string
+          to:
+            type: object
+            properties:
+              chain:
+                type: string
+              address:
+                type: string
+              tokenID:
+                type: string
+          meta:
+            description: Optional (if item currently does not exists
+            title: Information about token
+            type: object
+            properties:
+              imageUri:
+                type: string
+              imageHash:
+                type: string
+                title: Hash of the token image. Encoded into hex string. (optional)
+              seed:
+                type: string
+                title: Seed is used to generate PDA address for Solana
+              uri:
+                type: string
+  rarimo.rarimocore.oraclemanager.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          minOracleStake:
+            type: string
+          checkOperationDelta:
+            type: string
+            format: uint64
+          maxViolationsCount:
+            type: string
+            format: uint64
+          maxMissedCount:
+            type: string
+            format: uint64
+          slashedFreezeBlocks:
+            type: string
+            format: uint64
+          minOraclesCount:
+            type: string
+            format: uint64
+          stakeDenom:
+            type: string
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.rarimocore.Transfer:
+    type: object
+    properties:
+      origin:
+        type: string
+        title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
+      tx:
+        type: string
+        title: Deposit transaction data
+      eventId:
+        type: string
+      sender:
+        type: string
+      receiver:
+        type: string
+        title: hex-encoded
+      amount:
+        type: string
+        title: dec-encoded
+      bundleData:
+        type: string
+        title: hex-encoded
+      bundleSalt:
+        type: string
+        title: hex-encoded
+      from:
+        title: Information about current and target chains
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      to:
+        type: object
+        properties:
+          chain:
+            type: string
+          address:
+            type: string
+          tokenID:
+            type: string
+      meta:
+        description: Optional (if item currently does not exists
+        title: Information about token
+        type: object
+        properties:
+          imageUri:
+            type: string
+          imageHash:
+            type: string
+            title: Hash of the token image. Encoded into hex string. (optional)
+          seed:
+            type: string
+            title: Seed is used to generate PDA address for Solana
+          uri:
+            type: string
+  rarimo.rarimocore.rarimocore.VoteType:
+    type: string
+    enum:
+      - 'YES'
+      - 'NO'
+    default: 'YES'
+  rarimo.rarimocore.tokenmanager.ItemMetadata:
+    type: object
+    properties:
+      imageUri:
+        type: string
+      imageHash:
+        type: string
+        title: Hash of the token image. Encoded into hex string. (optional)
+      seed:
+        type: string
+        title: Seed is used to generate PDA address for Solana
+      uri:
+        type: string
+  rarimo.rarimocore.rarimocore.Confirmation:
+    type: object
+    properties:
+      root:
+        type: string
+        title: hex-encoded
+      indexes:
+        type: array
+        items:
+          type: string
+        title: hex-encoded
+      signatureECDSA:
+        type: string
+        title: hex-encoded
+      creator:
+        type: string
+  rarimo.rarimocore.rarimocore.MsgChangePartyAddressResponse:
+    type: object
+  rarimo.rarimocore.rarimocore.MsgCreateChangePartiesOpResponse:
+    type: object
+  rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgSetupInitialResponse:
-    type: object
-  rarimo.rarimocore.rarimocore.MsgVoteResponse:
     type: object
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -56487,68 +57869,6 @@ definitions:
           timestamp:
             type: string
             format: uint64
-  rarimo.rarimocore.rarimocore.QueryGetTransferResponse:
-    type: object
-    properties:
-      transfer:
-        type: object
-        properties:
-          origin:
-            type: string
-            title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
-          tx:
-            type: string
-            title: Deposit transaction data
-          eventId:
-            type: string
-          sender:
-            type: string
-          receiver:
-            type: string
-            title: hex-encoded
-          amount:
-            type: string
-            title: dec-encoded
-          bundleData:
-            type: string
-            title: hex-encoded
-          bundleSalt:
-            type: string
-            title: hex-encoded
-          from:
-            title: Information about current and target chains
-            type: object
-            properties:
-              chain:
-                type: string
-              address:
-                type: string
-              tokenID:
-                type: string
-          to:
-            type: object
-            properties:
-              chain:
-                type: string
-              address:
-                type: string
-              tokenID:
-                type: string
-          meta:
-            description: Optional (if item currently does not exists
-            title: Information about token
-            type: object
-            properties:
-              imageUri:
-                type: string
-              imageHash:
-                type: string
-                title: Hash of the token image. Encoded into hex string. (optional)
-              seed:
-                type: string
-                title: Seed is used to generate PDA address for Solana
-              uri:
-                type: string
   rarimo.rarimocore.rarimocore.QueryGetVoteResponse:
     type: object
     properties:
@@ -56605,65 +57925,6 @@ definitions:
           voteThreshold:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarimo.rarimocore.rarimocore.Transfer:
-    type: object
-    properties:
-      origin:
-        type: string
-        title: hex-encoded keccak256 hash for tx||event||chain strings' bytes
-      tx:
-        type: string
-        title: Deposit transaction data
-      eventId:
-        type: string
-      sender:
-        type: string
-      receiver:
-        type: string
-        title: hex-encoded
-      amount:
-        type: string
-        title: dec-encoded
-      bundleData:
-        type: string
-        title: hex-encoded
-      bundleSalt:
-        type: string
-        title: hex-encoded
-      from:
-        title: Information about current and target chains
-        type: object
-        properties:
-          chain:
-            type: string
-          address:
-            type: string
-          tokenID:
-            type: string
-      to:
-        type: object
-        properties:
-          chain:
-            type: string
-          address:
-            type: string
-          tokenID:
-            type: string
-      meta:
-        description: Optional (if item currently does not exists
-        title: Information about token
-        type: object
-        properties:
-          imageUri:
-            type: string
-          imageHash:
-            type: string
-            title: Hash of the token image. Encoded into hex string. (optional)
-          seed:
-            type: string
-            title: Seed is used to generate PDA address for Solana
-          uri:
-            type: string
   rarimo.rarimocore.rarimocore.Vote:
     type: object
     properties:
@@ -56687,12 +57948,6 @@ definitions:
         type: string
       validator:
         type: string
-  rarimo.rarimocore.rarimocore.VoteType:
-    type: string
-    enum:
-      - 'YES'
-      - 'NO'
-    default: 'YES'
   rarimo.rarimocore.rarimocore.opStatus:
     type: string
     enum:
@@ -56707,28 +57962,6 @@ definitions:
       - TRANSFER
       - CHANGE_PARTIES
     default: TRANSFER
-  rarimo.rarimocore.tokenmanager.ItemMetadata:
-    type: object
-    properties:
-      imageUri:
-        type: string
-      imageHash:
-        type: string
-        title: Hash of the token image. Encoded into hex string. (optional)
-      seed:
-        type: string
-        title: Seed is used to generate PDA address for Solana
-      uri:
-        type: string
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex:
-    type: object
-    properties:
-      chain:
-        type: string
-      address:
-        type: string
-      tokenID:
-        type: string
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
     properties:

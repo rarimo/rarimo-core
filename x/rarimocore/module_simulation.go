@@ -24,15 +24,7 @@ var (
 )
 
 const (
-	opWeightMsgCreateDeposit = "op_weight_msg_deposit"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateDeposit int = 100
-
-	opWeightMsgCreateConfirmation = "op_weight_msg_confirmation"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateConfirmation int = 100
-
-	// this line is used by starport scaffolding # simapp/module/const
+// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -43,26 +35,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	rarimocoreGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		OperationList: []types.Operation{
-			{
-				Creator: sample.AccAddress(),
-				Index:   "0",
-			},
-			{
-				Creator: sample.AccAddress(),
-				Index:   "1",
-			},
-		},
-		ConfirmationList: []types.Confirmation{
-			{
-				Creator: sample.AccAddress(),
-				Root:    "0",
-			},
-			{
-				Creator: sample.AccAddress(),
-				Root:    "1",
-			},
-		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&rarimocoreGenesis)
@@ -85,28 +57,6 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
-
-	var weightMsgCreateDeposit int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateDeposit, &weightMsgCreateDeposit, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateDeposit = defaultWeightMsgCreateDeposit
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateDeposit,
-		rarimocoresimulation.SimulateMsgCreateTransfer(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgCreateConfirmation int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateConfirmation, &weightMsgCreateConfirmation, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateConfirmation = defaultWeightMsgCreateConfirmation
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateConfirmation,
-		rarimocoresimulation.SimulateMsgCreateConfirmation(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

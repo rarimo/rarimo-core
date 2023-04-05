@@ -1,13 +1,13 @@
 package types
 
 const (
-	EventTypeNewOperation      = "new_operation"
-	EventTypeNewConfirmation   = "new_confirmation"
-	EventTypeOperationSigned   = "operation_signed"
-	EventTypeParamsUpdated     = "params_updated"
-	EventTypeOperationApproved = "operation_approved"
-	EventTypeOperationRejected = "operation_rejected"
-	EventTypeVoted             = "voted"
+	EventTypeNewOperation      = "new_operation"      // emitted only from transactions
+	EventTypeNewConfirmation   = "new_confirmation"   // emitted only from transactions
+	EventTypeOperationSigned   = "operation_signed"   // emitted only from transactions
+	EventTypeParamsUpdated     = "params_updated"     // emitted only from transactions
+	EventTypeOperationApproved = "operation_approved" // emitted only from transactions
+	EventTypeOperationRejected = "operation_rejected" // emitted only from transactions
+	EventTypeVoted             = "voted"              // emitted only from transactions
 
 	AttributeKeyParamsUpdateType = "params_update_type"
 	AttributeKeyOperationId      = "operation_id"
