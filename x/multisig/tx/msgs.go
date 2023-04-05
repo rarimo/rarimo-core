@@ -31,3 +31,16 @@ func GetMsgs(anys []*types.Any, name string) ([]sdk.Msg, error) {
 	}
 	return msgs, nil
 }
+
+// UnpackInterfaces unpacks Any's to sdk.Msg's.
+func UnpackInterfaces(unpacker types.AnyUnpacker, anys []*types.Any) error {
+	for _, any := range anys {
+		var msg sdk.Msg
+		err := unpacker.UnpackAny(any, &msg)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

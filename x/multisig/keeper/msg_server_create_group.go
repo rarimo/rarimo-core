@@ -21,7 +21,6 @@ func (k msgServer) CreateGroup(goCtx context.Context, msg *types.MsgCreateGroup)
 		}
 	}
 
-	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 	params := k.GetParams(ctx)
 
 	var groupAccAddr sdk.AccAddress
@@ -45,13 +44,14 @@ func (k msgServer) CreateGroup(goCtx context.Context, msg *types.MsgCreateGroup)
 			},
 			Name: groupAccAddr.String(),
 		})
+
 		k.accountKeeper.SetAccount(ctx, acc)
 
 		break
 	}
 
 	k.SetGroup(ctx, types.Group{
-		Account:   moduleAddr.String(),
+		Account:   groupAccAddr.String(),
 		Members:   msg.Members,
 		Threshold: msg.Threshold,
 	})

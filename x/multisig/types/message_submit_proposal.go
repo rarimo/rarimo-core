@@ -1,6 +1,7 @@
 package types
 
 import (
+	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/multisig/tx"
@@ -61,6 +62,11 @@ func (msg *MsgSubmitProposal) SetMsgs(msgs []sdk.Msg) error {
 
 func (msg MsgSubmitProposal) GetMsgs() ([]sdk.Msg, error) {
 	return tx.GetMsgs(msg.Messages, "proposal")
+}
+
+// UnpackInterfaces implements UnpackInterfacesMessage.UnpackInterfaces
+func (p Proposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
+	return tx.UnpackInterfaces(unpacker, p.Messages)
 }
 
 func (msg *MsgSubmitProposal) ValidateBasic() error {
