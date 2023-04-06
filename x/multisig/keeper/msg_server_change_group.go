@@ -19,20 +19,10 @@ func (k msgServer) ChangeGroup(goCtx context.Context, msg *types.MsgChangeGroup)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "group (%s) not found", msg.Group)
 	}
 
-	isCreatorMember := false
-	for _, member := range group.Members {
-		if member == msg.Creator {
-			isCreatorMember = true
-			break
-		}
-	}
-
-	if !isCreatorMember {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "creator (%s) is not a member of group (%s)", msg.Creator, msg.Group)
-	}
-
 	group.Members = msg.Members
 	group.Threshold = msg.Threshold
+
+	k.SetGroup(ctx, group)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

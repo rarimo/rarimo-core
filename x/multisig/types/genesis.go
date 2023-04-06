@@ -17,16 +17,16 @@ func DefaultGenesis() *GenesisState {
 
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
-func (gs GenesisState) Validate() error {
+func (gs *GenesisState) Validate() error {
 	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }
 
-var _ types.UnpackInterfacesMessage = GenesisState{}
+var _ types.UnpackInterfacesMessage = &GenesisState{}
 
 // UnpackInterfaces implements UnpackInterfacesMessage.UnpackInterfaces
-func (gs GenesisState) UnpackInterfaces(unpacker types.AnyUnpacker) error {
+func (gs *GenesisState) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 	for _, p := range gs.ProposalList {
 		err := p.UnpackInterfaces(unpacker)
 		if err != nil {

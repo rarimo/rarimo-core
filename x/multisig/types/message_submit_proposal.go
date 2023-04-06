@@ -12,6 +12,7 @@ const (
 )
 
 var _ sdk.Msg = &MsgSubmitProposal{}
+var _ types.UnpackInterfacesMessage = &MsgSubmitProposal{}
 
 func NewMsgSubmitProposal(
 	creator string,
@@ -60,13 +61,13 @@ func (msg *MsgSubmitProposal) SetMsgs(msgs []sdk.Msg) error {
 	return nil
 }
 
-func (msg MsgSubmitProposal) GetMsgs() ([]sdk.Msg, error) {
+func (msg *MsgSubmitProposal) GetMsgs() ([]sdk.Msg, error) {
 	return tx.GetMsgs(msg.Messages, "proposal")
 }
 
 // UnpackInterfaces implements UnpackInterfacesMessage.UnpackInterfaces
-func (p Proposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
-	return tx.UnpackInterfaces(unpacker, p.Messages)
+func (msg *MsgSubmitProposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
+	return tx.UnpackInterfaces(unpacker, msg.Messages)
 }
 
 func (msg *MsgSubmitProposal) ValidateBasic() error {
