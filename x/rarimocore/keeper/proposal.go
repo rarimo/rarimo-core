@@ -43,16 +43,3 @@ func (k Keeper) ReshareKeysProposal(ctx sdk.Context, _ *types.ReshareKeysProposa
 	k.SetParams(ctx, params)
 	return nil
 }
-
-func (k Keeper) ChangeThresholdProposal(ctx sdk.Context, proposal *types.ChangeThresholdProposal) error {
-	params := k.GetParams(ctx)
-	activeParties := uint32(k.getActivePartiesAmount(ctx))
-
-	if proposal.Threshold < activeParties {
-		params.IsUpdateRequired = true
-		k.UpdateParams(ctx, params)
-		return nil
-	}
-
-	return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid threshold: must be less the %d", activeParties)
-}

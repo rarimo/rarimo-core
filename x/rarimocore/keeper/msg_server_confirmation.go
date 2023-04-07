@@ -130,27 +130,28 @@ func (k msgServer) ApplyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 		return err
 	}
 
-	existingParties := make(map[string]int)
-	for i, party := range params.Parties {
-		existingParties[party.Account] = i
+	existingParties := make(map[string]*types.Party)
+	for _, party := range params.Parties {
+		existingParties[party.Account] = party
 	}
 
 	for _, party := range op.Parties {
-		index, ok := existingParties[party.Account]
+		existingParty, ok := existingParties[party.Account]
 		if !ok {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: party does not exist")
 		}
 
-		if params.Parties[index].Status == types.PartyStatus_Frozen || params.Parties[index].Status == types.PartyStatus_Slashed {
+		if existingParty.Status == types.PartyStatus_Frozen || existingParty.Status == types.PartyStatus_Slashed {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: can not change party status")
 		}
 
-		params.Parties[index].PubKey = party.PubKey
-		params.Parties[index].Status = party.Status
+		existingParty.PubKey = party.PubKey
+		existingParty.Status = party.Status
 	}
 
 	params.KeyECDSA = op.NewPublicKey
 	params.IsUpdateRequired = false
+	params.Threshold = uint64(crypto.GetThreshold(getActivePartiesAmount(params.Parties)))
 	k.UpdateParams(ctx, params)
 	return nil
 }

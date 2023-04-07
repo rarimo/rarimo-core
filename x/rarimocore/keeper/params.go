@@ -2,7 +2,6 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
@@ -26,7 +25,6 @@ func (k Keeper) UpdateParams(ctx sdk.Context, params types.Params) {
 		}
 	}
 
-	params.Threshold = uint64(crypto.GetThreshold(getActivePartiesAmount(params.Parties)))
 	k.SetParams(ctx, params)
 }
 
