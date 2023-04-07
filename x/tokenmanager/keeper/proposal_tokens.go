@@ -6,21 +6,6 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
-func (k Keeper) HandleSetNetworkProposal(ctx sdk.Context, proposal *types.SetNetworkProposal) error {
-	params := k.GetParams(ctx)
-	for i, network := range params.Networks {
-		if network.Name == proposal.NetworkParams.Name {
-			params.Networks[i] = proposal.NetworkParams
-			k.SetParams(ctx, params)
-			return nil
-		}
-	}
-
-	params.Networks = append(params.Networks, proposal.NetworkParams)
-	k.SetParams(ctx, params)
-	return nil
-}
-
 func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.UpdateTokenItemProposal) error {
 	for _, newItem := range proposal.Item {
 
@@ -31,11 +16,22 @@ func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.U
 
 		if oldItem.Meta.Seed != newItem.Meta.Seed {
 			k.RemoveSeed(ctx, oldItem.Meta.Seed)
+
+			ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeSeedRemoved,
+				sdk.NewAttribute(types.AttributeKeyItemIndex, oldItem.Index),
+				sdk.NewAttribute(types.AttributeKeySeed, oldItem.Meta.Seed),
+			))
+
 			if newItem.Meta.Seed != "" {
 				k.SetSeed(ctx, types.Seed{
 					Seed: newItem.Meta.Seed,
 					Item: newItem.Index,
 				})
+
+				ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeSeedCreated,
+					sdk.NewAttribute(types.AttributeKeyItemIndex, newItem.Index),
+					sdk.NewAttribute(types.AttributeKeySeed, newItem.Meta.Seed),
+				))
 			}
 		}
 
@@ -54,10 +50,23 @@ func (k Keeper) HandleRemoveTokenItemProposal(ctx sdk.Context, proposal *types.R
 
 		for _, onChainIndex := range item.OnChain {
 			k.RemoveOnChainItem(ctx, onChainIndex)
+
+			ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOnChainItemRemoved,
+				sdk.NewAttribute(types.AttributeKeyItemIndex, index),
+				sdk.NewAttribute(types.AttributeKeyOnChainItemChain, onChainIndex.Chain),
+			))
 		}
 
 		k.RemoveSeed(ctx, item.Meta.Seed)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeSeedRemoved,
+			sdk.NewAttribute(types.AttributeKeyItemIndex, item.Index),
+			sdk.NewAttribute(types.AttributeKeySeed, item.Meta.Seed),
+		))
+
 		k.RemoveItem(ctx, index)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeItemRemoved,
+			sdk.NewAttribute(types.AttributeKeyItemIndex, index),
+		))
 	}
 
 	return nil

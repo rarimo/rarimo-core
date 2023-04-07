@@ -194,3 +194,30 @@ func (k Keeper) OnChainItemByOther(c context.Context, req *types.QueryGetOnChain
 
 	return nil, status.Error(codes.NotFound, "not found")
 }
+
+func (k Keeper) OnChainItemByItemForChain(c context.Context, req *types.QueryGetOnChainItemByItemForChainRequest) (*types.QueryGetOnChainItemByItemForChainResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(c)
+	item, ok := k.GetItem(ctx, req.ItemIndex)
+	if !ok {
+		return nil, status.Error(codes.FailedPrecondition, "item not found")
+	}
+
+	for _, index := range item.OnChain {
+		if index.Chain != req.Chain {
+			continue
+		}
+
+		onChainItem, ok := k.GetOnChainItem(ctx, index)
+		if !ok {
+			return nil, status.Error(codes.NotFound, "on chain item entity not found while on chain item index exists in item")
+		}
+
+		return &types.QueryGetOnChainItemByItemForChainResponse{Item: onChainItem}, nil
+	}
+
+	return nil, status.Error(codes.NotFound, "on chain item not found")
+}

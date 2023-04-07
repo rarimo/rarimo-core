@@ -30,7 +30,7 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		Details:       details,
 		Status:        types.OpStatus_INITIALIZED,
 		Creator:       creator,
-		Timestamp:     uint64(ctx.BlockHeight()),
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
 	if approved {

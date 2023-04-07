@@ -26,16 +26,32 @@ func (k Keeper) HandleCreateCollectionProposal(ctx sdk.Context, proposal *types.
 
 	k.SetCollection(ctx, col)
 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionCreated,
+		sdk.NewAttribute(types.AttributeKeyCollectionIndex, proposal.Index),
+	))
+
 	for _, data := range proposal.Data {
 		k.SetCollectionData(ctx, *data)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionDataCreated,
+			sdk.NewAttribute(types.AttributeKeyCollectionIndex, proposal.Index),
+			sdk.NewAttribute(types.AttributeKeyCollectionDataChain, data.Index.Chain),
+		))
 	}
 
 	for _, item := range proposal.Item {
 		k.SetItem(ctx, *item)
+		// TODO should we check item.Collection == proposal.Index?
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeItemCreated,
+			sdk.NewAttribute(types.AttributeKeyItemIndex, item.Index),
+		))
 	}
 
 	for _, item := range proposal.OnChainItem {
 		k.SetOnChainItem(ctx, *item)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOnChainItemCreated,
+			sdk.NewAttribute(types.AttributeKeyItemIndex, item.Item),
+			sdk.NewAttribute(types.AttributeKeyOnChainItemChain, item.Index.Chain),
+		))
 	}
 
 	return nil
@@ -56,6 +72,10 @@ func (k Keeper) HandleAddCollectionDataProposal(ctx sdk.Context, proposal *types
 		}
 
 		k.SetCollectionData(ctx, *data)
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionDataCreated,
+			sdk.NewAttribute(types.AttributeKeyCollectionIndex, data.Collection),
+			sdk.NewAttribute(types.AttributeKeyCollectionDataChain, data.Index.Chain),
+		))
 	}
 
 	return nil
@@ -68,6 +88,11 @@ func (k Keeper) HandleUpdateCollectionDataProposal(ctx sdk.Context, proposal *ty
 		}
 
 		k.SetCollectionData(ctx, *data)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionDataUpdated,
+			sdk.NewAttribute(types.AttributeKeyCollectionIndex, data.Collection),
+			sdk.NewAttribute(types.AttributeKeyCollectionDataChain, data.Index.Chain),
+		))
 	}
 
 	return nil
@@ -99,6 +124,11 @@ func (k Keeper) HandleRemoveCollectionDataProposal(ctx sdk.Context, proposal *ty
 
 		k.SetCollection(ctx, col)
 		k.RemoveCollectionData(ctx, index)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionDataRemoved,
+			sdk.NewAttribute(types.AttributeKeyCollectionIndex, data.Collection),
+			sdk.NewAttribute(types.AttributeKeyCollectionDataChain, index.Chain),
+		))
 	}
 
 	return nil
@@ -112,8 +142,18 @@ func (k Keeper) HandleRemoveCollectionProposal(ctx sdk.Context, proposal *types.
 
 	for _, index := range col.Data {
 		k.RemoveCollectionData(ctx, index)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionDataRemoved,
+			sdk.NewAttribute(types.AttributeKeyCollectionIndex, proposal.Index),
+			sdk.NewAttribute(types.AttributeKeyCollectionDataChain, index.Chain),
+		))
 	}
 
 	k.RemoveCollection(ctx, proposal.Index)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeCollectionRemoved,
+		sdk.NewAttribute(types.AttributeKeyCollectionIndex, proposal.Index),
+	))
+
 	return nil
 }

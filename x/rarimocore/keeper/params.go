@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"sort"
 )
 
 // GetParams get all parameters as types.Params
@@ -19,10 +20,8 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 
 func (k Keeper) UpdateParams(ctx sdk.Context, params types.Params) {
 	currentParams := k.GetParams(ctx)
-	activePartiesAmount := getActivePartiesAmount(params.Parties)
-
-	params.Threshold = uint64(crypto.GetThreshold(activePartiesAmount))
-	params.IsUpdateRequired = activePartiesAmount != getActivePartiesAmount(currentParams.Parties)
+	params.Threshold = uint64(crypto.GetThreshold(getActivePartiesAmount(params.Parties)))
+	params.IsUpdateRequired = isUpdateRequired(currentParams.Parties, params.Parties)
 
 	k.SetParams(ctx, params)
 }
@@ -53,4 +52,25 @@ func getActivePartiesAmount(parties []*types.Party) int {
 	}
 
 	return activePartyCount
+}
+
+func isUpdateRequired(currParties, newParties []*types.Party) bool {
+	if len(currParties) != len(newParties) {
+		return true
+	}
+
+	sort.SliceStable(currParties, func(i, j int) bool {
+		return currParties[i].Address < currParties[j].Address
+	})
+	sort.SliceStable(newParties, func(i, j int) bool {
+		return newParties[i].Address < newParties[j].Address
+	})
+
+	for i := range currParties {
+		if currParties[i].Status != newParties[i].Status {
+			return true
+		}
+	}
+
+	return false
 }

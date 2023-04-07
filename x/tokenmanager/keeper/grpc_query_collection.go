@@ -138,3 +138,30 @@ func (k Keeper) NativeCollectionData(c context.Context, req *types.QueryGetNativ
 
 	return nil, status.Error(codes.NotFound, "not found")
 }
+
+func (k Keeper) CollectionDataByCollectionForChain(c context.Context, req *types.QueryGetCollectionDataByCollectionForChainRequest) (*types.QueryGetCollectionDataByCollectionForChainResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(c)
+
+	collection, found := k.GetCollection(ctx, req.CollectionIndex)
+	if !found {
+		return nil, status.Error(codes.FailedPrecondition, "not found")
+	}
+
+	for _, index := range collection.Data {
+		if index.Chain != req.Chain {
+			continue
+		}
+
+		data, ok := k.GetCollectionData(ctx, index)
+		if !ok {
+			return nil, status.Error(codes.Internal, "collection data not found while index exists in collection")
+		}
+
+		return &types.QueryGetCollectionDataByCollectionForChainResponse{Data: data}, nil
+	}
+
+	return nil, status.Error(codes.NotFound, "not found")
+}
