@@ -70,7 +70,7 @@ func (k Keeper) VotesByProposal(goCtx context.Context, req *types.QueryVotesByPr
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryVotesByProposalResponse{Vote: votes, Pagination: pageRes}, nil // TODO: fix this pagination
+	return &types.QueryVotesByProposalResponse{Vote: votes, Pagination: pageRes}, nil
 }
 
 func (k Keeper) Vote(goCtx context.Context, req *types.QueryGetVoteRequest) (*types.QueryGetVoteResponse, error) {

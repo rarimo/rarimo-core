@@ -30,8 +30,12 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		}
 
 		if proposal.Status == types.ProposalStatus_ACCEPTED {
-			var logs string
-			proposal.Status, logs = k.ExecuteProposal(ctx, proposal)
+			var err error
+			logs := fmt.Sprintf("proposal execution successful on proposal %d", proposal.Id)
+			proposal.Status, err = k.ExecuteProposal(ctx, proposal)
+			if err != nil {
+				logs = fmt.Sprintf("proposal execution failed on proposal %d, because of error %s", proposal.Id, err.Error())
+			}
 
 			k.SetProposal(ctx, proposal)
 

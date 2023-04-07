@@ -81,14 +81,13 @@ func (k Keeper) Tally(ctx sdk.Context, proposalId uint64) *types.TallyResult {
 	return &tally
 }
 
-func (k Keeper) ExecuteProposal(ctx sdk.Context, proposal types.Proposal) (status types.ProposalStatus, logs string) {
+func (k Keeper) ExecuteProposal(ctx sdk.Context, proposal types.Proposal) (status types.ProposalStatus, err error) {
 	// Caching context so that we don't update the store in case of failure.
 	cacheCtx, flush := ctx.CacheContext()
 	status = types.ProposalStatus_EXECUTED
 
-	if err := k.doExecuteMsgs(cacheCtx, proposal); err != nil {
+	if err = k.doExecuteMsgs(cacheCtx, proposal); err != nil {
 		status = types.ProposalStatus_FAILED
-		logs = fmt.Sprintf("proposal execution failed on proposal %d, because of error %s", proposal.Id, err.Error())
 	}
 	if status == types.ProposalStatus_EXECUTED {
 		flush()

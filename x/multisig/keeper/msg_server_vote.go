@@ -21,9 +21,6 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	if proposal.Status != types.ProposalStatus_SUBMITTED {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "proposal not open for voting")
 	}
-	if currentBlockHeight >= proposal.VotingEndBlock {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "voting period has ended already")
-	}
 
 	// Ensure that the voter is a member of the group.
 	group, found := k.GetGroup(ctx, proposal.Group)
@@ -32,11 +29,6 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 	}
 	if !group.HasMember(msg.Creator) {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "voter (%s) not a member of group (%s)", msg.Creator, proposal.Group)
-	}
-
-	// Ensure that the voter has not already voted.
-	if _, voted := k.GetVote(ctx, msg.ProposalId, msg.Creator); voted {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "voter (%s) has already voted", msg.Creator)
 	}
 
 	vote := types.Vote{

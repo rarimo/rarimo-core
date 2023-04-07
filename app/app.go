@@ -187,7 +187,6 @@ var (
 		govtypes.ModuleName:                 {authtypes.Burner},
 		ibctransfertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
 		rarimocoremoduletypes.ModuleName:    nil,
-		tokenmanagermoduletypes.ModuleName:  nil,
 		oraclemanagermoduletypes.ModuleName: nil,
 		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
 		multisigmoduletypes.ModuleName:      nil,
