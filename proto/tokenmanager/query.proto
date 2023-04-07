@@ -48,6 +48,10 @@ service Query {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item/{chain}/{address}/{tokenID}/{targetChain}";
   }
 
+  rpc OnChainItemByItemForChain(QueryGetOnChainItemByItemForChainRequest) returns (QueryGetOnChainItemByItemForChainResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item/{item_index}/{chain}";
+  }
+
   // Queries a list of Item entries.
   rpc OnChainItemAll(QueryAllOnChainItemRequest) returns (QueryAllOnChainItemResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/on-chain-item";
@@ -67,6 +71,10 @@ service Query {
 
   rpc CollectionData(QueryGetCollectionDataRequest) returns (QueryGetCollectionDataResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data/{chain}/{address}";
+  }
+
+  rpc CollectionDataByCollectionForChain(QueryGetCollectionDataByCollectionForChainRequest) returns (QueryGetCollectionDataByCollectionForChainResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/tokenmanager/collection-data/{collection_index}/{chain}";
   }
 
   rpc NativeCollectionData(QueryGetNativeCollectionDataRequest) returns (QueryGetNativeCollectionDataResponse) {
@@ -155,6 +163,15 @@ message QueryGetOnChainItemByOtherResponse {
   OnChainItem item = 1 [(gogoproto.nullable) = false];
 }
 
+message QueryGetOnChainItemByItemForChainRequest {
+  string item_index = 1;
+  string chain = 2;
+}
+
+message QueryGetOnChainItemByItemForChainResponse {
+  OnChainItem item = 1 [(gogoproto.nullable) = false];
+}
+
 message QueryAllOnChainItemRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
@@ -196,6 +213,15 @@ message QueryGetCollectionDataRequest {
 }
 
 message QueryGetCollectionDataResponse {
+  CollectionData data = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetCollectionDataByCollectionForChainRequest {
+  string collection_index = 1;
+  string chain = 2;
+}
+
+message QueryGetCollectionDataByCollectionForChainResponse {
   CollectionData data = 1 [(gogoproto.nullable) = false];
 }
 
