@@ -3,6 +3,7 @@ package crypto
 import (
 	"bytes"
 	"crypto/ed25519"
+	"math/big"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -101,6 +102,7 @@ func GetPartiesHash(set []*types.Party) []byte {
 		data = append(data, []byte(p.PubKey)...)
 		data = append(data, []byte(p.Address)...)
 		data = append(data, []byte(p.Account)...)
+		data = append(data, big.NewInt(int64(p.Status)).Bytes()...)
 	}
 	return crypto.Keccak256(data)
 }
