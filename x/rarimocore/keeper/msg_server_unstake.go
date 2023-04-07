@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -55,6 +56,7 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	}
 
 	params.Parties = parties
+	params.IsUpdateRequired = true
 	k.UpdateParams(ctx, params)
 
 	ctx.EventManager().EmitEvents(sdk.Events{

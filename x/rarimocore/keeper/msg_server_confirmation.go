@@ -130,20 +130,27 @@ func (k msgServer) ApplyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 		return err
 	}
 
-	if len(params.Parties) != len(op.Parties) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties amount")
+	existingParties := make(map[string]int)
+	for i, party := range params.Parties {
+		existingParties[party.Account] = i
 	}
 
-	for i := range params.Parties {
-		if op.Parties[i].Account != params.Parties[i].Account {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties")
+	for _, party := range op.Parties {
+		index, ok := existingParties[party.Account]
+		if !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: party does not exist")
 		}
 
-		params.Parties[i].PubKey = op.Parties[i].PubKey
-		params.Parties[i].Status = op.Parties[i].Status
+		if params.Parties[index].Status == types.PartyStatus_Frozen || params.Parties[index].Status == types.PartyStatus_Slashed {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: can not change party status")
+		}
+
+		params.Parties[index].PubKey = party.PubKey
+		params.Parties[index].Status = party.Status
 	}
 
 	params.KeyECDSA = op.NewPublicKey
+	params.IsUpdateRequired = false
 	k.UpdateParams(ctx, params)
 	return nil
 }

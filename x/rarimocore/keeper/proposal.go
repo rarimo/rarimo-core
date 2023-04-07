@@ -27,9 +27,10 @@ func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.Unf
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid party status: %s, party not frozen", frozenSignerParty.Status)
 	}
 
-	frozenSignerParty.Status = types.PartyStatus_Active
+	frozenSignerParty.Status = types.PartyStatus_Inactive
 	frozenSignerParty.ViolationsCount = 0
 	frozenSignerParty.FreezeEndBlock = 0
+	params.IsUpdateRequired = true
 
 	k.UpdateParams(ctx, params)
 
@@ -48,6 +49,7 @@ func (k Keeper) ChangeThresholdProposal(ctx sdk.Context, proposal *types.ChangeT
 	activeParties := uint32(k.getActivePartiesAmount(ctx))
 
 	if proposal.Threshold < activeParties {
+		params.IsUpdateRequired = true
 		k.UpdateParams(ctx, params)
 		return nil
 	}

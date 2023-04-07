@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -59,6 +60,8 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypePartyFrozen,
 			sdk.NewAttribute(types.AttributeKeyPartyAccount, party.Account),
 		))
+
+		params.IsUpdateRequired = true
 	}
 
 	t.UpdateParams(ctx, params)

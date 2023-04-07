@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -37,7 +38,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		PubKey:  msg.TrialPublicKey,
 		Address: msg.Address,
 		Account: msg.Account,
-		Status:  types.PartyStatus_Active,
+		Status:  types.PartyStatus_Inactive,
 	}
 
 	if msg.Creator != msg.Account {
@@ -45,6 +46,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	}
 
 	params.Parties = append(params.Parties, party)
+	params.IsUpdateRequired = true
 	k.UpdateParams(ctx, params)
 
 	ctx.EventManager().EmitEvents(sdk.Events{
