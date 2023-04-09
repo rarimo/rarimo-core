@@ -18,20 +18,8 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		}
 	}
 
-	sender, _ := sdk.AccAddressFromBech32(msg.Creator)
-	balance := k.bank.GetBalance(ctx, sender, params.StakeDenom)
-
-	stakeCoin, err := k.getStakeCoin(ctx)
-	if err != nil {
-		return nil, sdkerrors.Wrap(err, "failed to get stake coin")
-	}
-
-	if balance.IsLT(stakeCoin) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "insufficient funds")
-	}
-
-	if err = k.bank.SendCoinsFromAccountToModule(ctx, sender, types.ModuleName, sdk.NewCoins(stakeCoin)); err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to send coins from account to module, account: %s", msg.Creator)
+	if err := k.stake(ctx, msg.Creator); err != nil {
+		return nil, err
 	}
 
 	party := &types.Party{
@@ -61,7 +49,30 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	return &types.MsgStakeResponse{}, nil
 }
 
-func (k msgServer) getStakeCoin(ctx sdk.Context) (sdk.Coin, error) {
+func (k Keeper) stake(ctx sdk.Context, sender string) error {
+	params := k.GetParams(ctx)
+
+	senderAddr, _ := sdk.AccAddressFromBech32(sender)
+
+	stakeCoin, err := k.getStakeCoin(ctx)
+	if err != nil {
+		return sdkerrors.Wrap(err, "failed to get stake coin")
+	}
+
+	balance := k.bank.GetBalance(ctx, senderAddr, params.StakeDenom)
+
+	if balance.IsLT(stakeCoin) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "insufficient funds")
+	}
+
+	if err = k.bank.SendCoinsFromAccountToModule(ctx, senderAddr, types.ModuleName, sdk.NewCoins(stakeCoin)); err != nil {
+		return sdkerrors.Wrapf(err, "failed to send coins from account to module, account: %s", sender)
+	}
+
+	return nil
+}
+
+func (k Keeper) getStakeCoin(ctx sdk.Context) (sdk.Coin, error) {
 	params := k.GetParams(ctx)
 
 	amount, ok := sdk.NewIntFromString(params.StakeAmount)

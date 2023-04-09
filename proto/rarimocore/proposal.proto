@@ -13,3 +13,14 @@ message ReshareKeysProposal {
   string title = 1;
   string description = 2;
 }
+
+message SlashProposal {
+  string title = 1;
+  string description = 2;
+  string party = 3;
+}
+
+message DropPartiesProposal {
+  string title = 1;
+  string description = 2;
+}

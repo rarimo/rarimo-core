@@ -31,20 +31,12 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	}
 
 	receiver := party.Account
-
 	if party.Delegator != "" {
 		receiver = party.Delegator
 	}
 
-	stakeCoin, err := k.getStakeCoin(ctx)
-	if err != nil {
-		return nil, sdkerrors.Wrap(err, "failed to get stake coin")
-	}
-
-	receiverAddr, _ := sdk.AccAddressFromBech32(receiver)
-
-	if err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddr, sdk.NewCoins(stakeCoin)); err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to send coins from module to account, account: %s", receiver)
+	if err := k.unstake(ctx, receiver); err != nil {
+		return nil, err
 	}
 
 	parties := make([]*types.Party, 0)
@@ -69,4 +61,19 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	})
 
 	return &types.MsgUnstakeResponse{}, nil
+}
+
+func (k Keeper) unstake(ctx sdk.Context, receiver string) error {
+	receiverAddr, _ := sdk.AccAddressFromBech32(receiver)
+
+	stakeCoin, err := k.getStakeCoin(ctx)
+	if err != nil {
+		return sdkerrors.Wrap(err, "failed to get stake coin")
+	}
+
+	if err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddr, sdk.NewCoins(stakeCoin)); err != nil {
+		return sdkerrors.Wrapf(err, "failed to send coins from module to account, account: %s", receiver)
+	}
+
+	return nil
 }

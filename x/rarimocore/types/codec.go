@@ -20,6 +20,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
 	cdc.RegisterConcrete(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal", nil)
 	cdc.RegisterConcrete(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal", nil)
+	cdc.RegisterConcrete(&SlashProposal{}, "rarimocore/SlashProposal", nil)
+	cdc.RegisterConcrete(&DropPartiesProposal{}, "rarimocore/DropPartiesProposal", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -49,6 +51,14 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
 		&ReshareKeysProposal{},
+	)
+	registry.RegisterImplementations(
+		(*govtypes.Content)(nil),
+		&SlashProposal{},
+	)
+	registry.RegisterImplementations(
+		(*govtypes.Content)(nil),
+		&DropPartiesProposal{},
 	)
 
 	registry.RegisterInterface(

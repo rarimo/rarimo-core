@@ -43,3 +43,42 @@ func (k Keeper) ReshareKeysProposal(ctx sdk.Context, _ *types.ReshareKeysProposa
 	k.SetParams(ctx, params)
 	return nil
 }
+
+func (k Keeper) SlashProposal(ctx sdk.Context, proposal *types.SlashProposal) error {
+	params := k.GetParams(ctx)
+
+	for _, party := range params.Parties {
+		if party.Account == proposal.Party {
+			party.Status = types.PartyStatus_Slashed
+		}
+	}
+
+	params.IsUpdateRequired = true
+	k.SetParams(ctx, params)
+	return nil
+}
+
+func (k Keeper) DropPartiesProposal(ctx sdk.Context, _ *types.DropPartiesProposal) error {
+	params := k.GetParams(ctx)
+
+	for _, party := range params.Parties {
+		if party.Status != types.PartyStatus_Slashed {
+			receiver := party.Account
+			if party.Delegator != "" {
+				receiver = party.Delegator
+			}
+
+			if err := k.unstake(ctx, receiver); err != nil {
+				return err
+			}
+		}
+	}
+
+	params.IsUpdateRequired = true
+	params.KeyECDSA = ""
+	params.Parties = make([]*types.Party, 0, 0)
+	params.Threshold = 0
+
+	k.SetParams(ctx, params)
+	return nil
+}
