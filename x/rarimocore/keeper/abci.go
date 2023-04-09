@@ -17,6 +17,6 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		party.Status = types.PartyStatus_Slashed
 		party.FreezeEndBlock = 0
 
-		k.UpdateParams(ctx, param)
+		k.SetParams(ctx, param)
 	}
 }

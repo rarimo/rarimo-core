@@ -45,3 +45,17 @@ func (k *Keeper) checkIsAnActiveParty(ctx sdk.Context, sender string) error {
 
 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "not an active party")
 }
+
+func (k *Keeper) checkIsValidParty(ctx sdk.Context, sender string) error {
+	for _, party := range k.GetParams(ctx).Parties {
+		if party.Account != sender {
+			continue
+		}
+
+		if party.Status == types.PartyStatus_Active || party.Status == types.PartyStatus_Inactive {
+			return nil
+		}
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "not an active party")
+}

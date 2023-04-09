@@ -47,7 +47,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 
 	params.Parties = append(params.Parties, party)
 	params.IsUpdateRequired = true
-	k.UpdateParams(ctx, params)
+	k.SetParams(ctx, params)
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(

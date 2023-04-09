@@ -32,7 +32,7 @@ func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.Unf
 	frozenSignerParty.FreezeEndBlock = 0
 	params.IsUpdateRequired = true
 
-	k.UpdateParams(ctx, params)
+	k.SetParams(ctx, params)
 
 	return nil
 }

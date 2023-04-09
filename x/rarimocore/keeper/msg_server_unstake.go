@@ -57,7 +57,7 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 
 	params.Parties = parties
 	params.IsUpdateRequired = true
-	k.UpdateParams(ctx, params)
+	k.SetParams(ctx, params)
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(

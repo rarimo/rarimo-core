@@ -64,7 +64,7 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		params.IsUpdateRequired = true
 	}
 
-	t.UpdateParams(ctx, params)
+	t.SetParams(ctx, params)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewViolationReport,
 		sdk.NewAttribute(types.AttributeKeySessionId, msg.SessionId),

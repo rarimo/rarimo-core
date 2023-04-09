@@ -26,6 +26,8 @@ message Party {
   uint64 violationsCount = 5;
   uint64 freezeEndBlock = 6;
   string delegator = 7;
+  // service information used in initial setup
+  string committedGlobalPublicKey = 8;
 }
 
 // Params defines the parameters for the module.
