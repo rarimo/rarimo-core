@@ -12,19 +12,20 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// REQUIRES: validated index
-	if _, ok := k.GetOracle(ctx, msg.Index); ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "oracle already exists")
+	oracle, ok := k.GetOracle(ctx, msg.Index)
+	if ok && oracle.Status != types.OracleStatus_Inactive && oracle.Status != types.OracleStatus_Active {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not stake for oracle: invalid status in existing entry")
+	}
+
+	existingStake := sdk.ZeroInt()
+	if ok {
+		existingStake, _ = sdk.NewIntFromString(oracle.Stake)
 	}
 
 	params := k.GetParams(ctx)
 
 	// REQUIRES: validated amount
 	amount, _ := sdk.NewIntFromString(msg.Amount)
-	// REQUIRES: validated amount in params
-	requiredAmount, _ := sdk.NewIntFromString(params.MinOracleStake)
-	if amount.LT(requiredAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid amount: less then required")
-	}
 
 	moduleAccount := k.ak.GetModuleAccount(ctx, types.ModuleName)
 	if moduleAccount == nil {
@@ -37,10 +38,19 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error withdrawing coins: %s", err.Error())
 	}
 
+	totalStake := existingStake.Add(amount)
+	resultStatus := types.OracleStatus_Active
+
+	// REQUIRES: validated amount in params
+	requiredAmount, _ := sdk.NewIntFromString(params.MinOracleStake)
+	if totalStake.LT(requiredAmount) {
+		resultStatus = types.OracleStatus_Inactive
+	}
+
 	k.SetOracle(ctx, types.Oracle{
 		Index:  msg.Index,
-		Status: types.OracleStatus_Active,
-		Stake:  msg.Amount,
+		Status: resultStatus,
+		Stake:  totalStake.String(),
 	})
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleActivated,
