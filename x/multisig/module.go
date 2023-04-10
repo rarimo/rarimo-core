@@ -1,13 +1,15 @@
-package rarimocore
+package multisig
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
+
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -15,9 +17,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/client/cli"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"gitlab.com/rarimo/rarimo-core/x/multisig/client/cli"
+	"gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
+	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 var (
@@ -99,20 +101,17 @@ type AppModule struct {
 
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
-	bankKeeper    types.BankKeeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
-	bankKeeper types.BankKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
-		bankKeeper:     bankKeeper,
 	}
 }
 

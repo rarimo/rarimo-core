@@ -1,0 +1,10 @@
+syntax = "proto3";
+package rarimo.rarimocore.multisig;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
+
+message Group {
+  string account = 1;
+  repeated string members = 2;
+  uint64 threshold = 3;
+}
