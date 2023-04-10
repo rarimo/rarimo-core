@@ -17,8 +17,8 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 		return nil, types.ErrOracleNotFound
 	}
 
-	if oracle.Status == types.OracleStatus_Slashed {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "oracle is slashed: can not unstake")
+	if oracle.Status == types.OracleStatus_Slashed || oracle.Status == types.OracleStatus_Freezed {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "oracle is slashed or frozen: can not unstake")
 	}
 
 	params := k.GetParams(ctx)
