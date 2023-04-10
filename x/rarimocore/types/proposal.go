@@ -5,40 +5,30 @@ import (
 )
 
 const (
-	ProposalTypeAddSignerParty    = "rarimocore/AddSignerParty"
-	ProposalTypeRemoveSignerParty = "rarimocore/RemoveSignerParty"
-	ProposalTypeReshareKeys       = "rarimocore/ReshareKeys"
-	ProposalTypeChangeThreshold   = "rarimocore/ChangeThreshold"
+	ProposalTypeUnfreezeSignerParty = "rarimocore/UnfreezeSignerParty"
+	ProposalTypeReshareKeys         = "rarimocore/ReshareKeys"
+	ProposalTypeSlash               = "rarimocore/SlashProposal"
+	ProposalTypeDropParties         = "rarimocore/DropPartiesProposal"
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeAddSignerParty)
-	gov.RegisterProposalType(ProposalTypeRemoveSignerParty)
+	gov.RegisterProposalType(ProposalTypeUnfreezeSignerParty)
 	gov.RegisterProposalType(ProposalTypeReshareKeys)
-	gov.RegisterProposalType(ProposalTypeChangeThreshold)
-	gov.RegisterProposalTypeCodec(&AddSignerPartyProposal{}, "rarimocore/AddSignerPartyProposal")
-	gov.RegisterProposalTypeCodec(&RemoveSignerPartyProposal{}, "rarimocore/RemoveSignerPartyProposal")
+	gov.RegisterProposalType(ProposalTypeSlash)
+	gov.RegisterProposalType(ProposalTypeDropParties)
+	gov.RegisterProposalTypeCodec(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal")
 	gov.RegisterProposalTypeCodec(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal")
-	gov.RegisterProposalTypeCodec(&ChangeThresholdProposal{}, "rarimocore/ChangeThresholdProposal")
+	gov.RegisterProposalTypeCodec(&SlashProposal{}, "rarimocore/SlashProposal")
+	gov.RegisterProposalTypeCodec(&DropPartiesProposal{}, "rarimocore/DropPartiesProposal")
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &AddSignerPartyProposal{}
+var _ gov.Content = &UnfreezeSignerPartyProposal{}
 
-func (m *AddSignerPartyProposal) ProposalRoute() string { return RouterKey }
-func (m *AddSignerPartyProposal) ProposalType() string  { return ProposalTypeAddSignerParty }
+func (m *UnfreezeSignerPartyProposal) ProposalRoute() string { return RouterKey }
+func (m *UnfreezeSignerPartyProposal) ProposalType() string  { return ProposalTypeUnfreezeSignerParty }
 
-func (m *AddSignerPartyProposal) ValidateBasic() error {
-	return gov.ValidateAbstract(m)
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &RemoveSignerPartyProposal{}
-
-func (m *RemoveSignerPartyProposal) ProposalRoute() string { return RouterKey }
-func (m *RemoveSignerPartyProposal) ProposalType() string  { return ProposalTypeRemoveSignerParty }
-
-func (m *RemoveSignerPartyProposal) ValidateBasic() error {
+func (m *UnfreezeSignerPartyProposal) ValidateBasic() error {
 	return gov.ValidateAbstract(m)
 }
 
@@ -53,11 +43,21 @@ func (m *ReshareKeysProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &ChangeThresholdProposal{}
+var _ gov.Content = &SlashProposal{}
 
-func (m *ChangeThresholdProposal) ProposalRoute() string { return RouterKey }
-func (m *ChangeThresholdProposal) ProposalType() string  { return ProposalTypeChangeThreshold }
+func (m *SlashProposal) ProposalRoute() string { return RouterKey }
+func (m *SlashProposal) ProposalType() string  { return ProposalTypeSlash }
 
-func (m *ChangeThresholdProposal) ValidateBasic() error {
+func (m *SlashProposal) ValidateBasic() error {
+	return gov.ValidateAbstract(m)
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &DropPartiesProposal{}
+
+func (m *DropPartiesProposal) ProposalRoute() string { return RouterKey }
+func (m *DropPartiesProposal) ProposalType() string  { return ProposalTypeDropParties }
+
+func (m *DropPartiesProposal) ValidateBasic() error {
 	return gov.ValidateAbstract(m)
 }

@@ -3,6 +3,7 @@ package types
 import (
 	"errors"
 	"fmt"
+	"math/big"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -15,11 +16,15 @@ const (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	ParamKeyECDSA         = []byte("KeyECDSA")
-	ParamThreshold        = []byte("Threshold")
-	ParamParties          = []byte("Parties")
-	ParamIsUpdateRequired = []byte("IsUpdateRequired")
-	ParamLastSignature    = []byte("LastSignature")
+	ParamKeyECDSA           = []byte("KeyECDSA")
+	ParamThreshold          = []byte("Threshold")
+	ParamParties            = []byte("Parties")
+	ParamIsUpdateRequired   = []byte("IsUpdateRequired")
+	ParamLastSignature      = []byte("LastSignature")
+	ParamStakeAmount        = []byte("StakeAmount")
+	ParamStakeDenom         = []byte("StakeDenom")
+	ParamMaxViolationsCount = []byte("MaxViolationsCount")
+	ParamFreezeBlocksPeriod = []byte("FreezeBlocksPeriod")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -47,6 +52,10 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(ParamParties, &p.Parties, validateParties),
 		paramtypes.NewParamSetPair(ParamIsUpdateRequired, &p.IsUpdateRequired, validateIsUpdateRequired),
 		paramtypes.NewParamSetPair(ParamLastSignature, &p.LastSignature, validateLastSignature),
+		paramtypes.NewParamSetPair(ParamStakeAmount, &p.StakeAmount, validateStakeAmount),
+		paramtypes.NewParamSetPair(ParamStakeDenom, &p.StakeDenom, validateStakeDenom),
+		paramtypes.NewParamSetPair(ParamMaxViolationsCount, &p.MaxViolationsCount, validateMaxViolationsCount),
+		paramtypes.NewParamSetPair(ParamFreezeBlocksPeriod, &p.FreezeBlocksPeriod, validateFreezeBlocksPeriod),
 	}
 }
 
@@ -119,4 +128,61 @@ func validateLastSignature(i interface{}) error {
 	}
 	_, err := hexutil.Decode(v)
 	return err
+}
+
+func validateStakeAmount(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	amount, ok := big.NewInt(0).SetString(v, 10)
+	if !ok {
+		return fmt.Errorf("invalid stake amount")
+	}
+
+	if amount.Cmp(big.NewInt(0)) <= 0 {
+		return fmt.Errorf("invalid stake amount")
+	}
+
+	return nil
+}
+
+func validateStakeDenom(i interface{}) error {
+	v, ok := i.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if len(v) == 0 {
+		return fmt.Errorf("invalid stake denom")
+	}
+
+	return nil
+}
+
+func validateMaxViolationsCount(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return fmt.Errorf("max violations count can not be zero")
+	}
+
+	return nil
+}
+
+func validateFreezeBlocksPeriod(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return fmt.Errorf("freeze blocks periood can not be zero")
+	}
+
+	return nil
 }

@@ -8,10 +8,17 @@ const (
 	EventTypeOperationApproved = "operation_approved" // emitted only from transactions
 	EventTypeOperationRejected = "operation_rejected" // emitted only from transactions
 	EventTypeVoted             = "voted"              // emitted only from transactions
+	EventTypeStaked             = "staked"
+	EventTypeUnstaked           = "unstaked"
+	EventTypePartyFrozen        = "party_frozen"
+	EventTypeNewViolationReport = "new_violation_report"
 
 	AttributeKeyParamsUpdateType = "params_update_type"
 	AttributeKeyOperationId      = "operation_id"
 	AttributeKeyOperationType    = "operation_type"
 	AttributeKeyConfirmationId   = "confirmation_id"
 	AttributeKeyVotingChoice     = "voting_choice"
+	AttributeKeyPartyAccount     = "party_account"
+	AttributeKeyViolationType    = "violation_type"
+	AttributeKeySessionId        = "session_id"
 )

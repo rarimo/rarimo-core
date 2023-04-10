@@ -183,6 +183,7 @@ var (
 		govtypes.ModuleName:                 {authtypes.Burner},
 		ibctransfertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
 		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
+		rarimocoremoduletypes.ModuleName:    nil,
 		oraclemanagermoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
@@ -384,6 +385,7 @@ func New(
 		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
+		app.BankKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 

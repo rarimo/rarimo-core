@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "rarimocore/params.proto";
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
+import "rarimocore/violation_report.proto";
 import "rarimocore/vote.proto";
 import "rarimocore/tx.proto";
 import "rarimocore/op_transfer.proto";
@@ -48,6 +49,14 @@ service Query {
 	// Queries a list of Confirmation items.
 	rpc VoteAll(QueryAllVoteRequest) returns (QueryAllVoteResponse) {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/vote";
+	}
+
+	rpc ViolationReport(QueryGetViolationReportRequest) returns (QueryGetViolationReportResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/violation_report/{sessionId}/{offender}/{violationType}/{sender}";
+	}
+
+	rpc ViolationReportAll(QueryAllViolationReportRequest) returns (QueryAllViolationReportResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/violation_report";
 	}
 // this line is used by starport scaffolding # 2
 }
@@ -110,6 +119,26 @@ message QueryAllVoteRequest {
 
 message QueryAllVoteResponse {
 	repeated Vote vote = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetViolationReportRequest {
+	string sessionId = 1;
+	string offender = 2;
+	ViolationType violationType = 3;
+	string sender = 4;
+}
+
+message QueryGetViolationReportResponse {
+	ViolationReport violationReport = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllViolationReportRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllViolationReportResponse {
+	repeated ViolationReport violationReport = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
