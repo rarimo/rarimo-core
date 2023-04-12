@@ -38,21 +38,19 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 	})
 
 	params := t.GetParams(ctx)
-	reports := map[string]uint64{}
+	reports := make(map[string]struct{})
 
 	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, func(report types.ViolationReport) (stop bool) {
-		if _, exist := reports[msg.Creator]; !exist {
-			reports[msg.Creator] = 1
-		}
-
-		return uint64(len(reports)) > params.Threshold
+		reports[msg.Creator] = struct{}{}
+		return false
 	})
 
 	party := getPartyByAccount(msg.Offender, params.Parties)
 
-	if uint64(len(reports)) == params.Threshold {
+	if uint64(len(reports)) >= params.Threshold {
 		party.ViolationsCount++
 	}
+
 	if party.ViolationsCount == params.MaxViolationsCount {
 		party.Status = types.PartyStatus_Frozen
 		party.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.FreezeBlocksPeriod
