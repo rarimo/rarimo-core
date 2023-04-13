@@ -30,6 +30,7 @@ func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.Unf
 	frozenSignerParty.Status = types.PartyStatus_Inactive
 	frozenSignerParty.ViolationsCount = 0
 	frozenSignerParty.FreezeEndBlock = 0
+	frozenSignerParty.ReportedSessions = []string{}
 	params.IsUpdateRequired = true
 
 	k.SetParams(ctx, params)

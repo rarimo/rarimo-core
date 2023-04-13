@@ -47,22 +47,30 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 
 	party := getPartyByAccount(msg.Offender, params.Parties)
 
-	if uint64(len(reports)) >= params.Threshold {
-		party.ViolationsCount++
+	alreadyIncremented := false
+	for _, sessionReported := range party.ReportedSessions {
+		alreadyIncremented = alreadyIncremented || (sessionReported == msg.SessionId)
 	}
 
-	if party.ViolationsCount == params.MaxViolationsCount {
-		party.Status = types.PartyStatus_Frozen
-		party.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.FreezeBlocksPeriod
+	if !alreadyIncremented {
+		if uint64(len(reports)) >= params.Threshold {
+			party.ViolationsCount++
+			party.ReportedSessions = append(party.ReportedSessions, msg.SessionId)
+		}
 
-		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypePartyFrozen,
-			sdk.NewAttribute(types.AttributeKeyPartyAccount, party.Account),
-		))
+		if party.ViolationsCount == params.MaxViolationsCount {
+			party.Status = types.PartyStatus_Frozen
+			party.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.FreezeBlocksPeriod
 
-		params.IsUpdateRequired = true
+			ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypePartyFrozen,
+				sdk.NewAttribute(types.AttributeKeyPartyAccount, party.Account),
+			))
+
+			params.IsUpdateRequired = true
+		}
+
+		t.SetParams(ctx, params)
 	}
-
-	t.SetParams(ctx, params)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewViolationReport,
 		sdk.NewAttribute(types.AttributeKeySessionId, msg.SessionId),

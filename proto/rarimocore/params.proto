@@ -28,6 +28,8 @@ message Party {
   string delegator = 7;
   // service information used in initial setup
   string committedGlobalPublicKey = 8;
+  // session where party was reported and violations count was incremented
+  repeated string reportedSessions = 9;
 }
 
 // Params defines the parameters for the module.
