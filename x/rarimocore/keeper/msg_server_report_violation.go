@@ -41,7 +41,7 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 	reports := make(map[string]struct{})
 
 	t.IterateViolationReports(ctx, msg.SessionId, msg.Offender, func(report types.ViolationReport) (stop bool) {
-		reports[msg.Creator] = struct{}{}
+		reports[report.Index.Sender] = struct{}{}
 		return false
 	})
 
