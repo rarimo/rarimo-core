@@ -8,7 +8,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	rarimokeeper "gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
 )
@@ -28,7 +27,6 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
-	ps paramtypes.Subspace,
 	rarimo *rarimokeeper.Keeper,
 	bank bankkeeper.Keeper,
 	ak types.AccountKeeper,

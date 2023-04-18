@@ -447,7 +447,6 @@ func New(
 		appCodec,
 		keys[oraclemanagermoduletypes.StoreKey],
 		keys[oraclemanagermoduletypes.MemStoreKey],
-		app.GetSubspace(oraclemanagermoduletypes.ModuleName),
 		&app.RarimocoreKeeper,
 		app.BankKeeper,
 		app.AccountKeeper,
