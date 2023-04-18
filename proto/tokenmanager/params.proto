@@ -11,11 +11,6 @@ enum NetworkType {
   Other = 3;
 }
 
-message NetworkTypeBinding {
-  uint32 coreType = 1;
-  uint32 saverType = 2;
-}
-
 message NetworkParams {
   // network name
   string name = 1;
