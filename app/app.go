@@ -377,7 +377,6 @@ func New(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
-		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
 		&app.StakingKeeper,
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
@@ -387,7 +386,6 @@ func New(
 		appCodec,
 		keys[rarimocoremoduletypes.StoreKey],
 		keys[rarimocoremoduletypes.MemStoreKey],
-		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
 		app.BankKeeper,
@@ -460,8 +458,6 @@ func New(
 		appCodec,
 		keys[bridgemoduletypes.StoreKey],
 		keys[bridgemoduletypes.MemStoreKey],
-		app.GetSubspace(bridgemoduletypes.ModuleName),
-
 		app.BankKeeper,
 		app.RarimocoreKeeper,
 	)
@@ -471,9 +467,7 @@ func New(
 		appCodec,
 		keys[multisigmoduletypes.StoreKey],
 		keys[multisigmoduletypes.MemStoreKey],
-		app.GetSubspace(multisigmoduletypes.ModuleName),
 		app.MsgServiceRouter(),
-
 		app.AccountKeeper,
 	)
 	multisigModule := multisigmodule.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper)
@@ -835,11 +829,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	paramsKeeper.Subspace(rarimocoremoduletypes.ModuleName)
-	paramsKeeper.Subspace(tokenmanagermoduletypes.ModuleName)
-	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
-	paramsKeeper.Subspace(oraclemanagermoduletypes.ModuleName)
-	paramsKeeper.Subspace(multisigmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

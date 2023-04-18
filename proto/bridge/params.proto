@@ -7,6 +7,5 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
 
 // Params defines the parameters for the module.
 message Params {
-  option (gogoproto.goproto_stringer) = false;
   string withdrawDenom = 1;
 }
