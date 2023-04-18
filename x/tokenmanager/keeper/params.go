@@ -24,9 +24,8 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 		panic("failed to set params: " + err.Error())
 	}
 
-	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&params)
-	store.Set(types.KeyPrefix(types.ParamsKey), b)
+	ctx.KVStore(k.storeKey).Set(types.KeyPrefix(types.ParamsKey), b)
 }
 
 func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param types.NetworkParams, ok bool) {
