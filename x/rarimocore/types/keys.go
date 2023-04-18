@@ -15,6 +15,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_rarimocore"
+
+	// ParamsKey defines the store key for module params entry
+	ParamsKey = "params"
 )
 
 func KeyPrefix(p string) []byte {

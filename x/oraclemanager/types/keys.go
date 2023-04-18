@@ -22,6 +22,9 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_oraclemanager"
 
+	// ParamsKey defines the store key for module params entry
+	ParamsKey = "params"
+
 	lenUint64 = 8
 )
 
