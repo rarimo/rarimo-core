@@ -6,6 +6,7 @@ import "rarimocore/params.proto";
 import "rarimocore/operation.proto";
 import "rarimocore/confirmation.proto";
 import "rarimocore/vote.proto";
+import "rarimocore/violation_report.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
@@ -16,5 +17,6 @@ message GenesisState {
   repeated Operation operationList = 2 [(gogoproto.nullable) = false];
   repeated Confirmation confirmationList = 3 [(gogoproto.nullable) = false];
   repeated Vote voteList = 4 [(gogoproto.nullable) = false];
+  repeated ViolationReport violationReportList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

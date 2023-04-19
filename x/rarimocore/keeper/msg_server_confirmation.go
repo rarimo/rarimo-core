@@ -20,11 +20,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(err, "invalid signature")
 	}
 
-	if err := k.checkSenderIsAParty(ctx, msg.Creator); err != nil {
-		return nil, err
+	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
+		return nil, sdkerrors.Wrap(err, "creator is not an active party")
 	}
 
 	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
@@ -48,7 +48,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 		content, err := k.getContent(ctx, op)
 		if err != nil {
-			return nil, err
+			return nil, sdkerrors.Wrap(err, "failed to get content")
 		}
 		contents = append(contents, content)
 	}
@@ -130,22 +130,28 @@ func (k msgServer) ApplyChangeParties(ctx sdk.Context, op *types.ChangeParties) 
 		return err
 	}
 
-	if len(params.Parties) != len(op.Parties) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties amount")
+	existingParties := make(map[string]*types.Party)
+	for _, party := range params.Parties {
+		existingParties[party.Account] = party
 	}
 
-	for i := range params.Parties {
-		if op.Parties[i].Account != params.Parties[i].Account {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties")
+	for _, party := range op.Parties {
+		existingParty, ok := existingParties[party.Account]
+		if !ok {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: party does not exist")
 		}
 
-		params.Parties[i].PubKey = op.Parties[i].PubKey
-		params.Parties[i].Verified = true
+		if existingParty.Status == types.PartyStatus_Frozen || existingParty.Status == types.PartyStatus_Slashed {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid parties: can not change party status")
+		}
+
+		existingParty.PubKey = party.PubKey
+		existingParty.Status = party.Status
 	}
 
 	params.KeyECDSA = op.NewPublicKey
-	params.Threshold = uint64(crypto.GetThreshold(len(params.Parties)))
 	params.IsUpdateRequired = false
+	params.Threshold = uint64(crypto.GetThreshold(getActivePartiesAmount(params.Parties)))
 	k.SetParams(ctx, params)
 	return nil
 }

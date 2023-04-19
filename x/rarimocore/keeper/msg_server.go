@@ -32,12 +32,30 @@ func (k msgServer) checkCreatorIsValidator(ctx sdk.Context, creator string) erro
 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a validator")
 }
 
-func (k *Keeper) checkSenderIsAParty(ctx sdk.Context, sender string) error {
+func (k *Keeper) checkIsAnActiveParty(ctx sdk.Context, sender string) error {
 	for _, party := range k.GetParams(ctx).Parties {
-		if party.Account == sender {
+		if party.Account != sender {
+			continue
+		}
+
+		if party.Status == types.PartyStatus_Active {
 			return nil
 		}
 	}
 
-	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "sender is not a party")
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "not an active party")
+}
+
+func (k *Keeper) checkIsValidParty(ctx sdk.Context, sender string) error {
+	for _, party := range k.GetParams(ctx).Parties {
+		if party.Account != sender {
+			continue
+		}
+
+		if party.Status == types.PartyStatus_Active || party.Status == types.PartyStatus_Inactive {
+			return nil
+		}
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "not an active party")
 }

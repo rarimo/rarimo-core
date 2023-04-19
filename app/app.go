@@ -103,6 +103,9 @@ import (
 	bridgemodule "gitlab.com/rarimo/rarimo-core/x/bridge"
 	bridgemodulekeeper "gitlab.com/rarimo/rarimo-core/x/bridge/keeper"
 	bridgemoduletypes "gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	multisigmodule "gitlab.com/rarimo/rarimo-core/x/multisig"
+	multisigmodulekeeper "gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
+	multisigmoduletypes "gitlab.com/rarimo/rarimo-core/x/multisig/types"
 	oraclemanagermodule "gitlab.com/rarimo/rarimo-core/x/oraclemanager"
 	oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
 	oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
@@ -170,6 +173,7 @@ var (
 		tokenmanagermodule.AppModuleBasic{},
 		bridgemodule.AppModuleBasic{},
 		oraclemanagermodule.AppModuleBasic{},
+		multisigmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -182,8 +186,10 @@ var (
 		stakingtypes.NotBondedPoolName:      {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:                 {authtypes.Burner},
 		ibctransfertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
-		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
+		rarimocoremoduletypes.ModuleName:    nil,
 		oraclemanagermoduletypes.ModuleName: nil,
+		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
+		multisigmoduletypes.ModuleName:      nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -251,6 +257,8 @@ type App struct {
 	BridgeKeeper bridgemodulekeeper.Keeper
 
 	OraclemanagerKeeper oraclemanagermodulekeeper.Keeper
+
+	MultisigKeeper multisigmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -283,14 +291,12 @@ func New(
 	bApp.SetInterfaceRegistry(interfaceRegistry)
 
 	keys := sdk.NewKVStoreKeys(
-		authtypes.StoreKey, authz.ModuleName, banktypes.StoreKey, stakingtypes.StoreKey,
-		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
-		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
-		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
-		rarimocoremoduletypes.StoreKey,
-		tokenmanagermoduletypes.StoreKey,
-		bridgemoduletypes.StoreKey,
-		oraclemanagermoduletypes.StoreKey,
+		authtypes.StoreKey, authz.ModuleName, banktypes.StoreKey, stakingtypes.StoreKey, minttypes.StoreKey,
+		distrtypes.StoreKey, slashingtypes.StoreKey, govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey,
+		upgradetypes.StoreKey, feegrant.StoreKey, evidencetypes.StoreKey, ibctransfertypes.StoreKey,
+		capabilitytypes.StoreKey, monitoringptypes.StoreKey, rarimocoremoduletypes.StoreKey,
+		tokenmanagermoduletypes.StoreKey, bridgemoduletypes.StoreKey, oraclemanagermoduletypes.StoreKey,
+		multisigmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -371,7 +377,6 @@ func New(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
-		app.GetSubspace(tokenmanagermoduletypes.ModuleName),
 		&app.StakingKeeper,
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
@@ -381,9 +386,9 @@ func New(
 		appCodec,
 		keys[rarimocoremoduletypes.StoreKey],
 		keys[rarimocoremoduletypes.MemStoreKey],
-		app.GetSubspace(rarimocoremoduletypes.ModuleName),
 		&app.TokenmanagerKeeper,
 		&app.StakingKeeper,
+		app.BankKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -442,7 +447,6 @@ func New(
 		appCodec,
 		keys[oraclemanagermoduletypes.StoreKey],
 		keys[oraclemanagermoduletypes.MemStoreKey],
-		app.GetSubspace(oraclemanagermoduletypes.ModuleName),
 		&app.RarimocoreKeeper,
 		app.BankKeeper,
 		app.AccountKeeper,
@@ -453,12 +457,19 @@ func New(
 		appCodec,
 		keys[bridgemoduletypes.StoreKey],
 		keys[bridgemoduletypes.MemStoreKey],
-		app.GetSubspace(bridgemoduletypes.ModuleName),
-
 		app.BankKeeper,
 		app.RarimocoreKeeper,
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
+
+	app.MultisigKeeper = *multisigmodulekeeper.NewKeeper(
+		appCodec,
+		keys[multisigmoduletypes.StoreKey],
+		keys[multisigmoduletypes.MemStoreKey],
+		app.MsgServiceRouter(),
+		app.AccountKeeper,
+	)
+	multisigModule := multisigmodule.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -505,6 +516,7 @@ func New(
 		rarimocoreModule,
 		bridgeModule,
 		oraclemanagerModule,
+		multisigModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -536,6 +548,7 @@ func New(
 		rarimocoremoduletypes.ModuleName,
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
+		multisigmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -563,6 +576,7 @@ func New(
 		rarimocoremoduletypes.ModuleName,
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
+		multisigmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -595,6 +609,7 @@ func New(
 		rarimocoremoduletypes.ModuleName,
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
+		multisigmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -623,6 +638,7 @@ func New(
 		rarimocoreModule,
 		bridgeModule,
 		oraclemanagerModule,
+		multisigModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -812,10 +828,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	paramsKeeper.Subspace(rarimocoremoduletypes.ModuleName)
-	paramsKeeper.Subspace(tokenmanagermoduletypes.ModuleName)
-	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
-	paramsKeeper.Subspace(oraclemanagermoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

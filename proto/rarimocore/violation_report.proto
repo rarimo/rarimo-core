@@ -1,0 +1,23 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+enum ViolationType {
+  Offline = 0;
+  Spam = 1;
+  Other = 3;
+}
+
+message ViolationReportIndex {
+  string sessionId = 1;
+  string offender = 2;
+  ViolationType violationType = 3;
+  string sender = 4;
+}
+
+message ViolationReport {
+  ViolationReportIndex index = 1;
+  // Optional message
+  string msg = 3;
+}
