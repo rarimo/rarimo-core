@@ -22,7 +22,7 @@ func (p Params) Validate() error {
 		return err
 	}
 
-	if err := validateKeyMinOracleStake(p.VoteQuorum); err != nil {
+	if err := validateKeyMinOracleStake(p.MinOracleStake); err != nil {
 		return err
 	}
 
