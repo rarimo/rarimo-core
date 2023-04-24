@@ -11,8 +11,18 @@ import (
 func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
-		case *types.SetNetworkProposal:
-			return k.HandleSetNetworkProposal(ctx, c)
+		case *types.AddNetworkProposal:
+			return k.HandleAddNetworkProposal(ctx, c)
+		case *types.RemoveNetworkProposal:
+			return k.HandleRemoveNetworkProposal(ctx, c)
+		case *types.UpdateContractAddressProposal:
+			return k.HandleUpdateContractAddressProposal(ctx, c)
+		case *types.AddFeeTokenProposal:
+			return k.HandleAddFeeTokenProposal(ctx, c)
+		case *types.RemoveFeeTokenProposal:
+			return k.HandleRemoveFeeTokenProposal(ctx, c)
+		case *types.UpdateFeeTokenProposal:
+			return k.HandleUpdateFeeTokenProposal(ctx, c)
 		case *types.UpdateTokenItemProposal:
 			return k.HandleUpdateTokenItemProposal(ctx, c)
 		case *types.RemoveTokenItemProposal:

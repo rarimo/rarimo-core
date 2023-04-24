@@ -7,7 +7,7 @@ import (
 )
 
 func (k Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleUnfreezeProposal) error {
-	oracle, ok := k.GetOracle(ctx, proposal.Index)
+	oracle, ok := k.GetOracle(ctx, &proposal.Index)
 	if !ok {
 		return types.ErrOracleNotFound
 	}

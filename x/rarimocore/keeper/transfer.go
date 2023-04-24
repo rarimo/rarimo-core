@@ -80,7 +80,7 @@ func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferO
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
+	if _, ok = k.tm.GetOnChainItem(ctx, &msg.From); !ok && msg.Meta == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
 	}
 

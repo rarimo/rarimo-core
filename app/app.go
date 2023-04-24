@@ -377,7 +377,7 @@ func New(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
-		&app.StakingKeeper,
+		app.RarimocoreKeeper,
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
 

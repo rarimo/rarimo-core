@@ -69,14 +69,14 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data does not exists")
 	}
 
-	from, ok := k.tm.GetOnChainItem(ctx, transfer.From)
+	from, ok := k.tm.GetOnChainItem(ctx, &transfer.From)
 	if !ok {
 		// Item also does not exist
 		item := tokentypes.Item{
 			Index:      transfer.Origin,
 			Collection: data.Collection,
-			Meta:       transfer.Meta,
-			OnChain:    []*tokentypes.OnChainItemIndex{transfer.From},
+			Meta:       *transfer.Meta,
+			OnChain:    []*tokentypes.OnChainItemIndex{&transfer.From},
 		}
 
 		k.tm.SetItem(ctx, item)
@@ -85,7 +85,7 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		))
 
 		from = tokentypes.OnChainItem{
-			Index: transfer.From,
+			Index: &transfer.From,
 			Item:  item.Index,
 		}
 
@@ -112,18 +112,18 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		}
 	}
 
-	to, ok := k.tm.GetOnChainItem(ctx, transfer.To)
+	to, ok := k.tm.GetOnChainItem(ctx, &transfer.To)
 	if !ok {
 		item, ok := k.tm.GetItem(ctx, from.Item)
 		if !ok {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "item does not exists but 'from' on chain item found")
 		}
 
-		item.OnChain = append(item.OnChain, transfer.To)
+		item.OnChain = append(item.OnChain, &transfer.To)
 		k.tm.SetItem(ctx, item)
 
 		to = tokentypes.OnChainItem{
-			Index: transfer.To,
+			Index: &transfer.To,
 			Item:  item.Index,
 		}
 

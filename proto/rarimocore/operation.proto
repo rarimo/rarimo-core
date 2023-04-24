@@ -8,6 +8,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 enum opType {
   TRANSFER = 0;
   CHANGE_PARTIES = 1;
+  FEE_TOKEN_MANAGEMENT = 2;
 }
 
 enum opStatus {

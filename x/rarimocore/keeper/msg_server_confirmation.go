@@ -172,6 +172,12 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 		}
 
 		return pkg.GetChangePartiesContent(change)
+	case types.OpType_FEE_TOKEN_MANAGEMENT:
+		manage, err := pkg.GetFeeTokenManagement(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getFeeTokenManagementContent(ctx, op.Index, manage)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
@@ -188,7 +194,7 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection not found")
 	}
 
-	onChainItem, ok := k.tm.GetOnChainItem(ctx, transfer.To)
+	onChainItem, ok := k.tm.GetOnChainItem(ctx, &transfer.To)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "on chain item not found")
 	}
@@ -204,4 +210,13 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 	}
 
 	return pkg.GetTransferContent(collection, data, item, networkParams, transfer)
+}
+
+func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, index string, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+	networkParams, ok := k.tm.GetNetwork(ctx, manage.Chain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
+	}
+
+	return pkg.GetFeeTokenManagementContent(index, networkParams, manage)
 }

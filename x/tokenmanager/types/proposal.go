@@ -5,7 +5,13 @@ import (
 )
 
 const (
-	ProposalTypeSetNetwork           = "tokenmanager/SetNetwork"
+	ProposalTypeAddNetwork            = "tokenmanager/AddNetwork"
+	ProposalTypeRemoveNetwork         = "tokenmanager/RemoveNetwork"
+	ProposalTypeUpdateContractAddress = "tokenmanager/UpdateContractAddressNetwork"
+	ProposalTypeAddFeeToken           = "tokenmanager/AddFeeToken"
+	ProposalTypeRemoveFeeToken        = "tokenmanager/RemoveFeeToken"
+	ProposalTypeUpdateFeeToken        = "tokenmanager/UpdateFeeToken"
+
 	ProposalTypeUpdateTokenItem      = "tokenmanager/UpdateTokenItem"
 	ProposalTypeRemoveTokenItem      = "tokenmanager/RemoveTokenItem"
 	ProposalTypeCreateCollection     = "tokenmanager/CreateCollection"
@@ -16,7 +22,14 @@ const (
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeSetNetwork)
+	gov.RegisterProposalType(ProposalTypeAddNetwork)
+	gov.RegisterProposalType(ProposalTypeRemoveNetwork)
+	gov.RegisterProposalType(ProposalTypeUpdateContractAddress)
+
+	gov.RegisterProposalType(ProposalTypeAddFeeToken)
+	gov.RegisterProposalType(ProposalTypeRemoveFeeToken)
+	gov.RegisterProposalType(ProposalTypeUpdateFeeToken)
+
 	gov.RegisterProposalType(ProposalTypeUpdateTokenItem)
 	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
 	gov.RegisterProposalType(ProposalTypeCreateCollection)
@@ -25,7 +38,14 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
 
-	gov.RegisterProposalTypeCodec(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal")
+	gov.RegisterProposalTypeCodec(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal")
+	gov.RegisterProposalTypeCodec(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal")
+	gov.RegisterProposalTypeCodec(&UpdateContractAddressProposal{}, "tokenmanager/UpdateContractAddressProposal")
+
+	gov.RegisterProposalTypeCodec(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal")
+	gov.RegisterProposalTypeCodec(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal")
+	gov.RegisterProposalTypeCodec(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal")
+
 	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal")
 	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal")
 	gov.RegisterProposalTypeCodec(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal")
@@ -36,17 +56,95 @@ func init() {
 }
 
 // Implements Proposal Interface
-var _ gov.Content = &SetNetworkProposal{}
+var _ gov.Content = &AddNetworkProposal{}
 
-func (m *SetNetworkProposal) ProposalRoute() string { return RouterKey }
-func (m *SetNetworkProposal) ProposalType() string  { return ProposalTypeSetNetwork }
+func (m *AddNetworkProposal) ProposalRoute() string { return RouterKey }
+func (m *AddNetworkProposal) ProposalType() string  { return ProposalTypeAddNetwork }
 
-func (m *SetNetworkProposal) ValidateBasic() error {
+func (m *AddNetworkProposal) ValidateBasic() error {
 	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
-	return validateNetwork(m.NetworkParams)
+	return validateNetwork(&m.NetworkParams)
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &RemoveNetworkProposal{}
+
+func (m *RemoveNetworkProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveNetworkProposal) ProposalType() string  { return ProposalTypeRemoveNetwork }
+
+func (m *RemoveNetworkProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpdateContractAddressProposal{}
+
+func (m *UpdateContractAddressProposal) ProposalRoute() string { return RouterKey }
+func (m *UpdateContractAddressProposal) ProposalType() string {
+	return ProposalTypeUpdateContractAddress
+}
+
+func (m *UpdateContractAddressProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &AddFeeTokenProposal{}
+
+func (m *AddFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *AddFeeTokenProposal) ProposalType() string {
+	return ProposalTypeAddFeeToken
+}
+
+func (m *AddFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &RemoveFeeTokenProposal{}
+
+func (m *RemoveFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveFeeTokenProposal) ProposalType() string {
+	return ProposalTypeRemoveFeeToken
+}
+
+func (m *RemoveFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpdateFeeTokenProposal{}
+
+func (m *UpdateFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *UpdateFeeTokenProposal) ProposalType() string {
+	return ProposalTypeUpdateFeeToken
+}
+
+func (m *UpdateFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface

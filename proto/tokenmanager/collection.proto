@@ -31,6 +31,6 @@ message CollectionData {
 
 message Collection {
   string index = 1;
-  CollectionMetadata meta = 2;
+  CollectionMetadata meta = 2 [(gogoproto.nullable) = false];
   repeated CollectionDataIndex data = 3;
 }

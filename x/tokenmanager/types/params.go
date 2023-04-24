@@ -37,12 +37,24 @@ func validateNetworkParams(i interface{}) error {
 }
 
 func validateNetwork(n *NetworkParams) error {
+	if n == nil {
+		return fmt.Errorf("invalid params: empty")
+	}
+
 	if len(n.Name) == 0 {
-		return fmt.Errorf("invalida network name")
+		return fmt.Errorf("invalid network name")
 	}
 
 	if len(n.Contract) == 0 {
-		return fmt.Errorf("invalida network contract address")
+		return fmt.Errorf("invalid network contract address")
+	}
+
+	if len(n.Fee.FeeContract) == 0 {
+		return fmt.Errorf("invalid fee contract address")
+	}
+
+	if len(n.Fee.FeeTokens) == 0 {
+		return fmt.Errorf("invalid fee token list: empty")
 	}
 
 	return nil

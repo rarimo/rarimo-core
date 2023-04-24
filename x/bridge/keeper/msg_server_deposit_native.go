@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -37,7 +38,7 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Amount:     msg.Amount.Amount.String(),
 		BundleData: msg.BundleData,
 		BundleSalt: msg.BundleSalt,
-		From: &tokenmanagertypes.OnChainItemIndex{
+		From: tokenmanagertypes.OnChainItemIndex{
 			Chain: ctx.ChainID(),
 		},
 		To: msg.To,

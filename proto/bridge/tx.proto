@@ -3,6 +3,7 @@ package rarimo.rarimocore.bridge;
 
 import "tokenmanager/item.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
@@ -24,7 +25,7 @@ message MsgDepositNative {
   string bundleData = 5;// hex-encoded
   string bundleSalt = 6;// hex-encoded
   // Information about target chain
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7 [(gogoproto.nullable) = false];
 }
 
 message MsgDepositNativeResponse {}

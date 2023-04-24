@@ -16,3 +16,9 @@ type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 }
+
+type RarimocoreKeeper interface {
+	CreateAddFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
+	CreateRemoveFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
+	CreateUpdateFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
+}

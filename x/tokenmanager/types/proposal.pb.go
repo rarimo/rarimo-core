@@ -5,6 +5,7 @@ package types
 
 import (
 	fmt "fmt"
+	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
@@ -22,24 +23,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type SetNetworkProposal struct {
-	Title         string         `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Description   string         `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	NetworkParams *NetworkParams `protobuf:"bytes,3,opt,name=networkParams,proto3" json:"networkParams,omitempty"`
+type AddNetworkProposal struct {
+	Title         string        `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description   string        `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	NetworkParams NetworkParams `protobuf:"bytes,3,opt,name=networkParams,proto3" json:"networkParams"`
 }
 
-func (m *SetNetworkProposal) Reset()         { *m = SetNetworkProposal{} }
-func (m *SetNetworkProposal) String() string { return proto.CompactTextString(m) }
-func (*SetNetworkProposal) ProtoMessage()    {}
-func (*SetNetworkProposal) Descriptor() ([]byte, []int) {
+func (m *AddNetworkProposal) Reset()         { *m = AddNetworkProposal{} }
+func (m *AddNetworkProposal) String() string { return proto.CompactTextString(m) }
+func (*AddNetworkProposal) ProtoMessage()    {}
+func (*AddNetworkProposal) Descriptor() ([]byte, []int) {
 	return fileDescriptor_095086fc1f73fe4b, []int{0}
 }
-func (m *SetNetworkProposal) XXX_Unmarshal(b []byte) error {
+func (m *AddNetworkProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SetNetworkProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *AddNetworkProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SetNetworkProposal.Marshal(b, m, deterministic)
+		return xxx_messageInfo_AddNetworkProposal.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -49,37 +50,369 @@ func (m *SetNetworkProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *SetNetworkProposal) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SetNetworkProposal.Merge(m, src)
+func (m *AddNetworkProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AddNetworkProposal.Merge(m, src)
 }
-func (m *SetNetworkProposal) XXX_Size() int {
+func (m *AddNetworkProposal) XXX_Size() int {
 	return m.Size()
 }
-func (m *SetNetworkProposal) XXX_DiscardUnknown() {
-	xxx_messageInfo_SetNetworkProposal.DiscardUnknown(m)
+func (m *AddNetworkProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_AddNetworkProposal.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SetNetworkProposal proto.InternalMessageInfo
+var xxx_messageInfo_AddNetworkProposal proto.InternalMessageInfo
 
-func (m *SetNetworkProposal) GetTitle() string {
+func (m *AddNetworkProposal) GetTitle() string {
 	if m != nil {
 		return m.Title
 	}
 	return ""
 }
 
-func (m *SetNetworkProposal) GetDescription() string {
+func (m *AddNetworkProposal) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *SetNetworkProposal) GetNetworkParams() *NetworkParams {
+func (m *AddNetworkProposal) GetNetworkParams() NetworkParams {
 	if m != nil {
 		return m.NetworkParams
 	}
-	return nil
+	return NetworkParams{}
+}
+
+type RemoveNetworkProposal struct {
+	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Chain       string `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+}
+
+func (m *RemoveNetworkProposal) Reset()         { *m = RemoveNetworkProposal{} }
+func (m *RemoveNetworkProposal) String() string { return proto.CompactTextString(m) }
+func (*RemoveNetworkProposal) ProtoMessage()    {}
+func (*RemoveNetworkProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_095086fc1f73fe4b, []int{1}
+}
+func (m *RemoveNetworkProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RemoveNetworkProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RemoveNetworkProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RemoveNetworkProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemoveNetworkProposal.Merge(m, src)
+}
+func (m *RemoveNetworkProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *RemoveNetworkProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemoveNetworkProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemoveNetworkProposal proto.InternalMessageInfo
+
+func (m *RemoveNetworkProposal) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *RemoveNetworkProposal) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *RemoveNetworkProposal) GetChain() string {
+	if m != nil {
+		return m.Chain
+	}
+	return ""
+}
+
+type UpdateContractAddressProposal struct {
+	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Chain       string `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+	Contract    string `protobuf:"bytes,4,opt,name=contract,proto3" json:"contract,omitempty"`
+}
+
+func (m *UpdateContractAddressProposal) Reset()         { *m = UpdateContractAddressProposal{} }
+func (m *UpdateContractAddressProposal) String() string { return proto.CompactTextString(m) }
+func (*UpdateContractAddressProposal) ProtoMessage()    {}
+func (*UpdateContractAddressProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_095086fc1f73fe4b, []int{2}
+}
+func (m *UpdateContractAddressProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateContractAddressProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateContractAddressProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateContractAddressProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateContractAddressProposal.Merge(m, src)
+}
+func (m *UpdateContractAddressProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateContractAddressProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateContractAddressProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateContractAddressProposal proto.InternalMessageInfo
+
+func (m *UpdateContractAddressProposal) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *UpdateContractAddressProposal) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *UpdateContractAddressProposal) GetChain() string {
+	if m != nil {
+		return m.Chain
+	}
+	return ""
+}
+
+func (m *UpdateContractAddressProposal) GetContract() string {
+	if m != nil {
+		return m.Contract
+	}
+	return ""
+}
+
+type AddFeeTokenProposal struct {
+	Title       string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Chain       string   `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+	Token       FeeToken `protobuf:"bytes,4,opt,name=token,proto3" json:"token"`
+}
+
+func (m *AddFeeTokenProposal) Reset()         { *m = AddFeeTokenProposal{} }
+func (m *AddFeeTokenProposal) String() string { return proto.CompactTextString(m) }
+func (*AddFeeTokenProposal) ProtoMessage()    {}
+func (*AddFeeTokenProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_095086fc1f73fe4b, []int{3}
+}
+func (m *AddFeeTokenProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *AddFeeTokenProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_AddFeeTokenProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *AddFeeTokenProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AddFeeTokenProposal.Merge(m, src)
+}
+func (m *AddFeeTokenProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *AddFeeTokenProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_AddFeeTokenProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AddFeeTokenProposal proto.InternalMessageInfo
+
+func (m *AddFeeTokenProposal) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *AddFeeTokenProposal) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *AddFeeTokenProposal) GetChain() string {
+	if m != nil {
+		return m.Chain
+	}
+	return ""
+}
+
+func (m *AddFeeTokenProposal) GetToken() FeeToken {
+	if m != nil {
+		return m.Token
+	}
+	return FeeToken{}
+}
+
+type UpdateFeeTokenProposal struct {
+	Title       string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Chain       string   `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+	Token       FeeToken `protobuf:"bytes,4,opt,name=token,proto3" json:"token"`
+}
+
+func (m *UpdateFeeTokenProposal) Reset()         { *m = UpdateFeeTokenProposal{} }
+func (m *UpdateFeeTokenProposal) String() string { return proto.CompactTextString(m) }
+func (*UpdateFeeTokenProposal) ProtoMessage()    {}
+func (*UpdateFeeTokenProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_095086fc1f73fe4b, []int{4}
+}
+func (m *UpdateFeeTokenProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateFeeTokenProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateFeeTokenProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateFeeTokenProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateFeeTokenProposal.Merge(m, src)
+}
+func (m *UpdateFeeTokenProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateFeeTokenProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateFeeTokenProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateFeeTokenProposal proto.InternalMessageInfo
+
+func (m *UpdateFeeTokenProposal) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *UpdateFeeTokenProposal) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *UpdateFeeTokenProposal) GetChain() string {
+	if m != nil {
+		return m.Chain
+	}
+	return ""
+}
+
+func (m *UpdateFeeTokenProposal) GetToken() FeeToken {
+	if m != nil {
+		return m.Token
+	}
+	return FeeToken{}
+}
+
+type RemoveFeeTokenProposal struct {
+	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Chain       string `protobuf:"bytes,3,opt,name=chain,proto3" json:"chain,omitempty"`
+	Contract    string `protobuf:"bytes,4,opt,name=contract,proto3" json:"contract,omitempty"`
+}
+
+func (m *RemoveFeeTokenProposal) Reset()         { *m = RemoveFeeTokenProposal{} }
+func (m *RemoveFeeTokenProposal) String() string { return proto.CompactTextString(m) }
+func (*RemoveFeeTokenProposal) ProtoMessage()    {}
+func (*RemoveFeeTokenProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_095086fc1f73fe4b, []int{5}
+}
+func (m *RemoveFeeTokenProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RemoveFeeTokenProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RemoveFeeTokenProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RemoveFeeTokenProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemoveFeeTokenProposal.Merge(m, src)
+}
+func (m *RemoveFeeTokenProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *RemoveFeeTokenProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemoveFeeTokenProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemoveFeeTokenProposal proto.InternalMessageInfo
+
+func (m *RemoveFeeTokenProposal) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *RemoveFeeTokenProposal) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *RemoveFeeTokenProposal) GetChain() string {
+	if m != nil {
+		return m.Chain
+	}
+	return ""
+}
+
+func (m *RemoveFeeTokenProposal) GetContract() string {
+	if m != nil {
+		return m.Contract
+	}
+	return ""
 }
 
 type UpdateTokenItemProposal struct {
@@ -92,7 +425,7 @@ func (m *UpdateTokenItemProposal) Reset()         { *m = UpdateTokenItemProposal
 func (m *UpdateTokenItemProposal) String() string { return proto.CompactTextString(m) }
 func (*UpdateTokenItemProposal) ProtoMessage()    {}
 func (*UpdateTokenItemProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{1}
+	return fileDescriptor_095086fc1f73fe4b, []int{6}
 }
 func (m *UpdateTokenItemProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -152,7 +485,7 @@ func (m *RemoveTokenItemProposal) Reset()         { *m = RemoveTokenItemProposal
 func (m *RemoveTokenItemProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveTokenItemProposal) ProtoMessage()    {}
 func (*RemoveTokenItemProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{2}
+	return fileDescriptor_095086fc1f73fe4b, []int{7}
 }
 func (m *RemoveTokenItemProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -203,10 +536,10 @@ func (m *RemoveTokenItemProposal) GetIndex() []string {
 }
 
 type CreateCollectionProposal struct {
-	Title       string              `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Description string              `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Index       string              `protobuf:"bytes,3,opt,name=index,proto3" json:"index,omitempty"`
-	Metadata    *CollectionMetadata `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Title       string             `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description string             `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Index       string             `protobuf:"bytes,3,opt,name=index,proto3" json:"index,omitempty"`
+	Metadata    CollectionMetadata `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata"`
 	// All supported networks described
 	Data        []*CollectionData `protobuf:"bytes,5,rep,name=data,proto3" json:"data,omitempty"`
 	Item        []*Item           `protobuf:"bytes,6,rep,name=item,proto3" json:"item,omitempty"`
@@ -217,7 +550,7 @@ func (m *CreateCollectionProposal) Reset()         { *m = CreateCollectionPropos
 func (m *CreateCollectionProposal) String() string { return proto.CompactTextString(m) }
 func (*CreateCollectionProposal) ProtoMessage()    {}
 func (*CreateCollectionProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{3}
+	return fileDescriptor_095086fc1f73fe4b, []int{8}
 }
 func (m *CreateCollectionProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -267,11 +600,11 @@ func (m *CreateCollectionProposal) GetIndex() string {
 	return ""
 }
 
-func (m *CreateCollectionProposal) GetMetadata() *CollectionMetadata {
+func (m *CreateCollectionProposal) GetMetadata() CollectionMetadata {
 	if m != nil {
 		return m.Metadata
 	}
-	return nil
+	return CollectionMetadata{}
 }
 
 func (m *CreateCollectionProposal) GetData() []*CollectionData {
@@ -305,7 +638,7 @@ func (m *UpdateCollectionDataProposal) Reset()         { *m = UpdateCollectionDa
 func (m *UpdateCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*UpdateCollectionDataProposal) ProtoMessage()    {}
 func (*UpdateCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{4}
+	return fileDescriptor_095086fc1f73fe4b, []int{9}
 }
 func (m *UpdateCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -365,7 +698,7 @@ func (m *AddCollectionDataProposal) Reset()         { *m = AddCollectionDataProp
 func (m *AddCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*AddCollectionDataProposal) ProtoMessage()    {}
 func (*AddCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{5}
+	return fileDescriptor_095086fc1f73fe4b, []int{10}
 }
 func (m *AddCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -425,7 +758,7 @@ func (m *RemoveCollectionDataProposal) Reset()         { *m = RemoveCollectionDa
 func (m *RemoveCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveCollectionDataProposal) ProtoMessage()    {}
 func (*RemoveCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{6}
+	return fileDescriptor_095086fc1f73fe4b, []int{11}
 }
 func (m *RemoveCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -485,7 +818,7 @@ func (m *RemoveCollectionProposal) Reset()         { *m = RemoveCollectionPropos
 func (m *RemoveCollectionProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveCollectionProposal) ProtoMessage()    {}
 func (*RemoveCollectionProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{7}
+	return fileDescriptor_095086fc1f73fe4b, []int{12}
 }
 func (m *RemoveCollectionProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -536,7 +869,12 @@ func (m *RemoveCollectionProposal) GetIndex() string {
 }
 
 func init() {
-	proto.RegisterType((*SetNetworkProposal)(nil), "rarimo.rarimocore.tokenmanager.SetNetworkProposal")
+	proto.RegisterType((*AddNetworkProposal)(nil), "rarimo.rarimocore.tokenmanager.AddNetworkProposal")
+	proto.RegisterType((*RemoveNetworkProposal)(nil), "rarimo.rarimocore.tokenmanager.RemoveNetworkProposal")
+	proto.RegisterType((*UpdateContractAddressProposal)(nil), "rarimo.rarimocore.tokenmanager.UpdateContractAddressProposal")
+	proto.RegisterType((*AddFeeTokenProposal)(nil), "rarimo.rarimocore.tokenmanager.AddFeeTokenProposal")
+	proto.RegisterType((*UpdateFeeTokenProposal)(nil), "rarimo.rarimocore.tokenmanager.UpdateFeeTokenProposal")
+	proto.RegisterType((*RemoveFeeTokenProposal)(nil), "rarimo.rarimocore.tokenmanager.RemoveFeeTokenProposal")
 	proto.RegisterType((*UpdateTokenItemProposal)(nil), "rarimo.rarimocore.tokenmanager.UpdateTokenItemProposal")
 	proto.RegisterType((*RemoveTokenItemProposal)(nil), "rarimo.rarimocore.tokenmanager.RemoveTokenItemProposal")
 	proto.RegisterType((*CreateCollectionProposal)(nil), "rarimo.rarimocore.tokenmanager.CreateCollectionProposal")
@@ -549,40 +887,48 @@ func init() {
 func init() { proto.RegisterFile("tokenmanager/proposal.proto", fileDescriptor_095086fc1f73fe4b) }
 
 var fileDescriptor_095086fc1f73fe4b = []byte{
-	// 469 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x54, 0x3f, 0x6f, 0xd3, 0x40,
-	0x14, 0xcf, 0xe1, 0xa4, 0xd0, 0x67, 0xb1, 0x58, 0x95, 0x72, 0x2d, 0xc5, 0x8a, 0x2c, 0x86, 0x48,
-	0xa8, 0x8e, 0xe4, 0x2e, 0xac, 0x34, 0x2c, 0x91, 0x68, 0x40, 0x2e, 0x2c, 0x6c, 0x57, 0xfb, 0x29,
-	0x3d, 0xd5, 0xe7, 0xb3, 0x2e, 0x27, 0x28, 0x1f, 0x80, 0x89, 0x85, 0x0d, 0x89, 0xad, 0xdf, 0x86,
-	0xb1, 0x23, 0x23, 0x4a, 0xbe, 0x08, 0xf2, 0x9d, 0xeb, 0xda, 0x0c, 0x84, 0x92, 0x20, 0x75, 0x3a,
-	0x5d, 0x5e, 0x7e, 0x7f, 0xde, 0xfb, 0xf9, 0x1d, 0x3c, 0xd2, 0xf2, 0x1c, 0x73, 0xc1, 0x72, 0x36,
-	0x43, 0x35, 0x2a, 0x94, 0x2c, 0xe4, 0x9c, 0x65, 0x61, 0xa1, 0xa4, 0x96, 0x9e, 0xaf, 0x98, 0xe2,
-	0x42, 0x86, 0xf6, 0x48, 0xa4, 0xc2, 0xb0, 0xf9, 0xf7, 0xbd, 0xc7, 0x2d, 0x70, 0x22, 0xb3, 0x0c,
-	0x13, 0xcd, 0x65, 0x6e, 0xe1, 0x7b, 0xfd, 0x56, 0x99, 0x6b, 0x14, 0x55, 0x61, 0xb7, 0x2d, 0xca,
-	0x14, 0x13, 0x73, 0x5b, 0x0a, 0x2e, 0x09, 0x78, 0x27, 0xa8, 0xa7, 0xa8, 0x3f, 0x48, 0x75, 0xfe,
-	0xba, 0xf2, 0xe3, 0xed, 0x40, 0x4f, 0x73, 0x9d, 0x21, 0x25, 0x03, 0x32, 0xdc, 0x8e, 0xed, 0xc5,
-	0x1b, 0x80, 0x9b, 0xe2, 0x3c, 0x51, 0xbc, 0x28, 0x55, 0xe9, 0x3d, 0x53, 0x6b, 0xfe, 0xe4, 0x9d,
-	0xc0, 0xc3, 0xbc, 0xa2, 0x32, 0x2a, 0xd4, 0x19, 0x90, 0xa1, 0x1b, 0x1d, 0x84, 0x7f, 0xee, 0x2c,
-	0x9c, 0x36, 0x41, 0x71, 0x9b, 0x23, 0xf8, 0x4c, 0xa0, 0xff, 0xb6, 0x48, 0x99, 0xc6, 0x37, 0x25,
-	0x66, 0xa2, 0x51, 0xac, 0x6d, 0xf4, 0x19, 0x74, 0xcb, 0x01, 0x51, 0x67, 0xe0, 0x0c, 0xdd, 0xe8,
-	0xc9, 0x2a, 0x7f, 0xa5, 0x66, 0x6c, 0x10, 0xc1, 0x0c, 0xfa, 0x31, 0x0a, 0xf9, 0x7e, 0x83, 0x66,
-	0x76, 0xa0, 0xc7, 0xf3, 0x14, 0x2f, 0x8c, 0x9b, 0xed, 0xd8, 0x5e, 0x82, 0x4f, 0x0e, 0xd0, 0xb1,
-	0x42, 0xa6, 0x71, 0x5c, 0x27, 0xbd, 0x49, 0x29, 0x52, 0x4b, 0x79, 0x53, 0x78, 0x20, 0x50, 0xb3,
-	0x94, 0x69, 0x46, 0xbb, 0x26, 0xb1, 0x68, 0xd5, 0x44, 0x6e, 0x3c, 0x1d, 0x57, 0xc8, 0xb8, 0xe6,
-	0xf0, 0x8e, 0xa0, 0x6b, 0xb8, 0x7a, 0x66, 0xba, 0xe1, 0xdf, 0x73, 0xbd, 0x28, 0x79, 0x0c, 0xb6,
-	0x4e, 0x68, 0xeb, 0xb6, 0x09, 0x79, 0xc7, 0xe0, 0xca, 0x7c, 0x7c, 0xc6, 0xb8, 0x49, 0x87, 0xde,
-	0x37, 0x04, 0x4f, 0x57, 0x11, 0xbc, 0xba, 0x81, 0xc4, 0x4d, 0x7c, 0xf0, 0x8d, 0xc0, 0xbe, 0xfd,
-	0xfc, 0xda, 0x3e, 0xd7, 0xce, 0xe2, 0x7a, 0x4a, 0xce, 0xbf, 0x4f, 0x29, 0xf8, 0x4a, 0x60, 0xf7,
-	0x79, 0x9a, 0xde, 0x41, 0x67, 0x97, 0x04, 0xf6, 0xed, 0xa2, 0x6c, 0xd8, 0xdc, 0xa4, 0xb9, 0x2d,
-	0x6e, 0x74, 0x78, 0x3b, 0x77, 0x93, 0x12, 0x7a, 0xbd, 0x62, 0x67, 0x40, 0x7f, 0xb7, 0xf8, 0x7f,
-	0x36, 0xec, 0xe8, 0xe5, 0xf7, 0x85, 0x4f, 0xae, 0x16, 0x3e, 0xf9, 0xb9, 0xf0, 0xc9, 0x97, 0xa5,
-	0xdf, 0xb9, 0x5a, 0xfa, 0x9d, 0x1f, 0x4b, 0xbf, 0xf3, 0x2e, 0x9a, 0x71, 0x9d, 0xb1, 0xd3, 0x30,
-	0x91, 0x62, 0x64, 0x5b, 0xa8, 0x8e, 0x83, 0xb2, 0x95, 0xd1, 0xc5, 0xa8, 0xf5, 0x78, 0xeb, 0x8f,
-	0x05, 0xce, 0x4f, 0xb7, 0xcc, 0xe3, 0x7d, 0xf8, 0x2b, 0x00, 0x00, 0xff, 0xff, 0x6f, 0xbf, 0x7c,
-	0x9b, 0x4e, 0x06, 0x00, 0x00,
+	// 593 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x96, 0x31, 0x6f, 0xd3, 0x40,
+	0x14, 0xc7, 0x73, 0x24, 0x29, 0xcd, 0xb3, 0x58, 0x4c, 0x68, 0xdc, 0xd0, 0x9a, 0xc8, 0x62, 0x88,
+	0x84, 0xea, 0x48, 0xee, 0xc2, 0x9a, 0xa4, 0x42, 0x8a, 0x44, 0x0b, 0xb2, 0xca, 0x00, 0xdb, 0xd5,
+	0xf7, 0x94, 0x5a, 0x8d, 0x7d, 0xd6, 0xf9, 0x04, 0x65, 0x65, 0x43, 0x5d, 0xd8, 0x90, 0xd8, 0x98,
+	0x10, 0x12, 0x1f, 0xa4, 0x63, 0x47, 0x26, 0x84, 0x92, 0x2f, 0x82, 0x7c, 0xe7, 0xa4, 0x0e, 0x43,
+	0x43, 0x69, 0x22, 0xc1, 0x64, 0x9f, 0x9f, 0xff, 0xef, 0xfd, 0xee, 0xff, 0xee, 0x59, 0x86, 0xfb,
+	0x92, 0x9f, 0x60, 0x1c, 0xd1, 0x98, 0x0e, 0x51, 0x74, 0x12, 0xc1, 0x13, 0x9e, 0xd2, 0x91, 0x9b,
+	0x08, 0x2e, 0xb9, 0x69, 0x0b, 0x2a, 0xc2, 0x88, 0xbb, 0xfa, 0x12, 0x70, 0x81, 0x6e, 0xf1, 0xf5,
+	0x66, 0x7d, 0xc8, 0x87, 0x5c, 0xbd, 0xda, 0xc9, 0xee, 0xb4, 0xaa, 0xb9, 0x3d, 0x97, 0x32, 0xe0,
+	0xa3, 0x11, 0x06, 0x32, 0xe4, 0x71, 0x1e, 0x6e, 0xcc, 0x85, 0x43, 0x89, 0x51, 0x1e, 0xd8, 0x9c,
+	0x47, 0xa1, 0x82, 0x46, 0xa9, 0x0e, 0x39, 0x5f, 0x08, 0x98, 0x5d, 0xc6, 0x0e, 0x50, 0xbe, 0xe1,
+	0xe2, 0xe4, 0x79, 0x4e, 0x69, 0xd6, 0xa1, 0x2a, 0x43, 0x39, 0x42, 0x8b, 0xb4, 0x48, 0xbb, 0xe6,
+	0xeb, 0x85, 0xd9, 0x02, 0x83, 0x61, 0x1a, 0x88, 0x30, 0xc9, 0xaa, 0x5a, 0xb7, 0x54, 0xac, 0xf8,
+	0xc8, 0x7c, 0x09, 0x77, 0xe2, 0x3c, 0x95, 0xaa, 0x62, 0x95, 0x5b, 0xa4, 0x6d, 0x78, 0x3b, 0xee,
+	0xd5, 0xfb, 0x75, 0x0f, 0x8a, 0xa2, 0x5e, 0xe5, 0xfc, 0xc7, 0x83, 0x92, 0x3f, 0x9f, 0xc9, 0x41,
+	0xb8, 0xe7, 0x63, 0xc4, 0x5f, 0xe3, 0xb2, 0x58, 0xeb, 0x50, 0x0d, 0x8e, 0x69, 0x18, 0x2b, 0xc6,
+	0x9a, 0xaf, 0x17, 0xce, 0x7b, 0x02, 0xdb, 0x2f, 0x12, 0x46, 0x25, 0xf6, 0x79, 0x2c, 0x05, 0x0d,
+	0x64, 0x97, 0x31, 0x81, 0x69, 0xba, 0x9a, 0x7a, 0x66, 0x13, 0xd6, 0x83, 0xbc, 0x90, 0x55, 0x51,
+	0x81, 0xd9, 0xda, 0xf9, 0x4a, 0xe0, 0x6e, 0x97, 0xb1, 0x27, 0x88, 0x87, 0x99, 0x59, 0x2b, 0x22,
+	0xd8, 0x83, 0xaa, 0xea, 0x85, 0x2a, 0x6f, 0x78, 0xed, 0x45, 0xbd, 0x9a, 0xe2, 0xe4, 0x6d, 0xd2,
+	0x62, 0xe7, 0x1b, 0x81, 0x0d, 0xed, 0xdb, 0x7f, 0x81, 0xfb, 0x8e, 0xc0, 0x86, 0x3e, 0x4e, 0x2b,
+	0xc6, 0xbd, 0xaa, 0xbf, 0x67, 0x04, 0x1a, 0xda, 0x33, 0x45, 0x30, 0x90, 0x18, 0xdd, 0x98, 0xe2,
+	0x31, 0x54, 0xb2, 0xc9, 0xb7, 0xca, 0xad, 0x72, 0xdb, 0xf0, 0x1e, 0x2e, 0x72, 0x27, 0xab, 0xe9,
+	0x2b, 0x85, 0x33, 0x84, 0x86, 0x76, 0x64, 0x79, 0x30, 0x75, 0xa8, 0x86, 0x31, 0xc3, 0x53, 0x45,
+	0x53, 0xf3, 0xf5, 0xc2, 0x39, 0x2b, 0x83, 0xd5, 0x17, 0xa8, 0x46, 0x6c, 0xfa, 0x09, 0x5b, 0x66,
+	0x29, 0x32, 0x2b, 0x65, 0x1e, 0xc2, 0x7a, 0x84, 0x92, 0x32, 0x2a, 0x69, 0x7e, 0x5e, 0xbc, 0x45,
+	0x8e, 0x5c, 0x32, 0xed, 0xe7, 0xca, 0xfc, 0xe4, 0xcc, 0x32, 0x99, 0x3d, 0xa8, 0xa8, 0x8c, 0x55,
+	0xe5, 0xb1, 0xfb, 0xe7, 0x19, 0xf7, 0xa8, 0xa4, 0xbe, 0xd2, 0xce, 0xfa, 0xb4, 0x76, 0xdd, 0x3e,
+	0x99, 0xfb, 0x60, 0xf0, 0xb8, 0x9f, 0x1d, 0xae, 0xec, 0xa1, 0x75, 0x5b, 0x25, 0x78, 0xb4, 0x28,
+	0xc1, 0xb3, 0x4b, 0x89, 0x5f, 0xd4, 0x3b, 0x9f, 0x08, 0x6c, 0x4d, 0x3f, 0x78, 0x45, 0xce, 0x1b,
+	0x77, 0x64, 0xea, 0x52, 0xf9, 0xef, 0x5d, 0x72, 0x3e, 0x12, 0xd8, 0xec, 0x32, 0xf6, 0x0f, 0x92,
+	0x7d, 0x26, 0xb0, 0xa5, 0xc7, 0x65, 0xc9, 0x70, 0x83, 0xe2, 0xcc, 0x18, 0xde, 0xee, 0xf5, 0xe8,
+	0x06, 0x99, 0x74, 0x3a, 0x68, 0xc7, 0x60, 0xfd, 0x8e, 0xb8, 0x9a, 0x39, 0xeb, 0x3d, 0x3d, 0x1f,
+	0xdb, 0xe4, 0x62, 0x6c, 0x93, 0x9f, 0x63, 0x9b, 0x7c, 0x98, 0xd8, 0xa5, 0x8b, 0x89, 0x5d, 0xfa,
+	0x3e, 0xb1, 0x4b, 0xaf, 0xbc, 0x61, 0x28, 0x47, 0xf4, 0xc8, 0x0d, 0x78, 0xd4, 0xd1, 0x5b, 0xc8,
+	0x2f, 0x3b, 0xd9, 0x56, 0x3a, 0xa7, 0x9d, 0xb9, 0x7f, 0x13, 0xf9, 0x36, 0xc1, 0xf4, 0x68, 0x4d,
+	0xfd, 0x9b, 0xec, 0xfe, 0x0a, 0x00, 0x00, 0xff, 0xff, 0x98, 0x84, 0x56, 0x36, 0x43, 0x09, 0x00,
+	0x00,
 }
 
-func (m *SetNetworkProposal) Marshal() (dAtA []byte, err error) {
+func (m *AddNetworkProposal) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -592,25 +938,277 @@ func (m *SetNetworkProposal) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SetNetworkProposal) MarshalTo(dAtA []byte) (int, error) {
+func (m *AddNetworkProposal) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SetNetworkProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *AddNetworkProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.NetworkParams != nil {
-		{
-			size, err := m.NetworkParams.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintProposal(dAtA, i, uint64(size))
+	{
+		size, err := m.NetworkParams.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintProposal(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x1a
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RemoveNetworkProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RemoveNetworkProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RemoveNetworkProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateContractAddressProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateContractAddressProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateContractAddressProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Contract) > 0 {
+		i -= len(m.Contract)
+		copy(dAtA[i:], m.Contract)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Contract)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *AddFeeTokenProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AddFeeTokenProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AddFeeTokenProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintProposal(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateFeeTokenProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateFeeTokenProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateFeeTokenProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Token.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintProposal(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RemoveFeeTokenProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RemoveFeeTokenProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RemoveFeeTokenProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Contract) > 0 {
+		i -= len(m.Contract)
+		copy(dAtA[i:], m.Contract)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Contract)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Chain) > 0 {
+		i -= len(m.Chain)
+		copy(dAtA[i:], m.Chain)
+		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -790,18 +1388,16 @@ func (m *CreateCollectionProposal) MarshalToSizedBuffer(dAtA []byte) (int, error
 			dAtA[i] = 0x2a
 		}
 	}
-	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintProposal(dAtA, i, uint64(size))
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i--
-		dAtA[i] = 0x22
+		i -= size
+		i = encodeVarintProposal(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x22
 	if len(m.Index) > 0 {
 		i -= len(m.Index)
 		copy(dAtA[i:], m.Index)
@@ -1034,7 +1630,7 @@ func encodeVarintProposal(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *SetNetworkProposal) Size() (n int) {
+func (m *AddNetworkProposal) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1048,8 +1644,123 @@ func (m *SetNetworkProposal) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovProposal(uint64(l))
 	}
-	if m.NetworkParams != nil {
-		l = m.NetworkParams.Size()
+	l = m.NetworkParams.Size()
+	n += 1 + l + sovProposal(uint64(l))
+	return n
+}
+
+func (m *RemoveNetworkProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateContractAddressProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Contract)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	return n
+}
+
+func (m *AddFeeTokenProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = m.Token.Size()
+	n += 1 + l + sovProposal(uint64(l))
+	return n
+}
+
+func (m *UpdateFeeTokenProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = m.Token.Size()
+	n += 1 + l + sovProposal(uint64(l))
+	return n
+}
+
+func (m *RemoveFeeTokenProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Chain)
+	if l > 0 {
+		n += 1 + l + sovProposal(uint64(l))
+	}
+	l = len(m.Contract)
+	if l > 0 {
 		n += 1 + l + sovProposal(uint64(l))
 	}
 	return n
@@ -1119,10 +1830,8 @@ func (m *CreateCollectionProposal) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovProposal(uint64(l))
 	}
-	if m.Metadata != nil {
-		l = m.Metadata.Size()
-		n += 1 + l + sovProposal(uint64(l))
-	}
+	l = m.Metadata.Size()
+	n += 1 + l + sovProposal(uint64(l))
 	if len(m.Data) > 0 {
 		for _, e := range m.Data {
 			l = e.Size()
@@ -1240,7 +1949,7 @@ func sovProposal(x uint64) (n int) {
 func sozProposal(x uint64) (n int) {
 	return sovProposal(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *SetNetworkProposal) Unmarshal(dAtA []byte) error {
+func (m *AddNetworkProposal) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1263,10 +1972,10 @@ func (m *SetNetworkProposal) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SetNetworkProposal: wiretype end group for non-group")
+			return fmt.Errorf("proto: AddNetworkProposal: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SetNetworkProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: AddNetworkProposal: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1362,12 +2071,869 @@ func (m *SetNetworkProposal) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.NetworkParams == nil {
-				m.NetworkParams = &NetworkParams{}
-			}
 			if err := m.NetworkParams.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProposal(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RemoveNetworkProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProposal
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RemoveNetworkProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RemoveNetworkProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProposal(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateContractAddressProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProposal
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateContractAddressProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateContractAddressProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Contract = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProposal(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AddFeeTokenProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProposal
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AddFeeTokenProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AddFeeTokenProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProposal(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateFeeTokenProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProposal
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateFeeTokenProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateFeeTokenProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProposal(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RemoveFeeTokenProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProposal
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RemoveFeeTokenProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RemoveFeeTokenProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Chain = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProposal
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProposal
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProposal
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Contract = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1837,9 +3403,6 @@ func (m *CreateCollectionProposal) Unmarshal(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
-			}
-			if m.Metadata == nil {
-				m.Metadata = &CollectionMetadata{}
 			}
 			if err := m.Metadata.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

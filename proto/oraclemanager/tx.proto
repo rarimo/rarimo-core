@@ -4,6 +4,7 @@ package rarimo.rarimocore.oraclemanager;
 import "tokenmanager/item.proto";
 import "rarimocore/vote.proto";
 import "oraclemanager/oracle.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 
@@ -44,8 +45,8 @@ message MsgCreateTransferOp {
   string bundleData = 7;// hex-encoded
   string bundleSalt = 8;// hex-encoded
   // Information about current and target chains
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9 [(gogoproto.nullable) = false];
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10 [(gogoproto.nullable) = false];
   rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
 }
 

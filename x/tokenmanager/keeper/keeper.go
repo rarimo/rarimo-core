@@ -3,7 +3,6 @@ package keeper
 import (
 	"fmt"
 
-	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -16,7 +15,7 @@ type (
 		cdc      codec.BinaryCodec
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
-		staking  *stakingkeeper.Keeper
+		rarimo   types.RarimocoreKeeper
 	}
 )
 
@@ -24,13 +23,13 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
-	staking *stakingkeeper.Keeper,
+	rarimo types.RarimocoreKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
-		staking:  staking,
+		rarimo:   rarimo,
 	}
 }
 
