@@ -42,7 +42,7 @@ func init() {
 	gov.RegisterProposalTypeCodec(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal")
 	gov.RegisterProposalTypeCodec(&UpdateContractAddressProposal{}, "tokenmanager/UpdateContractAddressProposal")
 
-	gov.RegisterProposalTypeCodec(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal")
+	gov.RegisterProposalTypeCodec(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal")
 	gov.RegisterProposalTypeCodec(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal")
 	gov.RegisterProposalTypeCodec(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal")
 
