@@ -18,6 +18,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetupInitial{}, "rarimocore/SetupInitial", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
 	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
+	cdc.RegisterConcrete(&FeeTokenManagement{}, "rarimocore/FeeTokenManagement", nil)
 	cdc.RegisterConcrete(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal", nil)
 	cdc.RegisterConcrete(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal", nil)
 	cdc.RegisterConcrete(&SlashProposal{}, "rarimocore/SlashProposal", nil)
@@ -71,6 +72,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		"rarimo.rarimocore.rarimocore.ChangeParties",
 		(*proto.Message)(nil),
 		&ChangeParties{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.rarimocore.FeeTokenManagement",
+		(*proto.Message)(nil),
+		&FeeTokenManagement{},
 	)
 
 	registry.RegisterInterface(

@@ -75,7 +75,7 @@ func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.Fee
 		Index:         index,
 		OperationType: types.OpType_FEE_TOKEN_MANAGEMENT,
 		Details:       details,
-		Status:        types.OpStatus_APPROVED,
+		Status:        types.OpStatus_INITIALIZED,
 		Creator:       SystemCreator,
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
@@ -95,6 +95,10 @@ func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.Fee
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_FEE_TOKEN_MANAGEMENT.String()),
 	))
+
+	if err := k.ApproveOperation(ctx, operation); err != nil {
+		return sdkerrors.Wrap(err, "failed to auto-approve operation")
+	}
 
 	return nil
 }

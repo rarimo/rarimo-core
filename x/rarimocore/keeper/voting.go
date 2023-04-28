@@ -51,6 +51,9 @@ func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 
 		op.Status = types.OpStatus_APPROVED
 		k.SetOperation(ctx, op)
+	case types.OpType_FEE_TOKEN_MANAGEMENT:
+		op.Status = types.OpStatus_APPROVED
+		k.SetOperation(ctx, op)
 	default:
 		// Nothing to do
 	}
