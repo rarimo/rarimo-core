@@ -47,6 +47,10 @@ func (b *FeeTokenDataBuilder) Build() *FeeTokenData {
 }
 
 func (b *FeeTokenDataBuilder) SetAddress(addr string) *FeeTokenDataBuilder {
+	if addr == "" {
+		return b
+	}
+
 	b.address = crypto.TryHexDecode(addr)
 	return b
 }

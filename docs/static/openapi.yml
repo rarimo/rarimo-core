@@ -30367,6 +30367,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/bridge/hash/{index}':
@@ -33782,16 +33792,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/confirmation/{root}':
@@ -34035,6 +34035,7 @@ paths:
                       enum:
                         - TRANSFER
                         - CHANGE_PARTIES
+                        - FEE_TOKEN_MANAGEMENT
                       default: TRANSFER
                     details:
                       title: Corresponding to type details
@@ -34484,16 +34485,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/operation/{index}':
@@ -34517,6 +34508,7 @@ paths:
                     enum:
                       - TRANSFER
                       - CHANGE_PARTIES
+                      - FEE_TOKEN_MANAGEMENT
                     default: TRANSFER
                   details:
                     title: Corresponding to type details
@@ -35452,16 +35444,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/rarimo/rarimo-core/rarimocore/violation_report/{sessionId}/{offender}/{violationType}/{sender}':
@@ -35987,16 +35969,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -37117,6 +37089,22 @@ paths:
                   contract:
                     type: string
                     title: contract address hex
+                  fee:
+                    type: object
+                    properties:
+                      feeContract:
+                        type: string
+                        title: contract address hex
+                      feeTokens:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            contract:
+                              type: string
+                              title: contract address hex
+                            amount:
+                              type: string
                   type:
                     type: string
                     enum:
@@ -37468,6 +37456,22 @@ paths:
                         contract:
                           type: string
                           title: contract address hex
+                        fee:
+                          type: object
+                          properties:
+                            feeContract:
+                              type: string
+                              title: contract address hex
+                            feeTokens:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  contract:
+                                    type: string
+                                    title: contract address hex
+                                  amount:
+                                    type: string
                         type:
                           type: string
                           enum:
@@ -60852,6 +60856,7 @@ definitions:
         enum:
           - TRANSFER
           - CHANGE_PARTIES
+          - FEE_TOKEN_MANAGEMENT
         default: TRANSFER
       details:
         title: Corresponding to type details
@@ -61193,6 +61198,7 @@ definitions:
               enum:
                 - TRANSFER
                 - CHANGE_PARTIES
+                - FEE_TOKEN_MANAGEMENT
               default: TRANSFER
             details:
               title: Corresponding to type details
@@ -61531,6 +61537,7 @@ definitions:
             enum:
               - TRANSFER
               - CHANGE_PARTIES
+              - FEE_TOKEN_MANAGEMENT
             default: TRANSFER
           details:
             title: Corresponding to type details
@@ -61901,6 +61908,7 @@ definitions:
     enum:
       - TRANSFER
       - CHANGE_PARTIES
+      - FEE_TOKEN_MANAGEMENT
     default: TRANSFER
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
@@ -61976,6 +61984,30 @@ definitions:
         type: string
       metadataURI:
         type: string
+  rarimo.rarimocore.tokenmanager.FeeParams:
+    type: object
+    properties:
+      feeContract:
+        type: string
+        title: contract address hex
+      feeTokens:
+        type: array
+        items:
+          type: object
+          properties:
+            contract:
+              type: string
+              title: contract address hex
+            amount:
+              type: string
+  rarimo.rarimocore.tokenmanager.FeeToken:
+    type: object
+    properties:
+      contract:
+        type: string
+        title: contract address hex
+      amount:
+        type: string
   rarimo.rarimocore.tokenmanager.Item:
     type: object
     properties:
@@ -62016,6 +62048,22 @@ definitions:
       contract:
         type: string
         title: contract address hex
+      fee:
+        type: object
+        properties:
+          feeContract:
+            type: string
+            title: contract address hex
+          feeTokens:
+            type: array
+            items:
+              type: object
+              properties:
+                contract:
+                  type: string
+                  title: contract address hex
+                amount:
+                  type: string
       type:
         type: string
         enum:
@@ -62060,6 +62108,22 @@ definitions:
             contract:
               type: string
               title: contract address hex
+            fee:
+              type: object
+              properties:
+                feeContract:
+                  type: string
+                  title: contract address hex
+                feeTokens:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      contract:
+                        type: string
+                        title: contract address hex
+                      amount:
+                        type: string
             type:
               type: string
               enum:
@@ -62628,6 +62692,22 @@ definitions:
           contract:
             type: string
             title: contract address hex
+          fee:
+            type: object
+            properties:
+              feeContract:
+                type: string
+                title: contract address hex
+              feeTokens:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    contract:
+                      type: string
+                      title: contract address hex
+                    amount:
+                      type: string
           type:
             type: string
             enum:
@@ -62655,6 +62735,22 @@ definitions:
                 contract:
                   type: string
                   title: contract address hex
+                fee:
+                  type: object
+                  properties:
+                    feeContract:
+                      type: string
+                      title: contract address hex
+                    feeTokens:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          contract:
+                            type: string
+                            title: contract address hex
+                          amount:
+                            type: string
                 type:
                   type: string
                   enum:

@@ -25,6 +25,6 @@ func GetFeeTokenManagementContent(strOrigin string, params tokentypes.NetworkPar
 		TargetNetwork:  params.Name,
 		Receiver:       hexutil.MustDecode(op.Receiver),
 		TargetContract: hexutil.MustDecode(params.Contract),
-		Data:           data.NewFeeTokenDataBuilder().SetOpType(op.OpType).SetAmount(op.Token.Amount).SetAmount(op.Token.Amount).Build().GetContent(),
+		Data:           data.NewFeeTokenDataBuilder().SetOpType(op.OpType).SetAddress(op.Token.GetAmount()).SetAmount(op.Token.Amount).Build().GetContent(),
 	}, nil
 }
