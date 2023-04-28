@@ -33,6 +33,10 @@ func NewKeeper(
 	}
 }
 
+func (k *Keeper) SetRarimoCore(rarimo types.RarimocoreKeeper) {
+	k.rarimo = rarimo
+}
+
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }

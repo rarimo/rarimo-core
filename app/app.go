@@ -377,7 +377,7 @@ func New(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
-		app.RarimocoreKeeper,
+		nil, // Will be set later (currently rarimocore keeper is not initialized)
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -391,6 +391,7 @@ func New(
 		app.BankKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
+	app.TokenmanagerKeeper.SetRarimoCore(app.RarimocoreKeeper)
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
