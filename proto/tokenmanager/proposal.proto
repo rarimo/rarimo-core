@@ -48,6 +48,15 @@ message RemoveFeeTokenProposal {
   string contract = 4;
 }
 
+message WithdrawFeeProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+  FeeToken token = 4 [(gogoproto.nullable) = false];
+  string receiver = 5;
+}
+
+
 message UpdateTokenItemProposal {
   string title = 1;
   string description = 2;

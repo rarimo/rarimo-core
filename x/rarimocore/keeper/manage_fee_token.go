@@ -62,6 +62,17 @@ func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
+func (k Keeper) CreateWithdrawFeeOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, receiver string) error {
+	op := &types.FeeTokenManagement{
+		OpType:   types.FeeTokenManagementType_WITHDRAW_FEE_TOKEN,
+		Token:    token,
+		Chain:    chain,
+		Receiver: receiver,
+	}
+
+	return k.CreateFeeTokenManagementOperation(ctx, op)
+}
+
 func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.FeeTokenManagement) error {
 	// Index is HASH(block height, chain, fee token contract, fee amount)
 	index := hexutil.Encode(crypto.Keccak256(big.NewInt(ctx.BlockHeight()).Bytes(), []byte(op.Chain), []byte(op.Token.Contract), []byte(op.Token.Amount)))

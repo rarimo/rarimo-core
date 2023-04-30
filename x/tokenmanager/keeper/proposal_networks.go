@@ -14,7 +14,12 @@ func (k Keeper) HandleAddNetworkProposal(ctx sdk.Context, proposal *types.AddNet
 }
 
 func (k Keeper) HandleRemoveNetworkProposal(ctx sdk.Context, proposal *types.RemoveNetworkProposal) error {
+	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
 	params := k.GetParams(ctx)
+
 	networks := make([]*types.NetworkParams, 0, len(params.Networks)-1)
 	for _, network := range params.Networks {
 		if network.Name != proposal.Chain {
@@ -28,6 +33,10 @@ func (k Keeper) HandleRemoveNetworkProposal(ctx sdk.Context, proposal *types.Rem
 }
 
 func (k Keeper) HandleUpdateContractAddressProposal(ctx sdk.Context, proposal *types.UpdateContractAddressProposal) error {
+	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
 	params := k.GetParams(ctx)
 	for _, network := range params.Networks {
 		if network.Name == proposal.Chain {
@@ -41,6 +50,10 @@ func (k Keeper) HandleUpdateContractAddressProposal(ctx sdk.Context, proposal *t
 }
 
 func (k Keeper) HandleAddFeeTokenProposal(ctx sdk.Context, proposal *types.AddFeeTokenProposal) error {
+	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
 	params := k.GetParams(ctx)
 	for _, network := range params.Networks {
 		if network.Name == proposal.Chain {
@@ -58,6 +71,10 @@ func (k Keeper) HandleAddFeeTokenProposal(ctx sdk.Context, proposal *types.AddFe
 }
 
 func (k Keeper) HandleUpdateFeeTokenProposal(ctx sdk.Context, proposal *types.UpdateFeeTokenProposal) error {
+	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
 	params := k.GetParams(ctx)
 
 	for _, network := range params.Networks {
@@ -76,6 +93,10 @@ func (k Keeper) HandleUpdateFeeTokenProposal(ctx sdk.Context, proposal *types.Up
 }
 
 func (k Keeper) HandleRemoveFeeTokenProposal(ctx sdk.Context, proposal *types.RemoveFeeTokenProposal) error {
+	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
 	params := k.GetParams(ctx)
 
 	var feeTokenToRemove *types.FeeToken
@@ -106,5 +127,31 @@ func (k Keeper) HandleRemoveFeeTokenProposal(ctx sdk.Context, proposal *types.Re
 	}
 
 	k.SetParams(ctx, params)
+	return nil
+}
+
+func (k Keeper) HandleWithdrawFeeProposal(ctx sdk.Context, proposal *types.WithdrawFeeProposal) error {
+	network, ok := k.GetNetwork(ctx, proposal.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
+	var feeTokenToWithdraw *types.FeeToken
+
+	for _, token := range network.Fee.FeeTokens {
+		if token.Contract == proposal.Token.Contract {
+			feeTokenToWithdraw = token
+			break
+		}
+	}
+
+	if feeTokenToWithdraw == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee token not found")
+	}
+
+	if err := k.rarimo.CreateWithdrawFeeOperation(ctx, proposal.Token, proposal.Chain, proposal.Receiver); err != nil {
+		return sdkerrors.Wrap(err, "failed to create operation")
+	}
+
 	return nil
 }

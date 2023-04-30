@@ -21,4 +21,5 @@ type RarimocoreKeeper interface {
 	CreateAddFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
 	CreateRemoveFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
 	CreateUpdateFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
+	CreateWithdrawFeeOperation(ctx sdk.Context, token FeeToken, chain string, receiver string) error
 }

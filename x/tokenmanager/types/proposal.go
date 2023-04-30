@@ -11,6 +11,7 @@ const (
 	ProposalTypeAddFeeToken           = "tokenmanager/AddFeeToken"
 	ProposalTypeRemoveFeeToken        = "tokenmanager/RemoveFeeToken"
 	ProposalTypeUpdateFeeToken        = "tokenmanager/UpdateFeeToken"
+	ProposalTypeWithdrawFee           = "tokenmanager/WithdrawFee"
 
 	ProposalTypeUpdateTokenItem      = "tokenmanager/UpdateTokenItem"
 	ProposalTypeRemoveTokenItem      = "tokenmanager/RemoveTokenItem"
@@ -29,6 +30,7 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeAddFeeToken)
 	gov.RegisterProposalType(ProposalTypeRemoveFeeToken)
 	gov.RegisterProposalType(ProposalTypeUpdateFeeToken)
+	gov.RegisterProposalType(ProposalTypeWithdrawFee)
 
 	gov.RegisterProposalType(ProposalTypeUpdateTokenItem)
 	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
@@ -45,6 +47,7 @@ func init() {
 	gov.RegisterProposalTypeCodec(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal")
 	gov.RegisterProposalTypeCodec(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal")
 	gov.RegisterProposalTypeCodec(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal")
+	gov.RegisterProposalTypeCodec(&WithdrawFeeProposal{}, "tokenmanager/WithdrawFeeProposal")
 
 	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal")
 	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal")
@@ -140,6 +143,22 @@ func (m *UpdateFeeTokenProposal) ProposalType() string {
 }
 
 func (m *UpdateFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &WithdrawFeeProposal{}
+
+func (m *WithdrawFeeProposal) ProposalRoute() string { return RouterKey }
+func (m *WithdrawFeeProposal) ProposalType() string {
+	return ProposalTypeWithdrawFee
+}
+
+func (m *WithdrawFeeProposal) ValidateBasic() error {
 	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
