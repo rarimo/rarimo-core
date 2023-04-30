@@ -460,6 +460,7 @@ func New(
 		keys[bridgemoduletypes.MemStoreKey],
 		app.BankKeeper,
 		app.RarimocoreKeeper,
+		app.TokenmanagerKeeper,
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 

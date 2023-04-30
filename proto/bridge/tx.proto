@@ -12,6 +12,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
 service Msg {
   rpc DepositNative(MsgDepositNative) returns (MsgDepositNativeResponse);
   rpc WithdrawNative(MsgWithdrawNative) returns (MsgWithdrawNativeResponse);
+  rpc WithdrawFee(MsgWithdrawFee) returns (MsgWithdrawFeeResponse);
     // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -38,5 +39,13 @@ message MsgWithdrawNative {
 }
 
 message MsgWithdrawNativeResponse {}
+
+message MsgWithdrawFee {
+  string creator = 1;
+  // Evidence information
+  string origin = 2;
+}
+
+message MsgWithdrawFeeResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
