@@ -8,13 +8,14 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
+	cdc.RegisterConcrete(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal", nil)
 	cdc.RegisterConcrete(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal", nil)
 	cdc.RegisterConcrete(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal", nil)
-	cdc.RegisterConcrete(&UpdateContractAddressProposal{}, "tokenmanager/UpdateContractAddressProposal", nil)
 
 	cdc.RegisterConcrete(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal", nil)
 	cdc.RegisterConcrete(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal", nil)
 	cdc.RegisterConcrete(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal", nil)
+	cdc.RegisterConcrete(&WithdrawFeeProposal{}, "tokenmanager/WithdrawFeeProposal", nil)
 
 	cdc.RegisterConcrete(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal", nil)
 	cdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
@@ -29,13 +30,14 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*govtypes.Content)(nil),
+		&UpgradeContractProposal{},
 		&AddNetworkProposal{},
 		&RemoveNetworkProposal{},
-		&UpdateContractAddressProposal{},
 
 		&AddFeeTokenProposal{},
 		&UpdateFeeTokenProposal{},
 		&RemoveFeeTokenProposal{},
+		&WithdrawFeeProposal{},
 
 		&UpdateTokenItemProposal{},
 		&RemoveTokenItemProposal{},

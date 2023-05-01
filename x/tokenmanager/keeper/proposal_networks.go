@@ -3,8 +3,62 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
+
+var upgradeVerifiers = map[types.NetworkType]func(details *types.ContractUpgradeDetails) error{
+	types.NetworkType_EVM: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.NewImplementationContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid new contract address %s", err.Error())
+		}
+
+		if _, err := hexutil.Decode(details.Nonce); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		}
+
+		return nil
+	},
+	types.NetworkType_Solana: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.BufferAccount); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid buffer address %s", err.Error())
+		}
+
+		if _, err := hexutil.Decode(details.Hash); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hash %s", err.Error())
+		}
+
+		if _, err := hexutil.Decode(details.Nonce); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		}
+
+		return nil
+	},
+	types.NetworkType_Near: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.Hash); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hash %s", err.Error())
+		}
+
+		if _, err := hexutil.Decode(details.Nonce); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		}
+
+		return nil
+	},
+}
+
+func (k Keeper) HandleUpgradeContractProposal(ctx sdk.Context, proposal *types.UpgradeContractProposal) error {
+	network, ok := k.GetNetwork(ctx, proposal.Details.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
+	if err := upgradeVerifiers[network.Type](&proposal.Details); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "proposal validation failed %s", err.Error())
+	}
+
+	return k.rarimo.CreateContractUpgradeOperation(ctx, &proposal.Details)
+}
 
 func (k Keeper) HandleAddNetworkProposal(ctx sdk.Context, proposal *types.AddNetworkProposal) error {
 	params := k.GetParams(ctx)
@@ -28,23 +82,6 @@ func (k Keeper) HandleRemoveNetworkProposal(ctx sdk.Context, proposal *types.Rem
 	}
 
 	params.Networks = networks
-	k.SetParams(ctx, params)
-	return nil
-}
-
-func (k Keeper) HandleUpdateContractAddressProposal(ctx sdk.Context, proposal *types.UpdateContractAddressProposal) error {
-	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
-	}
-
-	params := k.GetParams(ctx)
-	for _, network := range params.Networks {
-		if network.Name == proposal.Chain {
-			network.Contract = proposal.Contract
-			break
-		}
-	}
-
 	k.SetParams(ctx, params)
 	return nil
 }

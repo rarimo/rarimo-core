@@ -5,8 +5,28 @@ import "gogoproto/gogo.proto";
 import "tokenmanager/collection.proto";
 import "tokenmanager/item.proto";
 import "tokenmanager/params.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
+
+message ContractUpgradeDetails {
+  // New contract address: used on EVM
+  string newImplementationContract = 1;
+  // byte code hash: used on Solana and Near
+  string hash = 2;
+  // Solana buffer account
+  string bufferAccount = 3;
+  // chain name according to stored in tokenmanager params
+  string chain = 4;
+  // hex nonce
+  string nonce = 5;
+}
+
+message UpgradeContractProposal {
+  string title = 1;
+  string description = 2;
+  ContractUpgradeDetails details = 4 [(gogoproto.nullable) = false];
+}
 
 message AddNetworkProposal {
   string title = 1;
@@ -18,13 +38,6 @@ message RemoveNetworkProposal {
   string title = 1;
   string description = 2;
   string chain = 3;
-}
-
-message UpdateContractAddressProposal {
-  string title = 1;
-  string description = 2;
-  string chain = 3;
-  string contract = 4;
 }
 
 message AddFeeTokenProposal {

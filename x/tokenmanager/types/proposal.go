@@ -5,6 +5,7 @@ import (
 )
 
 const (
+	ProposalTypeUpgradeContract       = "tokenmanager/UpgradeContract"
 	ProposalTypeAddNetwork            = "tokenmanager/AddNetwork"
 	ProposalTypeRemoveNetwork         = "tokenmanager/RemoveNetwork"
 	ProposalTypeUpdateContractAddress = "tokenmanager/UpdateContractAddressNetwork"
@@ -23,6 +24,7 @@ const (
 )
 
 func init() {
+	gov.RegisterProposalType(ProposalTypeUpgradeContract)
 	gov.RegisterProposalType(ProposalTypeAddNetwork)
 	gov.RegisterProposalType(ProposalTypeRemoveNetwork)
 	gov.RegisterProposalType(ProposalTypeUpdateContractAddress)
@@ -40,9 +42,9 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
 
+	gov.RegisterProposalTypeCodec(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal")
 	gov.RegisterProposalTypeCodec(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal")
 	gov.RegisterProposalTypeCodec(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal")
-	gov.RegisterProposalTypeCodec(&UpdateContractAddressProposal{}, "tokenmanager/UpdateContractAddressProposal")
 
 	gov.RegisterProposalTypeCodec(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal")
 	gov.RegisterProposalTypeCodec(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal")
@@ -56,6 +58,20 @@ func init() {
 	gov.RegisterProposalTypeCodec(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal")
 	gov.RegisterProposalTypeCodec(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal")
 	gov.RegisterProposalTypeCodec(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal")
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpgradeContractProposal{}
+
+func (m *UpgradeContractProposal) ProposalRoute() string { return RouterKey }
+func (m *UpgradeContractProposal) ProposalType() string  { return ProposalTypeUpgradeContract }
+
+func (m *UpgradeContractProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Implements Proposal Interface
@@ -79,22 +95,6 @@ func (m *RemoveNetworkProposal) ProposalRoute() string { return RouterKey }
 func (m *RemoveNetworkProposal) ProposalType() string  { return ProposalTypeRemoveNetwork }
 
 func (m *RemoveNetworkProposal) ValidateBasic() error {
-	if err := gov.ValidateAbstract(m); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &UpdateContractAddressProposal{}
-
-func (m *UpdateContractAddressProposal) ProposalRoute() string { return RouterKey }
-func (m *UpdateContractAddressProposal) ProposalType() string {
-	return ProposalTypeUpdateContractAddress
-}
-
-func (m *UpdateContractAddressProposal) ValidateBasic() error {
 	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}

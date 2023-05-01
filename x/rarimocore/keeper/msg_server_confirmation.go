@@ -178,6 +178,12 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getFeeTokenManagementContent(ctx, op.Index, manage)
+	case types.OpType_CONTRACT_UPGRADE:
+		upgrade, err := pkg.GetContractUpgrade(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getContractUpgradeContent(ctx, upgrade)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
@@ -215,8 +221,17 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, index string, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
 	networkParams, ok := k.tm.GetNetwork(ctx, manage.Chain)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
 	}
 
 	return pkg.GetFeeTokenManagementContent(index, networkParams, manage)
+}
+
+func (k msgServer) getContractUpgradeContent(ctx sdk.Context, upgrade *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {
+	networkParams, ok := k.tm.GetNetwork(ctx, upgrade.Chain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
+	}
+
+	return pkg.GetContractUpgradeContent(networkParams, upgrade)
 }
