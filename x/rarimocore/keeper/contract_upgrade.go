@@ -22,6 +22,7 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 		Hash:                      upgradeDetails.Hash,
 		BufferAccount:             upgradeDetails.BufferAccount,
 		Nonce:                     upgradeDetails.Nonce,
+		Type:                      upgradeDetails.Type,
 	}
 
 	content, err := pkg.GetContractUpgradeContent(network, upgrade)

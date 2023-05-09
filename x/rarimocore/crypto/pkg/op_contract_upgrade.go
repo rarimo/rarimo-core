@@ -28,6 +28,7 @@ func GetContractUpgradeContent(params tokentypes.NetworkParams, op *types.Contra
 			Contract:                  params.Contract,
 			NewImplementationContract: op.NewImplementationContract,
 			Nonce:                     op.Nonce,
+			Type:                      op.Type,
 		}, nil
 	case tokentypes.NetworkType_Solana:
 		return &operation.ContractUpgradeContent{

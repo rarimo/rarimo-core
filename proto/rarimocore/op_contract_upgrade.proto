@@ -3,6 +3,7 @@ package rarimo.rarimocore.rarimocore;
 
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
+import "tokenmanager/proposal.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
 
@@ -17,4 +18,5 @@ message ContractUpgrade {
   string bufferAccount = 4;
   // hex nonce
   string nonce = 5;
+  rarimo.rarimocore.tokenmanager.UpgradeType type = 6;
 }
