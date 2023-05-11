@@ -9,7 +9,7 @@ import (
 )
 
 func GetContractUpgrade(operation types.Operation) (*types.ContractUpgrade, error) {
-	if operation.OperationType == types.OpType_FEE_TOKEN_MANAGEMENT {
+	if operation.OperationType == types.OpType_CONTRACT_UPGRADE {
 		op := new(types.ContractUpgrade)
 		return op, proto.Unmarshal(operation.Details.Value, op)
 	}
