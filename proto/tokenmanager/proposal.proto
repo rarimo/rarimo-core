@@ -16,17 +16,19 @@ enum UpgradeType {
 }
 
 message ContractUpgradeDetails {
+  // Target contract address upgrade to
+  string targetContract = 1;
   // New contract address: used on EVM
-  string newImplementationContract = 1;
+  string newImplementationContract = 2;
   // byte code hash: used on Solana and Near
-  string hash = 2;
+  string hash = 3;
   // Solana buffer account
-  string bufferAccount = 3;
+  string bufferAccount = 4;
   // chain name according to stored in tokenmanager params
-  string chain = 4;
+  string chain = 5;
   // dec nonce
-  string nonce = 5;
-  UpgradeType type = 6;
+  string nonce = 6;
+  UpgradeType type = 7;
 }
 
 message UpgradeContractProposal {

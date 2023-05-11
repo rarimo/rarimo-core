@@ -23,7 +23,7 @@ type ContractUpgradeContent struct {
 var _ merkle.Content = ContractUpgradeContent{}
 
 func (c ContractUpgradeContent) CalculateHash() []byte {
-	// Solana: HASH(contract hash, chain name, nonce, buffer address, contract address)
+	// Solana: HASH(contract hash, chain name, nonce, contract address, buffer address)
 	// Near: HASH(contract hash, chain name, nonce, contract address)
 	// EVM: HASH(upgrade type, new implementation address, chain name, nonce, contract address)
 

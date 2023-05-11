@@ -24,24 +24,24 @@ func GetContractUpgradeContent(params tokentypes.NetworkParams, op *types.Contra
 	switch params.Type {
 	case tokentypes.NetworkType_EVM:
 		return &operation.ContractUpgradeContent{
-			ChainName:                 params.Name,
-			Contract:                  params.Contract,
+			ChainName:                 op.Chain,
+			Contract:                  op.TargetContract,
 			NewImplementationContract: op.NewImplementationContract,
 			Nonce:                     op.Nonce,
 			Type:                      op.Type,
 		}, nil
 	case tokentypes.NetworkType_Solana:
 		return &operation.ContractUpgradeContent{
-			ChainName:     params.Name,
-			Contract:      params.Contract,
+			ChainName:     op.Chain,
+			Contract:      op.TargetContract,
 			ByteCodeHash:  op.Hash,
 			BufferAccount: op.BufferAccount,
 			Nonce:         op.Nonce,
 		}, nil
 	case tokentypes.NetworkType_Near:
 		return &operation.ContractUpgradeContent{
-			ChainName:    params.Name,
-			Contract:     params.Contract,
+			ChainName:    op.Chain,
+			Contract:     op.TargetContract,
 			ByteCodeHash: op.Hash,
 			Nonce:        op.Nonce,
 		}, nil
