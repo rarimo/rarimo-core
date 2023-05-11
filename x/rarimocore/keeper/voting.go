@@ -48,15 +48,12 @@ func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 		if err := k.ApproveTransferOperation(ctx, transfer); err != nil {
 			return err
 		}
-
-		op.Status = types.OpStatus_APPROVED
-		k.SetOperation(ctx, op)
-	case types.OpType_FEE_TOKEN_MANAGEMENT:
-		op.Status = types.OpStatus_APPROVED
-		k.SetOperation(ctx, op)
 	default:
 		// Nothing to do
 	}
+
+	op.Status = types.OpStatus_APPROVED
+	k.SetOperation(ctx, op)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationApproved,
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),

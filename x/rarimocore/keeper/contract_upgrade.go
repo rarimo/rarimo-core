@@ -17,6 +17,7 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 	}
 
 	upgrade := &types.ContractUpgrade{
+		TargetContract:            upgradeDetails.TargetContract,
 		Chain:                     upgradeDetails.Chain,
 		NewImplementationContract: upgradeDetails.NewImplementationContract,
 		Hash:                      upgradeDetails.Hash,
