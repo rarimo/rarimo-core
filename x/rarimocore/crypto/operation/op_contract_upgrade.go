@@ -32,7 +32,7 @@ func (c ContractUpgradeContent) CalculateHash() []byte {
 		upgradeTypeBytes = append(upgradeTypeBytes, byte(c.Type))
 	}
 
-	return eth.Keccak256(upgradeTypeBytes, decodeOmitemptyHex(c.ByteCodeHash), decodeOmitemptyHex(c.NewImplementationContract), []byte(c.ChainName), hexutil.MustDecode(c.Nonce), decodeOmitemptyHex(c.Contract), decodeOmitemptyHex(c.BufferAccount))
+	return eth.Keccak256(upgradeTypeBytes, decodeOmitemptyHex(c.ByteCodeHash), decodeOmitemptyHex(c.NewImplementationContract), []byte(c.ChainName), To32Bytes(AmountBytes(c.Nonce)), decodeOmitemptyHex(c.Contract), decodeOmitemptyHex(c.BufferAccount))
 }
 
 // Equals tests for equality of two Contents

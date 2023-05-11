@@ -61,7 +61,7 @@ type ContractUpgradeDetails struct {
 	BufferAccount string `protobuf:"bytes,3,opt,name=bufferAccount,proto3" json:"bufferAccount,omitempty"`
 	// chain name according to stored in tokenmanager params
 	Chain string `protobuf:"bytes,4,opt,name=chain,proto3" json:"chain,omitempty"`
-	// hex nonce
+	// dec nonce
 	Nonce string      `protobuf:"bytes,5,opt,name=nonce,proto3" json:"nonce,omitempty"`
 	Type  UpgradeType `protobuf:"varint,6,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.UpgradeType" json:"type,omitempty"`
 }

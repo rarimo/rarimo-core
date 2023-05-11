@@ -34,7 +34,7 @@ type ContractUpgrade struct {
 	Hash string `protobuf:"bytes,3,opt,name=hash,proto3" json:"hash,omitempty"`
 	// Solana buffer account
 	BufferAccount string `protobuf:"bytes,4,opt,name=bufferAccount,proto3" json:"bufferAccount,omitempty"`
-	// hex nonce
+	// dec nonce
 	Nonce string            `protobuf:"bytes,5,opt,name=nonce,proto3" json:"nonce,omitempty"`
 	Type  types.UpgradeType `protobuf:"varint,6,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.UpgradeType" json:"type,omitempty"`
 }

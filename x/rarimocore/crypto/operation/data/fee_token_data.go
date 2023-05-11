@@ -56,7 +56,7 @@ func (b *FeeTokenDataBuilder) SetAddress(addr string) *FeeTokenDataBuilder {
 }
 
 func (b *FeeTokenDataBuilder) SetAmount(amount string) *FeeTokenDataBuilder {
-	b.amount = to32Bytes(amountBytes(amount))
+	b.amount = operation.To32Bytes(operation.AmountBytes(amount))
 	return b
 }
 

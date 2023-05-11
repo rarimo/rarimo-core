@@ -1,10 +1,10 @@
-package data
+package operation
 
 import (
 	"math/big"
 )
 
-func amountBytes(amount string) []byte {
+func AmountBytes(amount string) []byte {
 	am, ok := new(big.Int).SetString(amount, 10)
 	if !ok {
 		return []byte{}
@@ -13,7 +13,7 @@ func amountBytes(amount string) []byte {
 	return am.Bytes()
 }
 
-func to32Bytes(arr []byte) []byte {
+func To32Bytes(arr []byte) []byte {
 	if len(arr) >= 32 || len(arr) == 0 {
 		return arr
 	}

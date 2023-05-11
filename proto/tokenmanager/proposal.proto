@@ -24,7 +24,7 @@ message ContractUpgradeDetails {
   string bufferAccount = 3;
   // chain name according to stored in tokenmanager params
   string chain = 4;
-  // hex nonce
+  // dec nonce
   string nonce = 5;
   UpgradeType type = 6;
 }

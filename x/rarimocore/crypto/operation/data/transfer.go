@@ -3,6 +3,7 @@ package data
 import (
 	"bytes"
 	"encoding/binary"
+
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
@@ -123,12 +124,12 @@ func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
 }
 
 func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
-	b.id = to32Bytes(crypto.TryHexDecode(id))
+	b.id = operation.To32Bytes(crypto.TryHexDecode(id))
 	return b
 }
 
 func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
-	b.amount = to32Bytes(amountBytes(amount))
+	b.amount = operation.To32Bytes(operation.AmountBytes(amount))
 	return b
 }
 
@@ -166,5 +167,5 @@ func intTo32Bytes(amount int) []byte {
 	buf := make([]byte, 4)
 	binary.LittleEndian.PutUint32(buf, uint32(amount))
 
-	return to32Bytes(buf)
+	return operation.To32Bytes(buf)
 }

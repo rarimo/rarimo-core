@@ -16,7 +16,7 @@ message ContractUpgrade {
   string hash = 3;
   // Solana buffer account
   string bufferAccount = 4;
-  // hex nonce
+  // dec nonce
   string nonce = 5;
   rarimo.rarimocore.tokenmanager.UpgradeType type = 6;
 }
