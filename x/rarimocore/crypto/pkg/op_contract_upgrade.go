@@ -34,7 +34,6 @@ func GetContractUpgradeContent(params tokentypes.NetworkParams, op *types.Contra
 		return &operation.ContractUpgradeContent{
 			ChainName:     op.Chain,
 			Contract:      op.TargetContract,
-			ByteCodeHash:  op.Hash,
 			BufferAccount: op.BufferAccount,
 			Nonce:         op.Nonce,
 		}, nil
