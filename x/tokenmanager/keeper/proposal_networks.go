@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"math/big"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -9,38 +11,46 @@ import (
 
 var upgradeVerifiers = map[types.NetworkType]func(details *types.ContractUpgradeDetails) error{
 	types.NetworkType_EVM: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.TargetContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid target contract address %s", err.Error())
+		}
+
 		if _, err := hexutil.Decode(details.NewImplementationContract); err != nil {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid new contract address %s", err.Error())
 		}
 
-		if _, err := hexutil.Decode(details.Nonce); err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		if _, ok := new(big.Int).SetString(details.Nonce, 10); !ok {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce")
 		}
 
 		return nil
 	},
 	types.NetworkType_Solana: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.TargetContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid target contract address %s", err.Error())
+		}
+
 		if _, err := hexutil.Decode(details.BufferAccount); err != nil {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid buffer address %s", err.Error())
 		}
 
-		if _, err := hexutil.Decode(details.Hash); err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hash %s", err.Error())
-		}
-
-		if _, err := hexutil.Decode(details.Nonce); err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		if _, ok := new(big.Int).SetString(details.Nonce, 10); !ok {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce")
 		}
 
 		return nil
 	},
 	types.NetworkType_Near: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.TargetContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid target contract address %s", err.Error())
+		}
+
 		if _, err := hexutil.Decode(details.Hash); err != nil {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid hash %s", err.Error())
 		}
 
-		if _, err := hexutil.Decode(details.Nonce); err != nil {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce %s", err.Error())
+		if _, ok := new(big.Int).SetString(details.Nonce, 10); !ok {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce")
 		}
 
 		return nil
