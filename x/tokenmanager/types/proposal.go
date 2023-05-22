@@ -2,6 +2,7 @@ package types
 
 import (
 	gov "github.com/cosmos/cosmos-sdk/x/gov/types"
+	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
 const (
@@ -16,14 +17,14 @@ const (
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeSetNetwork)
-	gov.RegisterProposalType(ProposalTypeUpdateTokenItem)
-	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
-	gov.RegisterProposalType(ProposalTypeCreateCollection)
-	gov.RegisterProposalType(ProposalTypeUpdateCollectionData)
-	gov.RegisterProposalType(ProposalTypeAddCollectionData)
-	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
-	gov.RegisterProposalType(ProposalTypeRemoveCollection)
+	govv1beta1.RegisterProposalType(ProposalTypeSetNetwork)
+	govv1beta1.RegisterProposalType(ProposalTypeUpdateTokenItem)
+	govv1beta1.RegisterProposalType(ProposalTypeRemoveTokenItem)
+	govv1beta1.RegisterProposalType(ProposalTypeCreateCollection)
+	govv1beta1.RegisterProposalType(ProposalTypeUpdateCollectionData)
+	govv1beta1.RegisterProposalType(ProposalTypeAddCollectionData)
+	govv1beta1.RegisterProposalType(ProposalTypeRemoveCollectionData)
+	govv1beta1.RegisterProposalType(ProposalTypeRemoveCollection)
 
 	gov.RegisterProposalTypeCodec(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal")
 	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal")
