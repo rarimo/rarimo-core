@@ -14,10 +14,14 @@ func amountBytes(amount string) []byte {
 }
 
 func to32Bytes(arr []byte) []byte {
-	if len(arr) >= 32 || len(arr) == 0 {
+	if len(arr) >= 32 {
 		return arr
 	}
 
 	res := make([]byte, 32-len(arr))
 	return append(res, arr...)
+}
+
+func intTo32Bytes(amount int) []byte {
+	return to32Bytes(big.NewInt(int64(amount)).Bytes())
 }
