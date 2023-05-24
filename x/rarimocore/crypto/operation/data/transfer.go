@@ -3,6 +3,9 @@ package data
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
@@ -56,6 +59,26 @@ func (t TransferData) getContent() operation.ContentData {
 }
 
 func (t TransferData) getNearContent() operation.ContentData {
+	fmt.Println("getNearContent")
+
+	fmt.Printf("token length: %s\n", hexutil.Encode(intTo32Bytes(len(t.TargetAddress))))
+	fmt.Printf("token: %s\n", hexutil.Encode(t.TargetAddress))
+
+	fmt.Printf("title length: %s\n", hexutil.Encode(intTo32Bytes(len([]byte(t.TargetName)))))
+	fmt.Printf("title: %s\n", hexutil.Encode([]byte(t.TargetName)))
+
+	fmt.Printf("token id length: %s\n", hexutil.Encode(intTo32Bytes(len(t.TargetId))))
+	fmt.Printf("token id: %s\n", hexutil.Encode(t.TargetId))
+
+	fmt.Printf("amount length: %s\n", hexutil.Encode(intTo32Bytes(len(t.Amount))))
+	fmt.Printf("amount: %s\n", hexutil.Encode(t.Amount))
+
+	fmt.Printf("media_url length: %s\n", hexutil.Encode(intTo32Bytes(len([]byte(t.ImageURI)))))
+	fmt.Printf("media_url: %s\n", hexutil.Encode([]byte(t.ImageURI)))
+
+	fmt.Printf("media_hash length: %s\n", hexutil.Encode(intTo32Bytes(len(t.ImageHash))))
+	fmt.Printf("media_hash: %s\n", hexutil.Encode(t.ImageHash))
+
 	return bytes.Join([][]byte{
 		intTo32Bytes(len(t.TargetAddress)),
 		t.TargetAddress,
@@ -63,18 +86,12 @@ func (t TransferData) getNearContent() operation.ContentData {
 		[]byte(t.TargetName),
 		intTo32Bytes(len(t.TargetId)),
 		t.TargetId,
-		intTo32Bytes(len([]byte(t.TargetURI))),
-		[]byte(t.TargetURI),
 		intTo32Bytes(len(t.Amount)),
 		t.Amount,
 		intTo32Bytes(len([]byte(t.ImageURI))),
 		[]byte(t.ImageURI),
 		intTo32Bytes(len(t.ImageHash)),
 		t.ImageHash,
-		intTo32Bytes(len([]byte(t.TargetSymbol))),
-		[]byte(t.TargetSymbol),
-		intTo32Bytes(len(t.TargetDecimals)),
-		t.TargetDecimals,
 	}, []byte{})
 }
 
