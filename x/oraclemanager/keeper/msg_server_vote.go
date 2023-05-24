@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
@@ -82,11 +83,11 @@ func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Oper
 	totalVotingPower := yesResult.Add(noResult)
 
 	params := k.GetParams(ctx)
-	quorum, _ := sdk.NewDecFromStr(params.VoteQuorum)
-	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
+	quorum, _ := math.NewIntFromString(params.VoteQuorum)
+	threshold, _ := math.NewIntFromString(params.VoteThreshold)
 
 	// If there is not enough quorum of votes, finish the flow
-	percentVoting := totalVotingPower.ToDec().Quo(totalPowerForChain.ToDec())
+	percentVoting := totalVotingPower.Quo(totalPowerForChain)
 	if percentVoting.LT(quorum) {
 		return nil
 	}
@@ -96,7 +97,7 @@ func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Oper
 		k.AddToMonitorQueue(ctx, uint64(ctx.BlockHeight())+params.CheckOperationDelta, operation.Index)
 	}
 
-	if yesResult.ToDec().Quo(totalVotingPower.ToDec()).GT(threshold) {
+	if yesResult.Quo(totalVotingPower).GT(threshold) {
 		return k.rarimo.ApproveOperation(ctx, operation)
 	}
 

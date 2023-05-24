@@ -8,6 +8,8 @@ import (
 	"gitlab.com/rarimo/rarimo-core/app"
 )
 
+const EnvPrefix = "RARIMOCORE"
+
 func main() {
 	rootCmd, _ := cosmoscmd.NewRootCmd(
 		app.Name,
@@ -18,7 +20,7 @@ func main() {
 		app.New,
 		// this line is used by starport scaffolding # root/arguments
 	)
-	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
+	if err := svrcmd.Execute(rootCmd, EnvPrefix, app.DefaultNodeHome); err != nil {
 		os.Exit(1)
 	}
 }
