@@ -14,7 +14,7 @@ func AmountBytes(amount string) []byte {
 }
 
 func To32Bytes(arr []byte) []byte {
-	if len(arr) >= 32 || len(arr) == 0 {
+	if len(arr) >= 32 {
 		return arr
 	}
 
@@ -22,6 +22,6 @@ func To32Bytes(arr []byte) []byte {
 	return append(res, arr...)
 }
 
-func intTo32Bytes(amount int) []byte {
-	return to32Bytes(big.NewInt(int64(amount)).Bytes())
+func IntTo32Bytes(amount int) []byte {
+	return To32Bytes(big.NewInt(int64(amount)).Bytes())
 }
