@@ -14,7 +14,7 @@ func amountBytes(amount string) []byte {
 }
 
 func to32Bytes(arr []byte) []byte {
-	if len(arr) >= 32 || len(arr) == 0 {
+	if len(arr) >= 32 {
 		return arr
 	}
 
