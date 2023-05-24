@@ -21,3 +21,7 @@ func to32Bytes(arr []byte) []byte {
 	res := make([]byte, 32-len(arr))
 	return append(res, arr...)
 }
+
+func intTo32Bytes(amount int) []byte {
+	return to32Bytes(big.NewInt(int64(amount)).Bytes())
+}

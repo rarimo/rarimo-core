@@ -2,7 +2,6 @@ package data
 
 import (
 	"bytes"
-	"encoding/binary"
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -61,6 +60,8 @@ func (t TransferData) getContent() operation.ContentData {
 func (t TransferData) getNearContent() operation.ContentData {
 	fmt.Println("getNearContent")
 
+	//0x0000000000000000000000000000000000000000000000000000000013000000
+	//0x0000000000000000000000000000000000000000000000000000000000000013
 	fmt.Printf("token length: %s\n", hexutil.Encode(intTo32Bytes(len(t.TargetAddress))))
 	fmt.Printf("token: %s\n", hexutil.Encode(t.TargetAddress))
 
@@ -177,11 +178,4 @@ func (b *TransferDataBuilder) SetImageHash(hash string) *TransferDataBuilder {
 func (b *TransferDataBuilder) SetDecimals(d uint8) *TransferDataBuilder {
 	b.decimals = []byte{d}
 	return b
-}
-
-func intTo32Bytes(amount int) []byte {
-	buf := make([]byte, 4)
-	binary.LittleEndian.PutUint32(buf, uint32(amount))
-
-	return to32Bytes(buf)
 }
