@@ -3,10 +3,14 @@ package data
 import (
 	"bytes"
 
+	"github.com/ethereum/go-ethereum/common"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
+
+var EmptyEVMAddress = common.Address{}
 
 // FeeTokenData defines the fee token management operation
 type FeeTokenData struct {
@@ -29,6 +33,7 @@ func (f FeeTokenData) GetContent() operation.ContentData {
 }
 
 type FeeTokenDataBuilder struct {
+	network tokenmanagertypes.NetworkType
 	opType  rarimotypes.FeeTokenManagementType
 	address []byte
 	amount  []byte
@@ -46,8 +51,17 @@ func (b *FeeTokenDataBuilder) Build() *FeeTokenData {
 	}
 }
 
+func (b *FeeTokenDataBuilder) SetNetworkType(network tokenmanagertypes.NetworkType) *FeeTokenDataBuilder {
+	b.network = network
+	return b
+}
+
 func (b *FeeTokenDataBuilder) SetAddress(addr string) *FeeTokenDataBuilder {
 	if addr == "" {
+		if b.network == tokenmanagertypes.NetworkType_EVM {
+			b.address = EmptyEVMAddress[:]
+		}
+
 		return b
 	}
 

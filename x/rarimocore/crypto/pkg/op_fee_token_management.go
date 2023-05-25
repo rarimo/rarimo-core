@@ -20,10 +20,15 @@ func GetFeeTokenManagement(operation types.Operation) (*types.FeeTokenManagement
 }
 
 func GetFeeTokenManagementContent(strOrigin string, params tokentypes.NetworkParams, op *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+	var receiver []byte
+	if op.Receiver != "" {
+		receiver = hexutil.MustDecode(op.Receiver)
+	}
+
 	return &operation.FeeTokenManagementContent{
 		Origin:         origin.NewStringOriginBuilder().SetString(strOrigin).Build().GetOrigin(),
 		TargetNetwork:  params.Name,
-		Receiver:       hexutil.MustDecode(op.Receiver),
+		Receiver:       receiver,
 		TargetContract: hexutil.MustDecode(params.Contract),
 		Data:           data.NewFeeTokenDataBuilder().SetOpType(op.OpType).SetAddress(op.Token.GetContract()).SetAmount(op.Token.Amount).Build().GetContent(),
 	}, nil

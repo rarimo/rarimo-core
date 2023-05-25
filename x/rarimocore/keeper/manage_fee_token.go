@@ -15,8 +15,7 @@ import (
 const SystemCreator = "system"
 
 func (k Keeper) CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
-	network, ok := k.tm.GetNetwork(ctx, chain)
-	if !ok {
+	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
@@ -24,15 +23,14 @@ func (k Keeper) CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.Fee
 		OpType:   types.FeeTokenManagementType_ADD_FEE_TOKEN,
 		Token:    token,
 		Chain:    chain,
-		Receiver: network.Contract,
+		Receiver: "",
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
 func (k Keeper) CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
-	network, ok := k.tm.GetNetwork(ctx, chain)
-	if !ok {
+	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
@@ -40,15 +38,15 @@ func (k Keeper) CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.
 		OpType:   types.FeeTokenManagementType_REMOVE_FEE_TOKEN,
 		Token:    token,
 		Chain:    chain,
-		Receiver: network.Contract,
+		Receiver: "",
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
 func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
-	network, ok := k.tm.GetNetwork(ctx, chain)
-	if !ok {
+
+	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
@@ -56,7 +54,7 @@ func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.
 		OpType:   types.FeeTokenManagementType_UPDATE_FEE_TOKEN,
 		Token:    token,
 		Chain:    chain,
-		Receiver: network.Contract,
+		Receiver: "",
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
