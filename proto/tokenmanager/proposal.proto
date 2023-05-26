@@ -53,14 +53,16 @@ message AddFeeTokenProposal {
   string title = 1;
   string description = 2;
   string chain = 3;
-  FeeToken token = 4 [(gogoproto.nullable) = false];
+  string nonce = 4;
+  FeeToken token = 5 [(gogoproto.nullable) = false];
 }
 
 message UpdateFeeTokenProposal {
   string title = 1;
   string description = 2;
   string chain = 3;
-  FeeToken token = 4 [(gogoproto.nullable) = false];
+  string nonce = 4;
+  FeeToken token = 5 [(gogoproto.nullable) = false];
 }
 
 message RemoveFeeTokenProposal {
@@ -68,6 +70,7 @@ message RemoveFeeTokenProposal {
   string description = 2;
   string chain = 3;
   string contract = 4;
+  string nonce = 5;
 }
 
 message WithdrawFeeProposal {
@@ -76,6 +79,7 @@ message WithdrawFeeProposal {
   string chain = 3;
   FeeToken token = 4 [(gogoproto.nullable) = false];
   string receiver = 5;
+  string nonce = 6;
 }
 
 

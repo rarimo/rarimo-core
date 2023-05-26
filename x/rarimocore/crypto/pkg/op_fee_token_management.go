@@ -6,7 +6,6 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/data"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
@@ -19,14 +18,14 @@ func GetFeeTokenManagement(operation types.Operation) (*types.FeeTokenManagement
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetFeeTokenManagementContent(strOrigin string, params tokentypes.NetworkParams, op *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+func GetFeeTokenManagementContent(params tokentypes.NetworkParams, op *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
 	var receiver []byte
 	if op.Receiver != "" {
 		receiver = hexutil.MustDecode(op.Receiver)
 	}
 
 	return &operation.FeeTokenManagementContent{
-		Origin:         origin.NewStringOriginBuilder().SetString(strOrigin).Build().GetOrigin(),
+		Nonce:          operation.To32Bytes(operation.AmountBytes(op.Nonce)),
 		TargetNetwork:  params.Name,
 		Receiver:       receiver,
 		TargetContract: hexutil.MustDecode(params.Contract),

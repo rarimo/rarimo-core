@@ -9,8 +9,7 @@ import (
 
 // FeeTokenManagementContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type FeeTokenManagementContent struct {
-	// Hash of the deposit tx info
-	Origin        OriginData
+	Nonce         []byte
 	TargetNetwork string
 	// Receiver address on target network
 	Receiver []byte
@@ -23,7 +22,7 @@ type FeeTokenManagementContent struct {
 var _ merkle.Content = FeeTokenManagementContent{}
 
 func (f FeeTokenManagementContent) CalculateHash() []byte {
-	return eth.Keccak256(f.Data, f.Origin[:], []byte(f.TargetNetwork), f.Receiver, f.TargetContract)
+	return eth.Keccak256(f.Nonce, f.Receiver, f.TargetContract, []byte(f.TargetNetwork), f.Data)
 }
 
 // Equals tests for equality of two Contents

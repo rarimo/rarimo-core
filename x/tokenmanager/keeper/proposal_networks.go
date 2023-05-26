@@ -109,7 +109,7 @@ func (k Keeper) HandleAddFeeTokenProposal(ctx sdk.Context, proposal *types.AddFe
 		}
 	}
 
-	if err := k.rarimo.CreateAddFeeTokenOperation(ctx, proposal.Token, proposal.Chain); err != nil {
+	if err := k.rarimo.CreateAddFeeTokenOperation(ctx, proposal.Token, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
@@ -131,7 +131,7 @@ func (k Keeper) HandleUpdateFeeTokenProposal(ctx sdk.Context, proposal *types.Up
 		}
 	}
 
-	if err := k.rarimo.CreateUpdateFeeTokenOperation(ctx, proposal.Token, proposal.Chain); err != nil {
+	if err := k.rarimo.CreateUpdateFeeTokenOperation(ctx, proposal.Token, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
@@ -169,7 +169,7 @@ func (k Keeper) HandleRemoveFeeTokenProposal(ctx sdk.Context, proposal *types.Re
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee token not found")
 	}
 
-	if err := k.rarimo.CreateRemoveFeeTokenOperation(ctx, *feeTokenToRemove, proposal.Chain); err != nil {
+	if err := k.rarimo.CreateRemoveFeeTokenOperation(ctx, *feeTokenToRemove, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
@@ -196,7 +196,7 @@ func (k Keeper) HandleWithdrawFeeProposal(ctx sdk.Context, proposal *types.Withd
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee token not found")
 	}
 
-	if err := k.rarimo.CreateWithdrawFeeOperation(ctx, proposal.Token, proposal.Chain, proposal.Receiver); err != nil {
+	if err := k.rarimo.CreateWithdrawFeeOperation(ctx, proposal.Token, proposal.Chain, proposal.Receiver, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 

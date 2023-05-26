@@ -177,7 +177,7 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
-		return k.getFeeTokenManagementContent(ctx, op.Index, manage)
+		return k.getFeeTokenManagementContent(ctx, manage)
 	case types.OpType_CONTRACT_UPGRADE:
 		upgrade, err := pkg.GetContractUpgrade(op)
 		if err != nil {
@@ -218,13 +218,13 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 	return pkg.GetTransferContent(collection, data, item, networkParams, transfer)
 }
 
-func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, index string, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
 	networkParams, ok := k.tm.GetNetwork(ctx, manage.Chain)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
 	}
 
-	return pkg.GetFeeTokenManagementContent(index, networkParams, manage)
+	return pkg.GetFeeTokenManagementContent(networkParams, manage)
 }
 
 func (k msgServer) getContractUpgradeContent(ctx sdk.Context, upgrade *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {

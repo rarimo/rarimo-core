@@ -18,9 +18,9 @@ type BankKeeper interface {
 }
 
 type RarimocoreKeeper interface {
-	CreateAddFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
-	CreateRemoveFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
-	CreateUpdateFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string) error
-	CreateWithdrawFeeOperation(ctx sdk.Context, token FeeToken, chain string, receiver string) error
+	CreateAddFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string, nonce string) error
+	CreateRemoveFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string, nonce string) error
+	CreateUpdateFeeTokenOperation(ctx sdk.Context, token FeeToken, chain string, nonce string) error
+	CreateWithdrawFeeOperation(ctx sdk.Context, token FeeToken, chain string, receiver string, nonce string) error
 	CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *ContractUpgradeDetails) error
 }

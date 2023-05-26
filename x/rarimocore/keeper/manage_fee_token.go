@@ -14,7 +14,7 @@ import (
 
 const SystemCreator = "system"
 
-func (k Keeper) CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
+func (k Keeper) CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error {
 	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
@@ -24,12 +24,13 @@ func (k Keeper) CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.Fee
 		Token:    token,
 		Chain:    chain,
 		Receiver: "",
+		Nonce:    nonce,
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
-func (k Keeper) CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
+func (k Keeper) CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error {
 	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
@@ -39,12 +40,13 @@ func (k Keeper) CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.
 		Token:    token,
 		Chain:    chain,
 		Receiver: "",
+		Nonce:    nonce,
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
-func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string) error {
+func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error {
 
 	if _, ok := k.tm.GetNetwork(ctx, chain); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
@@ -55,17 +57,19 @@ func (k Keeper) CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.
 		Token:    token,
 		Chain:    chain,
 		Receiver: "",
+		Nonce:    nonce,
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)
 }
 
-func (k Keeper) CreateWithdrawFeeOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, receiver string) error {
+func (k Keeper) CreateWithdrawFeeOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, receiver string, nonce string) error {
 	op := &types.FeeTokenManagement{
 		OpType:   types.FeeTokenManagementType_WITHDRAW_FEE_TOKEN,
 		Token:    token,
 		Chain:    chain,
 		Receiver: receiver,
+		Nonce:    nonce,
 	}
 
 	return k.CreateFeeTokenManagementOperation(ctx, op)

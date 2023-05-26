@@ -18,5 +18,6 @@ message FeeTokenManagement {
   rarimo.rarimocore.tokenmanager.FeeToken token = 2 [(gogoproto.nullable) = false];
   string chain = 3;
   string receiver = 4;
+  string  nonce = 5;
 }
 
