@@ -530,7 +530,7 @@ func New(
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(rarimocoremoduletypes.RouterKey, rarimocoremodule.NewProposalHandler(app.RarimocoreKeeper)).
 		AddRoute(tokenmanagermoduletypes.RouterKey, tokenmanagermodule.NewProposalHandler(app.TokenmanagerKeeper)).
-		AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper)).
+		//AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper)).
 		AddRoute(oraclemanagermoduletypes.RouterKey, oraclemanagermodule.NewProposalHandler(app.OraclemanagerKeeper)).
 		AddRoute(bridgemoduletypes.RouterKey, bridgemodule.NewProposalHandler(app.BridgeKeeper))
 

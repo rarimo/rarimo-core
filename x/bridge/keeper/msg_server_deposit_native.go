@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -16,10 +17,10 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 
 	creatorAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
-	err := k.bankKeeper.BurnTokens(ctx, creatorAddr, sdk.Coins{*msg.Amount})
-	if err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to burn tokens for address (%s)", creatorAddr.String())
-	}
+	//err := k.bankKeeper.BurnTokens(ctx, creatorAddr, sdk.Coins{*msg.Amount})
+	//if err != nil {
+	//	return nil, sdkerrors.Wrapf(err, "failed to burn tokens for address (%s)", creatorAddr.String())
+	//}
 
 	origin := operationorigin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Seed).
@@ -28,7 +29,7 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Build().
 		GetOrigin()
 
-	err = k.rarimocoreKeeper.CreateTransferOperation(ctx, msg.Creator, &rarimocoretypes.Transfer{
+	err := k.rarimocoreKeeper.CreateTransferOperation(ctx, msg.Creator, &rarimocoretypes.Transfer{
 		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Seed,
 		EventId:    "",

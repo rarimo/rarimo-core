@@ -20,7 +20,7 @@ type AccountKeeper interface {
 
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
-	MintTokens(ctx sdk.Context, address sdk.AccAddress, amounts sdk.Coins) error
-	BurnTokens(ctx sdk.Context, address sdk.AccAddress, amounts sdk.Coins) error
+	//MintTokens(ctx sdk.Context, address sdk.AccAddress, amounts sdk.Coins) error
+	//BurnTokens(ctx sdk.Context, address sdk.AccAddress, amounts sdk.Coins) error
 	// Methods imported from bank should be defined here
 }
