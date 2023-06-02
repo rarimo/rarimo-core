@@ -104,9 +104,17 @@ import (
 	dbm "github.com/tendermint/tm-db"
 	appparams "gitlab.com/rarimo/rarimo-core/app/params"
 	"gitlab.com/rarimo/rarimo-core/docs"
+	srvflags "gitlab.com/rarimo/rarimo-core/ethmintserver/flags"
 	bridgemodule "gitlab.com/rarimo/rarimo-core/x/bridge"
 	bridgemodulekeeper "gitlab.com/rarimo/rarimo-core/x/bridge/keeper"
 	bridgemoduletypes "gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	"gitlab.com/rarimo/rarimo-core/x/evm"
+	evmkeeper "gitlab.com/rarimo/rarimo-core/x/evm/keeper"
+	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"gitlab.com/rarimo/rarimo-core/x/evm/vm/geth"
+	"gitlab.com/rarimo/rarimo-core/x/feemarket"
+	feemarketkeeper "gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
+	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 	multisigmodule "gitlab.com/rarimo/rarimo-core/x/multisig"
 	multisigmodulekeeper "gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
 	multisigmoduletypes "gitlab.com/rarimo/rarimo-core/x/multisig/types"
@@ -179,6 +187,10 @@ var (
 		bridgemodule.AppModuleBasic{},
 		oraclemanagermodule.AppModuleBasic{},
 		multisigmodule.AppModuleBasic{},
+		// Ethermint modules
+		evm.AppModuleBasic{},
+		feemarket.AppModuleBasic{},
+
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -196,6 +208,7 @@ var (
 		oraclemanagermoduletypes.ModuleName: nil,
 		bridgemoduletypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
 		multisigmoduletypes.ModuleName:      nil,
+		evmtypes.ModuleName:                 {authtypes.Minter, authtypes.Burner}, // used for secure addition and subtraction of balance using module account
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -266,6 +279,12 @@ type App struct {
 	OraclemanagerKeeper oraclemanagermodulekeeper.Keeper
 
 	MultisigKeeper multisigmodulekeeper.Keeper
+
+	// Ethermint keepers
+	EvmKeeper       *evmkeeper.Keeper
+	FeeMarketKeeper feemarketkeeper.Keeper
+
+	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
 	mm *module.Manager
@@ -575,6 +594,23 @@ func New(
 	)
 	multisigModule := multisigmodule.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper)
 
+	// Create Ethermint keepers
+	feeMarketSs := app.GetSubspace(feemarkettypes.ModuleName)
+	app.FeeMarketKeeper = feemarketkeeper.NewKeeper(
+		appCodec, authtypes.NewModuleAddress(govtypes.ModuleName),
+		keys[feemarkettypes.StoreKey], tkeys[feemarkettypes.TransientKey], feeMarketSs,
+	)
+	feeMarketModule := feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs)
+
+	// Set authority to x/gov module account to only expect the module account to update params
+	evmSs := app.GetSubspace(evmtypes.ModuleName)
+	app.EvmKeeper = evmkeeper.NewKeeper(
+		appCodec, keys[evmtypes.StoreKey], tkeys[evmtypes.TransientKey], authtypes.NewModuleAddress(govtypes.ModuleName),
+		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
+		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
+	)
+	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -645,6 +681,8 @@ func New(
 		bridgeModule,
 		oraclemanagerModule,
 		multisigModule,
+		feeMarketModule,
+		evmModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -679,6 +717,8 @@ func New(
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -708,6 +748,8 @@ func New(
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -742,6 +784,8 @@ func New(
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -776,6 +820,8 @@ func New(
 		bridgeModule,
 		oraclemanagerModule,
 		multisigModule,
+		evmModule,
+		feeMarketModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -980,6 +1026,9 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
+	//paramsKeeper.Subspace(monitoringptypes.ModuleName)
+	paramsKeeper.Subspace(evmtypes.ModuleName)
+	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
