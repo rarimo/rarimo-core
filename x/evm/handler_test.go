@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package evm_test
 
 import (

@@ -19,8 +19,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
+	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	cryptocodec "gitlab.com/rarimo/rarimo-core/ethmintcrypto/codec"
 
 	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
 )

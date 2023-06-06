@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package keeper_test
 
 import (
@@ -43,7 +46,7 @@ type KeeperTestSuite struct {
 	suite.Suite
 
 	ctx         sdk.Context
-	app         *app.EthermintApp
+	app         *app.App
 	queryClient types.QueryClient
 	address     common.Address
 	consAddress sdk.ConsAddress

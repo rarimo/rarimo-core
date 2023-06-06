@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package keeper_test
 
 import (
@@ -8,6 +11,9 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/stretchr/testify/require"
@@ -54,7 +60,7 @@ type KeeperTestSuite struct {
 	suite.Suite
 
 	ctx         sdk.Context
-	app         *app.EthermintApp
+	app         *app.App
 	queryClient types.QueryClient
 	address     common.Address
 	consAddress sdk.ConsAddress

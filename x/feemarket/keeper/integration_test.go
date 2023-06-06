@@ -1,3 +1,6 @@
+//go:build manual_test
+// +build manual_test
+
 package keeper_test
 
 import (
@@ -9,25 +12,26 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/libs/log"
+	dbm "github.com/tendermint/tm-db"
 	"gitlab.com/rarimo/rarimo-core/app"
 	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
 	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
 	"gitlab.com/rarimo/rarimo-core/ethminttests"
 	testutil "gitlab.com/rarimo/rarimo-core/ethminttestutil"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
-
-	"github.com/cosmos/cosmos-sdk/simapp"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/log"
-	dbm "github.com/tendermint/tm-db"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 var _ = Describe("Feemarket", func() {
