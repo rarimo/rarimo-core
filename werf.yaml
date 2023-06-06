@@ -2,7 +2,7 @@ configVersion: 1
 project: "backend"
 ---
 image: builder # Название собираемого образа.
-from: golang:1.18-alpine # Базовый образ.
+from: golang:1.20-alpine # Базовый образ.
 docker:
   WORKDIR: /go/src/gitlab.com/rarimo/rarimo-core
 git: # Секция с директивами для добавления исходных файлов из git-репозитория.
