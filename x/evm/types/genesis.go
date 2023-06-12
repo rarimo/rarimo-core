@@ -18,7 +18,7 @@ package types
 import (
 	"fmt"
 
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 // Validate performs a basic validation of a GenesisAccount fields.

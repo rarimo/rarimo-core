@@ -25,6 +25,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/eth/tracers"
 	"github.com/ethereum/go-ethereum/eth/tracers/logger"
+	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,7 +40,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	ethparams "github.com/ethereum/go-ethereum/params"
 
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
@@ -56,7 +56,7 @@ func (k Keeper) Account(c context.Context, req *types.QueryAccountRequest) (*typ
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	if err := ethermint.ValidateAddress(req.Address); err != nil {
+	if err := types2.ValidateAddress(req.Address); err != nil {
 		return nil, status.Error(
 			codes.InvalidArgument, err.Error(),
 		)
@@ -79,7 +79,7 @@ func (k Keeper) CosmosAccount(c context.Context, req *types.QueryCosmosAccountRe
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	if err := ethermint.ValidateAddress(req.Address); err != nil {
+	if err := types2.ValidateAddress(req.Address); err != nil {
 		return nil, status.Error(
 			codes.InvalidArgument, err.Error(),
 		)
@@ -144,7 +144,7 @@ func (k Keeper) Balance(c context.Context, req *types.QueryBalanceRequest) (*typ
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	if err := ethermint.ValidateAddress(req.Address); err != nil {
+	if err := types2.ValidateAddress(req.Address); err != nil {
 		return nil, status.Error(
 			codes.InvalidArgument,
 			types.ErrZeroAddress.Error(),
@@ -166,7 +166,7 @@ func (k Keeper) Storage(c context.Context, req *types.QueryStorageRequest) (*typ
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	if err := ethermint.ValidateAddress(req.Address); err != nil {
+	if err := types2.ValidateAddress(req.Address); err != nil {
 		return nil, status.Error(
 			codes.InvalidArgument,
 			types.ErrZeroAddress.Error(),
@@ -192,7 +192,7 @@ func (k Keeper) Code(c context.Context, req *types.QueryCodeRequest) (*types.Que
 		return nil, status.Error(codes.InvalidArgument, "empty request")
 	}
 
-	if err := ethermint.ValidateAddress(req.Address); err != nil {
+	if err := types2.ValidateAddress(req.Address); err != nil {
 		return nil, status.Error(
 			codes.InvalidArgument,
 			types.ErrZeroAddress.Error(),
@@ -636,7 +636,7 @@ func (k Keeper) BaseFee(c context.Context, _ *types.QueryBaseFeeRequest) (*types
 // getChainID parse chainID from current context if not provided
 func getChainID(ctx sdk.Context, chainID int64) (*big.Int, error) {
 	if chainID == 0 {
-		return ethermint.ParseChainID(ctx.ChainID())
+		return types2.ParseChainID(ctx.ChainID())
 	}
 	return big.NewInt(chainID), nil
 }

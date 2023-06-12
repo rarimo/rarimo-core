@@ -14,6 +14,11 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/stretchr/testify/require"
@@ -32,11 +37,6 @@ import (
 	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	"gitlab.com/rarimo/rarimo-core/ethmintserver/config"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
@@ -115,14 +115,14 @@ func (suite *KeeperTestSuite) SetupAppWithT(checkTx bool, t require.TestingT) {
 	// account key, use a constant account to keep unit test deterministic.
 	ecdsaPriv, err := crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	require.NoError(t, err)
-	priv := &ethsecp256k1.PrivKey{
+	priv := &ethsecp256k12.PrivKey{
 		Key: crypto.FromECDSA(ecdsaPriv),
 	}
 	suite.address = common.BytesToAddress(priv.PubKey().Address().Bytes())
 	suite.signer = ethminttests.NewSigner(priv)
 
 	// consensus key
-	priv, err = ethsecp256k1.GenerateKey()
+	priv, err = ethsecp256k12.GenerateKey()
 	require.NoError(t, err)
 	suite.consAddress = sdk.ConsAddress(priv.PubKey().Address())
 
@@ -209,7 +209,7 @@ func (suite *KeeperTestSuite) SetupAppWithT(checkTx bool, t require.TestingT) {
 	types.RegisterQueryServer(queryHelper, suite.app.EvmKeeper)
 	suite.queryClient = types.NewQueryClient(queryHelper)
 
-	acc := &ethermint.EthAccount{
+	acc := &types2.EthAccount{
 		BaseAccount: authtypes.NewBaseAccount(sdk.AccAddress(suite.address.Bytes()), nil, 0, 0),
 		CodeHash:    common.BytesToHash(crypto.Keccak256(nil)).String(),
 	}
@@ -225,7 +225,7 @@ func (suite *KeeperTestSuite) SetupAppWithT(checkTx bool, t require.TestingT) {
 	require.NoError(t, err)
 	suite.app.StakingKeeper.SetValidator(suite.ctx, validator)
 
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 	suite.ethSigner = ethtypes.LatestSignerForChainID(suite.app.EvmKeeper.ChainID())
 	suite.appCodec = encodingConfig.Codec
@@ -483,7 +483,7 @@ func (suite *KeeperTestSuite) TestGetAccountStorage() {
 			tc.malleate()
 			i := 0
 			suite.app.AccountKeeper.IterateAccounts(suite.ctx, func(account authtypes.AccountI) bool {
-				ethAccount, ok := account.(ethermint.EthAccountI)
+				ethAccount, ok := account.(types2.EthAccountI)
 				if !ok {
 					// ignore non EthAccounts
 					return false

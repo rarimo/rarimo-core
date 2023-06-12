@@ -20,10 +20,10 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/params"
+	"gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/core/vm"
-	types "gitlab.com/rarimo/rarimo-core/ethminttypes"
 )
 
 var (

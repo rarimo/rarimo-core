@@ -21,14 +21,13 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"gitlab.com/rarimo/rarimo-core/app/params"
+	"gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	txTypes "github.com/cosmos/cosmos-sdk/types/tx"
 
-	apitypes "github.com/ethereum/go-ethereum/signer/core/apitypes"
-	types "gitlab.com/rarimo/rarimo-core/ethminttypes"
-
 	"github.com/cosmos/cosmos-sdk/codec"
+	apitypes "github.com/ethereum/go-ethereum/signer/core/apitypes"
 )
 
 var (

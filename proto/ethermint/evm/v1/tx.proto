@@ -2,7 +2,6 @@ syntax = "proto3";
 package ethermint.evm.v1;
 
 import "cosmos/msg/v1/msg.proto";
-import "cosmos_proto/cosmos.proto";
 import "ethermint/evm/v1/evm.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
@@ -43,8 +42,6 @@ message MsgEthereumTx {
 // AllowUnprotectedTxs parameter is disabled.
 message LegacyTx {
   option (gogoproto.goproto_getters) = false;
-  option (cosmos_proto.implements_interface) = "TxData";
-
   // nonce corresponds to the account nonce (transaction sequence).
   uint64 nonce = 1;
   // gas_price defines the value for each gas unit
@@ -69,8 +66,6 @@ message LegacyTx {
 // AccessListTx is the data of EIP-2930 access list transactions.
 message AccessListTx {
   option (gogoproto.goproto_getters) = false;
-  option (cosmos_proto.implements_interface) = "TxData";
-
   // chain_id of the destination EVM chain
   string chain_id = 1 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
@@ -104,8 +99,6 @@ message AccessListTx {
 // DynamicFeeTx is the data of EIP-1559 dinamic fee transactions.
 message DynamicFeeTx {
   option (gogoproto.goproto_getters) = false;
-  option (cosmos_proto.implements_interface) = "TxData";
-
   // chain_id of the destination EVM chain
   string chain_id = 1 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
@@ -168,7 +161,7 @@ message MsgUpdateParams {
   option (cosmos.msg.v1.signer) = "authority";
 
   // authority is the address of the governance account.
-  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string authority = 1;
 
   // params defines the x/evm parameters to update.
   // NOTE: All parameters must be supplied.

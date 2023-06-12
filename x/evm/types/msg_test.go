@@ -9,19 +9,18 @@ import (
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/stretchr/testify/suite"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
@@ -52,7 +51,7 @@ func (suite *MsgsTestSuite) SetupTest() {
 	suite.chainID = big.NewInt(1)
 	suite.hundredBigInt = big.NewInt(100)
 
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 }
 

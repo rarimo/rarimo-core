@@ -16,11 +16,10 @@
 package cli
 
 import (
-	"github.com/spf13/cobra"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethmintrpc/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/spf13/cobra"
+	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )

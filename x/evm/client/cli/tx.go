@@ -26,8 +26,8 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethmintrpc/types"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 

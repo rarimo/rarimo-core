@@ -20,12 +20,12 @@ import (
 	"math/big"
 
 	sdkmath "cosmossdk.io/math"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )

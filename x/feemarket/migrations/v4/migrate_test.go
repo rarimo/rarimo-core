@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
 	v4 "gitlab.com/rarimo/rarimo-core/x/feemarket/migrations/v4"
 	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
@@ -29,7 +29,7 @@ func (ms mockSubspace) GetParamSetIfExists(ctx sdk.Context, ps types.LegacyParam
 }
 
 func TestMigrate(t *testing.T) {
-	encCfg := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encCfg := encoding.MakeConfig(app.ModuleBasics)
 	cdc := encCfg.Codec
 
 	storeKey := sdk.NewKVStoreKey(types.ModuleName)

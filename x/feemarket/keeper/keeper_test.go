@@ -10,6 +10,10 @@ import (
 	"time"
 
 	. "github.com/onsi/gomega"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -24,10 +28,6 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 
@@ -137,7 +137,7 @@ func (suite *KeeperTestSuite) SetupApp(checkTx bool) {
 	require.NoError(t, err)
 	suite.app.StakingKeeper.SetValidator(suite.ctx, validator)
 
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 	suite.ethSigner = ethtypes.LatestSignerForChainID(suite.app.EvmKeeper.ChainID())
 	suite.appCodec = encodingConfig.Codec

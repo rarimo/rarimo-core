@@ -9,6 +9,9 @@ import (
 	"testing"
 	"time"
 
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
 
 	sdkmath "cosmossdk.io/math"
@@ -37,9 +40,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"

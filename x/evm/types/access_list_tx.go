@@ -21,11 +21,10 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
+	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-
-	types "gitlab.com/rarimo/rarimo-core/ethminttypes"
 )
 
 func newAccessListTx(tx *ethtypes.Transaction) (*AccessListTx, error) {
@@ -41,7 +40,7 @@ func newAccessListTx(tx *ethtypes.Transaction) (*AccessListTx, error) {
 	}
 
 	if tx.Value() != nil {
-		amountInt, err := types.SafeNewIntFromBigInt(tx.Value())
+		amountInt, err := types2.SafeNewIntFromBigInt(tx.Value())
 		if err != nil {
 			return nil, err
 		}
@@ -49,7 +48,7 @@ func newAccessListTx(tx *ethtypes.Transaction) (*AccessListTx, error) {
 	}
 
 	if tx.GasPrice() != nil {
-		gasPriceInt, err := types.SafeNewIntFromBigInt(tx.GasPrice())
+		gasPriceInt, err := types2.SafeNewIntFromBigInt(tx.GasPrice())
 		if err != nil {
 			return nil, err
 		}
@@ -201,7 +200,7 @@ func (tx AccessListTx) Validate() error {
 	if gasPrice == nil {
 		return errorsmod.Wrap(ErrInvalidGasPrice, "cannot be nil")
 	}
-	if !types.IsValidInt256(gasPrice) {
+	if !types2.IsValidInt256(gasPrice) {
 		return errorsmod.Wrap(ErrInvalidGasPrice, "out of bound")
 	}
 
@@ -214,16 +213,16 @@ func (tx AccessListTx) Validate() error {
 	if amount != nil && amount.Sign() == -1 {
 		return errorsmod.Wrapf(ErrInvalidAmount, "amount cannot be negative %s", amount)
 	}
-	if !types.IsValidInt256(amount) {
+	if !types2.IsValidInt256(amount) {
 		return errorsmod.Wrap(ErrInvalidAmount, "out of bound")
 	}
 
-	if !types.IsValidInt256(tx.Fee()) {
+	if !types2.IsValidInt256(tx.Fee()) {
 		return errorsmod.Wrap(ErrInvalidGasFee, "out of bound")
 	}
 
 	if tx.To != "" {
-		if err := types.ValidateAddress(tx.To); err != nil {
+		if err := types2.ValidateAddress(tx.To); err != nil {
 			return errorsmod.Wrap(err, "invalid to address")
 		}
 	}

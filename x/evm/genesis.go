@@ -24,8 +24,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	abci "github.com/tendermint/tendermint/abci/types"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )

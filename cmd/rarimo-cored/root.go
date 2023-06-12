@@ -6,6 +6,12 @@ import (
 	"os"
 
 	"gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored/cmd"
+	client2 "gitlab.com/rarimo/rarimo-core/ethermint/client"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
+	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/server"
+	servercfg "gitlab.com/rarimo/rarimo-core/ethermint/server/config"
+	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
@@ -27,12 +33,6 @@ import (
 	"gitlab.com/rarimo/rarimo-core/app"
 	"gitlab.com/rarimo/rarimo-core/app/params"
 	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
-	ethermintclient "gitlab.com/rarimo/rarimo-core/ethmintclient"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/hd"
-	encoding "gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	server "gitlab.com/rarimo/rarimo-core/ethmintserver"
-	servercfg "gitlab.com/rarimo/rarimo-core/ethmintserver/config"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethmintserver/flags"
 )
 
 func newRootCmd() (*cobra.Command, params.EncodingConfig) {
@@ -81,7 +81,7 @@ func newRootCmd() (*cobra.Command, params.EncodingConfig) {
 	}
 
 	rootCmd.AddCommand(
-		ethermintclient.ValidateChainID(
+		client2.ValidateChainID(
 			genutilcli.InitCmd(app.ModuleBasics, app.DefaultNodeHome),
 		),
 		genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, app.DefaultNodeHome),
@@ -90,7 +90,7 @@ func newRootCmd() (*cobra.Command, params.EncodingConfig) {
 		genutilcli.ValidateGenesisCmd(app.ModuleBasics),
 		cmd.AddGenesisAccountCmd(app.DefaultNodeHome),
 		//tmcli.NewCompletionCmd(rootCmd, true),
-		ethermintclient.NewTestnetCmd(app.ModuleBasics, banktypes.GenesisBalancesIterator{}),
+		client2.NewTestnetCmd(app.ModuleBasics, banktypes.GenesisBalancesIterator{}),
 		debug.Cmd(),
 		config.Cmd(),
 	)
@@ -101,7 +101,7 @@ func newRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 	rootCmd.AddCommand(
 		rpc.StatusCommand(),
-		ethermintclient.KeyCommands(app.DefaultNodeHome),
+		client2.KeyCommands(app.DefaultNodeHome),
 	)
 
 	rootCmd, err := srvflags.AddTxFlags(rootCmd)

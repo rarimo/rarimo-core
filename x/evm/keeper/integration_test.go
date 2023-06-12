@@ -14,10 +14,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-	testutil "gitlab.com/rarimo/rarimo-core/ethminttestutil"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
 	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
@@ -176,7 +176,7 @@ func setupChain(localMinGasPricesStr string) {
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		5,
-		ethmintencoding.MakeConfig(app.ModuleBasics),
+		encoding.MakeConfig(app.ModuleBasics),
 		simapp.EmptyAppOptions{},
 		baseapp.SetMinGasPrices(localMinGasPricesStr),
 	)
@@ -243,7 +243,7 @@ func buildEthTx(
 }
 
 func prepareEthTx(priv *ethsecp256k1.PrivKey, msgEthereumTx *evmtypes.MsgEthereumTx) []byte {
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	option, err := codectypes.NewAnyWithValue(&evmtypes.ExtensionOptionsEthereumTx{})
 	s.Require().NoError(err)
 

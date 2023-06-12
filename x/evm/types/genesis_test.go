@@ -5,8 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/suite"
-
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 )
 
 type GenesisTestSuite struct {

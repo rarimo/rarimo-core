@@ -9,13 +9,13 @@ import (
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/stretchr/testify/require"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/ethereum/go-ethereum/common"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 

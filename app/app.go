@@ -104,7 +104,7 @@ import (
 	dbm "github.com/tendermint/tm-db"
 	appparams "gitlab.com/rarimo/rarimo-core/app/params"
 	"gitlab.com/rarimo/rarimo-core/docs"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethmintserver/flags"
+	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
 	bridgemodule "gitlab.com/rarimo/rarimo-core/x/bridge"
 	bridgemodulekeeper "gitlab.com/rarimo/rarimo-core/x/bridge/keeper"
 	bridgemoduletypes "gitlab.com/rarimo/rarimo-core/x/bridge/types"

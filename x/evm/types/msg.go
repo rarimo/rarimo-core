@@ -21,6 +21,7 @@ import (
 	"math/big"
 
 	sdkmath "cosmossdk.io/math"
+	"gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -31,8 +32,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-
-	types "gitlab.com/rarimo/rarimo-core/ethminttypes"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"

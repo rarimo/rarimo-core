@@ -15,7 +15,7 @@ import (
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"

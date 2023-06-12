@@ -6,16 +6,16 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
 
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
 	v5 "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v5"
 	v5types "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v5/types"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func TestMigrate(t *testing.T) {
-	encCfg := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encCfg := encoding.MakeConfig(app.ModuleBasics)
 	cdc := encCfg.Codec
 
 	storeKey := sdk.NewKVStoreKey(types.ModuleName)

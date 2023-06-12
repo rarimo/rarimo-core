@@ -17,8 +17,7 @@ package config
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
+	"gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 const (
@@ -53,9 +52,9 @@ func SetBech32Prefixes(config *sdk.Config) {
 
 // SetBip44CoinType sets the global coin type to be used in hierarchical deterministic wallets.
 func SetBip44CoinType(config *sdk.Config) {
-	config.SetCoinType(ethermint.Bip44CoinType)
-	config.SetPurpose(sdk.Purpose)                      // Shared
-	config.SetFullFundraiserPath(ethermint.BIP44HDPath) //nolint: staticcheck
+	config.SetCoinType(types.Bip44CoinType)
+	config.SetPurpose(sdk.Purpose)                  // Shared
+	config.SetFullFundraiserPath(types.BIP44HDPath) //nolint: staticcheck
 }
 
 // RegisterDenoms registers the base and display denominations to the SDK.
@@ -64,7 +63,7 @@ func RegisterDenoms() {
 		panic(err)
 	}
 
-	if err := sdk.RegisterDenom(ethermint.AttoPhoton, sdk.NewDecWithPrec(1, ethermint.BaseDenomUnit)); err != nil {
+	if err := sdk.RegisterDenom(types.AttoPhoton, sdk.NewDecWithPrec(1, types.BaseDenomUnit)); err != nil {
 		panic(err)
 	}
 }

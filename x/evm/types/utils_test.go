@@ -11,10 +11,9 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	proto "github.com/gogo/protobuf/proto"
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
 
 	"github.com/stretchr/testify/require"
 
@@ -52,7 +51,7 @@ func TestUnwrapEthererumMsg(t *testing.T) {
 	_, err := evmtypes.UnwrapEthereumMsg(nil, common.Hash{})
 	require.NotNil(t, err)
 
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	clientCtx := client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 	builder, _ := clientCtx.TxConfig.NewTxBuilder().(authtx.ExtensionOptionsTxBuilder)
 

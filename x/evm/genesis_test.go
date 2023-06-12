@@ -7,10 +7,10 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	etherminttypes "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	etherminttypes "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"

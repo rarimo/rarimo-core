@@ -5,12 +5,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
 )
 
 func BenchmarkCreateAccountNew(b *testing.B) {

@@ -6,6 +6,9 @@ import (
 	"testing"
 
 	"cosmossdk.io/math"
+	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	chainparams "github.com/cosmos/cosmos-sdk/simapp/params"
@@ -17,16 +20,12 @@ import (
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"gitlab.com/rarimo/rarimo-core/app"
 	"gitlab.com/rarimo/rarimo-core/cmd/config"
-	encoding "gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	testutil "gitlab.com/rarimo/rarimo-core/ethminttestutil"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
@@ -80,7 +79,7 @@ func (suite *EIP712TestSuite) SetupTest() {
 
 // createTestAddress creates random test addresses for messages
 func (suite *EIP712TestSuite) createTestAddress() sdk.AccAddress {
-	privkey, _ := ethsecp256k1.GenerateKey()
+	privkey, _ := ethsecp256k12.GenerateKey()
 	key, err := privkey.ToECDSA()
 	suite.Require().NoError(err)
 
@@ -90,11 +89,11 @@ func (suite *EIP712TestSuite) createTestAddress() sdk.AccAddress {
 }
 
 // createTestKeyPair creates a random keypair for signing and verification
-func (suite *EIP712TestSuite) createTestKeyPair() (*ethsecp256k1.PrivKey, *ethsecp256k1.PubKey) {
-	privKey, err := ethsecp256k1.GenerateKey()
+func (suite *EIP712TestSuite) createTestKeyPair() (*ethsecp256k12.PrivKey, *ethsecp256k12.PubKey) {
+	privKey, err := ethsecp256k12.GenerateKey()
 	suite.Require().NoError(err)
 
-	pubKey := &ethsecp256k1.PubKey{
+	pubKey := &ethsecp256k12.PubKey{
 		Key: privKey.PubKey().Bytes(),
 	}
 	suite.Require().Implements((*cryptotypes.PubKey)(nil), pubKey)
@@ -387,7 +386,7 @@ func (suite *EIP712TestSuite) TestEIP712() {
 }
 
 // verifyEIP712SignatureVerification verifies that the payload passes signature verification if signed as its EIP-712 representation.
-func (suite *EIP712TestSuite) verifyEIP712SignatureVerification(expectedSuccess bool, privKey ethsecp256k1.PrivKey, pubKey ethsecp256k1.PubKey, signBytes []byte) {
+func (suite *EIP712TestSuite) verifyEIP712SignatureVerification(expectedSuccess bool, privKey ethsecp256k12.PrivKey, pubKey ethsecp256k12.PubKey, signBytes []byte) {
 	eip712Bytes, err := eip712.GetEIP712BytesForMsg(signBytes)
 
 	if suite.useLegacyEIP712TypedData {

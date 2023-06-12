@@ -30,8 +30,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/tendermint/tendermint/libs/log"
+	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
-	ethermint "gitlab.com/rarimo/rarimo-core/ethminttypes"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 	evm "gitlab.com/rarimo/rarimo-core/x/evm/vm"
@@ -128,7 +128,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 // WithChainID sets the chain id to the local variable in the keeper
 func (k *Keeper) WithChainID(ctx sdk.Context) {
-	chainID, err := ethermint.ParseChainID(ctx.ChainID())
+	chainID, err := types2.ParseChainID(ctx.ChainID())
 	if err != nil {
 		panic(err)
 	}
@@ -282,7 +282,7 @@ func (k *Keeper) GetAccountWithoutBalance(ctx sdk.Context, addr common.Address) 
 	}
 
 	codeHash := types.EmptyCodeHash
-	ethAcct, ok := acct.(ethermint.EthAccountI)
+	ethAcct, ok := acct.(types2.EthAccountI)
 	if ok {
 		codeHash = ethAcct.GetCodeHash().Bytes()
 	}

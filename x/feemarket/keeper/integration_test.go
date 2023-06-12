@@ -20,16 +20,15 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
 	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethmintcrypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethmintencoding"
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
-	testutil "gitlab.com/rarimo/rarimo-core/ethminttestutil"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
@@ -492,7 +491,7 @@ func setupChain(localMinGasPricesStr string) {
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		5,
-		ethmintencoding.MakeConfig(app.ModuleBasics),
+		encoding.MakeConfig(app.ModuleBasics),
 		simapp.EmptyAppOptions{},
 		baseapp.SetMinGasPrices(localMinGasPricesStr),
 	)
@@ -559,7 +558,7 @@ func buildEthTx(
 }
 
 func prepareEthTx(priv *ethsecp256k1.PrivKey, msgEthereumTx *evmtypes.MsgEthereumTx) []byte {
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	option, err := codectypes.NewAnyWithValue(&evmtypes.ExtensionOptionsEthereumTx{})
 	s.Require().NoError(err)
 
@@ -605,7 +604,7 @@ func deliverEthTx(priv *ethsecp256k1.PrivKey, msgEthereumTx *evmtypes.MsgEthereu
 }
 
 func prepareCosmosTx(priv *ethsecp256k1.PrivKey, gasPrice *sdkmath.Int, msgs ...sdk.Msg) []byte {
-	encodingConfig := ethmintencoding.MakeConfig(app.ModuleBasics)
+	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	accountAddress := sdk.AccAddress(priv.PubKey().Address().Bytes())
 
 	txBuilder := encodingConfig.TxConfig.NewTxBuilder()

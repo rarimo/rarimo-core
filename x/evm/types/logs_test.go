@@ -4,8 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-
-	"gitlab.com/rarimo/rarimo-core/ethminttests"
+	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	"github.com/ethereum/go-ethereum/common"
 )
