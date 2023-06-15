@@ -53,10 +53,12 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		Stake:  totalStake.String(),
 	})
 
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleActivated,
-		sdk.NewAttribute(types.AttributeKeyChain, msg.Index.Chain),
-		sdk.NewAttribute(types.AttributeKeyAccount, msg.Index.Account),
-	))
+	if resultStatus == types.OracleStatus_Active {
+		ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOracleActivated,
+			sdk.NewAttribute(types.AttributeKeyChain, msg.Index.Chain),
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Index.Account),
+		))
+	}
 
 	return &types.MsgStakeResponse{}, nil
 }
