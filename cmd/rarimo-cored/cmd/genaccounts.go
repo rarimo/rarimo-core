@@ -16,7 +16,10 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 const (
@@ -118,7 +121,10 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 					return errors.New("invalid vesting parameters; must supply start and end time or end time")
 				}
 			} else {
-				genAccount = baseAccount
+				genAccount = &ethermint.EthAccount{
+					BaseAccount: baseAccount,
+					CodeHash:    common.BytesToHash(evmtypes.EmptyCodeHash).Hex(),
+				}
 			}
 
 			if err := genAccount.Validate(); err != nil {

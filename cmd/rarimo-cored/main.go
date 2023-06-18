@@ -16,6 +16,7 @@ const EnvPrefix = "RARIMOCORE"
 
 func main() {
 	setupConfig()
+	cmdcfg.RegisterDenoms()
 	rootCmd, _ := newRootCmd()
 
 	if err := svrcmd.Execute(rootCmd, EnvPrefix, app.DefaultNodeHome); err != nil {

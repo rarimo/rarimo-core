@@ -31,10 +31,11 @@ const (
 	// - Governance parameters: denomination used for spam prevention in proposal deposits
 	// - Crisis parameters: constant fee denomination used for spam prevention to check broken invariant
 	// - EVM parameters: denomination used for running EVM state transitions in Ethermint.
-	AttoPhoton string = "astake"
+	AttoPhoton string = sdk.DefaultBondDenom
 
 	// BaseDenomUnit defines the base denomination unit for Photons.
 	// 1 stake = 1x10^{BaseDenomUnit} astake
+	// DEPRECATED - using sdk.Presicion instead
 	BaseDenomUnit = 18
 
 	// DefaultGasPrice is default gas price for evm transactions
@@ -42,7 +43,7 @@ const (
 )
 
 // PowerReduction defines the default power reduction value for staking
-var PowerReduction = sdkmath.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil))
+var PowerReduction = sdkmath.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(sdk.Precision), nil))
 
 // NewPhotonCoin is a utility function that returns an "astake" coin with the given sdkmath.Int amount.
 // The function will panic if the provided amount is negative.

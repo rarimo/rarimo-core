@@ -4,15 +4,9 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 
-	"gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored/cmd"
-	client2 "gitlab.com/rarimo/rarimo-core/ethermint/client"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
-	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server"
-	servercfg "gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
-
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
 	"github.com/cosmos/cosmos-sdk/client/debug"
@@ -20,6 +14,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	sdkserver "github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	"github.com/cosmos/cosmos-sdk/snapshots"
+	snapshottypes "github.com/cosmos/cosmos-sdk/snapshots/types"
+	"github.com/cosmos/cosmos-sdk/store"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
@@ -32,7 +30,14 @@ import (
 	dbm "github.com/tendermint/tm-db"
 	"gitlab.com/rarimo/rarimo-core/app"
 	"gitlab.com/rarimo/rarimo-core/app/params"
+	"gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored/cmd"
 	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
+	client2 "gitlab.com/rarimo/rarimo-core/ethermint/client"
+	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
+	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
+	"gitlab.com/rarimo/rarimo-core/ethermint/server"
+	servercfg "gitlab.com/rarimo/rarimo-core/ethermint/server/config"
+	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
 )
 
 func newRootCmd() (*cobra.Command, params.EncodingConfig) {
@@ -73,8 +78,8 @@ func newRootCmd() (*cobra.Command, params.EncodingConfig) {
 				return err
 			}
 
-			// FIXME: replace AttoPhoton with bond denom
-			customAppTemplate, customAppConfig := servercfg.AppConfig("stake") // TODO move to constant + do we need to overwrite it? we have default config
+			// FIXME change to aDenom in case we decide to use it for ethereum part of the core
+			customAppTemplate, customAppConfig := servercfg.AppConfig(sdk.DefaultBondDenom)
 
 			return sdkserver.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig, tmcfg.DefaultConfig())
 		},
@@ -122,40 +127,40 @@ type appCreator struct {
 }
 
 func (c *appCreator) newApp(logger tmlog.Logger, db dbm.DB, traceStore io.Writer, appOpts servertypes.AppOptions) servertypes.Application {
-	//	var cache sdk.MultiStorePersistentCache
-	//
-	//	if cast.ToBool(appOpts.Get(sdkserver.FlagInterBlockCache)) {
-	//		cache = store.NewCommitKVStoreCacheManager()
-	//	}
+	var cache sdk.MultiStorePersistentCache
+
+	if cast.ToBool(appOpts.Get(sdkserver.FlagInterBlockCache)) {
+		cache = store.NewCommitKVStoreCacheManager()
+	}
 
 	skipUpgradeHeights := make(map[int64]bool)
 	for _, h := range cast.ToIntSlice(appOpts.Get(sdkserver.FlagUnsafeSkipUpgrades)) {
 		skipUpgradeHeights[int64(h)] = true
 	}
 
-	//pruningOpts, err := sdkserver.GetPruningOptionsFromFlags(appOpts)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//snapshotDir := filepath.Join(cast.ToString(appOpts.Get(flags.FlagHome)), "data", "snapshots")
-	//if err = os.MkdirAll(snapshotDir, os.ModePerm); err != nil {
-	//	panic(err)
-	//}
-	//
-	//snapshotDB, err := dbm.NewDB("metadata", sdkserver.GetAppDBBackend(appOpts), snapshotDir)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//snapshotStore, err := snapshots.NewStore(snapshotDB, snapshotDir)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//snapshotOptions := snapshottypes.NewSnapshotOptions(
-	//	cast.ToUint64(appOpts.Get(sdkserver.FlagStateSyncSnapshotInterval)),
-	//	cast.ToUint32(appOpts.Get(sdkserver.FlagStateSyncSnapshotKeepRecent)),
-	//)
+	pruningOpts, err := sdkserver.GetPruningOptionsFromFlags(appOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	snapshotDir := filepath.Join(cast.ToString(appOpts.Get(flags.FlagHome)), "data", "snapshots")
+	if err = os.MkdirAll(snapshotDir, os.ModePerm); err != nil {
+		panic(err)
+	}
+
+	snapshotDB, err := dbm.NewDB("metadata", sdkserver.GetAppDBBackend(appOpts), snapshotDir)
+	if err != nil {
+		panic(err)
+	}
+	snapshotStore, err := snapshots.NewStore(snapshotDB, snapshotDir)
+	if err != nil {
+		panic(err)
+	}
+
+	snapshotOptions := snapshottypes.NewSnapshotOptions(
+		cast.ToUint64(appOpts.Get(sdkserver.FlagStateSyncSnapshotInterval)),
+		cast.ToUint32(appOpts.Get(sdkserver.FlagStateSyncSnapshotKeepRecent)),
+	)
 
 	rarimoApp := app.New(
 		logger, db, traceStore, true, skipUpgradeHeights,
@@ -163,17 +168,17 @@ func (c *appCreator) newApp(logger tmlog.Logger, db dbm.DB, traceStore io.Writer
 		cast.ToUint(appOpts.Get(sdkserver.FlagInvCheckPeriod)),
 		c.encodingConfig,
 		appOpts,
-		//	baseapp.SetPruning(pruningOpts), // TODO figure out where do we need that
-		//	baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(sdkserver.FlagMinGasPrices))),
-		//	baseapp.SetHaltHeight(cast.ToUint64(appOpts.Get(sdkserver.FlagHaltHeight))),
-		//	baseapp.SetHaltTime(cast.ToUint64(appOpts.Get(sdkserver.FlagHaltTime))),
-		//	baseapp.SetMinRetainBlocks(cast.ToUint64(appOpts.Get(sdkserver.FlagMinRetainBlocks))),
-		//	baseapp.SetInterBlockCache(cache),
-		//	baseapp.SetTrace(cast.ToBool(appOpts.Get(sdkserver.FlagTrace))),
-		//	baseapp.SetIndexEvents(cast.ToStringSlice(appOpts.Get(sdkserver.FlagIndexEvents))),
-		//	baseapp.SetSnapshot(snapshotStore, snapshotOptions),
-		//	baseapp.SetIAVLCacheSize(cast.ToInt(appOpts.Get(sdkserver.FlagIAVLCacheSize))),
-		//	baseapp.SetIAVLDisableFastNode(cast.ToBool(appOpts.Get(sdkserver.FlagDisableIAVLFastNode))),
+		baseapp.SetPruning(pruningOpts), // TODO figure out where do we need that
+		baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(sdkserver.FlagMinGasPrices))),
+		baseapp.SetHaltHeight(cast.ToUint64(appOpts.Get(sdkserver.FlagHaltHeight))),
+		baseapp.SetHaltTime(cast.ToUint64(appOpts.Get(sdkserver.FlagHaltTime))),
+		baseapp.SetMinRetainBlocks(cast.ToUint64(appOpts.Get(sdkserver.FlagMinRetainBlocks))),
+		baseapp.SetInterBlockCache(cache),
+		baseapp.SetTrace(cast.ToBool(appOpts.Get(sdkserver.FlagTrace))),
+		baseapp.SetIndexEvents(cast.ToStringSlice(appOpts.Get(sdkserver.FlagIndexEvents))),
+		baseapp.SetSnapshot(snapshotStore, snapshotOptions),
+		baseapp.SetIAVLCacheSize(cast.ToInt(appOpts.Get(sdkserver.FlagIAVLCacheSize))),
+		baseapp.SetIAVLDisableFastNode(cast.ToBool(appOpts.Get(sdkserver.FlagDisableIAVLFastNode))),
 	)
 
 	return rarimoApp

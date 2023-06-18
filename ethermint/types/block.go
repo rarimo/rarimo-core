@@ -41,3 +41,11 @@ func BlockGasLimit(ctx sdk.Context) uint64 {
 
 	return 0
 }
+
+func IsBlockGasUnlimited(ctx sdk.Context) bool {
+	blockGasMeter := ctx.BlockGasMeter()
+	cp := ctx.ConsensusParams()
+
+	return (blockGasMeter == nil || blockGasMeter.Limit() == 0) && // <- InfiniteGasMeter
+		(cp == nil || cp.Block == nil || cp.Block.MaxGas == -1) // <- unlimited gas in consensus params
+}

@@ -63,7 +63,8 @@ func RegisterDenoms() {
 		panic(err)
 	}
 
-	if err := sdk.RegisterDenom(types.AttoPhoton, sdk.NewDecWithPrec(1, types.BaseDenomUnit)); err != nil {
-		panic(err)
-	}
+	// FIXME uncomment after the discussion about stake and astake
+	//if err := sdk.RegisterDenom(types.AttoPhoton, sdk.NewDecWithPrec(1, types.BaseDenomUnit)); err != nil {
+	//	panic(err)
+	//}
 }

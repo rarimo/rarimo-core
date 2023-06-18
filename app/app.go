@@ -1,10 +1,13 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
+
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -21,7 +24,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
@@ -102,6 +104,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
+	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 	appparams "gitlab.com/rarimo/rarimo-core/app/params"
 	"gitlab.com/rarimo/rarimo-core/docs"
 	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
@@ -482,7 +485,7 @@ func New(
 		keys[tokenmanagermoduletypes.MemStoreKey],
 		&app.StakingKeeper,
 	)
-	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper)
+	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
 	// should be initialized before adding to the gov route
 	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
@@ -493,7 +496,7 @@ func New(
 		&app.StakingKeeper,
 		app.BankKeeper,
 	)
-	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper)
+	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
@@ -507,7 +510,7 @@ func New(
 		app.BankKeeper,
 		scopedTransferKeeper,
 	)
-	transferModule := transfer.NewAppModule(app.TransferKeeper)
+	transferModule := transfer.NewAppModule(app.TransferKeeper) // <- ACTUAL module creation in app.go that you need
 	transferIBCModule := transfer.NewIBCModule(app.TransferKeeper)
 
 	app.ICAHostKeeper = icahostkeeper.NewKeeper(
@@ -527,7 +530,7 @@ func New(
 		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
 		scopedICAControllerKeeper, app.MsgServiceRouter(),
 	)
-	icaModule := ica.NewAppModule(&icaControllerKeeper, &app.ICAHostKeeper)
+	icaModule := ica.NewAppModule(&icaControllerKeeper, &app.ICAHostKeeper) // <- ACTUAL module creation in app.go that you need
 	icaHostIBCModule := icahost.NewIBCModule(app.ICAHostKeeper)
 
 	// Create evidence Keeper for to register the IBC light client misbehaviour evidence route
@@ -583,7 +586,7 @@ func New(
 		app.BankKeeper,
 		app.RarimocoreKeeper,
 	)
-	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
+	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
 	app.MultisigKeeper = *multisigmodulekeeper.NewKeeper(
 		appCodec,
@@ -592,7 +595,7 @@ func New(
 		app.MsgServiceRouter(),
 		app.AccountKeeper,
 	)
-	multisigModule := multisigmodule.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper)
+	multisigModule := multisigmodule.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper) // <- ACTUAL module creation in app.go that you need
 
 	// Create Ethermint keepers
 	feeMarketSs := app.GetSubspace(feemarkettypes.ModuleName)
@@ -600,7 +603,7 @@ func New(
 		appCodec, authtypes.NewModuleAddress(govtypes.ModuleName),
 		keys[feemarkettypes.StoreKey], tkeys[feemarkettypes.TransientKey], feeMarketSs,
 	)
-	feeMarketModule := feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs)
+	feeMarketModule := feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs) // <- ACTUAL module creation in app.go that you need
 
 	// Set authority to x/gov module account to only expect the module account to update params
 	evmSs := app.GetSubspace(evmtypes.ModuleName)
@@ -609,7 +612,7 @@ func New(
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
 	)
-	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs)
+	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs) // <- ACTUAL module creation in app.go that you need
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -653,27 +656,27 @@ func New(
 	// must be passed by reference here.
 
 	app.mm = module.NewManager(
-		genutil.NewAppModule(
+		genutil.NewAppModule( // <- ACTUAL module creation in app.go that you need
 			app.AccountKeeper, app.StakingKeeper, app.BaseApp.DeliverTx,
 			encodingConfig.TxConfig,
 		),
-		auth.NewAppModule(appCodec, app.AccountKeeper, nil),
-		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
-		vesting.NewAppModule(app.AccountKeeper, app.BankKeeper),
-		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
-		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
-		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
-		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
-		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
-		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
-		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
-		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
-		upgrade.NewAppModule(app.UpgradeKeeper),
-		evidence.NewAppModule(app.EvidenceKeeper),
-		ibc.NewAppModule(app.IBCKeeper),
-		params.NewAppModule(app.ParamsKeeper),
+		auth.NewAppModule(appCodec, app.AccountKeeper, nil),                                                                 // <- ACTUAL module creation in app.go that you need
+		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),       // <- ACTUAL module creation in app.go that you need
+		vesting.NewAppModule(app.AccountKeeper, app.BankKeeper),                                                             // <- ACTUAL module creation in app.go that you need
+		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),                                                      // <- ACTUAL module creation in app.go that you need
+		capability.NewAppModule(appCodec, *app.CapabilityKeeper),                                                            // <- ACTUAL module creation in app.go that you need
+		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry), // <- ACTUAL module creation in app.go that you need
+		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),       // <- ACTUAL module creation in app.go that you need
+		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),                                                       // <- ACTUAL module creation in app.go that you need
+		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),                                        // <- ACTUAL module creation in app.go that you need
+		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper, minttypes.DefaultInflationCalculationFn),             // <- ACTUAL module creation in app.go that you need
+		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),           // <- ACTUAL module creation in app.go that you need
+		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),                 // <- ACTUAL module creation in app.go that you need
+		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),                                // <- ACTUAL module creation in app.go that you need
+		upgrade.NewAppModule(app.UpgradeKeeper),                                                                             // <- ACTUAL module creation in app.go that you need
+		evidence.NewAppModule(app.EvidenceKeeper),                                                                           // <- ACTUAL module creation in app.go that you need
+		ibc.NewAppModule(app.IBCKeeper),                                                                                     // <- ACTUAL module creation in app.go that you need
+		params.NewAppModule(app.ParamsKeeper),                                                                               // <- ACTUAL module creation in app.go that you need
 		transferModule,
 		icaModule,
 		tokenmanagerModule,
@@ -694,6 +697,8 @@ func New(
 		// upgrades should be run first
 		upgradetypes.ModuleName,
 		capabilitytypes.ModuleName,
+		feemarkettypes.ModuleName,
+		evmtypes.ModuleName,
 		minttypes.ModuleName,
 		distrtypes.ModuleName,
 		slashingtypes.ModuleName,
@@ -717,8 +722,6 @@ func New(
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
-		evmtypes.ModuleName,
-		feemarkettypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -726,6 +729,13 @@ func New(
 		crisistypes.ModuleName,
 		govtypes.ModuleName,
 		stakingtypes.ModuleName,
+		tokenmanagermoduletypes.ModuleName,
+		rarimocoremoduletypes.ModuleName,
+		bridgemoduletypes.ModuleName,
+		oraclemanagermoduletypes.ModuleName,
+		multisigmoduletypes.ModuleName,
+		evmtypes.ModuleName,
+		feemarkettypes.ModuleName, // NOTE: fee market module must go last in order to retrieve the block gas used for all operational modules.
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,
@@ -743,13 +753,7 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		tokenmanagermoduletypes.ModuleName,
-		rarimocoremoduletypes.ModuleName,
-		bridgemoduletypes.ModuleName,
-		oraclemanagermoduletypes.ModuleName,
-		multisigmoduletypes.ModuleName,
-		evmtypes.ModuleName,
-		feemarkettypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -767,7 +771,11 @@ func New(
 		slashingtypes.ModuleName,
 		govtypes.ModuleName,
 		minttypes.ModuleName,
-		crisistypes.ModuleName,
+		// evm module denomination is used by the feemarket module, in AnteHandle
+		evmtypes.ModuleName,
+		// NOTE: feemarket need to be initialized before genutil module:
+		// gentx transactions use MinGasPriceDecorator.AnteHandle
+		feemarkettypes.ModuleName,
 		genutiltypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
@@ -784,8 +792,8 @@ func New(
 		bridgemoduletypes.ModuleName,
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
-		evmtypes.ModuleName,
-		feemarkettypes.ModuleName,
+		// NOTE: crisis module must go at the end to check for invariants on each module
+		crisistypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -835,20 +843,23 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 
-	anteHandler, err := ante.NewAnteHandler(
-		ante.HandlerOptions{
-			AccountKeeper:   app.AccountKeeper,
-			BankKeeper:      app.BankKeeper,
-			SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-		},
-	)
-	if err != nil {
-		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
-	}
+	app.setAnteHandler(encodingConfig.TxConfig, cast.ToUint64(appOpts.Get(srvflags.EVMMaxTxGasWanted)))
 
-	app.SetAnteHandler(anteHandler)
+	// In v0.46, the SDK introduces _postHandlers_. PostHandlers are like
+	// antehandlers, but are run _after_ the `runMsgs` execution. They are also
+	// defined as a chain, and have the same signature as antehandlers.
+	//
+	// In baseapp, postHandlers are run in the same store branch as `runMsgs`,
+	// meaning that both `runMsgs` and `postHandler` state will be committed if
+	// both are successful, and both will be reverted if any of the two fails.
+	//
+	// The SDK exposes a default empty postHandlers chain.
+	//
+	// Please note that changing any of the anteHandler or postHandler chain is
+	// likely to be a state-machine breaking change, which needs a coordinated
+	// upgrade.
+	app.setPostHandler()
+
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
@@ -864,6 +875,42 @@ func New(
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
+}
+
+func (app *App) setAnteHandler(txConfig client.TxConfig, maxGasWanted uint64) {
+	anteHandler, err := ante.NewAnteHandler(ante.HandlerOptions{
+		AccountKeeper:          app.AccountKeeper,
+		BankKeeper:             app.BankKeeper,
+		SignModeHandler:        txConfig.SignModeHandler(),
+		FeegrantKeeper:         app.FeeGrantKeeper,
+		SigGasConsumer:         ante.DefaultSigVerificationGasConsumer,
+		IBCKeeper:              app.IBCKeeper,
+		EvmKeeper:              app.EvmKeeper,
+		FeeMarketKeeper:        app.FeeMarketKeeper,
+		MaxTxGasWanted:         maxGasWanted,
+		ExtensionOptionChecker: ethermint.HasDynamicFeeExtensionOption,
+		TxFeeChecker:           ante.NewDynamicFeeChecker(app.EvmKeeper),
+		DisabledAuthzMsgs: []string{
+			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
+			sdk.MsgTypeURL(&vestingtypes.MsgCreateVestingAccount{}),
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	app.SetAnteHandler(anteHandler)
+}
+
+func (app *App) setPostHandler() {
+	postHandler, err := posthandler.NewPostHandler(
+		posthandler.HandlerOptions{},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	app.SetPostHandler(postHandler)
 }
 
 // Name returns the name of the App
