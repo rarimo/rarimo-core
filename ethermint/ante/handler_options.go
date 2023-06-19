@@ -16,6 +16,8 @@
 package ante
 
 import (
+	"fmt"
+
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,7 +26,6 @@ import (
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	ibcante "github.com/cosmos/ibc-go/v6/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v6/modules/core/keeper"
 
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
@@ -83,25 +84,19 @@ func newEthAnteHandler(options HandlerOptions) sdk.AnteHandler {
 }
 
 func newCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
-	return sdk.ChainAnteDecorators(
-		RejectMessagesDecorator{}, // reject MsgEthereumTxs
-		// disable the Msg types that cannot be included on an authz.MsgExec msgs field
-		NewAuthzLimiterDecorator(options.DisabledAuthzMsgs),
-		ante.NewSetUpContextDecorator(),
-		ante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
-		ante.NewValidateBasicDecorator(),
-		ante.NewTxTimeoutHeightDecorator(),
-		NewMinGasPriceDecorator(options.FeeMarketKeeper, options.EvmKeeper),
-		ante.NewValidateMemoDecorator(options.AccountKeeper),
-		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-		// SetPubKeyDecorator must be called before all signature verification decorators
-		ante.NewSetPubKeyDecorator(options.AccountKeeper),
-		ante.NewValidateSigCountDecorator(options.AccountKeeper),
-		ante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
-		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
-		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
-		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
-		NewGasWantedDecorator(options.EvmKeeper, options.FeeMarketKeeper),
+	anteHandler, err := ante.NewAnteHandler(
+		ante.HandlerOptions{
+			AccountKeeper:   options.AccountKeeper,
+			BankKeeper:      options.BankKeeper,
+			SignModeHandler: options.SignModeHandler,
+			FeegrantKeeper:  options.FeegrantKeeper,
+			SigGasConsumer:  options.SigGasConsumer,
+		},
 	)
+
+	if err != nil {
+		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
+	}
+
+	return anteHandler
 }
