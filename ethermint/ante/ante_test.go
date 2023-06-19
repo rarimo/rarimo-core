@@ -25,7 +25,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
 	"github.com/stretchr/testify/suite"
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
+	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"

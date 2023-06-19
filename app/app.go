@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
+	ante2 "gitlab.com/rarimo/rarimo-core/ethermint/ante"
 
 	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
@@ -104,7 +105,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 	appparams "gitlab.com/rarimo/rarimo-core/app/params"
 	"gitlab.com/rarimo/rarimo-core/docs"
 	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
@@ -669,7 +669,7 @@ func New(
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),       // <- ACTUAL module creation in app.go that you need
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),                                                       // <- ACTUAL module creation in app.go that you need
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),                                        // <- ACTUAL module creation in app.go that you need
-		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper, minttypes.DefaultInflationCalculationFn),             // <- ACTUAL module creation in app.go that you need
+		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),                                                      // <- ACTUAL module creation in app.go that you need
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),           // <- ACTUAL module creation in app.go that you need
 		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),                 // <- ACTUAL module creation in app.go that you need
 		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),                                // <- ACTUAL module creation in app.go that you need
@@ -878,18 +878,18 @@ func New(
 }
 
 func (app *App) setAnteHandler(txConfig client.TxConfig, maxGasWanted uint64) {
-	anteHandler, err := ante.NewAnteHandler(ante.HandlerOptions{
+	anteHandler, err := ante2.NewAnteHandler(ante2.HandlerOptions{
 		AccountKeeper:          app.AccountKeeper,
 		BankKeeper:             app.BankKeeper,
 		SignModeHandler:        txConfig.SignModeHandler(),
 		FeegrantKeeper:         app.FeeGrantKeeper,
-		SigGasConsumer:         ante.DefaultSigVerificationGasConsumer,
+		SigGasConsumer:         ante2.DefaultSigVerificationGasConsumer,
 		IBCKeeper:              app.IBCKeeper,
 		EvmKeeper:              app.EvmKeeper,
 		FeeMarketKeeper:        app.FeeMarketKeeper,
 		MaxTxGasWanted:         maxGasWanted,
 		ExtensionOptionChecker: ethermint.HasDynamicFeeExtensionOption,
-		TxFeeChecker:           ante.NewDynamicFeeChecker(app.EvmKeeper),
+		TxFeeChecker:           ante2.NewDynamicFeeChecker(app.EvmKeeper),
 		DisabledAuthzMsgs: []string{
 			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
 			sdk.MsgTypeURL(&vestingtypes.MsgCreateVestingAccount{}),

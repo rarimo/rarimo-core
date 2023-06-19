@@ -12,6 +12,7 @@ import (
 	"math/big"
 	"time"
 
+	ante2 "gitlab.com/rarimo/rarimo-core/ethermint/ante"
 	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	sdkmath "cosmossdk.io/math"
@@ -53,7 +54,6 @@ import (
 	govtypesv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"gitlab.com/rarimo/rarimo-core/app"
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
@@ -138,7 +138,7 @@ func (suite *AnteTestSuite) SetupTest() {
 
 	suite.clientCtx = client.Context{}.WithTxConfig(encodingConfig.TxConfig)
 
-	anteHandler, err := ante.NewAnteHandler(ante.HandlerOptions{
+	anteHandler, err := ante2.NewAnteHandler(ante2.HandlerOptions{
 		AccountKeeper:   suite.app.AccountKeeper,
 		BankKeeper:      suite.app.BankKeeper,
 		EvmKeeper:       suite.app.EvmKeeper,
@@ -146,7 +146,7 @@ func (suite *AnteTestSuite) SetupTest() {
 		IBCKeeper:       suite.app.IBCKeeper,
 		FeeMarketKeeper: suite.app.FeeMarketKeeper,
 		SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+		SigGasConsumer:  ante2.DefaultSigVerificationGasConsumer,
 		DisabledAuthzMsgs: []string{
 			sdk.MsgTypeURL(&evmtypes.MsgEthereumTx{}),
 			sdk.MsgTypeURL(&vestingtypes.MsgCreateVestingAccount{}),

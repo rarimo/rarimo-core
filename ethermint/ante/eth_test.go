@@ -5,8 +5,8 @@ import (
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
 	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
 	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"

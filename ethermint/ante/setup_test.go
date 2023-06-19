@@ -5,7 +5,7 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
+	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 

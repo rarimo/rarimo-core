@@ -5,6 +5,7 @@ import (
 	"time"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -13,8 +14,6 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	utiltx "gitlab.com/rarimo/rarimo-core/ethermint/testutil/tx"
-
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 
 	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 

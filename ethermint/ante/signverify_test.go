@@ -3,11 +3,11 @@ package ante_test
 import (
 	"math/big"
 
+	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	ante "gitlab.com/rarimo/rarimo-core/app/ethermintante"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
