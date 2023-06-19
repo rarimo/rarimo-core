@@ -29,7 +29,7 @@ func (msg *MsgUnstake) Type() string {
 }
 
 func (msg *MsgUnstake) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Index.Account)
+	creator, err := sdk.AccAddressFromBech32(msg.Sender)
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +46,7 @@ func (msg *MsgUnstake) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid index: nil")
 	}
 
-	_, err := sdk.AccAddressFromBech32(msg.Index.Account)
+	_, err := sdk.AccAddressFromBech32(msg.Sender)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}

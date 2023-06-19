@@ -17,9 +17,12 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not stake for oracle: invalid status in existing entry")
 	}
 
+	existingDelegations := make([]types.Delegation, 0, 1)
 	existingStake := sdk.ZeroInt()
+
 	if ok {
 		existingStake, _ = sdk.NewIntFromString(oracle.Stake)
+		existingDelegations = oracle.Delegations
 	}
 
 	params := k.GetParams(ctx)
@@ -32,9 +35,13 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		panic(sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", types.ModuleName))
 	}
 
+	if msg.From == "" {
+		msg.From = msg.Index.Account
+	}
+
 	// REQUIRES: validated account
-	oracleOwnerAddr, _ := sdk.AccAddressFromBech32(msg.Index.Account)
-	if err := k.bank.SendCoins(ctx, oracleOwnerAddr, moduleAccount.GetAddress(), sdk.NewCoins(sdk.NewCoin(params.StakeDenom, amount))); err != nil {
+	payerAddr, _ := sdk.AccAddressFromBech32(msg.From)
+	if err := k.bank.SendCoins(ctx, payerAddr, moduleAccount.GetAddress(), sdk.NewCoins(sdk.NewCoin(params.StakeDenom, amount))); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error withdrawing coins: %s", err.Error())
 	}
 
@@ -47,10 +54,28 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		resultStatus = types.OracleStatus_Inactive
 	}
 
+	delegatorExist := false
+	for i, d := range existingDelegations {
+		if d.Delegator == msg.From {
+			delegatorExist = true
+			existingDelegation, _ := sdk.NewIntFromString(d.Amount)
+			existingDelegations[i].Amount = existingDelegation.Add(amount).String()
+			break
+		}
+	}
+
+	if !delegatorExist {
+		existingDelegations = append(existingDelegations, types.Delegation{
+			Delegator: msg.From,
+			Amount:    amount.String(),
+		})
+	}
+
 	k.SetOracle(ctx, types.Oracle{
-		Index:  msg.Index,
-		Status: resultStatus,
-		Stake:  totalStake.String(),
+		Index:       msg.Index,
+		Status:      resultStatus,
+		Stake:       totalStake.String(),
+		Delegations: existingDelegations,
 	})
 
 	if resultStatus == types.OracleStatus_Active {
