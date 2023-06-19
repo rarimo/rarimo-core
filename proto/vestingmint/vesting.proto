@@ -1,15 +1,16 @@
 syntax = "proto3";
 package rarimo.rarimocore.vestingmint;
 
+import "gogoproto/gogo.proto";
+
 option go_package = "gitlab.com/rarimo/rarimo-core/x/vestingmint/types";
 
 message Vesting {
   uint64 index = 1;
   string account = 2;
-  string amount = 3;
+  repeated string payments = 3 [(gogoproto.nullable) = false];
   uint64 deltaBlocks = 4;
   uint64 nextDepositBlock = 5;
-  uint64 paymentsCount = 6;
-  string paid = 7;
-  string denom = 8;
+  uint64 paymentsDone = 6;
+  string denom = 7;
 }

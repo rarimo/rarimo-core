@@ -14,20 +14,14 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 			return false
 		}
 
-		amount, ok := sdk.NewIntFromString(vesting.Amount)
+		amount, ok := sdk.NewIntFromString(vesting.Payments[vesting.PaymentsDone])
 		if !ok {
 			return false
 		}
 
-		summary, ok := sdk.NewIntFromString(vesting.Paid)
-		if !ok {
-			return false
-		}
+		vesting.PaymentsDone += 1
 
-		summary = summary.Add(amount)
-		vesting.Paid = summary.String()
-
-		if summary.LT(amount.MulRaw(int64(vesting.PaymentsCount))) {
+		if vesting.PaymentsDone < uint64(len(vesting.Payments)) {
 			vesting.NextDepositBlock = vesting.NextDepositBlock + vesting.DeltaBlocks
 			k.AddToActiveVestingsQueue(ctx, vesting.NextDepositBlock, vesting.Index)
 		}
