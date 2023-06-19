@@ -1,0 +1,10 @@
+syntax = "proto3";
+package rarimo.rarimocore.vestingmint;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/vestingmint/types";
+
+// Params defines the parameters for the module.
+message Params {
+}
