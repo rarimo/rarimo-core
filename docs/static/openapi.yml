@@ -50409,6 +50409,15 @@ paths:
                     createOperationsCount:
                       type: string
                       format: uint64
+                    delegations:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          delegator:
+                            type: string
+                          amount:
+                            type: string
               pagination:
                 type: object
                 properties:
@@ -50561,6 +50570,15 @@ paths:
                     createOperationsCount:
                       type: string
                       format: uint64
+                    delegations:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          delegator:
+                            type: string
+                          amount:
+                            type: string
         default:
           description: An unexpected error response.
           schema:
@@ -50631,6 +50649,15 @@ paths:
                   createOperationsCount:
                     type: string
                     format: uint64
+                  delegations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        delegator:
+                          type: string
+                        amount:
+                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -85020,6 +85047,13 @@ definitions:
       - 'YES'
       - 'NO'
     default: 'YES'
+  rarimo.rarimocore.oraclemanager.Delegation:
+    type: object
+    properties:
+      delegator:
+        type: string
+      amount:
+        type: string
   rarimo.rarimocore.oraclemanager.MsgCreateTransferOp:
     type: object
     properties:
@@ -85122,6 +85156,15 @@ definitions:
       createOperationsCount:
         type: string
         format: uint64
+      delegations:
+        type: array
+        items:
+          type: object
+          properties:
+            delegator:
+              type: string
+            amount:
+              type: string
   rarimo.rarimocore.oraclemanager.OracleIndex:
     type: object
     properties:
@@ -85206,6 +85249,15 @@ definitions:
             createOperationsCount:
               type: string
               format: uint64
+            delegations:
+              type: array
+              items:
+                type: object
+                properties:
+                  delegator:
+                    type: string
+                  amount:
+                    type: string
       pagination:
         type: object
         properties:
@@ -85273,6 +85325,15 @@ definitions:
             createOperationsCount:
               type: string
               format: uint64
+            delegations:
+              type: array
+              items:
+                type: object
+                properties:
+                  delegator:
+                    type: string
+                  amount:
+                    type: string
   rarimo.rarimocore.oraclemanager.QueryGetOracleResponse:
     type: object
     properties:
@@ -85312,6 +85373,15 @@ definitions:
           createOperationsCount:
             type: string
             format: uint64
+          delegations:
+            type: array
+            items:
+              type: object
+              properties:
+                delegator:
+                  type: string
+                amount:
+                  type: string
   rarimo.rarimocore.oraclemanager.QueryGetTransferResponse:
     type: object
     properties:
