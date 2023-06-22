@@ -17,8 +17,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/ethereum/go-ethereum/common"
-	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
+	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 const (
@@ -99,9 +100,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 			var genAccount authtypes.GenesisAccount
 
 			balances := banktypes.Balance{Address: addr.String(), Coins: coins.Sort()}
-			baseAccount := authtypes.NewEthAccount(
-				authtypes.NewBaseAccount(addr, nil, 0, 0),
-				common.BytesToHash(ethcrypto.Keccak256(nil)))
+			baseAccount := authtypes.NewBaseAccount(addr, nil, 0, 0)
 
 			if !vestingAmt.IsZero() {
 				baseVestingAccount := authvesting.NewBaseVestingAccount(baseAccount, vestingAmt.Sort(), vestingEnd)
@@ -122,7 +121,10 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 					return errors.New("invalid vesting parameters; must supply start and end time or end time")
 				}
 			} else {
-				genAccount = baseAccount
+				genAccount = &ethermint.EthAccount{
+					BaseAccount: baseAccount,
+					CodeHash:    common.BytesToHash(evmtypes.EmptyCodeHash).Hex(),
+				}
 			}
 
 			if err := genAccount.Validate(); err != nil {
