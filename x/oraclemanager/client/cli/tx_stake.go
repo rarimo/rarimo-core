@@ -12,7 +12,7 @@ func CmdStake() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "stake [chain] [amount] [oracle-account]",
 		Short: "Stake tokens for oracle",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			chain := args[0]

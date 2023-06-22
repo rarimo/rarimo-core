@@ -21766,6 +21766,10 @@ paths:
                     type: string
                     format: uint64
                     title: expected blocks per month
+                  end_block:
+                    type: string
+                    format: uint64
+                    title: block when no additional tokens will be minted
                   month_reward:
                     type: object
                     properties:
@@ -55191,19 +55195,19 @@ paths:
                       format: uint64
                     account:
                       type: string
-                    amount:
-                      type: string
+                    payments:
+                      type: array
+                      items:
+                        type: string
                     deltaBlocks:
                       type: string
                       format: uint64
                     nextDepositBlock:
                       type: string
                       format: uint64
-                    paymentsCount:
+                    paymentsDone:
                       type: string
                       format: uint64
-                    paid:
-                      type: string
                     denom:
                       type: string
               pagination:
@@ -55329,19 +55333,19 @@ paths:
                     format: uint64
                   account:
                     type: string
-                  amount:
-                    type: string
+                  payments:
+                    type: array
+                    items:
+                      type: string
                   deltaBlocks:
                     type: string
                     format: uint64
                   nextDepositBlock:
                     type: string
                     format: uint64
-                  paymentsCount:
+                  paymentsDone:
                     type: string
                     format: uint64
-                  paid:
-                    type: string
                   denom:
                     type: string
         default:
@@ -69973,6 +69977,10 @@ definitions:
         type: string
         format: uint64
         title: expected blocks per month
+      end_block:
+        type: string
+        format: uint64
+        title: block when no additional tokens will be minted
       month_reward:
         type: object
         properties:
@@ -70000,6 +70008,10 @@ definitions:
             type: string
             format: uint64
             title: expected blocks per month
+          end_block:
+            type: string
+            format: uint64
+            title: block when no additional tokens will be minted
           month_reward:
             type: object
             properties:
@@ -87451,19 +87463,19 @@ definitions:
               format: uint64
             account:
               type: string
-            amount:
-              type: string
+            payments:
+              type: array
+              items:
+                type: string
             deltaBlocks:
               type: string
               format: uint64
             nextDepositBlock:
               type: string
               format: uint64
-            paymentsCount:
+            paymentsDone:
               type: string
               format: uint64
-            paid:
-              type: string
             denom:
               type: string
       pagination:
@@ -87504,19 +87516,19 @@ definitions:
             format: uint64
           account:
             type: string
-          amount:
-            type: string
+          payments:
+            type: array
+            items:
+              type: string
           deltaBlocks:
             type: string
             format: uint64
           nextDepositBlock:
             type: string
             format: uint64
-          paymentsCount:
+          paymentsDone:
             type: string
             format: uint64
-          paid:
-            type: string
           denom:
             type: string
   rarimo.rarimocore.vestingmint.QueryParamsResponse:
@@ -87534,18 +87546,18 @@ definitions:
         format: uint64
       account:
         type: string
-      amount:
-        type: string
+      payments:
+        type: array
+        items:
+          type: string
       deltaBlocks:
         type: string
         format: uint64
       nextDepositBlock:
         type: string
         format: uint64
-      paymentsCount:
+      paymentsDone:
         type: string
         format: uint64
-      paid:
-        type: string
       denom:
         type: string
