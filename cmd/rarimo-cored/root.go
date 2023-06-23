@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/config"
 	"github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	sdkserver "github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
@@ -109,7 +110,7 @@ func newRootCmd() (*cobra.Command, params.EncodingConfig) {
 		rpc.StatusCommand(),
 		txCommand(app.ModuleBasics),
 		queryCommand(app.ModuleBasics),
-		client2.KeyCommands(app.DefaultNodeHome),
+		keys.Commands(app.DefaultNodeHome),
 	)
 
 	rootCmd, err := srvflags.AddTxFlags(rootCmd)

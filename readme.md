@@ -8,7 +8,7 @@ Use
 ignite chain build
 ```
 
-If it fails in generate proto stage with error on etheremint .proto files just re-execute that command.
+If it fails in generate proto stage with error on etheremint .proto files just re-execute that command or try to add `--clear-cache` flag.
 
 ## Generate proto files
 
