@@ -30,7 +30,12 @@ func (msg *MsgStake) Type() string {
 }
 
 func (msg *MsgStake) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Index.Account)
+	addr := msg.From
+	if addr == "" {
+		addr = msg.Index.Account
+	}
+
+	creator, err := sdk.AccAddressFromBech32(addr)
 	if err != nil {
 		panic(err)
 	}
@@ -45,6 +50,13 @@ func (msg *MsgStake) GetSignBytes() []byte {
 func (msg *MsgStake) ValidateBasic() error {
 	if msg.Index == nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid index: nil")
+	}
+
+	if msg.From != "" {
+		_, err := sdk.AccAddressFromBech32(msg.From)
+		if err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid from address (%s)", err)
+		}
 	}
 
 	_, err := sdk.AccAddressFromBech32(msg.Index.Account)

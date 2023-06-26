@@ -86,7 +86,7 @@ func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Oper
 	threshold, _ := sdk.NewDecFromStr(params.VoteThreshold)
 
 	// If there is not enough quorum of votes, finish the flow
-	percentVoting := totalVotingPower.ToDec().Quo(totalPowerForChain.ToDec())
+	percentVoting := sdk.NewDecFromInt(totalVotingPower).Quo(sdk.NewDecFromInt(totalPowerForChain))
 	if percentVoting.LT(quorum) {
 		return nil
 	}
@@ -96,7 +96,7 @@ func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Oper
 		k.AddToMonitorQueue(ctx, uint64(ctx.BlockHeight())+params.CheckOperationDelta, operation.Index)
 	}
 
-	if yesResult.ToDec().Quo(totalVotingPower.ToDec()).GT(threshold) {
+	if sdk.NewDecFromInt(yesResult).Quo(sdk.NewDecFromInt(totalVotingPower)).GT(threshold) {
 		return k.rarimo.ApproveOperation(ctx, operation)
 	}
 

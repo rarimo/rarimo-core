@@ -3,13 +3,13 @@ package oraclemanager
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
-func NewProposalHandler(k keeper.Keeper) govtypes.Handler {
-	return func(ctx sdk.Context, content govtypes.Content) error {
+func NewProposalHandler(k keeper.Keeper) govv1beta1.Handler {
+	return func(ctx sdk.Context, content govv1beta1.Content) error {
 		switch c := content.(type) {
 		case *types.OracleUnfreezeProposal:
 			return k.OracleUnfreezeProposal(ctx, c)

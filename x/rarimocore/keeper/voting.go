@@ -14,17 +14,21 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "operation not found")
 	}
 
-	k.SetVote(ctx, vote)
-
-	if operation.Status != types.OpStatus_INITIALIZED && operation.Status != types.OpStatus_NOT_APPROVED {
-		return false, nil
+	if _, ok := k.GetVote(ctx, vote.Index); ok {
+		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "vote already exists")
 	}
+
+	k.SetVote(ctx, vote)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 		sdk.NewAttribute(types.AttributeKeyVotingChoice, vote.Vote.String()),
 	))
+
+	if operation.Status != types.OpStatus_INITIALIZED {
+		return false, nil
+	}
 
 	return true, nil
 }

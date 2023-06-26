@@ -1,0 +1,23 @@
+FROM golang:1.20-alpine as buildbase
+
+WORKDIR /go/src/gitlab.com/rarimo/rarimo-core
+COPY vendor .
+COPY . .
+
+RUN apk add build-base
+
+ENV GO111MODULE="on"
+ENV CGO_ENABLED=1
+ENV GOOS="linux"
+
+RUN go build -o /usr/local/bin/rarimo-core gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
+
+###
+
+FROM alpine:3.9
+
+RUN apk add --no-cache ca-certificates
+
+COPY --from=buildbase /usr/local/bin/rarimo-core /usr/local/bin/rarimo-core
+
+ENTRYPOINT ["rarimo-core"]

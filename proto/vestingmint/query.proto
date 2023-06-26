@@ -1,0 +1,53 @@
+syntax = "proto3";
+package rarimo.rarimocore.vestingmint;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "vestingmint/params.proto";
+import "vestingmint/vesting.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/vestingmint/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/vestingmint/params";
+  }
+
+  rpc Vesting(QueryGetVestingRequest) returns (QueryGetVestingResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/vestingmint/vesting/{index}";
+  }
+
+  rpc VestingAll(QueryAllVestingRequest) returns (QueryAllVestingResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/vestingmint/vesting";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetVestingRequest {
+  uint64 index = 1;
+}
+
+message QueryGetVestingResponse {
+  // params holds all the parameters of this module.
+  Vesting vesting  = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVestingRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVestingResponse {
+  repeated Vesting vesting  = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

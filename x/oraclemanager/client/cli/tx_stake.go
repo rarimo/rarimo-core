@@ -10,9 +10,9 @@ import (
 
 func CmdStake() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake [chain] [amount]",
+		Use:   "stake [chain] [amount] [oracle-account]",
 		Short: "Stake tokens for oracle",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			chain := args[0]
@@ -20,17 +20,25 @@ func CmdStake() *cobra.Command {
 			// Get value arguments
 			amount := args[1]
 
+			oracleAccount := args[2]
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
+			from := clientCtx.GetFromAddress().String()
+			if oracleAccount == from {
+				from = ""
+			}
+
 			msg := &types.MsgStake{
 				Index: &types.OracleIndex{
 					Chain:   chain,
-					Account: clientCtx.GetFromAddress().String(),
+					Account: oracleAccount,
 				},
 				Amount: amount,
+				From:   from,
 			}
 
 			if err := msg.ValidateBasic(); err != nil {
