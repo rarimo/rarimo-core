@@ -1,17 +1,87 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
+import "gogoproto/gogo.proto";
 import "tokenmanager/collection.proto";
 import "tokenmanager/item.proto";
 import "tokenmanager/params.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-message SetNetworkProposal {
+enum UpgradeType {
+  NONE = 0;
+  BASIC_IMPLEMENTATION = 1;
+  OTHER = 2;
+}
+
+message ContractUpgradeDetails {
+  // Target contract address upgrade to
+  string targetContract = 1;
+  // New contract address: used on EVM
+  string newImplementationContract = 2;
+  // byte code hash: used on Solana and Near
+  string hash = 3;
+  // Solana buffer account
+  string bufferAccount = 4;
+  // chain name according to stored in tokenmanager params
+  string chain = 5;
+  // dec nonce
+  string nonce = 6;
+  UpgradeType type = 7;
+}
+
+message UpgradeContractProposal {
   string title = 1;
   string description = 2;
-  NetworkParams networkParams = 3;
+  ContractUpgradeDetails details = 4 [(gogoproto.nullable) = false];
 }
+
+message AddNetworkProposal {
+  string title = 1;
+  string description = 2;
+  NetworkParams networkParams = 3 [(gogoproto.nullable) = false];
+}
+
+message RemoveNetworkProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+}
+
+message AddFeeTokenProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+  string nonce = 4;
+  FeeToken token = 5 [(gogoproto.nullable) = false];
+}
+
+message UpdateFeeTokenProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+  string nonce = 4;
+  FeeToken token = 5 [(gogoproto.nullable) = false];
+}
+
+message RemoveFeeTokenProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+  string contract = 4;
+  string nonce = 5;
+}
+
+message WithdrawFeeProposal {
+  string title = 1;
+  string description = 2;
+  string chain = 3;
+  FeeToken token = 4 [(gogoproto.nullable) = false];
+  string receiver = 5;
+  string nonce = 6;
+}
+
 
 message UpdateTokenItemProposal {
   string title = 1;
@@ -32,7 +102,7 @@ message CreateCollectionProposal {
   string description = 2;
 
   string index = 3;
-  CollectionMetadata metadata = 4;
+  CollectionMetadata metadata = 4 [(gogoproto.nullable) = false];
   // All supported networks described
   repeated CollectionData data = 5;
   repeated Item item = 6;

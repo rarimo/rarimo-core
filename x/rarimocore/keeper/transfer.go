@@ -33,10 +33,6 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
-	if approved {
-		operation.Status = types.OpStatus_APPROVED
-	}
-
 	if op, ok := k.GetOperation(ctx, index); ok {
 		if op.Status == types.OpStatus_INITIALIZED || op.Status == types.OpStatus_APPROVED {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved or signed")
@@ -59,6 +55,12 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 
+	if approved {
+		if err := k.ApproveOperation(ctx, operation); err != nil {
+			return sdkerrors.Wrap(err, "failed to auto-approve operation")
+		}
+	}
+
 	return nil
 }
 
@@ -80,7 +82,7 @@ func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferO
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
+	if _, ok = k.tm.GetOnChainItem(ctx, &msg.From); !ok && msg.Meta == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
 	}
 

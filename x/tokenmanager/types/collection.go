@@ -11,10 +11,6 @@ func validateCollection(c *Collection) error {
 		return fmt.Errorf("invalid index")
 	}
 
-	if c.Meta == nil {
-		return fmt.Errorf("empty meta")
-	}
-
 	return nil
 }
 

@@ -65,6 +65,10 @@ func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Oper
 	totalPowerForChain := sdk.ZeroInt()
 
 	for _, oracle := range k.GetOracleForChain(ctx, transfer.From.Chain) {
+		if oracle.Status != types.OracleStatus_Active {
+			continue
+		}
+
 		oracleVotingPower, _ := sdk.NewIntFromString(oracle.Stake)
 		totalPowerForChain = totalPowerForChain.Add(oracleVotingPower)
 

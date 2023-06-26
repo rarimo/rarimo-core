@@ -2,7 +2,7 @@ package data
 
 import (
 	"bytes"
-	"encoding/binary"
+
 	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
@@ -57,24 +57,18 @@ func (t TransferData) getContent() operation.ContentData {
 
 func (t TransferData) getNearContent() operation.ContentData {
 	return bytes.Join([][]byte{
-		intTo32Bytes(len(t.TargetAddress)),
+		operation.IntTo32Bytes(len(t.TargetAddress)),
 		t.TargetAddress,
-		intTo32Bytes(len([]byte(t.TargetName))),
+		operation.IntTo32Bytes(len([]byte(t.TargetName))),
 		[]byte(t.TargetName),
-		intTo32Bytes(len(t.TargetId)),
+		operation.IntTo32Bytes(len(t.TargetId)),
 		t.TargetId,
-		intTo32Bytes(len([]byte(t.TargetURI))),
-		[]byte(t.TargetURI),
-		intTo32Bytes(len(t.Amount)),
+		operation.IntTo32Bytes(len(t.Amount)),
 		t.Amount,
-		intTo32Bytes(len([]byte(t.ImageURI))),
+		operation.IntTo32Bytes(len([]byte(t.ImageURI))),
 		[]byte(t.ImageURI),
-		intTo32Bytes(len(t.ImageHash)),
+		operation.IntTo32Bytes(len(t.ImageHash)),
 		t.ImageHash,
-		intTo32Bytes(len([]byte(t.TargetSymbol))),
-		[]byte(t.TargetSymbol),
-		intTo32Bytes(len(t.TargetDecimals)),
-		t.TargetDecimals,
 	}, []byte{})
 }
 
@@ -123,12 +117,12 @@ func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
 }
 
 func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
-	b.id = to32Bytes(crypto.TryHexDecode(id))
+	b.id = operation.To32Bytes(crypto.TryHexDecode(id))
 	return b
 }
 
 func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
-	b.amount = to32Bytes(amountBytes(amount))
+	b.amount = operation.To32Bytes(operation.AmountBytes(amount))
 	return b
 }
 
@@ -160,11 +154,4 @@ func (b *TransferDataBuilder) SetImageHash(hash string) *TransferDataBuilder {
 func (b *TransferDataBuilder) SetDecimals(d uint8) *TransferDataBuilder {
 	b.decimals = []byte{d}
 	return b
-}
-
-func intTo32Bytes(amount int) []byte {
-	buf := make([]byte, 4)
-	binary.LittleEndian.PutUint32(buf, uint32(amount))
-
-	return to32Bytes(buf)
 }

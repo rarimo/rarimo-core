@@ -1,0 +1,24 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "tokenmanager/proposal.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message ContractUpgrade {
+  // Target contract address upgrade to
+  string targetContract = 1;
+  // Chain name according to stored in tokenmanager params
+  string chain = 2;
+  // New contract address: used on EVM
+  string newImplementationContract = 3;
+  // byte code hash: used on Solana and Near
+  string hash = 4;
+  // Solana buffer account
+  string bufferAccount = 5;
+  // dec nonce
+  string nonce = 6;
+  rarimo.rarimocore.tokenmanager.UpgradeType type = 7;
+}

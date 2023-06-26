@@ -20,7 +20,7 @@ func NewMsgDepositNative(
 	amount *sdk.Coin,
 	bundleData string,
 	bundleSalt string,
-	to *types.OnChainItemIndex,
+	to types.OnChainItemIndex,
 ) *MsgDepositNative {
 	return &MsgDepositNative{
 		Creator:    creator,
@@ -71,7 +71,7 @@ func (msg *MsgDepositNative) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle salt (%s)", err)
 	}
 
-	if msg.To == nil || msg.To.Chain == "" {
+	if msg.To.Chain == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid to")
 	}
 
