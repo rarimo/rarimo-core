@@ -490,7 +490,7 @@ func New(
 		appCodec,
 		keys[tokenmanagermoduletypes.StoreKey],
 		keys[tokenmanagermoduletypes.MemStoreKey],
-		&app.StakingKeeper,
+		nil, // will be set up later (after rarimocore keeper initialization)
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
@@ -504,6 +504,8 @@ func New(
 		app.BankKeeper,
 	)
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
+
+	app.TokenmanagerKeeper.SetRarimoCore(app.RarimocoreKeeper)
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
@@ -592,6 +594,7 @@ func New(
 		keys[bridgemoduletypes.MemStoreKey],
 		app.BankKeeper,
 		app.RarimocoreKeeper,
+		app.TokenmanagerKeeper,
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 

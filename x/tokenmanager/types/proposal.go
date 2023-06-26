@@ -1,7 +1,7 @@
 package types
 
 import (
-	gov "github.com/cosmos/cosmos-sdk/x/gov/types"
+	gov "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
 const (
@@ -42,22 +42,22 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
 
-	gov.RegisterProposalTypeCodec(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal")
-	gov.RegisterProposalTypeCodec(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal")
-	gov.RegisterProposalTypeCodec(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal")
+	gov.ModuleCdc.RegisterConcrete(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal", nil)
 
-	gov.RegisterProposalTypeCodec(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal")
-	gov.RegisterProposalTypeCodec(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal")
-	gov.RegisterProposalTypeCodec(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal")
-	gov.RegisterProposalTypeCodec(&WithdrawFeeProposal{}, "tokenmanager/WithdrawFeeProposal")
+	gov.ModuleCdc.RegisterConcrete(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&WithdrawFeeProposal{}, "tokenmanager/WithdrawFeeProposal", nil)
 
-	gov.RegisterProposalTypeCodec(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal")
-	gov.RegisterProposalTypeCodec(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal")
-	gov.RegisterProposalTypeCodec(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal")
-	gov.RegisterProposalTypeCodec(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal")
-	gov.RegisterProposalTypeCodec(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal")
+	gov.ModuleCdc.RegisterConcrete(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
 }
 
 // Implements Proposal Interface

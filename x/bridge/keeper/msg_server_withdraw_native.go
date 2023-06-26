@@ -49,7 +49,7 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 
 	params := k.GetParams(ctx)
 
-	receiverAddress, err := sdk.AccAddressFromHex(getAddressWithoutLeading0x(transfer.Receiver))
+	receiverAddress, err := sdk.AccAddressFromHexUnsafe(getAddressWithoutLeading0x(transfer.Receiver))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", transfer.Receiver)
 	}

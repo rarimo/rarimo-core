@@ -44,7 +44,7 @@ func (k msgServer) WithdrawFee(goCtx context.Context, msg *types.MsgWithdrawFee)
 	}
 
 	amount, _ := sdk.NewIntFromString(manage.Token.Amount)
-	receiverAddress, err := sdk.AccAddressFromHex(getAddressWithoutLeading0x(manage.Receiver))
+	receiverAddress, err := sdk.AccAddressFromHexUnsafe(getAddressWithoutLeading0x(manage.Receiver))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", manage.Receiver)
 	}
