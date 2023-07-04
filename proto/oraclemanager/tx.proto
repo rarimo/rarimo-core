@@ -13,6 +13,7 @@ service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
+  rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -34,7 +35,6 @@ message MsgUnstake {
 message MsgUnstakeResponse {
 }
 
-
 message MsgCreateTransferOp {
   string creator = 1;
   // Information to identify transfer
@@ -53,6 +53,34 @@ message MsgCreateTransferOp {
 }
 
 message MsgCreateTransferOpResponse {}
+
+message MsgCreateIdentityDefaultTransferOp {
+  string creator = 1;
+  // Hex 0x
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x
+  string GISTHash = 4;
+  // Hex 0x
+  string id = 5;
+  // Hex 0x
+  string stateHash = 6;
+  // Dec
+  string stateCreatedAtTimestamp = 7;
+  string stateCreatedAtBlock = 8;
+  string stateReplacedAtTimestamp = 9;
+  string stateReplacedAtBlock = 10;
+  // Hex 0x
+  string stateReplacedBy = 11;
+  string GISTReplacedBy = 12;
+  // Dec
+  string GISTCreatedAtTimestamp = 13;
+  string GISTCreatedAtBlock = 14;
+  string GISTReplacedAtTimestamp = 15;
+  string GISTReplacedAtBlock = 16;
+}
+
+message MsgCreateIdentityDefaultTransferOpResponse {}
 
 message MsgVote{
   rarimo.rarimocore.oraclemanager.OracleIndex index = 1;

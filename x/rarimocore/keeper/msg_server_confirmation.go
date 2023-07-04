@@ -184,6 +184,12 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getContractUpgradeContent(ctx, upgrade)
+	case types.OpType_IDENTITY_DEFAULT_TRANSFER:
+		transfer, err := pkg.GetIdentityDefaultTransfer(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getIdentityDefaultTransferContent(ctx, transfer)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
@@ -234,4 +240,8 @@ func (k msgServer) getContractUpgradeContent(ctx sdk.Context, upgrade *types.Con
 	}
 
 	return pkg.GetContractUpgradeContent(networkParams, upgrade)
+}
+
+func (k msgServer) getIdentityDefaultTransferContent(_ sdk.Context, transfer *types.IdentityDefaultTransfer) (*operation.IdentityDefaultTransferContent, error) {
+	return pkg.GetIdentityDefaultTransferContent(transfer)
 }

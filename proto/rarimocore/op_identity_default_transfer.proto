@@ -1,0 +1,33 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+import "tokenmanager/item.proto";
+import "gogoproto/gogo.proto";
+
+message IdentityDefaultTransfer {
+  // Hex 0x
+  string contract = 1;
+  string chain = 2;
+  // Hex 0x
+  string GISTHash = 3;
+  // Hex 0x
+  string id = 4;
+  // Hex 0x
+  string stateHash = 5;
+  // Dec
+  string stateCreatedAtTimestamp = 6;
+  string stateCreatedAtBlock = 7;
+  string stateReplacedAtTimestamp = 8;
+  string stateReplacedAtBlock = 9;
+  // Hex 0x
+  string stateReplacedBy = 10;
+  string GISTReplacedBy = 11;
+  // Dec
+  string GISTCreatedAtTimestamp = 12;
+  string GISTCreatedAtBlock = 13;
+  string GISTReplacedAtTimestamp = 14;
+  string GISTReplacedAtBlock = 15;
+}
+

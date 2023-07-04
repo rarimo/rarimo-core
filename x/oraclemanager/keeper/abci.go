@@ -10,17 +10,17 @@ import (
 func (k Keeper) EndBlocker(ctx sdk.Context) {
 	k.IterateOverMonitorQueue(ctx, uint64(ctx.BlockHeight()), func(operation rarimotypes.Operation) (stop bool) {
 		k.RemoveFromMonitorQueue(ctx, uint64(ctx.BlockHeight()), operation.Index)
-		if operation.OperationType != rarimotypes.OpType_TRANSFER {
+		if operation.OperationType != rarimotypes.OpType_TRANSFER || operation.OperationType != rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER {
 			return false
 		}
 
-		transfer, err := pkg.GetTransfer(operation)
+		chain, err := getSourceChain(operation)
 		if err != nil {
 			return false
 		}
 
 		results := make(map[string]*rarimotypes.VoteType)
-		for _, oracle := range k.GetOracleForChain(ctx, transfer.From.Chain) {
+		for _, oracle := range k.GetOracleForChain(ctx, chain) {
 			if oracle.Status == types.OracleStatus_Active {
 				results[oracle.Index.Account] = nil
 			}
@@ -39,27 +39,27 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		case rarimotypes.OpStatus_APPROVED:
 			for account, vote := range results {
 				if vote == nil {
-					k.NoteMissed(ctx, &types.OracleIndex{Chain: transfer.From.Chain, Account: account})
+					k.NoteMissed(ctx, &types.OracleIndex{Chain: chain, Account: account})
 					continue
 				}
 
 				if *vote != rarimotypes.VoteType_YES {
-					k.NoteViolation(ctx, &types.OracleIndex{Chain: transfer.From.Chain, Account: account})
+					k.NoteViolation(ctx, &types.OracleIndex{Chain: chain, Account: account})
 				}
 			}
 		case rarimotypes.OpStatus_NOT_APPROVED:
 			for account, vote := range results {
 				if vote == nil {
-					k.NoteMissed(ctx, &types.OracleIndex{Chain: transfer.From.Chain, Account: account})
+					k.NoteMissed(ctx, &types.OracleIndex{Chain: chain, Account: account})
 					continue
 				}
 
 				if *vote != rarimotypes.VoteType_NO {
-					k.NoteViolation(ctx, &types.OracleIndex{Chain: transfer.From.Chain, Account: account})
+					k.NoteViolation(ctx, &types.OracleIndex{Chain: chain, Account: account})
 				}
 			}
 
-			k.NoteViolation(ctx, &types.OracleIndex{Chain: transfer.From.Chain, Account: operation.Creator})
+			k.NoteViolation(ctx, &types.OracleIndex{Chain: chain, Account: operation.Creator})
 		}
 
 		return false
@@ -118,4 +118,27 @@ func (k Keeper) NoteMissed(ctx sdk.Context, index *types.OracleIndex) {
 
 		k.SetOracle(ctx, oracle)
 	}
+}
+
+// getSourceChain requires OpType: TRANSFER or IDENTITY_DEFAULT_TRANSFER
+func getSourceChain(op rarimotypes.Operation) (string, error) {
+	switch op.OperationType {
+	case rarimotypes.OpType_TRANSFER:
+		transfer, err := pkg.GetTransfer(op)
+		if err != nil {
+			return "", err
+		}
+
+		return transfer.From.Chain, nil
+
+	case rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
+		transfer, err := pkg.GetIdentityDefaultTransfer(op)
+		if err != nil {
+			return "", err
+		}
+
+		return transfer.Chain, nil
+	}
+
+	return "", nil
 }

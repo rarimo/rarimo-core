@@ -50366,6 +50366,147 @@ paths:
           type: string
       tags:
         - Query
+  /rarimo/rarimo-core/oraclemanager/identity_default_transfer:
+    get:
+      operationId: RarimoRarimocoreOraclemanagerIdentityDefaultTransfer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              transfer:
+                type: object
+                properties:
+                  contract:
+                    type: string
+                    title: Hex 0x
+                  chain:
+                    type: string
+                  GISTHash:
+                    type: string
+                    title: Hex 0x
+                  id:
+                    type: string
+                    title: Hex 0x
+                  stateHash:
+                    type: string
+                    title: Hex 0x
+                  stateCreatedAtTimestamp:
+                    type: string
+                    title: Dec
+                  stateCreatedAtBlock:
+                    type: string
+                  stateReplacedAtTimestamp:
+                    type: string
+                  stateReplacedAtBlock:
+                    type: string
+                  stateReplacedBy:
+                    type: string
+                    title: Hex 0x
+                  GISTReplacedBy:
+                    type: string
+                  GISTCreatedAtTimestamp:
+                    type: string
+                    title: Dec
+                  GISTCreatedAtBlock:
+                    type: string
+                  GISTReplacedAtTimestamp:
+                    type: string
+                  GISTReplacedAtBlock:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: msg.creator
+          in: query
+          required: false
+          type: string
+        - name: msg.contract
+          description: Hex 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTHash
+          description: Hex 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.id
+          description: Hex 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.stateHash
+          description: Hex 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.stateCreatedAtTimestamp
+          description: Dec
+          in: query
+          required: false
+          type: string
+        - name: msg.stateCreatedAtBlock
+          in: query
+          required: false
+          type: string
+        - name: msg.stateReplacedAtTimestamp
+          in: query
+          required: false
+          type: string
+        - name: msg.stateReplacedAtBlock
+          in: query
+          required: false
+          type: string
+        - name: msg.stateReplacedBy
+          description: Hex 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTReplacedBy
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTCreatedAtTimestamp
+          description: Dec
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTCreatedAtBlock
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTReplacedAtTimestamp
+          in: query
+          required: false
+          type: string
+        - name: msg.GISTReplacedAtBlock
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /rarimo/rarimo-core/oraclemanager/oracle:
     get:
       operationId: RarimoRarimocoreOraclemanagerOracleAll
@@ -51465,6 +51606,7 @@ paths:
                         - CHANGE_PARTIES
                         - FEE_TOKEN_MANAGEMENT
                         - CONTRACT_UPGRADE
+                        - IDENTITY_DEFAULT_TRANSFER
                       default: TRANSFER
                     details:
                       title: Corresponding to type details
@@ -51950,6 +52092,7 @@ paths:
                       - CHANGE_PARTIES
                       - FEE_TOKEN_MANAGEMENT
                       - CONTRACT_UPGRADE
+                      - IDENTITY_DEFAULT_TRANSFER
                     default: TRANSFER
                   details:
                     title: Corresponding to type details
@@ -88110,6 +88253,50 @@ definitions:
         type: string
       amount:
         type: string
+  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp:
+    type: object
+    properties:
+      creator:
+        type: string
+      contract:
+        type: string
+        title: Hex 0x
+      chain:
+        type: string
+      GISTHash:
+        type: string
+        title: Hex 0x
+      id:
+        type: string
+        title: Hex 0x
+      stateHash:
+        type: string
+        title: Hex 0x
+      stateCreatedAtTimestamp:
+        type: string
+        title: Dec
+      stateCreatedAtBlock:
+        type: string
+      stateReplacedAtTimestamp:
+        type: string
+      stateReplacedAtBlock:
+        type: string
+      stateReplacedBy:
+        type: string
+        title: Hex 0x
+      GISTReplacedBy:
+        type: string
+      GISTCreatedAtTimestamp:
+        type: string
+        title: Dec
+      GISTCreatedAtBlock:
+        type: string
+      GISTReplacedAtTimestamp:
+        type: string
+      GISTReplacedAtBlock:
+        type: string
+  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOpResponse:
+    type: object
   rarimo.rarimocore.oraclemanager.MsgCreateTransferOp:
     type: object
     properties:
@@ -88340,6 +88527,49 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  rarimo.rarimocore.oraclemanager.QueryGetIdentityDefaultTransferResponse:
+    type: object
+    properties:
+      transfer:
+        type: object
+        properties:
+          contract:
+            type: string
+            title: Hex 0x
+          chain:
+            type: string
+          GISTHash:
+            type: string
+            title: Hex 0x
+          id:
+            type: string
+            title: Hex 0x
+          stateHash:
+            type: string
+            title: Hex 0x
+          stateCreatedAtTimestamp:
+            type: string
+            title: Dec
+          stateCreatedAtBlock:
+            type: string
+          stateReplacedAtTimestamp:
+            type: string
+          stateReplacedAtBlock:
+            type: string
+          stateReplacedBy:
+            type: string
+            title: Hex 0x
+          GISTReplacedBy:
+            type: string
+          GISTCreatedAtTimestamp:
+            type: string
+            title: Dec
+          GISTCreatedAtBlock:
+            type: string
+          GISTReplacedAtTimestamp:
+            type: string
+          GISTReplacedAtBlock:
+            type: string
   rarimo.rarimocore.oraclemanager.QueryGetOracleForChainResponse:
     type: object
     properties:
@@ -88531,6 +88761,46 @@ definitions:
           voteThreshold:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  rarimo.rarimocore.rarimocore.IdentityDefaultTransfer:
+    type: object
+    properties:
+      contract:
+        type: string
+        title: Hex 0x
+      chain:
+        type: string
+      GISTHash:
+        type: string
+        title: Hex 0x
+      id:
+        type: string
+        title: Hex 0x
+      stateHash:
+        type: string
+        title: Hex 0x
+      stateCreatedAtTimestamp:
+        type: string
+        title: Dec
+      stateCreatedAtBlock:
+        type: string
+      stateReplacedAtTimestamp:
+        type: string
+      stateReplacedAtBlock:
+        type: string
+      stateReplacedBy:
+        type: string
+        title: Hex 0x
+      GISTReplacedBy:
+        type: string
+      GISTCreatedAtTimestamp:
+        type: string
+        title: Dec
+      GISTCreatedAtBlock:
+        type: string
+      GISTReplacedAtTimestamp:
+        type: string
+      GISTReplacedAtBlock:
+        type: string
   rarimo.rarimocore.rarimocore.Transfer:
     type: object
     properties:
@@ -88654,6 +88924,7 @@ definitions:
       - CHANGE_PARTIES
       - FEE_TOKEN_MANAGEMENT
       - CONTRACT_UPGRADE
+      - IDENTITY_DEFAULT_TRANSFER
     default: TRANSFER
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -88668,6 +88939,7 @@ definitions:
           - CHANGE_PARTIES
           - FEE_TOKEN_MANAGEMENT
           - CONTRACT_UPGRADE
+          - IDENTITY_DEFAULT_TRANSFER
         default: TRANSFER
       details:
         title: Corresponding to type details
@@ -89012,6 +89284,7 @@ definitions:
                 - CHANGE_PARTIES
                 - FEE_TOKEN_MANAGEMENT
                 - CONTRACT_UPGRADE
+                - IDENTITY_DEFAULT_TRANSFER
               default: TRANSFER
             details:
               title: Corresponding to type details
@@ -89355,6 +89628,7 @@ definitions:
               - CHANGE_PARTIES
               - FEE_TOKEN_MANAGEMENT
               - CONTRACT_UPGRADE
+              - IDENTITY_DEFAULT_TRANSFER
             default: TRANSFER
           details:
             title: Corresponding to type details

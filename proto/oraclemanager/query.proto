@@ -8,6 +8,7 @@ import "oraclemanager/params.proto";
 import "oraclemanager/tx.proto";
 import "oraclemanager/oracle.proto";
 import "rarimocore/op_transfer.proto";
+import "rarimocore/op_identity_default_transfer.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
@@ -21,6 +22,10 @@ service Query {
 
   rpc Transfer(QueryGetTransferRequest) returns (QueryGetTransferResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/transfer";
+  }
+
+  rpc IdentityDefaultTransfer(QueryGetIdentityDefaultTransferRequest) returns (QueryGetIdentityDefaultTransferResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/identity_default_transfer";
   }
 
   rpc OracleAll(QueryGetAllOracleRequest) returns (QueryGetAllOracleResponse) {
@@ -53,6 +58,14 @@ message QueryGetTransferRequest {
 
 message QueryGetTransferResponse {
   rarimo.rarimocore.rarimocore.Transfer transfer = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetIdentityDefaultTransferRequest {
+  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp msg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetIdentityDefaultTransferResponse {
+  rarimo.rarimocore.rarimocore.IdentityDefaultTransfer transfer = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetAllOracleRequest {
