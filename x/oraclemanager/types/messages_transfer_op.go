@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	TypeMsgCreateDeposit = "create_transfer_operation"
+	TypeMsgCreateTransfer = "create_transfer_operation"
 )
 
 var _ sdk.Msg = &MsgCreateTransferOp{}
@@ -44,7 +44,7 @@ func (msg *MsgCreateTransferOp) Route() string {
 }
 
 func (msg *MsgCreateTransferOp) Type() string {
-	return TypeMsgCreateDeposit
+	return TypeMsgCreateTransfer
 }
 
 func (msg *MsgCreateTransferOp) GetSigners() []sdk.AccAddress {

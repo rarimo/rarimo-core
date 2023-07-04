@@ -1,10 +1,13 @@
 package keeper
 
 import (
+	"math/big"
+
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
@@ -36,8 +39,11 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
 	}
 
+	// Index is HASH(block, content [depending on chain])
+	index := hexutil.Encode(crypto.Keccak256(big.NewInt(ctx.BlockHeight()).Bytes(), content.CalculateHash()))
+
 	var operation = types.Operation{
-		Index:         hexutil.Encode(content.CalculateHash()),
+		Index:         index,
 		OperationType: types.OpType_CONTRACT_UPGRADE,
 		Details:       details,
 		Status:        types.OpStatus_INITIALIZED,
@@ -58,7 +64,7 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
-		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_FEE_TOKEN_MANAGEMENT.String()),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 	))
 
 	if err := k.ApproveOperation(ctx, operation); err != nil {

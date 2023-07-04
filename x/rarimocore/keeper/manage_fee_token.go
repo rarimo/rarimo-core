@@ -106,7 +106,7 @@ func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.Fee
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
-		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_FEE_TOKEN_MANAGEMENT.String()),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 	))
 
 	if err := k.ApproveOperation(ctx, operation); err != nil {
