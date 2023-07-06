@@ -100,5 +100,9 @@ func (msg *MsgCreateIdentityDefaultTransferOp) ValidateBody() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
 	}
 
+	if _, err := hexutil.Decode(msg.ReplacedStateHash); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid  replaced state hash (%s)", err)
+	}
+
 	return nil
 }

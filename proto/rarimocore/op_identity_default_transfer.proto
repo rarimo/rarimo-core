@@ -29,5 +29,7 @@ message IdentityDefaultTransfer {
   string GISTCreatedAtBlock = 13;
   string GISTReplacedAtTimestamp = 14;
   string GISTReplacedAtBlock = 15;
+  // HEx 0x
+  string replacedStateHash = 16;
 }
 

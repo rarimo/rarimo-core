@@ -72,5 +72,6 @@ func (k Keeper) GetIdentityDefaultTransfer(_ sdk.Context, msg *oracletypes.MsgCr
 		GISTCreatedAtBlock:       msg.GISTCreatedAtBlock,
 		GISTReplacedAtTimestamp:  msg.GISTReplacedAtTimestamp,
 		GISTReplacedAtBlock:      msg.GISTReplacedAtBlock,
+		ReplacedStateHash:        msg.ReplacedStateHash,
 	}, nil
 }

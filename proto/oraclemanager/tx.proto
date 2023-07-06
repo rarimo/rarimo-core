@@ -78,6 +78,8 @@ message MsgCreateIdentityDefaultTransferOp {
   string GISTCreatedAtBlock = 14;
   string GISTReplacedAtTimestamp = 15;
   string GISTReplacedAtBlock = 16;
+  // HEx 0x
+  string replacedStateHash = 17;
 }
 
 message MsgCreateIdentityDefaultTransferOpResponse {}

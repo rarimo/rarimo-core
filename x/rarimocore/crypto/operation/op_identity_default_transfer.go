@@ -23,6 +23,7 @@ type IdentityDefaultTransferContent struct {
 	GISTCreatedAtBlock       []byte
 	GISTReplacedAtTimestamp  []byte
 	GISTReplacedAtBlock      []byte
+	ReplacedStateHash        []byte
 }
 
 var _ merkle.Content = IdentityDefaultTransferContent{}
@@ -43,6 +44,7 @@ func (c IdentityDefaultTransferContent) CalculateHash() []byte {
 		c.GISTCreatedAtBlock,
 		c.GISTReplacedAtTimestamp,
 		c.GISTReplacedAtBlock,
+		c.ReplacedStateHash,
 	)
 }
 
