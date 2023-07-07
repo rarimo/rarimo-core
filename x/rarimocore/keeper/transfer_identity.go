@@ -23,7 +23,7 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 
 	var operation = types.Operation{
 		Index:         hexutil.Encode(content.CalculateHash()),
-		OperationType: types.OpType_TRANSFER,
+		OperationType: types.OpType_IDENTITY_DEFAULT_TRANSFER,
 		Details:       details,
 		Status:        types.OpStatus_INITIALIZED,
 		Creator:       creator,
