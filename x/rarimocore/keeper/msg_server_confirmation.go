@@ -65,7 +65,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		err := k.ApplyOperation(ctx, op)
+		err := k.ApplyOperation(ctx, op, msg.Root)
 		if err != nil {
 			return nil, err
 		}
@@ -85,7 +85,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
+func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation, confirmationId string) error {
 	switch op.OperationType {
 	case types.OpType_TRANSFER:
 		transfer, _ := pkg.GetTransfer(op)
@@ -110,6 +110,7 @@ func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+		sdk.NewAttribute(types.AttributeKeyConfirmationId, confirmationId),
 	))
 
 	return nil
