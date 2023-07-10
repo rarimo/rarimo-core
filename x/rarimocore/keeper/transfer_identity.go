@@ -11,6 +11,15 @@ import (
 )
 
 func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityDefaultTransfer) error {
+	network, ok := k.tm.GetNetwork(ctx, transfer.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "source network not found")
+	}
+
+	if network.GetIdentityParams() == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "identity transfers is not supported due to lack of parameters")
+	}
+
 	details, err := cosmostypes.NewAnyWithValue(transfer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
