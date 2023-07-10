@@ -86,12 +86,15 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 }
 
 func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation, confirmationId string) error {
+	canBeAppliedByInactivePartiesSet := map[types.OpType]struct{}{
+		types.OpType_CHANGE_PARTIES: {},
+	}
+
+	if _, canBeApplied := canBeAppliedByInactivePartiesSet[op.OperationType]; k.GetParams(ctx).IsUpdateRequired && !canBeApplied {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply operation: parties update needed")
+	}
+
 	switch op.OperationType {
-	case types.OpType_TRANSFER:
-		transfer, _ := pkg.GetTransfer(op)
-		if err := k.ApplyTransfer(ctx, transfer); err != nil {
-			return err
-		}
 	case types.OpType_CHANGE_PARTIES:
 		change, _ := pkg.GetChangeParties(op)
 		if err := k.ApplyChangeParties(ctx, change); err != nil {
@@ -113,13 +116,6 @@ func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation, confirmat
 		sdk.NewAttribute(types.AttributeKeyConfirmationId, confirmationId),
 	))
 
-	return nil
-}
-
-func (k msgServer) ApplyTransfer(ctx sdk.Context, _ *types.Transfer) error {
-	if k.GetParams(ctx).IsUpdateRequired {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply transfer: parties update needed")
-	}
 	return nil
 }
 
@@ -164,14 +160,12 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
-
 		return k.getTransferOperationContent(ctx, transfer)
 	case types.OpType_CHANGE_PARTIES:
 		change, err := pkg.GetChangeParties(op)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
-
 		return pkg.GetChangePartiesContent(change)
 	case types.OpType_FEE_TOKEN_MANAGEMENT:
 		manage, err := pkg.GetFeeTokenManagement(op)
