@@ -85,7 +85,7 @@ func (m *AddNetworkProposal) ValidateBasic() error {
 		return err
 	}
 
-	return validateNetwork(&m.NetworkParams)
+	return validateNetwork(&m.Network)
 }
 
 // Implements Proposal Interface

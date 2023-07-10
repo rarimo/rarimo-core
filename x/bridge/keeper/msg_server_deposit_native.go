@@ -60,12 +60,13 @@ func (k Keeper) chargeCommission(ctx sdk.Context, address sdk.AccAddress) error 
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "native network not found")
 	}
 
-	if len(network.Fee.FeeTokens) != 1 {
+	feeparams := network.GetFeeParams()
+	if feeparams == nil || len(feeparams.FeeTokens) != 1 {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "native fee token not found")
 	}
 
 	// picking first token, should be native
-	feeToken := network.Fee.FeeTokens[0]
+	feeToken := feeparams.FeeTokens[0]
 	fee, _ := sdk.NewIntFromString(feeToken.Amount)
 	return k.bankKeeper.SendCoinsFromAccountToModule(ctx, address, types.ModuleName, sdk.NewCoins(sdk.NewCoin(k.GetParams(ctx).WithdrawDenom, fee)))
 }

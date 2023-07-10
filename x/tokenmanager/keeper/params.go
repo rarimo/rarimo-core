@@ -28,7 +28,7 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	ctx.KVStore(k.storeKey).Set(types.KeyPrefix(types.ParamsKey), b)
 }
 
-func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param types.NetworkParams, ok bool) {
+func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param types.Network, ok bool) {
 	params := k.GetParams(ctx)
 	for _, network := range params.Networks {
 		if network.Name == name {

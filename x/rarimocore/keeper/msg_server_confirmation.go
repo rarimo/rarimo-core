@@ -216,21 +216,31 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "item not found")
 	}
 
-	networkParams, ok := k.tm.GetNetwork(ctx, transfer.To.Chain)
+	network, ok := k.tm.GetNetwork(ctx, transfer.To.Chain)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	return pkg.GetTransferContent(collection, data, item, networkParams, transfer)
+	bridgeparams := network.GetBridgeParams()
+	if bridgeparams == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network bridge params not found")
+	}
+
+	return pkg.GetTransferContent(collection, data, item, bridgeparams, transfer)
 }
 
 func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
-	networkParams, ok := k.tm.GetNetwork(ctx, manage.Chain)
+	network, ok := k.tm.GetNetwork(ctx, manage.Chain)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	return pkg.GetFeeTokenManagementContent(networkParams, manage)
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network fee params not found")
+	}
+
+	return pkg.GetFeeTokenManagementContent(feeparams, manage)
 }
 
 func (k msgServer) getContractUpgradeContent(ctx sdk.Context, upgrade *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {

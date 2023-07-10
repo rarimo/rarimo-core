@@ -72,7 +72,7 @@ func (k Keeper) HandleUpgradeContractProposal(ctx sdk.Context, proposal *types.U
 
 func (k Keeper) HandleAddNetworkProposal(ctx sdk.Context, proposal *types.AddNetworkProposal) error {
 	params := k.GetParams(ctx)
-	params.Networks = append(params.Networks, &proposal.NetworkParams)
+	params.Networks = append(params.Networks, &proposal.Network)
 	k.SetParams(ctx, params)
 	return nil
 }
@@ -84,7 +84,7 @@ func (k Keeper) HandleRemoveNetworkProposal(ctx sdk.Context, proposal *types.Rem
 
 	params := k.GetParams(ctx)
 
-	networks := make([]*types.NetworkParams, 0, len(params.Networks)-1)
+	networks := make([]*types.Network, 0, len(params.Networks)-1)
 	for _, network := range params.Networks {
 		if network.Name != proposal.Chain {
 			networks = append(networks, network)
@@ -104,7 +104,12 @@ func (k Keeper) HandleAddFeeTokenProposal(ctx sdk.Context, proposal *types.AddFe
 	params := k.GetParams(ctx)
 	for _, network := range params.Networks {
 		if network.Name == proposal.Chain {
-			network.Fee.FeeTokens = append(network.Fee.FeeTokens, &proposal.Token)
+			feeparams := network.GetFeeParams()
+			if feeparams == nil {
+				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
+			}
+
+			feeparams.SetFeeToken(&proposal.Token)
 			break
 		}
 	}
@@ -126,7 +131,12 @@ func (k Keeper) HandleUpdateFeeTokenProposal(ctx sdk.Context, proposal *types.Up
 
 	for _, network := range params.Networks {
 		if network.Name == proposal.Chain {
-			network.Fee.FeeTokens = append(network.Fee.FeeTokens, &proposal.Token)
+			feeparams := network.GetFeeParams()
+			if feeparams == nil {
+				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
+			}
+
+			feeparams.SetFeeToken(&proposal.Token)
 			break
 		}
 	}
@@ -150,17 +160,13 @@ func (k Keeper) HandleRemoveFeeTokenProposal(ctx sdk.Context, proposal *types.Re
 
 	for _, network := range params.Networks {
 		if network.Name == proposal.Chain {
-			tokens := make([]*types.FeeToken, 0, len(network.Fee.FeeTokens)-1)
-
-			for _, token := range network.Fee.FeeTokens {
-				if token.Contract != proposal.Contract {
-					tokens = append(tokens, token)
-					continue
-				}
-				feeTokenToRemove = token
+			feeparams := network.GetFeeParams()
+			if feeparams == nil {
+				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
 			}
 
-			network.Fee.FeeTokens = tokens
+			feeTokenToRemove = feeparams.GetFeeToken(proposal.Contract)
+			feeparams.RemoveFeeToken(feeTokenToRemove)
 			break
 		}
 	}
@@ -183,15 +189,12 @@ func (k Keeper) HandleWithdrawFeeProposal(ctx sdk.Context, proposal *types.Withd
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	var feeTokenToWithdraw *types.FeeToken
-
-	for _, token := range network.Fee.FeeTokens {
-		if token.Contract == proposal.Token.Contract {
-			feeTokenToWithdraw = token
-			break
-		}
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
 	}
 
+	feeTokenToWithdraw := feeparams.GetFeeToken(proposal.Token.Contract)
 	if feeTokenToWithdraw == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee token not found")
 	}
