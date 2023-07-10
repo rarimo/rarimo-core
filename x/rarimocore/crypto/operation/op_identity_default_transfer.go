@@ -31,18 +31,18 @@ var _ merkle.Content = IdentityDefaultTransferContent{}
 func (c IdentityDefaultTransferContent) CalculateHash() []byte {
 	return eth.Keccak256(
 		c.Contract,
-		c.GISTHash,
 		c.Id,
 		c.StateHash,
 		c.StateReplacedBy,
-		c.GISTReplacedBy,
 		c.StateCreatedAtTimestamp,
-		c.StateCreatedAtBlock,
 		c.StateReplacedAtTimestamp,
+		c.StateCreatedAtBlock,
 		c.StateReplacedAtBlock,
+		c.GISTHash,
+		c.GISTReplacedBy,
 		c.GISTCreatedAtTimestamp,
-		c.GISTCreatedAtBlock,
 		c.GISTReplacedAtTimestamp,
+		c.GISTCreatedAtBlock,
 		c.GISTReplacedAtBlock,
 		c.ReplacedStateHash,
 	)
