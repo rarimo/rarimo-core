@@ -16,7 +16,7 @@ func GetContractUpgrade(operation types.Operation) (*types.ContractUpgrade, erro
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetContractUpgradeContent(params tokentypes.NetworkParams, op *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {
+func GetContractUpgradeContent(params tokentypes.Network, op *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {
 	if params.Name != op.Chain {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "network names missmatch")
 	}

@@ -5,6 +5,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/gogo/protobuf/proto"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
@@ -24,6 +25,11 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
 	cdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
 	cdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
+
+	cdc.RegisterConcrete(&BridgeNetworkParams{}, "tokenmanager/BridgeNetworkParams", nil)
+	cdc.RegisterConcrete(&IdentityNetworkParams{}, "tokenmanager/IdentityNetworkParams", nil)
+	cdc.RegisterConcrete(&FeeNetworkParams{}, "tokenmanager/FeeNetworkParams", nil)
+
 	// this line is used by starport scaffolding # 2
 }
 
@@ -46,6 +52,24 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&AddCollectionDataProposal{},
 		&RemoveCollectionDataProposal{},
 		&RemoveCollectionProposal{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.tokenmanager.BridgeNetworkParams",
+		(*proto.Message)(nil),
+		&BridgeNetworkParams{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.tokenmanager.FeeNetworkParams",
+		(*proto.Message)(nil),
+		&FeeNetworkParams{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.tokenmanager.IdentityNetworkParams",
+		(*proto.Message)(nil),
+		&IdentityNetworkParams{},
 	)
 
 	// this line is used by starport scaffolding # 3

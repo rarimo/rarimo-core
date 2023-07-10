@@ -40,7 +40,7 @@ message UpgradeContractProposal {
 message AddNetworkProposal {
   string title = 1;
   string description = 2;
-  NetworkParams networkParams = 3 [(gogoproto.nullable) = false];
+  Network network = 3 [(gogoproto.nullable) = false];
 }
 
 message RemoveNetworkProposal {

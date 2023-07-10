@@ -18,7 +18,7 @@ func GetFeeTokenManagement(operation types.Operation) (*types.FeeTokenManagement
 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetFeeTokenManagementContent(params tokentypes.NetworkParams, op *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+func GetFeeTokenManagementContent(params *tokentypes.FeeNetworkParams, op *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
 	var receiver []byte
 	if op.Receiver != "" {
 		receiver = hexutil.MustDecode(op.Receiver)
@@ -26,7 +26,7 @@ func GetFeeTokenManagementContent(params tokentypes.NetworkParams, op *types.Fee
 
 	return &operation.FeeTokenManagementContent{
 		Nonce:          operation.To32Bytes(operation.AmountBytes(op.Nonce)),
-		TargetNetwork:  params.Name,
+		TargetNetwork:  op.Chain,
 		Receiver:       receiver,
 		TargetContract: hexutil.MustDecode(params.Contract),
 		Data:           data.NewFeeTokenDataBuilder().SetOpType(op.OpType).SetAddress(op.Token.GetContract()).SetAmount(op.Token.Amount).Build().GetContent(),

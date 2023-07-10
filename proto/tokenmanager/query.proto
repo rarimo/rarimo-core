@@ -112,7 +112,7 @@ message QueryNetworkParamsRequest {
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryNetworkParamsResponse {
-  NetworkParams params = 1 [(gogoproto.nullable) = false];
+  Network params = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetItemRequest {

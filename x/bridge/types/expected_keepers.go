@@ -14,7 +14,7 @@ type RarimocoreKeeper interface {
 }
 
 type TokenmanagerKeeper interface {
-	GetNetwork(ctx sdk.Context, name string) (tokenmanagertypes.NetworkParams, bool)
+	GetNetwork(ctx sdk.Context, name string) (tokenmanagertypes.Network, bool)
 }
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

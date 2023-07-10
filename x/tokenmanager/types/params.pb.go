@@ -5,6 +5,7 @@ package types
 
 import (
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/codec/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -54,6 +55,288 @@ func (NetworkType) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_55f297a3c8945a13, []int{0}
 }
 
+type NetworkParamType int32
+
+const (
+	NetworkParamType_BRIDGE   NetworkParamType = 0
+	NetworkParamType_FEE      NetworkParamType = 1
+	NetworkParamType_IDENTITY NetworkParamType = 2
+)
+
+var NetworkParamType_name = map[int32]string{
+	0: "BRIDGE",
+	1: "FEE",
+	2: "IDENTITY",
+}
+
+var NetworkParamType_value = map[string]int32{
+	"BRIDGE":   0,
+	"FEE":      1,
+	"IDENTITY": 2,
+}
+
+func (x NetworkParamType) String() string {
+	return proto.EnumName(NetworkParamType_name, int32(x))
+}
+
+func (NetworkParamType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{1}
+}
+
+type Network struct {
+	// network name
+	Name   string          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Type   NetworkType     `protobuf:"varint,2,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.NetworkType" json:"type,omitempty"`
+	Params []NetworkParams `protobuf:"bytes,3,rep,name=params,proto3" json:"params"`
+}
+
+func (m *Network) Reset()         { *m = Network{} }
+func (m *Network) String() string { return proto.CompactTextString(m) }
+func (*Network) ProtoMessage()    {}
+func (*Network) Descriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{0}
+}
+func (m *Network) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Network) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Network.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Network) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Network.Merge(m, src)
+}
+func (m *Network) XXX_Size() int {
+	return m.Size()
+}
+func (m *Network) XXX_DiscardUnknown() {
+	xxx_messageInfo_Network.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Network proto.InternalMessageInfo
+
+func (m *Network) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Network) GetType() NetworkType {
+	if m != nil {
+		return m.Type
+	}
+	return NetworkType_EVM
+}
+
+func (m *Network) GetParams() []NetworkParams {
+	if m != nil {
+		return m.Params
+	}
+	return nil
+}
+
+type NetworkParams struct {
+	Type NetworkParamType `protobuf:"varint,1,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.NetworkParamType" json:"type,omitempty"`
+	// Corresponding to type details
+	Details *types.Any `protobuf:"bytes,2,opt,name=details,proto3" json:"details,omitempty"`
+}
+
+func (m *NetworkParams) Reset()         { *m = NetworkParams{} }
+func (m *NetworkParams) String() string { return proto.CompactTextString(m) }
+func (*NetworkParams) ProtoMessage()    {}
+func (*NetworkParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{1}
+}
+func (m *NetworkParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *NetworkParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_NetworkParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *NetworkParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NetworkParams.Merge(m, src)
+}
+func (m *NetworkParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *NetworkParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_NetworkParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NetworkParams proto.InternalMessageInfo
+
+func (m *NetworkParams) GetType() NetworkParamType {
+	if m != nil {
+		return m.Type
+	}
+	return NetworkParamType_BRIDGE
+}
+
+func (m *NetworkParams) GetDetails() *types.Any {
+	if m != nil {
+		return m.Details
+	}
+	return nil
+}
+
+type BridgeNetworkParams struct {
+	Contract string `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+}
+
+func (m *BridgeNetworkParams) Reset()         { *m = BridgeNetworkParams{} }
+func (m *BridgeNetworkParams) String() string { return proto.CompactTextString(m) }
+func (*BridgeNetworkParams) ProtoMessage()    {}
+func (*BridgeNetworkParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{2}
+}
+func (m *BridgeNetworkParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *BridgeNetworkParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_BridgeNetworkParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *BridgeNetworkParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BridgeNetworkParams.Merge(m, src)
+}
+func (m *BridgeNetworkParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *BridgeNetworkParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_BridgeNetworkParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_BridgeNetworkParams proto.InternalMessageInfo
+
+func (m *BridgeNetworkParams) GetContract() string {
+	if m != nil {
+		return m.Contract
+	}
+	return ""
+}
+
+type FeeNetworkParams struct {
+	Contract  string      `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+	FeeTokens []*FeeToken `protobuf:"bytes,2,rep,name=feeTokens,proto3" json:"feeTokens,omitempty"`
+}
+
+func (m *FeeNetworkParams) Reset()         { *m = FeeNetworkParams{} }
+func (m *FeeNetworkParams) String() string { return proto.CompactTextString(m) }
+func (*FeeNetworkParams) ProtoMessage()    {}
+func (*FeeNetworkParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{3}
+}
+func (m *FeeNetworkParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FeeNetworkParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FeeNetworkParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FeeNetworkParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FeeNetworkParams.Merge(m, src)
+}
+func (m *FeeNetworkParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *FeeNetworkParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_FeeNetworkParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FeeNetworkParams proto.InternalMessageInfo
+
+func (m *FeeNetworkParams) GetContract() string {
+	if m != nil {
+		return m.Contract
+	}
+	return ""
+}
+
+func (m *FeeNetworkParams) GetFeeTokens() []*FeeToken {
+	if m != nil {
+		return m.FeeTokens
+	}
+	return nil
+}
+
+type IdentityNetworkParams struct {
+	Contract string `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
+}
+
+func (m *IdentityNetworkParams) Reset()         { *m = IdentityNetworkParams{} }
+func (m *IdentityNetworkParams) String() string { return proto.CompactTextString(m) }
+func (*IdentityNetworkParams) ProtoMessage()    {}
+func (*IdentityNetworkParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_55f297a3c8945a13, []int{4}
+}
+func (m *IdentityNetworkParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IdentityNetworkParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IdentityNetworkParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IdentityNetworkParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IdentityNetworkParams.Merge(m, src)
+}
+func (m *IdentityNetworkParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *IdentityNetworkParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_IdentityNetworkParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IdentityNetworkParams proto.InternalMessageInfo
+
+func (m *IdentityNetworkParams) GetContract() string {
+	if m != nil {
+		return m.Contract
+	}
+	return ""
+}
+
 type FeeToken struct {
 	// contract address hex
 	Contract string `protobuf:"bytes,1,opt,name=contract,proto3" json:"contract,omitempty"`
@@ -64,7 +347,7 @@ func (m *FeeToken) Reset()         { *m = FeeToken{} }
 func (m *FeeToken) String() string { return proto.CompactTextString(m) }
 func (*FeeToken) ProtoMessage()    {}
 func (*FeeToken) Descriptor() ([]byte, []int) {
-	return fileDescriptor_55f297a3c8945a13, []int{0}
+	return fileDescriptor_55f297a3c8945a13, []int{5}
 }
 func (m *FeeToken) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -107,139 +390,16 @@ func (m *FeeToken) GetAmount() string {
 	return ""
 }
 
-type FeeParams struct {
-	// contract address hex
-	FeeContract string      `protobuf:"bytes,1,opt,name=feeContract,proto3" json:"feeContract,omitempty"`
-	FeeTokens   []*FeeToken `protobuf:"bytes,2,rep,name=feeTokens,proto3" json:"feeTokens,omitempty"`
-}
-
-func (m *FeeParams) Reset()         { *m = FeeParams{} }
-func (m *FeeParams) String() string { return proto.CompactTextString(m) }
-func (*FeeParams) ProtoMessage()    {}
-func (*FeeParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_55f297a3c8945a13, []int{1}
-}
-func (m *FeeParams) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *FeeParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_FeeParams.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *FeeParams) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_FeeParams.Merge(m, src)
-}
-func (m *FeeParams) XXX_Size() int {
-	return m.Size()
-}
-func (m *FeeParams) XXX_DiscardUnknown() {
-	xxx_messageInfo_FeeParams.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_FeeParams proto.InternalMessageInfo
-
-func (m *FeeParams) GetFeeContract() string {
-	if m != nil {
-		return m.FeeContract
-	}
-	return ""
-}
-
-func (m *FeeParams) GetFeeTokens() []*FeeToken {
-	if m != nil {
-		return m.FeeTokens
-	}
-	return nil
-}
-
-type NetworkParams struct {
-	// network name
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// contract address hex
-	Contract string      `protobuf:"bytes,2,opt,name=contract,proto3" json:"contract,omitempty"`
-	Fee      FeeParams   `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee"`
-	Type     NetworkType `protobuf:"varint,4,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.NetworkType" json:"type,omitempty"`
-}
-
-func (m *NetworkParams) Reset()         { *m = NetworkParams{} }
-func (m *NetworkParams) String() string { return proto.CompactTextString(m) }
-func (*NetworkParams) ProtoMessage()    {}
-func (*NetworkParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_55f297a3c8945a13, []int{2}
-}
-func (m *NetworkParams) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *NetworkParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_NetworkParams.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *NetworkParams) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NetworkParams.Merge(m, src)
-}
-func (m *NetworkParams) XXX_Size() int {
-	return m.Size()
-}
-func (m *NetworkParams) XXX_DiscardUnknown() {
-	xxx_messageInfo_NetworkParams.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NetworkParams proto.InternalMessageInfo
-
-func (m *NetworkParams) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *NetworkParams) GetContract() string {
-	if m != nil {
-		return m.Contract
-	}
-	return ""
-}
-
-func (m *NetworkParams) GetFee() FeeParams {
-	if m != nil {
-		return m.Fee
-	}
-	return FeeParams{}
-}
-
-func (m *NetworkParams) GetType() NetworkType {
-	if m != nil {
-		return m.Type
-	}
-	return NetworkType_EVM
-}
-
 // Params defines the parameters for the module.
 type Params struct {
-	Networks []*NetworkParams `protobuf:"bytes,1,rep,name=networks,proto3" json:"networks,omitempty"`
+	Networks []*Network `protobuf:"bytes,1,rep,name=networks,proto3" json:"networks,omitempty"`
 }
 
 func (m *Params) Reset()         { *m = Params{} }
 func (m *Params) String() string { return proto.CompactTextString(m) }
 func (*Params) ProtoMessage()    {}
 func (*Params) Descriptor() ([]byte, []int) {
-	return fileDescriptor_55f297a3c8945a13, []int{3}
+	return fileDescriptor_55f297a3c8945a13, []int{6}
 }
 func (m *Params) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -268,7 +428,7 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
-func (m *Params) GetNetworks() []*NetworkParams {
+func (m *Params) GetNetworks() []*Network {
 	if m != nil {
 		return m.Networks
 	}
@@ -277,41 +437,244 @@ func (m *Params) GetNetworks() []*NetworkParams {
 
 func init() {
 	proto.RegisterEnum("rarimo.rarimocore.tokenmanager.NetworkType", NetworkType_name, NetworkType_value)
-	proto.RegisterType((*FeeToken)(nil), "rarimo.rarimocore.tokenmanager.FeeToken")
-	proto.RegisterType((*FeeParams)(nil), "rarimo.rarimocore.tokenmanager.FeeParams")
+	proto.RegisterEnum("rarimo.rarimocore.tokenmanager.NetworkParamType", NetworkParamType_name, NetworkParamType_value)
+	proto.RegisterType((*Network)(nil), "rarimo.rarimocore.tokenmanager.Network")
 	proto.RegisterType((*NetworkParams)(nil), "rarimo.rarimocore.tokenmanager.NetworkParams")
+	proto.RegisterType((*BridgeNetworkParams)(nil), "rarimo.rarimocore.tokenmanager.BridgeNetworkParams")
+	proto.RegisterType((*FeeNetworkParams)(nil), "rarimo.rarimocore.tokenmanager.FeeNetworkParams")
+	proto.RegisterType((*IdentityNetworkParams)(nil), "rarimo.rarimocore.tokenmanager.IdentityNetworkParams")
+	proto.RegisterType((*FeeToken)(nil), "rarimo.rarimocore.tokenmanager.FeeToken")
 	proto.RegisterType((*Params)(nil), "rarimo.rarimocore.tokenmanager.Params")
 }
 
 func init() { proto.RegisterFile("tokenmanager/params.proto", fileDescriptor_55f297a3c8945a13) }
 
 var fileDescriptor_55f297a3c8945a13 = []byte{
-	// 386 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0x4d, 0xef, 0x93, 0x40,
-	0x10, 0xc6, 0x59, 0x40, 0x84, 0x21, 0x1a, 0xb2, 0x31, 0x06, 0x7b, 0x40, 0xc2, 0x09, 0x35, 0x85,
-	0x04, 0x0f, 0xde, 0x34, 0xd6, 0xd8, 0xc4, 0x44, 0xab, 0xa1, 0x8d, 0x07, 0x6f, 0x5b, 0x32, 0xc5,
-	0xa6, 0x85, 0x25, 0xcb, 0x36, 0xda, 0x6f, 0xe1, 0x77, 0xf2, 0xd2, 0x63, 0x8f, 0x9e, 0x8c, 0x69,
-	0xbf, 0x88, 0xe1, 0xc5, 0xda, 0x7a, 0xf0, 0xdf, 0xd3, 0xee, 0x32, 0xf3, 0x3c, 0xcf, 0x6f, 0xc8,
-	0xc0, 0x03, 0xc9, 0x57, 0x58, 0x16, 0xac, 0x64, 0x39, 0x8a, 0xb8, 0x62, 0x82, 0x15, 0x75, 0x54,
-	0x09, 0x2e, 0x39, 0xf5, 0x04, 0x13, 0xcb, 0x82, 0x47, 0xdd, 0x91, 0x71, 0x81, 0xd1, 0x79, 0xf3,
-	0xe0, 0x5e, 0xce, 0x73, 0xde, 0xb6, 0xc6, 0xcd, 0xad, 0x53, 0x05, 0xcf, 0xc1, 0x1c, 0x23, 0xce,
-	0x9a, 0x46, 0x3a, 0x00, 0x33, 0xe3, 0xa5, 0x14, 0x2c, 0x93, 0x2e, 0xf1, 0x49, 0x68, 0xa5, 0xa7,
-	0x37, 0xbd, 0x0f, 0x06, 0x2b, 0xf8, 0xa6, 0x94, 0xae, 0xda, 0x56, 0xfa, 0x57, 0xb0, 0x01, 0x6b,
-	0x8c, 0xf8, 0xa1, 0x05, 0xa1, 0x3e, 0xd8, 0x0b, 0xc4, 0x57, 0x97, 0x1e, 0xe7, 0x9f, 0xe8, 0x18,
-	0xac, 0x45, 0x1f, 0x57, 0xbb, 0xaa, 0xaf, 0x85, 0x76, 0x12, 0x46, 0xff, 0x07, 0x8f, 0xfe, 0xf0,
-	0xa5, 0x7f, 0xa5, 0xc1, 0x77, 0x02, 0x77, 0x26, 0x28, 0xbf, 0x70, 0xb1, 0xea, 0xb3, 0x29, 0xe8,
-	0x25, 0x2b, 0xb0, 0x0f, 0x6d, 0xef, 0x17, 0x03, 0xa9, 0xff, 0x0c, 0xf4, 0x12, 0xb4, 0x05, 0xa2,
-	0xab, 0xf9, 0x24, 0xb4, 0x93, 0x47, 0x57, 0x30, 0x74, 0x39, 0x23, 0x7d, 0xf7, 0xf3, 0xa1, 0x92,
-	0x36, 0x5a, 0xfa, 0x02, 0x74, 0xb9, 0xad, 0xd0, 0xd5, 0x7d, 0x12, 0xde, 0x4d, 0x9e, 0xdc, 0xe4,
-	0xd1, 0xf3, 0xce, 0xb6, 0x15, 0xa6, 0xad, 0x30, 0x98, 0x82, 0xd1, 0xd3, 0xbf, 0x01, 0xb3, 0xec,
-	0xca, 0xb5, 0x4b, 0xda, 0xdf, 0x32, 0xbc, 0xd2, 0xae, 0x33, 0x48, 0x4f, 0xf2, 0xc7, 0xcf, 0xc0,
-	0x3e, 0x4b, 0xa2, 0xb7, 0x41, 0x7b, 0xfd, 0xf1, 0x9d, 0xa3, 0x50, 0x00, 0x63, 0xca, 0xd7, 0xac,
-	0x64, 0x0e, 0xa1, 0x26, 0xe8, 0x13, 0x64, 0xc2, 0x51, 0xa9, 0x05, 0xb7, 0xde, 0xcb, 0xcf, 0x28,
-	0x1c, 0x6d, 0xf4, 0x76, 0x77, 0xf0, 0xc8, 0xfe, 0xe0, 0x91, 0x5f, 0x07, 0x8f, 0x7c, 0x3b, 0x7a,
-	0xca, 0xfe, 0xe8, 0x29, 0x3f, 0x8e, 0x9e, 0xf2, 0x29, 0xc9, 0x97, 0x72, 0xcd, 0xe6, 0x51, 0xc6,
-	0x8b, 0xb8, 0xc3, 0xe9, 0x8f, 0x61, 0x83, 0x15, 0x7f, 0x8d, 0x2f, 0xb6, 0xb2, 0x19, 0xad, 0x9e,
-	0x1b, 0xed, 0x7e, 0x3d, 0xfd, 0x1d, 0x00, 0x00, 0xff, 0xff, 0xed, 0x04, 0x33, 0x86, 0xb2, 0x02,
-	0x00, 0x00,
+	// 487 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x41, 0x8f, 0xd2, 0x40,
+	0x14, 0xee, 0x00, 0x96, 0xf2, 0x50, 0x33, 0x19, 0x57, 0xc3, 0x72, 0xa8, 0xa4, 0x17, 0xc9, 0x9a,
+	0x9d, 0x2a, 0x1b, 0xe3, 0x4d, 0x23, 0x52, 0x0c, 0xd1, 0x45, 0x53, 0x89, 0x89, 0xde, 0x06, 0x98,
+	0xad, 0xcd, 0xd2, 0x19, 0x32, 0xcc, 0xaa, 0xfd, 0x01, 0xde, 0xfd, 0x1f, 0xfe, 0x91, 0x3d, 0xee,
+	0xd1, 0x93, 0x31, 0xf0, 0x47, 0x4c, 0xa7, 0x65, 0x05, 0x0f, 0x2b, 0x9e, 0x3a, 0x2f, 0xf3, 0xbe,
+	0xef, 0x7d, 0xdf, 0x37, 0xaf, 0xb0, 0xaf, 0xe5, 0x29, 0x17, 0x09, 0x13, 0x2c, 0xe2, 0xca, 0x9f,
+	0x33, 0xc5, 0x92, 0x05, 0x9d, 0x2b, 0xa9, 0x25, 0x71, 0x15, 0x53, 0x71, 0x22, 0x69, 0xfe, 0x99,
+	0x48, 0xc5, 0xe9, 0x66, 0x73, 0x73, 0x2f, 0x92, 0x91, 0x34, 0xad, 0x7e, 0x76, 0xca, 0x51, 0xcd,
+	0xfd, 0x48, 0xca, 0x68, 0xc6, 0x7d, 0x53, 0x8d, 0xcf, 0x4e, 0x7c, 0x26, 0xd2, 0xfc, 0xca, 0xfb,
+	0x8e, 0xa0, 0x3a, 0xe4, 0xfa, 0xb3, 0x54, 0xa7, 0x84, 0x40, 0x45, 0xb0, 0x84, 0x37, 0x50, 0x0b,
+	0xb5, 0x6b, 0xa1, 0x39, 0x93, 0xa7, 0x50, 0xd1, 0xe9, 0x9c, 0x37, 0x4a, 0x2d, 0xd4, 0xbe, 0xd9,
+	0xb9, 0x4f, 0xaf, 0x9e, 0x4f, 0x0b, 0xaa, 0x51, 0x3a, 0xe7, 0xa1, 0x01, 0x92, 0x97, 0x60, 0xe7,
+	0x0e, 0x1a, 0xe5, 0x56, 0xb9, 0x5d, 0xef, 0x1c, 0xee, 0x48, 0xf1, 0xc6, 0x80, 0xba, 0x95, 0xf3,
+	0x9f, 0x77, 0xad, 0xb0, 0xa0, 0xf0, 0xbe, 0x22, 0xb8, 0xb1, 0x75, 0x4f, 0x7a, 0x85, 0x3e, 0x64,
+	0xf4, 0x3d, 0xf8, 0x1f, 0xf2, 0x0d, 0x91, 0x14, 0xaa, 0x53, 0xae, 0x59, 0x3c, 0x5b, 0x18, 0xa3,
+	0xf5, 0xce, 0x1e, 0xcd, 0x23, 0xa3, 0xeb, 0xc8, 0xe8, 0x33, 0x91, 0x86, 0xeb, 0x26, 0xef, 0x21,
+	0xdc, 0xea, 0xaa, 0x78, 0x1a, 0xf1, 0x6d, 0x31, 0x4d, 0x70, 0x26, 0x52, 0x68, 0xc5, 0x26, 0xba,
+	0x08, 0xf1, 0xb2, 0xf6, 0x3e, 0x01, 0xee, 0xf3, 0xdd, 0xfb, 0x49, 0x1f, 0x6a, 0x27, 0x9c, 0x8f,
+	0x32, 0xf1, 0x99, 0xa8, 0x2c, 0xba, 0xf6, 0xbf, 0xdc, 0xf5, 0x0b, 0x40, 0xf8, 0x07, 0xea, 0x1d,
+	0xc1, 0xed, 0xc1, 0x94, 0x0b, 0x1d, 0xeb, 0x74, 0x77, 0xb1, 0x4f, 0xc0, 0x59, 0x73, 0x5d, 0x29,
+	0xf2, 0x0e, 0xd8, 0x2c, 0x91, 0x67, 0x42, 0x9b, 0xd8, 0x6a, 0x61, 0x51, 0x79, 0xc7, 0x60, 0x17,
+	0x53, 0x9e, 0x83, 0x23, 0xf2, 0xb1, 0x8b, 0x06, 0x32, 0x2e, 0xee, 0xed, 0xf8, 0x46, 0xe1, 0x25,
+	0xf0, 0xe0, 0x31, 0xd4, 0x37, 0x16, 0x8b, 0x54, 0xa1, 0x1c, 0xbc, 0x3b, 0xc6, 0x16, 0x01, 0xb0,
+	0xdf, 0xca, 0x19, 0x13, 0x0c, 0x23, 0xe2, 0x40, 0x65, 0xc8, 0x99, 0xc2, 0x25, 0x52, 0x83, 0x6b,
+	0xaf, 0xf5, 0x47, 0xae, 0x70, 0xf9, 0xe0, 0x11, 0xe0, 0xbf, 0x5f, 0x3c, 0x03, 0x75, 0xc3, 0x41,
+	0xef, 0x45, 0x80, 0xad, 0x8c, 0xa9, 0x1f, 0x04, 0x18, 0x91, 0xeb, 0xe0, 0x0c, 0x7a, 0xc1, 0x70,
+	0x34, 0x18, 0xbd, 0xc7, 0xa5, 0xee, 0xab, 0xf3, 0xa5, 0x8b, 0x2e, 0x96, 0x2e, 0xfa, 0xb5, 0x74,
+	0xd1, 0xb7, 0x95, 0x6b, 0x5d, 0xac, 0x5c, 0xeb, 0xc7, 0xca, 0xb5, 0x3e, 0x74, 0xa2, 0x58, 0xcf,
+	0xd8, 0x98, 0x4e, 0x64, 0xe2, 0xe7, 0xfa, 0x8b, 0xcf, 0x61, 0xe6, 0xc3, 0xff, 0xe2, 0x6f, 0xfd,
+	0xba, 0xd9, 0x6e, 0x2d, 0xc6, 0xb6, 0xd9, 0xa1, 0xa3, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0xa3,
+	0x71, 0xd7, 0xfe, 0xd7, 0x03, 0x00, 0x00,
+}
+
+func (m *Network) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Network) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Network) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Params) > 0 {
+		for iNdEx := len(m.Params) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Params[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintParams(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.Type != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NetworkParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NetworkParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *NetworkParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Details != nil {
+		{
+			size, err := m.Details.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintParams(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Type != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BridgeNetworkParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BridgeNetworkParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *BridgeNetworkParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Contract) > 0 {
+		i -= len(m.Contract)
+		copy(dAtA[i:], m.Contract)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Contract)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FeeNetworkParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FeeNetworkParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FeeNetworkParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.FeeTokens) > 0 {
+		for iNdEx := len(m.FeeTokens) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.FeeTokens[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintParams(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Contract) > 0 {
+		i -= len(m.Contract)
+		copy(dAtA[i:], m.Contract)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Contract)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *IdentityNetworkParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IdentityNetworkParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IdentityNetworkParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Contract) > 0 {
+		i -= len(m.Contract)
+		copy(dAtA[i:], m.Contract)
+		i = encodeVarintParams(dAtA, i, uint64(len(m.Contract)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *FeeToken) Marshal() (dAtA []byte, err error) {
@@ -345,102 +708,6 @@ func (m *FeeToken) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.Contract)
 		copy(dAtA[i:], m.Contract)
 		i = encodeVarintParams(dAtA, i, uint64(len(m.Contract)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *FeeParams) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *FeeParams) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *FeeParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.FeeTokens) > 0 {
-		for iNdEx := len(m.FeeTokens) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.FeeTokens[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintParams(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.FeeContract) > 0 {
-		i -= len(m.FeeContract)
-		copy(dAtA[i:], m.FeeContract)
-		i = encodeVarintParams(dAtA, i, uint64(len(m.FeeContract)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *NetworkParams) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *NetworkParams) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NetworkParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Type != 0 {
-		i = encodeVarintParams(dAtA, i, uint64(m.Type))
-		i--
-		dAtA[i] = 0x20
-	}
-	{
-		size, err := m.Fee.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintParams(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x1a
-	if len(m.Contract) > 0 {
-		i -= len(m.Contract)
-		copy(dAtA[i:], m.Contract)
-		i = encodeVarintParams(dAtA, i, uint64(len(m.Contract)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintParams(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -495,35 +762,21 @@ func encodeVarintParams(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *FeeToken) Size() (n int) {
+func (m *Network) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Contract)
+	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovParams(uint64(l))
 	}
-	l = len(m.Amount)
-	if l > 0 {
-		n += 1 + l + sovParams(uint64(l))
+	if m.Type != 0 {
+		n += 1 + sovParams(uint64(m.Type))
 	}
-	return n
-}
-
-func (m *FeeParams) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.FeeContract)
-	if l > 0 {
-		n += 1 + l + sovParams(uint64(l))
-	}
-	if len(m.FeeTokens) > 0 {
-		for _, e := range m.FeeTokens {
+	if len(m.Params) > 0 {
+		for _, e := range m.Params {
 			l = e.Size()
 			n += 1 + l + sovParams(uint64(l))
 		}
@@ -537,18 +790,74 @@ func (m *NetworkParams) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Name)
-	if l > 0 {
+	if m.Type != 0 {
+		n += 1 + sovParams(uint64(m.Type))
+	}
+	if m.Details != nil {
+		l = m.Details.Size()
 		n += 1 + l + sovParams(uint64(l))
 	}
+	return n
+}
+
+func (m *BridgeNetworkParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	l = len(m.Contract)
 	if l > 0 {
 		n += 1 + l + sovParams(uint64(l))
 	}
-	l = m.Fee.Size()
-	n += 1 + l + sovParams(uint64(l))
-	if m.Type != 0 {
-		n += 1 + sovParams(uint64(m.Type))
+	return n
+}
+
+func (m *FeeNetworkParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Contract)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	if len(m.FeeTokens) > 0 {
+		for _, e := range m.FeeTokens {
+			l = e.Size()
+			n += 1 + l + sovParams(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *IdentityNetworkParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Contract)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	return n
+}
+
+func (m *FeeToken) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Contract)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
+	}
+	l = len(m.Amount)
+	if l > 0 {
+		n += 1 + l + sovParams(uint64(l))
 	}
 	return n
 }
@@ -573,6 +882,526 @@ func sovParams(x uint64) (n int) {
 }
 func sozParams(x uint64) (n int) {
 	return sovParams(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Network) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Network: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Network: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			m.Type = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Type |= NetworkType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Params", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Params = append(m.Params, NetworkParams{})
+			if err := m.Params[len(m.Params)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NetworkParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NetworkParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NetworkParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			m.Type = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Type |= NetworkParamType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Details", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Details == nil {
+				m.Details = &types.Any{}
+			}
+			if err := m.Details.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *BridgeNetworkParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: BridgeNetworkParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: BridgeNetworkParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Contract = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FeeNetworkParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FeeNetworkParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FeeNetworkParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Contract = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FeeTokens", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FeeTokens = append(m.FeeTokens, &FeeToken{})
+			if err := m.FeeTokens[len(m.FeeTokens)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *IdentityNetworkParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowParams
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IdentityNetworkParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IdentityNetworkParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Contract = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipParams(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthParams
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *FeeToken) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -688,288 +1517,6 @@ func (m *FeeToken) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *FeeParams) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowParams
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: FeeParams: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FeeParams: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FeeContract", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthParams
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthParams
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FeeContract = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FeeTokens", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthParams
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthParams
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FeeTokens = append(m.FeeTokens, &FeeToken{})
-			if err := m.FeeTokens[len(m.FeeTokens)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipParams(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthParams
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *NetworkParams) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowParams
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: NetworkParams: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: NetworkParams: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthParams
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthParams
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Name = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Contract", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthParams
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthParams
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Contract = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthParams
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthParams
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.Fee.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
-			}
-			m.Type = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowParams
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Type |= NetworkType(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipParams(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthParams
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *Params) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1028,7 +1575,7 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Networks = append(m.Networks, &NetworkParams{})
+			m.Networks = append(m.Networks, &Network{})
 			if err := m.Networks[len(m.Networks)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
