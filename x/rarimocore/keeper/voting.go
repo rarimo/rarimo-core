@@ -18,6 +18,10 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "vote already exists")
 	}
 
+	if operation.Status != types.OpStatus_INITIALIZED {
+		return false, nil
+	}
+
 	k.SetVote(ctx, vote)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
@@ -25,10 +29,6 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 		sdk.NewAttribute(types.AttributeKeyVotingChoice, vote.Vote.String()),
 	))
-
-	if operation.Status != types.OpStatus_INITIALIZED {
-		return false, nil
-	}
 
 	return true, nil
 }

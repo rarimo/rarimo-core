@@ -20,6 +20,8 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "identity transfers is not supported due to lack of parameters")
 	}
 
+	// TODO validate state contract using saver one in identity params
+
 	details, err := cosmostypes.NewAnyWithValue(transfer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
