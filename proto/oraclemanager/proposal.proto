@@ -10,7 +10,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 message OracleUnfreezeProposal {
   string title = 1;
   string description = 2;
-  rarimo.rarimocore.oraclemanager.OracleIndex index = 3;
+  rarimo.rarimocore.oraclemanager.OracleIndex index = 3 [(gogoproto.nullable) = false];
 }
 
 message ChangeParamsProposal {

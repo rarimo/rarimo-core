@@ -35,7 +35,7 @@ type TokenmanagerKeeper interface {
 	SetOnChainItem(ctx sdk.Context, item tokenmanagertypes.OnChainItem)
 	GetItem(ctx sdk.Context, index string) (tokenmanagertypes.Item, bool)
 	SetItem(ctx sdk.Context, item tokenmanagertypes.Item)
-	GetNetwork(ctx sdk.Context, name string) (tokenmanagertypes.NetworkParams, bool)
+	GetNetwork(ctx sdk.Context, name string) (tokenmanagertypes.Network, bool)
 	GetSeed(ctx sdk.Context, seed string) (tokenmanagertypes.Seed, bool)
 	SetSeed(ctx sdk.Context, seed tokenmanagertypes.Seed)
 }

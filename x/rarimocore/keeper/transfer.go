@@ -16,6 +16,15 @@ import (
 )
 
 func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfer *types.Transfer, approved bool) error {
+	network, ok := k.tm.GetNetwork(ctx, transfer.From.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "source network not found")
+	}
+
+	if network.GetBridgeParams() == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "token transfers is not supported due to lack of parameters")
+	}
+
 	// Index is HASH(tx, event, chain)
 	index := hexutil.Encode(crypto.Keccak256([]byte(transfer.Tx), []byte(transfer.EventId), []byte(transfer.From.Chain)))
 
@@ -31,10 +40,6 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		Status:        types.OpStatus_INITIALIZED,
 		Creator:       creator,
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
-	}
-
-	if approved {
-		operation.Status = types.OpStatus_APPROVED
 	}
 
 	if op, ok := k.GetOperation(ctx, index); ok {
@@ -59,6 +64,12 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		sdk.NewAttribute(types.AttributeKeyOperationType, types.OpType_TRANSFER.String()),
 	))
 
+	if approved {
+		if err := k.ApproveOperation(ctx, operation); err != nil {
+			return sdkerrors.Wrap(err, "failed to auto-approve operation")
+		}
+	}
+
 	return nil
 }
 
@@ -80,7 +91,7 @@ func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferO
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection data not found")
 	}
 
-	if _, ok = k.tm.GetOnChainItem(ctx, msg.From); !ok && msg.Meta == nil {
+	if _, ok = k.tm.GetOnChainItem(ctx, &msg.From); !ok && msg.Meta == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "metadata should be provided")
 	}
 

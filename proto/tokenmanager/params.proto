@@ -1,8 +1,9 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
-
 
 enum NetworkType {
   EVM = 0;
@@ -11,15 +12,45 @@ enum NetworkType {
   Other = 3;
 }
 
-message NetworkParams {
+enum NetworkParamType {
+  BRIDGE = 0;
+  FEE = 1;
+  IDENTITY = 2;
+}
+
+message Network {
   // network name
   string name = 1;
+  NetworkType type = 2;
+  repeated NetworkParams params = 3 [(gogoproto.nullable) = false];
+}
+
+message NetworkParams {
+  NetworkParamType type = 1;
+  // Corresponding to type details
+  google.protobuf.Any details = 2;
+}
+
+message BridgeNetworkParams {
+  string contract = 1;
+}
+
+message FeeNetworkParams {
+  string contract = 1;
+  repeated FeeToken feeTokens = 2;
+}
+
+message IdentityNetworkParams {
+  string contract = 1;
+}
+
+message FeeToken {
   // contract address hex
-  string contract = 2;
-  NetworkType type = 4;
+  string contract = 1;
+  string amount = 2;
 }
 
 // Params defines the parameters for the module.
 message Params {
-  repeated NetworkParams networks = 1;
+  repeated Network networks = 1;
 }

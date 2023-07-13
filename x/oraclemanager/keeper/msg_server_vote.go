@@ -5,7 +5,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
@@ -50,21 +49,29 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 func (k Keeper) collectVotes(ctx sdk.Context, index string) error {
 	operation, _ := k.rarimo.GetOperation(ctx, index)
 	switch operation.OperationType {
-	case rarimotypes.OpType_TRANSFER:
-		return k.collectTransferVotes(ctx, operation)
+	case rarimotypes.OpType_TRANSFER, rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
+		return k.collectOperationVotes(ctx, operation)
 	default:
 		// Nothing to do
 	}
 	return nil
 }
 
-func (k Keeper) collectTransferVotes(ctx sdk.Context, operation rarimotypes.Operation) error {
-	transfer, _ := pkg.GetTransfer(operation) // error handled before
+func (k Keeper) collectOperationVotes(ctx sdk.Context, operation rarimotypes.Operation) error {
+	chain, err := getSourceChain(operation)
+	if err != nil {
+		return err
+	}
+
 	yesResult := sdk.ZeroInt()
 	noResult := sdk.ZeroInt()
 	totalPowerForChain := sdk.ZeroInt()
 
-	for _, oracle := range k.GetOracleForChain(ctx, transfer.From.Chain) {
+	for _, oracle := range k.GetOracleForChain(ctx, chain) {
+		if oracle.Status != types.OracleStatus_Active {
+			continue
+		}
+
 		oracleVotingPower, _ := sdk.NewIntFromString(oracle.Stake)
 		totalPowerForChain = totalPowerForChain.Add(oracleVotingPower)
 

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	TypeMsgCreateDeposit = "create_transfer_operation"
+	TypeMsgCreateTransfer = "create_transfer_operation"
 )
 
 var _ sdk.Msg = &MsgCreateTransferOp{}
@@ -21,8 +21,8 @@ func NewMsgCreateTransferOp(
 	amount string,
 	bundleData string,
 	bundleSalt string,
-	from *tokentypes.OnChainItemIndex,
-	to *tokentypes.OnChainItemIndex,
+	from tokentypes.OnChainItemIndex,
+	to tokentypes.OnChainItemIndex,
 	meta *tokentypes.ItemMetadata,
 ) *MsgCreateTransferOp {
 	return &MsgCreateTransferOp{
@@ -44,7 +44,7 @@ func (msg *MsgCreateTransferOp) Route() string {
 }
 
 func (msg *MsgCreateTransferOp) Type() string {
-	return TypeMsgCreateDeposit
+	return TypeMsgCreateTransfer
 }
 
 func (msg *MsgCreateTransferOp) GetSigners() []sdk.AccAddress {
@@ -81,11 +81,11 @@ func (msg *MsgCreateTransferOp) ValidateBody() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid bundle salt (%s)", err)
 	}
 
-	if msg.From == nil || msg.From.Chain == "" {
+	if msg.From.Chain == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid from")
 	}
 
-	if msg.To == nil || msg.To.Chain == "" {
+	if msg.To.Chain == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid to")
 	}
 

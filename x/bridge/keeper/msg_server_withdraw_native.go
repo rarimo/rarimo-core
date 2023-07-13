@@ -2,10 +2,10 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
@@ -38,7 +38,7 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 		return nil, sdkerrors.Wrapf(err, "failed to get transfer (%s)", msg.Origin)
 	}
 
-	if ctx.ChainID() != transfer.To.Chain {
+	if types.NetworkName != transfer.To.Chain {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "target chain id does not match to the current chain (%s)", msg.Origin)
 	}
 
@@ -49,14 +49,9 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 
 	params := k.GetParams(ctx)
 
-	receiver, err := hexutil.Decode(transfer.Receiver)
+	receiverAddress, err := sdk.AccAddressFromHexUnsafe(getAddressWithoutLeading0x(transfer.Receiver))
 	if err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to decode receiver (%s)", transfer.Receiver)
-	}
-
-	receiverAddress, err := sdk.AccAddressFromBech32(string(receiver))
-	if err != nil {
-		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", string(receiver))
+		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", transfer.Receiver)
 	}
 
 	err = k.bankKeeper.MintTokens(ctx, receiverAddress, sdk.Coins{{
@@ -70,4 +65,8 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 	k.SetHash(ctx, types.Hash{Index: msg.Origin})
 
 	return &types.MsgWithdrawNativeResponse{}, nil
+}
+
+func getAddressWithoutLeading0x(addr string) string {
+	return strings.ReplaceAll(addr, "0x", "")
 }

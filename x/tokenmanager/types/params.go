@@ -5,7 +5,7 @@ import (
 )
 
 // NewParams creates a new Params instance
-func NewParams(networks []*NetworkParams) Params {
+func NewParams(networks []*Network) Params {
 	return Params{
 		networks,
 	}
@@ -22,7 +22,7 @@ func (p Params) Validate() error {
 }
 
 func validateNetworkParams(i interface{}) error {
-	v, ok := i.([]*NetworkParams)
+	v, ok := i.([]*Network)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", i)
 	}
@@ -36,13 +36,13 @@ func validateNetworkParams(i interface{}) error {
 	return nil
 }
 
-func validateNetwork(n *NetworkParams) error {
-	if len(n.Name) == 0 {
-		return fmt.Errorf("invalida network name")
+func validateNetwork(n *Network) error {
+	if n == nil {
+		return fmt.Errorf("invalid params: empty")
 	}
 
-	if len(n.Contract) == 0 {
-		return fmt.Errorf("invalida network contract address")
+	if len(n.Name) == 0 {
+		return fmt.Errorf("invalid network name")
 	}
 
 	return nil

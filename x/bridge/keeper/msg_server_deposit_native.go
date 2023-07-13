@@ -17,8 +17,11 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 
 	creatorAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
-	err := k.bankKeeper.BurnTokens(ctx, creatorAddr, sdk.Coins{*msg.Amount})
-	if err != nil {
+	if err := k.chargeCommission(ctx, creatorAddr); err != nil {
+		return nil, sdkerrors.Wrap(err, "failed to charge commission")
+	}
+
+	if err := k.bankKeeper.BurnTokens(ctx, creatorAddr, sdk.Coins{*msg.Amount}); err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to burn tokens for address (%s)", creatorAddr.String())
 	}
 
@@ -29,7 +32,7 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Build().
 		GetOrigin()
 
-	err = k.rarimocoreKeeper.CreateTransferOperation(ctx, msg.Creator, &rarimocoretypes.Transfer{
+	err := k.rarimocoreKeeper.CreateTransferOperation(ctx, msg.Creator, &rarimocoretypes.Transfer{
 		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Seed,
 		EventId:    "",
@@ -38,14 +41,32 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Amount:     msg.Amount.Amount.String(),
 		BundleData: msg.BundleData,
 		BundleSalt: msg.BundleSalt,
-		From: &tokenmanagertypes.OnChainItemIndex{
-			Chain: ctx.ChainID(),
+		From: tokenmanagertypes.OnChainItemIndex{
+			Chain: types.NetworkName,
 		},
 		To: msg.To,
 	}, true)
+
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to create transfer operation for address (%s)", creatorAddr.String())
 	}
 
 	return &types.MsgDepositNativeResponse{}, nil
+}
+
+func (k Keeper) chargeCommission(ctx sdk.Context, address sdk.AccAddress) error {
+	network, ok := k.tokenmanagerKeepr.GetNetwork(ctx, types.NetworkName)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "native network not found")
+	}
+
+	feeparams := network.GetFeeParams()
+	if feeparams == nil || len(feeparams.FeeTokens) != 1 {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "native fee token not found")
+	}
+
+	// picking first token, should be native
+	feeToken := feeparams.FeeTokens[0]
+	fee, _ := sdk.NewIntFromString(feeToken.Amount)
+	return k.bankKeeper.SendCoinsFromAccountToModule(ctx, address, types.ModuleName, sdk.NewCoins(sdk.NewCoin(k.GetParams(ctx).WithdrawDenom, fee)))
 }

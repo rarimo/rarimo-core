@@ -4,6 +4,7 @@ package rarimo.rarimocore.oraclemanager;
 import "tokenmanager/item.proto";
 import "rarimocore/vote.proto";
 import "oraclemanager/oracle.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
 
@@ -12,6 +13,7 @@ service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
+  rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -33,7 +35,6 @@ message MsgUnstake {
 message MsgUnstakeResponse {
 }
 
-
 message MsgCreateTransferOp {
   string creator = 1;
   // Information to identify transfer
@@ -46,12 +47,39 @@ message MsgCreateTransferOp {
   string bundleData = 7;// hex-encoded
   string bundleSalt = 8;// hex-encoded
   // Information about current and target chains
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9;
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex from = 9 [(gogoproto.nullable) = false];
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 10 [(gogoproto.nullable) = false];
   rarimo.rarimocore.tokenmanager.ItemMetadata meta = 11; // Optional (if item currently does not exists)
 }
 
 message MsgCreateTransferOpResponse {}
+
+message MsgCreateIdentityDefaultTransferOp {
+  string creator = 1;
+  // Hex 0x
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x
+  string GISTHash = 4;
+  // Hex 0x
+  string id = 5;
+  // Hex 0x
+  string stateHash = 6;
+  // Dec
+  string stateCreatedAtTimestamp = 7;
+  string stateCreatedAtBlock = 8;
+  // Hex 0x
+  string stateReplacedBy = 11;
+  string GISTReplacedBy = 12;
+  // Dec
+  string GISTCreatedAtTimestamp = 13;
+  string GISTCreatedAtBlock = 14;
+  // HEx 0x
+  string replacedStateHash = 17;
+  string replacedGISTtHash = 18;
+}
+
+message MsgCreateIdentityDefaultTransferOpResponse {}
 
 message MsgVote{
   rarimo.rarimocore.oraclemanager.OracleIndex index = 1;

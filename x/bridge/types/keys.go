@@ -18,6 +18,8 @@ const (
 
 	// ParamsKey defines the store key for module params entry
 	ParamsKey = "params"
+
+	NetworkName = "Rarimo"
 )
 
 func KeyPrefix(p string) []byte {

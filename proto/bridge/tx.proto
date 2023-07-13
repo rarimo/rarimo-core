@@ -3,6 +3,7 @@ package rarimo.rarimocore.bridge;
 
 import "tokenmanager/item.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
@@ -11,6 +12,7 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
 service Msg {
   rpc DepositNative(MsgDepositNative) returns (MsgDepositNativeResponse);
   rpc WithdrawNative(MsgWithdrawNative) returns (MsgWithdrawNativeResponse);
+  rpc WithdrawFee(MsgWithdrawFee) returns (MsgWithdrawFeeResponse);
     // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -24,7 +26,7 @@ message MsgDepositNative {
   string bundleData = 5;// hex-encoded
   string bundleSalt = 6;// hex-encoded
   // Information about target chain
-  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7;
+  rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7 [(gogoproto.nullable) = false];
 }
 
 message MsgDepositNativeResponse {}
@@ -37,5 +39,13 @@ message MsgWithdrawNative {
 }
 
 message MsgWithdrawNativeResponse {}
+
+message MsgWithdrawFee {
+  string creator = 1;
+  // Evidence information
+  string origin = 2;
+}
+
+message MsgWithdrawFeeResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

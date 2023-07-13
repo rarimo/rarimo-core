@@ -18,6 +18,10 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		return false, sdkerrors.Wrap(sdkerrors.ErrNotFound, "vote already exists")
 	}
 
+	if operation.Status != types.OpStatus_INITIALIZED {
+		return false, nil
+	}
+
 	k.SetVote(ctx, vote)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeVoted,
@@ -25,10 +29,6 @@ func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 		sdk.NewAttribute(types.AttributeKeyVotingChoice, vote.Vote.String()),
 	))
-
-	if operation.Status != types.OpStatus_INITIALIZED {
-		return false, nil
-	}
 
 	return true, nil
 }
@@ -52,12 +52,12 @@ func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 		if err := k.ApproveTransferOperation(ctx, transfer); err != nil {
 			return err
 		}
-
-		op.Status = types.OpStatus_APPROVED
-		k.SetOperation(ctx, op)
 	default:
 		// Nothing to do
 	}
+
+	op.Status = types.OpStatus_APPROVED
+	k.SetOperation(ctx, op)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationApproved,
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
@@ -73,14 +73,14 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "collection data does not exists")
 	}
 
-	from, ok := k.tm.GetOnChainItem(ctx, transfer.From)
+	from, ok := k.tm.GetOnChainItem(ctx, &transfer.From)
 	if !ok {
 		// Item also does not exist
 		item := tokentypes.Item{
 			Index:      transfer.Origin,
 			Collection: data.Collection,
-			Meta:       transfer.Meta,
-			OnChain:    []*tokentypes.OnChainItemIndex{transfer.From},
+			Meta:       *transfer.Meta,
+			OnChain:    []*tokentypes.OnChainItemIndex{&transfer.From},
 		}
 
 		k.tm.SetItem(ctx, item)
@@ -89,7 +89,7 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		))
 
 		from = tokentypes.OnChainItem{
-			Index: transfer.From,
+			Index: &transfer.From,
 			Item:  item.Index,
 		}
 
@@ -116,18 +116,18 @@ func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transf
 		}
 	}
 
-	to, ok := k.tm.GetOnChainItem(ctx, transfer.To)
+	to, ok := k.tm.GetOnChainItem(ctx, &transfer.To)
 	if !ok {
 		item, ok := k.tm.GetItem(ctx, from.Item)
 		if !ok {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "item does not exists but 'from' on chain item found")
 		}
 
-		item.OnChain = append(item.OnChain, transfer.To)
+		item.OnChain = append(item.OnChain, &transfer.To)
 		k.tm.SetItem(ctx, item)
 
 		to = tokentypes.OnChainItem{
-			Index: transfer.To,
+			Index: &transfer.To,
 			Item:  item.Index,
 		}
 

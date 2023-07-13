@@ -1,0 +1,23 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "tokenmanager/params.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+enum FeeTokenManagementType {
+  ADD_FEE_TOKEN = 0;
+  REMOVE_FEE_TOKEN = 1;
+  UPDATE_FEE_TOKEN = 2;
+  WITHDRAW_FEE_TOKEN = 3;
+}
+
+message FeeTokenManagement {
+  FeeTokenManagementType opType = 1;
+  rarimo.rarimocore.tokenmanager.FeeToken token = 2 [(gogoproto.nullable) = false];
+  string chain = 3;
+  string receiver = 4;
+  string  nonce = 5;
+}
+

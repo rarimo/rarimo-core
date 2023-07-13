@@ -57,17 +57,17 @@ func (t TransferData) getContent() operation.ContentData {
 
 func (t TransferData) getNearContent() operation.ContentData {
 	return bytes.Join([][]byte{
-		intTo32Bytes(len(t.TargetAddress)),
+		operation.IntTo32Bytes(len(t.TargetAddress)),
 		t.TargetAddress,
-		intTo32Bytes(len([]byte(t.TargetName))),
+		operation.IntTo32Bytes(len([]byte(t.TargetName))),
 		[]byte(t.TargetName),
-		intTo32Bytes(len(t.TargetId)),
+		operation.IntTo32Bytes(len(t.TargetId)),
 		t.TargetId,
-		intTo32Bytes(len(t.Amount)),
+		operation.IntTo32Bytes(len(t.Amount)),
 		t.Amount,
-		intTo32Bytes(len([]byte(t.ImageURI))),
+		operation.IntTo32Bytes(len([]byte(t.ImageURI))),
 		[]byte(t.ImageURI),
-		intTo32Bytes(len(t.ImageHash)),
+		operation.IntTo32Bytes(len(t.ImageHash)),
 		t.ImageHash,
 	}, []byte{})
 }
@@ -117,12 +117,12 @@ func (b *TransferDataBuilder) SetAddress(addr string) *TransferDataBuilder {
 }
 
 func (b *TransferDataBuilder) SetId(id string) *TransferDataBuilder {
-	b.id = to32Bytes(crypto.TryHexDecode(id))
+	b.id = operation.To32Bytes(crypto.TryHexDecode(id))
 	return b
 }
 
 func (b *TransferDataBuilder) SetAmount(amount string) *TransferDataBuilder {
-	b.amount = to32Bytes(amountBytes(amount))
+	b.amount = operation.To32Bytes(operation.AmountBytes(amount))
 	return b
 }
 

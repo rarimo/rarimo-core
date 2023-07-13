@@ -65,7 +65,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	for _, op := range operations {
-		err := k.ApplyOperation(ctx, op)
+		err := k.ApplyOperation(ctx, op, msg.Root)
 		if err != nil {
 			return nil, err
 		}
@@ -85,13 +85,16 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
-func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
+func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation, confirmationId string) error {
+	canBeAppliedByInactivePartiesSet := map[types.OpType]struct{}{
+		types.OpType_CHANGE_PARTIES: {},
+	}
+
+	if _, canBeApplied := canBeAppliedByInactivePartiesSet[op.OperationType]; k.GetParams(ctx).IsUpdateRequired && !canBeApplied {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply operation: parties update needed")
+	}
+
 	switch op.OperationType {
-	case types.OpType_TRANSFER:
-		transfer, _ := pkg.GetTransfer(op)
-		if err := k.ApplyTransfer(ctx, transfer); err != nil {
-			return err
-		}
 	case types.OpType_CHANGE_PARTIES:
 		change, _ := pkg.GetChangeParties(op)
 		if err := k.ApplyChangeParties(ctx, change); err != nil {
@@ -110,15 +113,9 @@ func (k msgServer) ApplyOperation(ctx sdk.Context, op types.Operation) error {
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeOperationSigned,
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
+		sdk.NewAttribute(types.AttributeKeyConfirmationId, confirmationId),
 	))
 
-	return nil
-}
-
-func (k msgServer) ApplyTransfer(ctx sdk.Context, _ *types.Transfer) error {
-	if k.GetParams(ctx).IsUpdateRequired {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not apply transfer: parties update needed")
-	}
 	return nil
 }
 
@@ -163,15 +160,31 @@ func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Conte
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
-
 		return k.getTransferOperationContent(ctx, transfer)
 	case types.OpType_CHANGE_PARTIES:
 		change, err := pkg.GetChangeParties(op)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
-
 		return pkg.GetChangePartiesContent(change)
+	case types.OpType_FEE_TOKEN_MANAGEMENT:
+		manage, err := pkg.GetFeeTokenManagement(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getFeeTokenManagementContent(ctx, manage)
+	case types.OpType_CONTRACT_UPGRADE:
+		upgrade, err := pkg.GetContractUpgrade(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getContractUpgradeContent(ctx, upgrade)
+	case types.OpType_IDENTITY_DEFAULT_TRANSFER:
+		transfer, err := pkg.GetIdentityDefaultTransfer(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getIdentityDefaultTransferContent(ctx, transfer)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
@@ -188,7 +201,7 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "collection not found")
 	}
 
-	onChainItem, ok := k.tm.GetOnChainItem(ctx, transfer.To)
+	onChainItem, ok := k.tm.GetOnChainItem(ctx, &transfer.To)
 	if !ok {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "on chain item not found")
 	}
@@ -198,10 +211,42 @@ func (k msgServer) getTransferOperationContent(ctx sdk.Context, transfer *types.
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "item not found")
 	}
 
-	networkParams, ok := k.tm.GetNetwork(ctx, transfer.To.Chain)
+	network, ok := k.tm.GetNetwork(ctx, transfer.To.Chain)
 	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "target chain network params not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	return pkg.GetTransferContent(collection, data, item, networkParams, transfer)
+	bridgeparams := network.GetBridgeParams()
+	if bridgeparams == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network bridge params not found")
+	}
+
+	return pkg.GetTransferContent(collection, data, item, bridgeparams, transfer)
+}
+
+func (k msgServer) getFeeTokenManagementContent(ctx sdk.Context, manage *types.FeeTokenManagement) (*operation.FeeTokenManagementContent, error) {
+	network, ok := k.tm.GetNetwork(ctx, manage.Chain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
+	}
+
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network fee params not found")
+	}
+
+	return pkg.GetFeeTokenManagementContent(feeparams, manage)
+}
+
+func (k msgServer) getContractUpgradeContent(ctx sdk.Context, upgrade *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {
+	networkParams, ok := k.tm.GetNetwork(ctx, upgrade.Chain)
+	if !ok {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
+	}
+
+	return pkg.GetContractUpgradeContent(networkParams, upgrade)
+}
+
+func (k msgServer) getIdentityDefaultTransferContent(_ sdk.Context, transfer *types.IdentityDefaultTransfer) (*operation.IdentityDefaultTransferContent, error) {
+	return pkg.GetIdentityDefaultTransferContent(transfer)
 }

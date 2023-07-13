@@ -1,11 +1,19 @@
 package types
 
 import (
-	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	gov "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
 const (
-	ProposalTypeSetNetwork           = "tokenmanager/SetNetwork"
+	ProposalTypeUpgradeContract       = "tokenmanager/UpgradeContract"
+	ProposalTypeAddNetwork            = "tokenmanager/AddNetwork"
+	ProposalTypeRemoveNetwork         = "tokenmanager/RemoveNetwork"
+	ProposalTypeUpdateContractAddress = "tokenmanager/UpdateContractAddressNetwork"
+	ProposalTypeAddFeeToken           = "tokenmanager/AddFeeToken"
+	ProposalTypeRemoveFeeToken        = "tokenmanager/RemoveFeeToken"
+	ProposalTypeUpdateFeeToken        = "tokenmanager/UpdateFeeToken"
+	ProposalTypeWithdrawFee           = "tokenmanager/WithdrawFee"
+
 	ProposalTypeUpdateTokenItem      = "tokenmanager/UpdateTokenItem"
 	ProposalTypeRemoveTokenItem      = "tokenmanager/RemoveTokenItem"
 	ProposalTypeCreateCollection     = "tokenmanager/CreateCollection"
@@ -16,47 +24,156 @@ const (
 )
 
 func init() {
-	govv1beta1.RegisterProposalType(ProposalTypeSetNetwork)
-	govv1beta1.RegisterProposalType(ProposalTypeUpdateTokenItem)
-	govv1beta1.RegisterProposalType(ProposalTypeRemoveTokenItem)
-	govv1beta1.RegisterProposalType(ProposalTypeCreateCollection)
-	govv1beta1.RegisterProposalType(ProposalTypeUpdateCollectionData)
-	govv1beta1.RegisterProposalType(ProposalTypeAddCollectionData)
-	govv1beta1.RegisterProposalType(ProposalTypeRemoveCollectionData)
-	govv1beta1.RegisterProposalType(ProposalTypeRemoveCollection)
+	gov.RegisterProposalType(ProposalTypeUpgradeContract)
+	gov.RegisterProposalType(ProposalTypeAddNetwork)
+	gov.RegisterProposalType(ProposalTypeRemoveNetwork)
+	gov.RegisterProposalType(ProposalTypeUpdateContractAddress)
 
-	govv1beta1.ModuleCdc.RegisterConcrete(&SetNetworkProposal{}, "tokenmanager/SetNetworkProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
-	govv1beta1.ModuleCdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
+	gov.RegisterProposalType(ProposalTypeAddFeeToken)
+	gov.RegisterProposalType(ProposalTypeRemoveFeeToken)
+	gov.RegisterProposalType(ProposalTypeUpdateFeeToken)
+	gov.RegisterProposalType(ProposalTypeWithdrawFee)
+
+	gov.RegisterProposalType(ProposalTypeUpdateTokenItem)
+	gov.RegisterProposalType(ProposalTypeRemoveTokenItem)
+	gov.RegisterProposalType(ProposalTypeCreateCollection)
+	gov.RegisterProposalType(ProposalTypeUpdateCollectionData)
+	gov.RegisterProposalType(ProposalTypeAddCollectionData)
+	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
+	gov.RegisterProposalType(ProposalTypeRemoveCollection)
+
+	gov.ModuleCdc.RegisterConcrete(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal", nil)
+
+	gov.ModuleCdc.RegisterConcrete(&AddFeeTokenProposal{}, "tokenmanager/AddFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveFeeTokenProposal{}, "tokenmanager/RemoveFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&UpdateFeeTokenProposal{}, "tokenmanager/UpdateFeeTokenProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&WithdrawFeeProposal{}, "tokenmanager/WithdrawFeeProposal", nil)
+
+	gov.ModuleCdc.RegisterConcrete(&UpdateTokenItemProposal{}, "tokenmanager/UpdateTokenItemProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveTokenItemProposal{}, "tokenmanager/RemoveTokenItemProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&CreateCollectionProposal{}, "tokenmanager/CreateCollectionProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&UpdateCollectionDataProposal{}, "tokenmanager/UpdateCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
+	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &SetNetworkProposal{}
+var _ gov.Content = &UpgradeContractProposal{}
 
-func (m *SetNetworkProposal) ProposalRoute() string { return RouterKey }
-func (m *SetNetworkProposal) ProposalType() string  { return ProposalTypeSetNetwork }
+func (m *UpgradeContractProposal) ProposalRoute() string { return RouterKey }
+func (m *UpgradeContractProposal) ProposalType() string  { return ProposalTypeUpgradeContract }
 
-func (m *SetNetworkProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+func (m *UpgradeContractProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
-	return validateNetwork(m.NetworkParams)
+	return nil
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &UpdateTokenItemProposal{}
+var _ gov.Content = &AddNetworkProposal{}
+
+func (m *AddNetworkProposal) ProposalRoute() string { return RouterKey }
+func (m *AddNetworkProposal) ProposalType() string  { return ProposalTypeAddNetwork }
+
+func (m *AddNetworkProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return validateNetwork(&m.Network)
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &RemoveNetworkProposal{}
+
+func (m *RemoveNetworkProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveNetworkProposal) ProposalType() string  { return ProposalTypeRemoveNetwork }
+
+func (m *RemoveNetworkProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &AddFeeTokenProposal{}
+
+func (m *AddFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *AddFeeTokenProposal) ProposalType() string {
+	return ProposalTypeAddFeeToken
+}
+
+func (m *AddFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &RemoveFeeTokenProposal{}
+
+func (m *RemoveFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *RemoveFeeTokenProposal) ProposalType() string {
+	return ProposalTypeRemoveFeeToken
+}
+
+func (m *RemoveFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpdateFeeTokenProposal{}
+
+func (m *UpdateFeeTokenProposal) ProposalRoute() string { return RouterKey }
+func (m *UpdateFeeTokenProposal) ProposalType() string {
+	return ProposalTypeUpdateFeeToken
+}
+
+func (m *UpdateFeeTokenProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &WithdrawFeeProposal{}
+
+func (m *WithdrawFeeProposal) ProposalRoute() string { return RouterKey }
+func (m *WithdrawFeeProposal) ProposalType() string {
+	return ProposalTypeWithdrawFee
+}
+
+func (m *WithdrawFeeProposal) ValidateBasic() error {
+	if err := gov.ValidateAbstract(m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Implements Proposal Interface
+var _ gov.Content = &UpdateTokenItemProposal{}
 
 func (m *UpdateTokenItemProposal) ProposalRoute() string { return RouterKey }
 func (m *UpdateTokenItemProposal) ProposalType() string  { return ProposalTypeUpdateTokenItem }
 
 func (m *UpdateTokenItemProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -70,13 +187,13 @@ func (m *UpdateTokenItemProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &RemoveTokenItemProposal{}
+var _ gov.Content = &RemoveTokenItemProposal{}
 
 func (m *RemoveTokenItemProposal) ProposalRoute() string { return RouterKey }
 func (m *RemoveTokenItemProposal) ProposalType() string  { return ProposalTypeRemoveTokenItem }
 
 func (m *RemoveTokenItemProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -84,13 +201,13 @@ func (m *RemoveTokenItemProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &CreateCollectionProposal{}
+var _ gov.Content = &CreateCollectionProposal{}
 
 func (m *CreateCollectionProposal) ProposalRoute() string { return RouterKey }
 func (m *CreateCollectionProposal) ProposalType() string  { return ProposalTypeCreateCollection }
 
 func (m *CreateCollectionProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -114,13 +231,13 @@ func (m *CreateCollectionProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &UpdateCollectionDataProposal{}
+var _ gov.Content = &UpdateCollectionDataProposal{}
 
 func (m *UpdateCollectionDataProposal) ProposalRoute() string { return RouterKey }
 func (m *UpdateCollectionDataProposal) ProposalType() string  { return ProposalTypeUpdateCollectionData }
 
 func (m *UpdateCollectionDataProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -134,13 +251,13 @@ func (m *UpdateCollectionDataProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &AddCollectionDataProposal{}
+var _ gov.Content = &AddCollectionDataProposal{}
 
 func (m *AddCollectionDataProposal) ProposalRoute() string { return RouterKey }
 func (m *AddCollectionDataProposal) ProposalType() string  { return ProposalTypeAddCollectionData }
 
 func (m *AddCollectionDataProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -154,13 +271,13 @@ func (m *AddCollectionDataProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &RemoveCollectionDataProposal{}
+var _ gov.Content = &RemoveCollectionDataProposal{}
 
 func (m *RemoveCollectionDataProposal) ProposalRoute() string { return RouterKey }
 func (m *RemoveCollectionDataProposal) ProposalType() string  { return ProposalTypeRemoveCollectionData }
 
 func (m *RemoveCollectionDataProposal) ValidateBasic() error {
-	if err := govv1beta1.ValidateAbstract(m); err != nil {
+	if err := gov.ValidateAbstract(m); err != nil {
 		return err
 	}
 
@@ -174,11 +291,11 @@ func (m *RemoveCollectionDataProposal) ValidateBasic() error {
 }
 
 // Implements Proposal Interface
-var _ govv1beta1.Content = &RemoveCollectionProposal{}
+var _ gov.Content = &RemoveCollectionProposal{}
 
 func (m *RemoveCollectionProposal) ProposalRoute() string { return RouterKey }
 func (m *RemoveCollectionProposal) ProposalType() string  { return ProposalTypeRemoveCollection }
 
 func (m *RemoveCollectionProposal) ValidateBasic() error {
-	return govv1beta1.ValidateAbstract(m)
+	return gov.ValidateAbstract(m)
 }

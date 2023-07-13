@@ -1,6 +1,8 @@
 syntax = "proto3";
 package rarimo.rarimocore.tokenmanager;
 
+import "gogoproto/gogo.proto";
+
 option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 enum Type {
@@ -32,7 +34,7 @@ message Seed {
 message Item {
   string index = 1;
   string collection = 2;
-  ItemMetadata meta = 3;
+  ItemMetadata meta = 3 [(gogoproto.nullable) = false];
   repeated OnChainItemIndex onChain = 4;
 }
 

@@ -26,6 +26,9 @@ type BankKeeper interface {
 type RarimoKeeper interface {
 	IterateVotes(ctx sdk.Context, operation string, f func(vote rarimotypes.Vote) (stop bool))
 
+	GetIdentityDefaultTransfer(_ sdk.Context, msg *MsgCreateIdentityDefaultTransferOp) (*rarimotypes.IdentityDefaultTransfer, error)
+	CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator string, transfer *rarimotypes.IdentityDefaultTransfer) error
+
 	GetTransfer(ctx sdk.Context, msg *MsgCreateTransferOp) (*rarimotypes.Transfer, error)
 	CreateTransferOperation(ctx sdk.Context, creator string, transfer *rarimotypes.Transfer, approved bool) error
 
