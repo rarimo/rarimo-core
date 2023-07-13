@@ -68,18 +68,15 @@ message MsgCreateIdentityDefaultTransferOp {
   // Dec
   string stateCreatedAtTimestamp = 7;
   string stateCreatedAtBlock = 8;
-  string stateReplacedAtTimestamp = 9;
-  string stateReplacedAtBlock = 10;
   // Hex 0x
   string stateReplacedBy = 11;
   string GISTReplacedBy = 12;
   // Dec
   string GISTCreatedAtTimestamp = 13;
   string GISTCreatedAtBlock = 14;
-  string GISTReplacedAtTimestamp = 15;
-  string GISTReplacedAtBlock = 16;
   // HEx 0x
   string replacedStateHash = 17;
+  string replacedGISTtHash = 18;
 }
 
 message MsgCreateIdentityDefaultTransferOpResponse {}

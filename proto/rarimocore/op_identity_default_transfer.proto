@@ -19,17 +19,14 @@ message IdentityDefaultTransfer {
   // Dec
   string stateCreatedAtTimestamp = 6;
   string stateCreatedAtBlock = 7;
-  string stateReplacedAtTimestamp = 8;
-  string stateReplacedAtBlock = 9;
   // Hex 0x
   string stateReplacedBy = 10;
   string GISTReplacedBy = 11;
   // Dec
   string GISTCreatedAtTimestamp = 12;
   string GISTCreatedAtBlock = 13;
-  string GISTReplacedAtTimestamp = 14;
-  string GISTReplacedAtBlock = 15;
-  // HEx 0x
+  // HEX 0x
   string replacedStateHash = 16;
+  string replacedGISTHash = 17;
 }
 

@@ -76,14 +76,6 @@ func (msg *MsgCreateIdentityDefaultTransferOp) ValidateBody() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
 	}
 
-	if _, ok := new(big.Int).SetString(msg.StateReplacedAtTimestamp, 10); !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
-	}
-
-	if _, ok := new(big.Int).SetString(msg.StateReplacedAtBlock, 10); !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
-	}
-
 	if _, ok := new(big.Int).SetString(msg.GISTCreatedAtTimestamp, 10); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
 	}
@@ -92,16 +84,12 @@ func (msg *MsgCreateIdentityDefaultTransferOp) ValidateBody() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
 	}
 
-	if _, ok := new(big.Int).SetString(msg.GISTReplacedAtTimestamp, 10); !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
-	}
-
-	if _, ok := new(big.Int).SetString(msg.GISTReplacedAtBlock, 10); !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
-	}
-
 	if _, err := hexutil.Decode(msg.ReplacedStateHash); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid  replaced state hash (%s)", err)
+	}
+
+	if _, err := hexutil.Decode(msg.ReplacedGISTtHash); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid  replaced gist hash (%s)", err)
 	}
 
 	return nil

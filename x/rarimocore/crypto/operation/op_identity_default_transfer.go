@@ -9,21 +9,18 @@ import (
 
 // IdentityDefaultTransferContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type IdentityDefaultTransferContent struct {
-	Contract                 []byte
-	GISTHash                 []byte
-	Id                       []byte
-	StateHash                []byte
-	StateCreatedAtTimestamp  []byte
-	StateCreatedAtBlock      []byte
-	StateReplacedAtTimestamp []byte
-	StateReplacedAtBlock     []byte
-	StateReplacedBy          []byte
-	GISTReplacedBy           []byte
-	GISTCreatedAtTimestamp   []byte
-	GISTCreatedAtBlock       []byte
-	GISTReplacedAtTimestamp  []byte
-	GISTReplacedAtBlock      []byte
-	ReplacedStateHash        []byte
+	Contract                []byte
+	GISTHash                []byte
+	Id                      []byte
+	StateHash               []byte
+	StateCreatedAtTimestamp []byte
+	StateCreatedAtBlock     []byte
+	StateReplacedBy         []byte
+	GISTReplacedBy          []byte
+	GISTCreatedAtTimestamp  []byte
+	GISTCreatedAtBlock      []byte
+	ReplacedStateHash       []byte
+	ReplacedGISTHash        []byte
 }
 
 var _ merkle.Content = IdentityDefaultTransferContent{}
@@ -35,16 +32,13 @@ func (c IdentityDefaultTransferContent) CalculateHash() []byte {
 		c.StateHash,
 		c.StateReplacedBy,
 		c.StateCreatedAtTimestamp,
-		c.StateReplacedAtTimestamp,
 		c.StateCreatedAtBlock,
-		c.StateReplacedAtBlock,
 		c.GISTHash,
 		c.GISTReplacedBy,
 		c.GISTCreatedAtTimestamp,
-		c.GISTReplacedAtTimestamp,
 		c.GISTCreatedAtBlock,
-		c.GISTReplacedAtBlock,
 		c.ReplacedStateHash,
+		c.ReplacedGISTHash,
 	)
 }
 

@@ -18,20 +18,17 @@ func GetIdentityDefaultTransfer(operation types.Operation) (*types.IdentityDefau
 
 func GetIdentityDefaultTransferContent(op *types.IdentityDefaultTransfer) (*operation.IdentityDefaultTransferContent, error) {
 	return &operation.IdentityDefaultTransferContent{
-		Contract:                 hexutil.MustDecode(op.Contract),
-		GISTHash:                 operation.To32Bytes(hexutil.MustDecode(op.GISTHash)),
-		Id:                       operation.To32Bytes(hexutil.MustDecode(op.Id)),
-		StateHash:                operation.To32Bytes(hexutil.MustDecode(op.StateHash)),
-		StateCreatedAtTimestamp:  operation.To32Bytes(operation.AmountBytes(op.StateCreatedAtTimestamp)),
-		StateCreatedAtBlock:      operation.To32Bytes(operation.AmountBytes(op.StateCreatedAtBlock)),
-		StateReplacedAtTimestamp: operation.To32Bytes(operation.AmountBytes(op.StateReplacedAtTimestamp)),
-		StateReplacedAtBlock:     operation.To32Bytes(operation.AmountBytes(op.StateReplacedAtBlock)),
-		StateReplacedBy:          operation.To32Bytes(hexutil.MustDecode(op.StateReplacedBy)),
-		GISTReplacedBy:           operation.To32Bytes(hexutil.MustDecode(op.GISTReplacedBy)),
-		GISTCreatedAtTimestamp:   operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtTimestamp)),
-		GISTCreatedAtBlock:       operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtBlock)),
-		GISTReplacedAtTimestamp:  operation.To32Bytes(operation.AmountBytes(op.GISTReplacedAtTimestamp)),
-		GISTReplacedAtBlock:      operation.To32Bytes(operation.AmountBytes(op.GISTReplacedAtBlock)),
-		ReplacedStateHash:        operation.To32Bytes(hexutil.MustDecode(op.ReplacedStateHash)),
+		Contract:                hexutil.MustDecode(op.Contract),
+		GISTHash:                operation.To32Bytes(hexutil.MustDecode(op.GISTHash)),
+		Id:                      operation.To32Bytes(hexutil.MustDecode(op.Id)),
+		StateHash:               operation.To32Bytes(hexutil.MustDecode(op.StateHash)),
+		StateCreatedAtTimestamp: operation.To32Bytes(operation.AmountBytes(op.StateCreatedAtTimestamp)),
+		StateCreatedAtBlock:     operation.To32Bytes(operation.AmountBytes(op.StateCreatedAtBlock)),
+		StateReplacedBy:         operation.To32Bytes(hexutil.MustDecode(op.StateReplacedBy)),
+		GISTReplacedBy:          operation.To32Bytes(hexutil.MustDecode(op.GISTReplacedBy)),
+		GISTCreatedAtTimestamp:  operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtTimestamp)),
+		GISTCreatedAtBlock:      operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtBlock)),
+		ReplacedStateHash:       operation.To32Bytes(hexutil.MustDecode(op.ReplacedStateHash)),
+		ReplacedGISTHash:        operation.To32Bytes(hexutil.MustDecode(op.ReplacedGISTHash)),
 	}, nil
 }
