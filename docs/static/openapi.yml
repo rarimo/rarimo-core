@@ -50397,10 +50397,6 @@ paths:
                     title: Dec
                   stateCreatedAtBlock:
                     type: string
-                  stateReplacedAtTimestamp:
-                    type: string
-                  stateReplacedAtBlock:
-                    type: string
                   stateReplacedBy:
                     type: string
                     title: Hex 0x
@@ -50411,13 +50407,11 @@ paths:
                     title: Dec
                   GISTCreatedAtBlock:
                     type: string
-                  GISTReplacedAtTimestamp:
-                    type: string
-                  GISTReplacedAtBlock:
-                    type: string
                   replacedStateHash:
                     type: string
-                    title: HEx 0x
+                    title: HEX 0x
+                  replacedGISTHash:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -50474,14 +50468,6 @@ paths:
           in: query
           required: false
           type: string
-        - name: msg.stateReplacedAtTimestamp
-          in: query
-          required: false
-          type: string
-        - name: msg.stateReplacedAtBlock
-          in: query
-          required: false
-          type: string
         - name: msg.stateReplacedBy
           description: Hex 0x
           in: query
@@ -50500,16 +50486,12 @@ paths:
           in: query
           required: false
           type: string
-        - name: msg.GISTReplacedAtTimestamp
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTReplacedAtBlock
-          in: query
-          required: false
-          type: string
         - name: msg.replacedStateHash
           description: HEx 0x
+          in: query
+          required: false
+          type: string
+        - name: msg.replacedGISTtHash
           in: query
           required: false
           type: string
@@ -88628,10 +88610,6 @@ definitions:
         title: Dec
       stateCreatedAtBlock:
         type: string
-      stateReplacedAtTimestamp:
-        type: string
-      stateReplacedAtBlock:
-        type: string
       stateReplacedBy:
         type: string
         title: Hex 0x
@@ -88642,13 +88620,11 @@ definitions:
         title: Dec
       GISTCreatedAtBlock:
         type: string
-      GISTReplacedAtTimestamp:
-        type: string
-      GISTReplacedAtBlock:
-        type: string
       replacedStateHash:
         type: string
         title: HEx 0x
+      replacedGISTtHash:
+        type: string
   rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOpResponse:
     type: object
   rarimo.rarimocore.oraclemanager.MsgCreateTransferOp:
@@ -88906,10 +88882,6 @@ definitions:
             title: Dec
           stateCreatedAtBlock:
             type: string
-          stateReplacedAtTimestamp:
-            type: string
-          stateReplacedAtBlock:
-            type: string
           stateReplacedBy:
             type: string
             title: Hex 0x
@@ -88920,13 +88892,11 @@ definitions:
             title: Dec
           GISTCreatedAtBlock:
             type: string
-          GISTReplacedAtTimestamp:
-            type: string
-          GISTReplacedAtBlock:
-            type: string
           replacedStateHash:
             type: string
-            title: HEx 0x
+            title: HEX 0x
+          replacedGISTHash:
+            type: string
   rarimo.rarimocore.oraclemanager.QueryGetOracleForChainResponse:
     type: object
     properties:
@@ -89140,10 +89110,6 @@ definitions:
         title: Dec
       stateCreatedAtBlock:
         type: string
-      stateReplacedAtTimestamp:
-        type: string
-      stateReplacedAtBlock:
-        type: string
       stateReplacedBy:
         type: string
         title: Hex 0x
@@ -89154,13 +89120,11 @@ definitions:
         title: Dec
       GISTCreatedAtBlock:
         type: string
-      GISTReplacedAtTimestamp:
-        type: string
-      GISTReplacedAtBlock:
-        type: string
       replacedStateHash:
         type: string
-        title: HEx 0x
+        title: HEX 0x
+      replacedGISTHash:
+        type: string
   rarimo.rarimocore.rarimocore.Transfer:
     type: object
     properties:
