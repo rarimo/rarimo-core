@@ -59,3 +59,26 @@ func (k Keeper) GetAllOperation(ctx sdk.Context) (list []types.Operation) {
 
 	return
 }
+
+func (k Keeper) SetOperationConfirmationId(ctx sdk.Context, op, conf string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OperationConfirmationIdKeyPrefix))
+	store.Set(types.OperationKey(op), []byte(conf))
+}
+
+func (k Keeper) RemoveOperationConfirmationId(ctx sdk.Context, op string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OperationConfirmationIdKeyPrefix))
+	store.Delete(types.OperationKey(op))
+}
+
+func (k Keeper) GetOperationConfirmationId(ctx sdk.Context, op string) (string, bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OperationConfirmationIdKeyPrefix))
+
+	b := store.Get(types.OperationKey(
+		op,
+	))
+	if b == nil {
+		return "", false
+	}
+
+	return string(b), true
+}

@@ -58,6 +58,11 @@ service Query {
 	rpc ViolationReportAll(QueryAllViolationReportRequest) returns (QueryAllViolationReportResponse) {
 		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/violation_report";
 	}
+
+	rpc OperationProof(QueryGetOperationProofRequest) returns (QueryGetOperationProofResponse) {
+		option (google.api.http).get = "/rarimo/rarimo-core/rarimocore/operation/{index}/proof";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -140,6 +145,17 @@ message QueryAllViolationReportRequest {
 message QueryAllViolationReportResponse {
 	repeated ViolationReport violationReport = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// Will be removed in future. Builds Merkle proof for certain operation using confirmation info.
+// Be careful: if any operation from confirmation set is no SIGNED now, will fail.
+message QueryGetOperationProofRequest {
+	string index = 1;
+}
+
+message QueryGetOperationProofResponse {
+	repeated string path = 1;
+	string signature = 2;
 }
 
 // this line is used by starport scaffolding # 3

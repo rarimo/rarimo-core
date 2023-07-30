@@ -13,7 +13,6 @@ import (
 
 func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *types.MsgCreateChangePartiesOp) (*types.MsgCreateChangePartiesOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	defer k.disableFee(ctx.GasMeter().GasConsumed(), ctx.GasMeter())
 
 	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only active parties can submit that transaction")
