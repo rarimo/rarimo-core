@@ -7,7 +7,10 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/tendermint/tendermint/libs/log"
+	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 	"gitlab.com/rarimo/rarimo-core/x/identity/types"
 )
 
@@ -30,6 +33,8 @@ func NewKeeper(
 		memKey:   memKey,
 	}
 }
+
+var _ evmtypes.EvmHooks = Keeper{}
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
@@ -69,4 +74,13 @@ func (k Keeper) Path(ctx sdk.Context, id string) []string {
 	}
 
 	return treap.MerklePath(ctx, hexutil.Encode(state.CalculateHash()))
+}
+
+func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
+	params := k.GetParams(ctx)
+
+	// TODO
+	// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
+
+	return nil
 }
