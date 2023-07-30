@@ -1,0 +1,31 @@
+syntax = "proto3";
+package rarimo.rarimocore.identity;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+
+message Node {
+  // Node key (identity state hash)
+  string key = 1;
+  // Node priority (should be random)
+  uint64 priority = 2;
+  // Node left son key
+  string left = 4;
+  // Node right son key
+  string right = 5;
+  // Merkle hash. H = Hash(Hash(left_key|right_key)|self_key)
+  string hash = 6;
+  // Hash(left_key|right_key)
+  string childrenHash = 7;
+}
+
+message StateInfo {
+  // State info index (issuer id)
+  string index = 1;
+  // State hash in hex with 0x
+  string hash = 2;
+  // Creation timestamps
+  uint64 createdAtTimestamp = 3;
+  uint64 createdAtBlock = 4;
+}

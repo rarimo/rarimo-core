@@ -118,6 +118,9 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/feemarket"
 	feemarketkeeper "gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
 	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	identitymodule "gitlab.com/rarimo/rarimo-core/x/identity"
+	identitymodulekeeper "gitlab.com/rarimo/rarimo-core/x/identity/keeper"
+	identitymoduletypes "gitlab.com/rarimo/rarimo-core/x/identity/types"
 	multisigmodule "gitlab.com/rarimo/rarimo-core/x/multisig"
 	multisigmodulekeeper "gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
 	multisigmoduletypes "gitlab.com/rarimo/rarimo-core/x/multisig/types"
@@ -198,6 +201,7 @@ var (
 		feemarket.AppModuleBasic{},
 
 		vestingmintmodule.AppModuleBasic{},
+		identitymodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -278,6 +282,7 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	VestingmintKeeper vestingmintmodulekeeper.Keeper
+	IdentityKeeper    identitymodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
@@ -494,6 +499,13 @@ func New(
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
+	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
+		appCodec,
+		keys[identitymoduletypes.StoreKey],
+		keys[identitymoduletypes.MemStoreKey],
+	)
+	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// should be initialized before adding to the gov route
 	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
 		appCodec,
@@ -705,6 +717,7 @@ func New(
 		feeMarketModule,
 		evmModule,
 		vestingmintModule,
+		identityModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -742,6 +755,7 @@ func New(
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -773,8 +787,8 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -816,6 +830,8 @@ func New(
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 

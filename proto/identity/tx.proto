@@ -1,0 +1,8 @@
+syntax = "proto3";
+package rarimo.rarimocore.identity;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+
+// Msg defines the Msg service.
+service Msg {
+}
