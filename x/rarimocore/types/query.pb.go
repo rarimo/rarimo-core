@@ -881,6 +881,8 @@ func (m *QueryAllViolationReportResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+// Will be removed in future. Builds Merkle proof for certain operation using confirmation info.
+// Be careful: if any operation from confirmation set is no SIGNED now, will fail.
 type QueryGetOperationProofRequest struct {
 	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
 }

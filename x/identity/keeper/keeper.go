@@ -77,7 +77,7 @@ func (k Keeper) Path(ctx sdk.Context, id string) []string {
 }
 
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
-	params := k.GetParams(ctx)
+	//params := k.GetParams(ctx)
 
 	// TODO
 	// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
