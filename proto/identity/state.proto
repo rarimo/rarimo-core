@@ -27,5 +27,6 @@ message StateInfo {
   string hash = 2;
   // Creation timestamps
   uint64 createdAtTimestamp = 3;
-  uint64 createdAtBlock = 4;
+  // Index of last update/create operation
+  string lastUpdateOperationIndex = 4;
 }

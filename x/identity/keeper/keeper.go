@@ -54,7 +54,6 @@ func (k Keeper) UpdateIdentity(ctx sdk.Context, id string, hash string) {
 		Index:              id,
 		Hash:               hash,
 		CreatedAtTimestamp: uint64(ctx.BlockTime().UTC().Unix()),
-		CreatedAtBlock:     uint64(ctx.BlockHeight()),
 	}
 
 	k.SetStateInfo(ctx, state)
@@ -78,9 +77,30 @@ func (k Keeper) Path(ctx sdk.Context, id string) []string {
 
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
 	//params := k.GetParams(ctx)
-
-	// TODO
-	// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
-
+	//
+	//const eventName = "StateUpdated"
+	//
+	//stateV2, err := abi.JSON(strings.NewReader(state.StateLibABI))
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//// TODO
+	//// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
+	//
+	//for i, log := range receipt.Logs {
+	//
+	//	eventId := log.Topics[0]
+	//	event, err := stateV2.EventByID(eventId)
+	//	if err != nil {
+	//		continue
+	//	}
+	//
+	//	if event.Name != eventName {
+	//		continue
+	//	}
+	//
+	//	1stateV2.Unpack(event.Name, log.Data)
+	//}
 	return nil
 }
