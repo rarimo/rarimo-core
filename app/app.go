@@ -634,6 +634,7 @@ func New(
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
 	)
+	app.EvmKeeper = app.EvmKeeper.SetHooks(app.IdentityKeeper)
 	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs) // <- ACTUAL module creation in app.go that you need
 
 	app.VestingmintKeeper = *vestingmintmodulekeeper.NewKeeper(

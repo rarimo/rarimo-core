@@ -1,16 +1,20 @@
 package keeper
 
 import (
+	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/tendermint/tendermint/libs/log"
 	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"gitlab.com/rarimo/rarimo-core/x/identity/pkg/state"
 	"gitlab.com/rarimo/rarimo-core/x/identity/types"
 )
 
@@ -76,31 +80,39 @@ func (k Keeper) Path(ctx sdk.Context, id string) []string {
 }
 
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
-	//params := k.GetParams(ctx)
-	//
-	//const eventName = "StateUpdated"
-	//
-	//stateV2, err := abi.JSON(strings.NewReader(state.StateLibABI))
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//// TODO
-	//// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
-	//
-	//for i, log := range receipt.Logs {
-	//
-	//	eventId := log.Topics[0]
-	//	event, err := stateV2.EventByID(eventId)
-	//	if err != nil {
-	//		continue
-	//	}
-	//
-	//	if event.Name != eventName {
-	//		continue
-	//	}
-	//
-	//	1stateV2.Unpack(event.Name, log.Data)
-	//}
+	params := k.GetParams(ctx)
+
+	const eventName = "StateUpdated"
+
+	stateV2, err := abi.JSON(strings.NewReader(state.StateLibABI))
+	if err != nil {
+		return err
+	}
+
+	if bytes.Compare(msg.To().Bytes(), hexutil.MustDecode(params.IdentityContractAddress)) != 0 {
+		return nil
+	}
+
+	// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
+	for _, log := range receipt.Logs {
+		eventId := log.Topics[0]
+
+		event, err := stateV2.EventByID(eventId)
+		if err != nil {
+			return err
+		}
+
+		if event.Name != eventName {
+			continue
+		}
+
+		eventBody := state.StateLibStateUpdated{}
+		if err := stateV2.UnpackIntoInterface(&eventBody, event.Name, log.Data); err != nil {
+			return err
+		}
+
+		k.UpdateIdentity(ctx, hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
+	}
+
 	return nil
 }
