@@ -23,6 +23,7 @@ type (
 		cdc      codec.BinaryCodec
 		storeKey storetypes.StoreKey
 		memKey   storetypes.StoreKey
+		rarimo   types.RarimocoreKeeper
 	}
 )
 
@@ -30,11 +31,13 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey storetypes.StoreKey,
+	rarimo types.RarimocoreKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
+		rarimo:   rarimo,
 	}
 }
 
@@ -44,7 +47,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) UpdateIdentity(ctx sdk.Context, id string, hash string) {
+func (k Keeper) UpdateIdentity(ctx sdk.Context, gist string, id string, hash string) {
 	treap := Treap{k}
 	lcg := LCG{k}
 
@@ -61,6 +64,8 @@ func (k Keeper) UpdateIdentity(ctx sdk.Context, id string, hash string) {
 	}
 
 	k.SetStateInfo(ctx, state)
+	k.SetGIST(ctx, gist)
+	k.AddToWaitingList(ctx, id)
 
 	key := hexutil.Encode(state.CalculateHash())
 	priority := lcg.Next(ctx)
@@ -111,7 +116,8 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 			return err
 		}
 
-		k.UpdateIdentity(ctx, hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
+		// TODO set gist
+		k.UpdateIdentity(ctx, hexutil.Encode(nil), hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
 	}
 
 	return nil

@@ -187,6 +187,12 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getIdentityDefaultTransferContent(ctx, transfer)
+	case types.OpType_IDENTITY_AGGREGATED_TRANSFER:
+		transfer, err := pkg.GetIdentityAggregatedTransfer(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getIdentityAggregatedTransferContent(ctx, transfer)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
@@ -255,4 +261,8 @@ func (k Keeper) getIdentityDefaultTransferContent(_ sdk.Context, transfer *types
 
 func (k Keeper) getChangePartiesContent(_ sdk.Context, change *types.ChangeParties) (*operation.ChangePartiesContent, error) {
 	return pkg.GetChangePartiesContent(change)
+}
+
+func (k Keeper) getIdentityAggregatedTransferContent(_ sdk.Context, transfer *types.IdentityAggregatedTransfer) (*operation.IdentityAggregatedTransferContent, error) {
+	return pkg.GetIdentityAggregatedTransferContent(transfer)
 }

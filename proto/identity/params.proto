@@ -18,6 +18,8 @@ message Params {
   uint64 lcgValue = 4;
   // Address of identity state smart contract in rarimo chain
   string identityContractAddress = 5;
-  string GISTHash = 6;
-  string treapRootKey = 7;
+  string chainName = 6;
+  string GISTHash = 7;
+  string treapRootKey = 8;
+  repeated string statesWaitingForSign = 9;
 }

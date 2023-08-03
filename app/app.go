@@ -499,13 +499,6 @@ func New(
 	)
 	tokenmanagerModule := tokenmanagermodule.NewAppModule(appCodec, app.TokenmanagerKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
-	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
-		appCodec,
-		keys[identitymoduletypes.StoreKey],
-		keys[identitymoduletypes.MemStoreKey],
-	)
-	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
-
 	// should be initialized before adding to the gov route
 	app.RarimocoreKeeper = *rarimocoremodulekeeper.NewKeeper(
 		appCodec,
@@ -518,6 +511,14 @@ func New(
 	rarimocoreModule := rarimocoremodule.NewAppModule(appCodec, app.RarimocoreKeeper, app.AccountKeeper, app.BankKeeper) // <- ACTUAL module creation in app.go that you need
 
 	app.TokenmanagerKeeper.SetRarimoCore(app.RarimocoreKeeper)
+
+	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
+		appCodec,
+		keys[identitymoduletypes.StoreKey],
+		keys[identitymoduletypes.MemStoreKey],
+		app.RarimocoreKeeper,
+	)
+	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(

@@ -38,3 +38,15 @@ func (k Keeper) SetRootKey(ctx sdk.Context, root string) {
 	params.TreapRootKey = root
 	k.SetParams(ctx, params)
 }
+
+func (k Keeper) SetGIST(ctx sdk.Context, gist string) {
+	params := k.GetParams(ctx)
+	params.GISTHash = gist
+	k.SetParams(ctx, params)
+}
+
+func (k Keeper) AddToWaitingList(ctx sdk.Context, id string) {
+	params := k.GetParams(ctx)
+	params.StatesWaitingForSign = append(params.StatesWaitingForSign, id)
+	k.SetParams(ctx, params)
+}

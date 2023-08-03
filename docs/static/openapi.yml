@@ -44227,10 +44227,16 @@ paths:
                   identityContractAddress:
                     type: string
                     title: Address of identity state smart contract in rarimo chain
+                  chainName:
+                    type: string
                   GISTHash:
                     type: string
                   treapRootKey:
                     type: string
+                  statesWaitingForSign:
+                    type: array
+                    items:
+                      type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -44278,9 +44284,9 @@ paths:
                       type: string
                       format: uint64
                       title: Creation timestamps
-                    createdAtBlock:
+                    lastUpdateOperationIndex:
                       type: string
-                      format: uint64
+                      title: Index of last update/create operation
               pagination:
                 type: object
                 properties:
@@ -44408,9 +44414,9 @@ paths:
                     type: string
                     format: uint64
                     title: Creation timestamps
-                  createdAtBlock:
+                  lastUpdateOperationIndex:
                     type: string
-                    format: uint64
+                    title: Index of last update/create operation
         default:
           description: An unexpected error response.
           schema:
@@ -48238,6 +48244,7 @@ paths:
                         - FEE_TOKEN_MANAGEMENT
                         - CONTRACT_UPGRADE
                         - IDENTITY_DEFAULT_TRANSFER
+                        - IDENTITY_AGGREGATED_TRANSFER
                       default: TRANSFER
                     details:
                       title: Corresponding to type details
@@ -48724,6 +48731,7 @@ paths:
                       - FEE_TOKEN_MANAGEMENT
                       - CONTRACT_UPGRADE
                       - IDENTITY_DEFAULT_TRANSFER
+                      - IDENTITY_AGGREGATED_TRANSFER
                     default: TRANSFER
                   details:
                     title: Corresponding to type details
@@ -83393,10 +83401,16 @@ definitions:
       identityContractAddress:
         type: string
         title: Address of identity state smart contract in rarimo chain
+      chainName:
+        type: string
       GISTHash:
         type: string
       treapRootKey:
         type: string
+      statesWaitingForSign:
+        type: array
+        items:
+          type: string
     description: Params defines the parameters for the module.
   rarimo.rarimocore.identity.QueryAllNodeResponse:
     type: object
@@ -83469,9 +83483,9 @@ definitions:
               type: string
               format: uint64
               title: Creation timestamps
-            createdAtBlock:
+            lastUpdateOperationIndex:
               type: string
-              format: uint64
+              title: Index of last update/create operation
       pagination:
         type: object
         properties:
@@ -83546,9 +83560,9 @@ definitions:
             type: string
             format: uint64
             title: Creation timestamps
-          createdAtBlock:
+          lastUpdateOperationIndex:
             type: string
-            format: uint64
+            title: Index of last update/create operation
   rarimo.rarimocore.identity.QueryParamsResponse:
     type: object
     properties:
@@ -83574,10 +83588,16 @@ definitions:
           identityContractAddress:
             type: string
             title: Address of identity state smart contract in rarimo chain
+          chainName:
+            type: string
           GISTHash:
             type: string
           treapRootKey:
             type: string
+          statesWaitingForSign:
+            type: array
+            items:
+              type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.identity.StateInfo:
     type: object
@@ -83592,9 +83612,9 @@ definitions:
         type: string
         format: uint64
         title: Creation timestamps
-      createdAtBlock:
+      lastUpdateOperationIndex:
         type: string
-        format: uint64
+        title: Index of last update/create operation
   rarimo.rarimocore.multisig.Group:
     type: object
     properties:
@@ -85292,6 +85312,7 @@ definitions:
       - FEE_TOKEN_MANAGEMENT
       - CONTRACT_UPGRADE
       - IDENTITY_DEFAULT_TRANSFER
+      - IDENTITY_AGGREGATED_TRANSFER
     default: TRANSFER
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -85307,6 +85328,7 @@ definitions:
           - FEE_TOKEN_MANAGEMENT
           - CONTRACT_UPGRADE
           - IDENTITY_DEFAULT_TRANSFER
+          - IDENTITY_AGGREGATED_TRANSFER
         default: TRANSFER
       details:
         title: Corresponding to type details
@@ -85652,6 +85674,7 @@ definitions:
                 - FEE_TOKEN_MANAGEMENT
                 - CONTRACT_UPGRADE
                 - IDENTITY_DEFAULT_TRANSFER
+                - IDENTITY_AGGREGATED_TRANSFER
               default: TRANSFER
             details:
               title: Corresponding to type details
@@ -86005,6 +86028,7 @@ definitions:
               - FEE_TOKEN_MANAGEMENT
               - CONTRACT_UPGRADE
               - IDENTITY_DEFAULT_TRANSFER
+              - IDENTITY_AGGREGATED_TRANSFER
             default: TRANSFER
           details:
             title: Corresponding to type details
