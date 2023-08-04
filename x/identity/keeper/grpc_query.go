@@ -73,7 +73,16 @@ func (k Keeper) MerkleProof(c context.Context, req *types.QueryGetMerkleProofReq
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	return &types.QueryGetMerkleProofResponse{Proof: k.Path(ctx, req.Id)}, nil
+	path := k.Path(ctx, req.Id)
+	resp := &types.QueryGetMerkleProofResponse{Proof: make([]string, 0, len(path))}
+
+	for i := len(path) - 1; i >= 0; i-- {
+		if path[i] != EmptyHashStr {
+			resp.Proof = append(resp.Proof, path[i])
+		}
+	}
+
+	return resp, nil
 }
 
 func (k Keeper) State(c context.Context, req *types.QueryGetStateRequest) (*types.QueryGetStateResponse, error) {

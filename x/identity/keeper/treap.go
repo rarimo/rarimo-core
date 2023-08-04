@@ -7,6 +7,8 @@ import (
 
 const EmptyHashStr = "0x"
 
+// Treap implements dynamic Merkle tree.
+// Proof of concept: https://github.com/olegfomenko/go-treap-merkle
 type Treap struct {
 	Keeper
 }
@@ -24,13 +26,15 @@ func (t Treap) Split(ctx sdk.Context, root, key string) (string, string) {
 	if less(root, key) {
 		r1, r2 := t.Split(ctx, node.Right, key)
 		node.Right = r1
-		t.SetNode(ctx, updateNode(node))
+		t.updateNode(ctx, &node)
+		t.SetNode(ctx, node)
 		return root, r2
 	}
 
 	r1, r2 := t.Split(ctx, node.Left, key)
 	node.Left = r2
-	t.SetNode(ctx, updateNode(node))
+	t.updateNode(ctx, &node)
+	t.SetNode(ctx, node)
 	return r1, root
 }
 
@@ -53,15 +57,17 @@ func (t Treap) Merge(ctx sdk.Context, r1, r2 string) string {
 		return EmptyHashStr
 	}
 
-	if node1.Priority < node2.Priority {
-		node2.Left = t.Merge(ctx, r1, node2.Left)
-		t.SetNode(ctx, updateNode(node2))
-		return r2
+	if node1.Priority > node2.Priority {
+		node1.Right = t.Merge(ctx, node1.Right, r2)
+		t.updateNode(ctx, &node1)
+		t.SetNode(ctx, node1)
+		return r1
 	}
 
-	node1.Right = t.Merge(ctx, node1.Right, r2)
-	t.SetNode(ctx, updateNode(node1))
-	return r1
+	node2.Left = t.Merge(ctx, r1, node2.Left)
+	t.updateNode(ctx, &node2)
+	t.SetNode(ctx, node2)
+	return r2
 }
 
 func (t Treap) Remove(ctx sdk.Context, key string) {
@@ -78,17 +84,18 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 		t.SetRootKey(ctx, t.Merge(ctx, r1, node.Right))
 	}
 
+	root = r2
 	for {
 		node, ok := t.GetNode(ctx, root)
 		if !ok {
-			// TODO
 			return
 		}
 
 		if node.Left == key {
 			node.Left = EmptyHashStr
 			t.RemoveNode(ctx, key)
-			t.SetNode(ctx, updateNode(node))
+			t.updateNode(ctx, &node)
+			t.SetNode(ctx, node)
 			break
 		}
 
@@ -111,11 +118,11 @@ func (t Treap) Insert(ctx sdk.Context, key string, priority uint64) {
 
 	root := t.GetRootKey(ctx)
 	if root == EmptyHashStr {
-		t.SetRootKey(ctx, node.Hash)
+		t.SetRootKey(ctx, node.Key)
 		return
 	}
 
-	r1, r2 := t.Split(ctx, t.GetRootKey(ctx), key)
+	r1, r2 := t.Split(ctx, root, key)
 	r1 = t.Merge(ctx, r1, key)
 	t.SetRootKey(ctx, t.Merge(ctx, r1, r2))
 }
@@ -135,21 +142,54 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 			return result
 		}
 
-		if less(key, current) {
-			result = append(result, current, node.Right)
-			current = node.Left
+		if less(current, key) {
+			result = append(result, current)
+			left, ok := t.GetNode(ctx, node.Left)
+			if ok {
+				result = append(result, left.Hash)
+			}
+
+			current = node.Right
 			continue
 		}
 
-		result = append(result, current, node.Left)
-		current = node.Right
+		result = append(result, current)
+		right, ok := t.GetNode(ctx, node.Right)
+		if ok {
+			result = append(result, right.Hash)
+		}
+
+		current = node.Left
 	}
 
 	return nil
 }
 
-func updateNode(node types.Node) types.Node {
-	node.ChildrenHash = hash(node.Left, node.Right)
-	node.Hash = hash(node.ChildrenHash, node.Hash)
-	return node
+func (t Treap) updateNode(ctx sdk.Context, node *types.Node) {
+	node.ChildrenHash = t.merkleHashNodes(ctx, node.Left, node.Right)
+	if node.ChildrenHash == EmptyHashStr {
+		node.Hash = node.Key
+		return
+	}
+
+	node.Hash = hash(node.ChildrenHash, node.Key)
+}
+
+func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
+	l, okl := t.GetNode(ctx, left)
+	r, okr := t.GetNode(ctx, right)
+
+	if !okl && !okr {
+		return EmptyHashStr
+	}
+
+	if !okr {
+		return l.Hash
+	}
+
+	if !okl {
+		return r.Hash
+	}
+
+	return hash(r.Hash, l.Hash)
 }
