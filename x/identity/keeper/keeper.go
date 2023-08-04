@@ -87,9 +87,9 @@ func (k Keeper) Path(ctx sdk.Context, id string) []string {
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
 	params := k.GetParams(ctx)
 
-	const eventName = "StateUpdated"
+	const eventName = "StateTransited"
 
-	stateV2, err := abi.JSON(strings.NewReader(state.StateLibABI))
+	stateV2, err := abi.JSON(strings.NewReader(state.StateABI))
 	if err != nil {
 		return err
 	}
@@ -111,13 +111,12 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 			continue
 		}
 
-		eventBody := state.StateLibStateUpdated{}
+		eventBody := state.StateStateTransited{}
 		if err := stateV2.UnpackIntoInterface(&eventBody, event.Name, log.Data); err != nil {
 			return err
 		}
 
-		// TODO set gist
-		k.UpdateIdentity(ctx, hexutil.Encode(nil), hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
+		k.UpdateIdentity(ctx, hexutil.Encode(eventBody.GistRoot.Bytes()), hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
 	}
 
 	return nil

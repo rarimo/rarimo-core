@@ -66,6 +66,10 @@ func (t Treap) Merge(ctx sdk.Context, r1, r2 string) string {
 
 func (t Treap) Remove(ctx sdk.Context, key string) {
 	root := t.GetRootKey(ctx)
+	if root == EmptyHashStr {
+		return
+	}
+
 	r1, r2 := t.Split(ctx, root, key)
 
 	if r2 == key {
@@ -95,17 +99,23 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 }
 
 func (t Treap) Insert(ctx sdk.Context, key string, priority uint64) {
-	r1, r2 := t.Split(ctx, t.GetRootKey(ctx), key)
-
-	t.SetNode(ctx, types.Node{
+	node := types.Node{
 		Key:          key,
 		Priority:     priority,
 		Left:         EmptyHashStr,
 		Right:        EmptyHashStr,
 		ChildrenHash: EmptyHashStr,
 		Hash:         key,
-	})
+	}
+	t.SetNode(ctx, node)
 
+	root := t.GetRootKey(ctx)
+	if root == EmptyHashStr {
+		t.SetRootKey(ctx, node.Hash)
+		return
+	}
+
+	r1, r2 := t.Split(ctx, t.GetRootKey(ctx), key)
 	r1 = t.Merge(ctx, r1, key)
 	t.SetRootKey(ctx, t.Merge(ctx, r1, r2))
 }
