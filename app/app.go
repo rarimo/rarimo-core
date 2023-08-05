@@ -345,6 +345,7 @@ func New(
 		tokenmanagermoduletypes.StoreKey, bridgemoduletypes.StoreKey, oraclemanagermoduletypes.StoreKey,
 		multisigmoduletypes.StoreKey, evmtypes.StoreKey, feemarkettypes.StoreKey,
 		vestingmintmoduletypes.StoreKey,
+		identitymoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
