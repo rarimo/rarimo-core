@@ -30,9 +30,5 @@ func (c IdentityAggregatedTransferContent) CalculateHash() []byte {
 
 // Equals tests for equality of two Contents
 func (c IdentityAggregatedTransferContent) Equals(other merkle.Content) bool {
-	if oc, ok := other.(IdentityAggregatedTransferContent); ok {
-		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
-	}
-
-	return false
+	return bytes.Equal(other.CalculateHash(), c.CalculateHash())
 }

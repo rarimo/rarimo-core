@@ -114,7 +114,7 @@ func (k Keeper) OperationProof(c context.Context, req *types.QueryGetOperationPr
 
 	path, ok := t.Path(targetContent)
 	if !ok {
-		return nil, status.Error(codes.Internal, "gen not find path")
+		return nil, status.Error(codes.Internal, "can not find path")
 	}
 
 	resp := types.QueryGetOperationProofResponse{

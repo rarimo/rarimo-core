@@ -25,9 +25,5 @@ func (c ChangePartiesContent) CalculateHash() []byte {
 
 // Equals tests for equality of two Contents
 func (c ChangePartiesContent) Equals(other merkle.Content) bool {
-	if oc, ok := other.(ChangePartiesContent); ok {
-		return bytes.Equal(oc.CalculateHash(), c.CalculateHash())
-	}
-
-	return false
+	return bytes.Equal(other.CalculateHash(), c.CalculateHash())
 }
