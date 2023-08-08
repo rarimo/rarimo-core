@@ -27,5 +27,5 @@ func (f FeeTokenManagementContent) CalculateHash() []byte {
 
 // Equals tests for equality of two Contents
 func (f FeeTokenManagementContent) Equals(other merkle.Content) bool {
-	return bytes.Equal(other.CalculateHash(), c.CalculateHash())
+	return bytes.Equal(other.CalculateHash(), f.CalculateHash())
 }
