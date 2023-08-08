@@ -104,7 +104,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 
 		event, err := stateV2.EventByID(eventId)
 		if err != nil {
-			return err
+			continue
 		}
 
 		if event.Name != eventName {
@@ -112,12 +112,32 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		}
 
 		eventBody := state.StateStateTransited{}
-		if err := stateV2.UnpackIntoInterface(&eventBody, event.Name, log.Data); err != nil {
+		if err := unpackLog(stateV2, &eventBody, event.Name, log); err != nil {
 			return err
 		}
 
+		k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
 		k.UpdateIdentity(ctx, hexutil.Encode(eventBody.GistRoot.Bytes()), hexutil.Encode(eventBody.Id.Bytes()), hexutil.Encode(eventBody.State.Bytes()))
 	}
 
 	return nil
+}
+
+func unpackLog(contractAbi abi.ABI, out interface{}, event string, log *ethtypes.Log) error {
+	if log.Topics[0] != contractAbi.Events[event].ID {
+		return fmt.Errorf("event signature mismatch")
+	}
+
+	if len(log.Data) > 0 {
+		if err := contractAbi.UnpackIntoInterface(out, event, log.Data); err != nil {
+			return err
+		}
+	}
+	var indexed abi.Arguments
+	for _, arg := range contractAbi.Events[event].Inputs {
+		if arg.Indexed {
+			indexed = append(indexed, arg)
+		}
+	}
+	return abi.ParseTopics(out, indexed, log.Topics[1:])
 }
