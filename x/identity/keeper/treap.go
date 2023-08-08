@@ -82,6 +82,7 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 		node, _ := t.GetNode(ctx, r2)
 		t.RemoveNode(ctx, r2)
 		t.SetRootKey(ctx, t.Merge(ctx, r1, node.Right))
+		return
 	}
 
 	root = r2
