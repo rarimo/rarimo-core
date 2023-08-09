@@ -42,6 +42,7 @@ func (k Keeper) SetRootKey(ctx sdk.Context, root string) {
 func (k Keeper) SetGIST(ctx sdk.Context, gist string) {
 	params := k.GetParams(ctx)
 	params.GISTHash = gist
+	params.GISTUpdatedTimestamp = uint64(ctx.BlockTime().UTC().Unix())
 	k.SetParams(ctx, params)
 }
 

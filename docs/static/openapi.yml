@@ -48064,6 +48064,9 @@ paths:
                     type: string
                   GISTHash:
                     type: string
+                  GISTUpdatedTimestamp:
+                    type: string
+                    format: uint64
                   treapRootKey:
                     type: string
                   statesWaitingForSign:
@@ -88288,6 +88291,9 @@ definitions:
         type: string
       GISTHash:
         type: string
+      GISTUpdatedTimestamp:
+        type: string
+        format: uint64
       treapRootKey:
         type: string
       statesWaitingForSign:
@@ -88475,6 +88481,9 @@ definitions:
             type: string
           GISTHash:
             type: string
+          GISTUpdatedTimestamp:
+            type: string
+            format: uint64
           treapRootKey:
             type: string
           statesWaitingForSign:

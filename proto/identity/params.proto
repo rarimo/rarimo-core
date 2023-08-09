@@ -20,6 +20,7 @@ message Params {
   string identityContractAddress = 5;
   string chainName = 6;
   string GISTHash = 7;
-  string treapRootKey = 8;
-  repeated string statesWaitingForSign = 9;
+  uint64 GISTUpdatedTimestamp = 8;
+  string treapRootKey = 9;
+  repeated string statesWaitingForSign = 10;
 }
