@@ -10,6 +10,13 @@ ignite chain build
 
 If it fails in generate proto stage with error on etheremint .proto files just re-execute that command or try to add `--clear-cache` flag.
 
+Also try use `ignite chain build --skip-proto`
+
+For release build:
+```shell
+ignite chain build --release -t linux:amd64 --skip-proto
+```
+
 ## Generate proto files
 
 Use
