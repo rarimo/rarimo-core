@@ -22,7 +22,7 @@ func GetIdentityAggregatedTransferContent(op *types.IdentityAggregatedTransfer) 
 	return &operation.IdentityAggregatedTransferContent{
 		Contract:      hexutil.MustDecode(op.Contract),
 		GISTHash:      operation.To32Bytes(hexutil.MustDecode(op.GISTHash)),
-		StateRootHash: operation.To32Bytes(hexutil.MustDecode(op.GISTHash)),
+		StateRootHash: operation.To32Bytes(hexutil.MustDecode(op.StateRootHash)),
 		Timestamp:     operation.To32Bytes(new(big.Int).SetUint64(op.Timestamp).Bytes()),
 		Chain:         op.Chain,
 	}, nil
