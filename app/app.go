@@ -1,12 +1,15 @@
 package app
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
 	ante2 "gitlab.com/rarimo/rarimo-core/ethermint/ante"
+	"gitlab.com/rarimo/rarimo-core/x/identity/contracts"
 
 	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
@@ -904,6 +907,83 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
+
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
+	}
+
+	if upgradeInfo.Name == "v1.0.4" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: []string{identitymoduletypes.ModuleName},
+		}))
+	}
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.0.4",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			// --- FeeMarket module upgrade ----
+
+			// Exporting current evm genesis
+			feeGenesis := app.mm.Modules[feemarkettypes.ModuleName].ExportGenesis(ctx, app.appCodec)
+
+			// Adding new accounts to EVM genesis state
+			var feeGenesisState feemarkettypes.GenesisState
+			cdc.MustUnmarshalJSON(feeGenesis, &feeGenesisState)
+			feeGenesisState.Params.BaseFee = sdk.NewIntFromUint64(0)
+
+			// Setting new genesis JSON
+			feeGenesis = cdc.MustMarshalJSON(feeGenesisState)
+
+			// ---- EVM module upgrade ----
+
+			// Exporting current evm genesis
+			evmGenesis := app.mm.Modules[evmtypes.ModuleName].ExportGenesis(ctx, app.appCodec)
+
+			// Adding new accounts to EVM genesis state
+			var evmGenesisState evmtypes.GenesisState
+			cdc.MustUnmarshalJSON(evmGenesis, &evmGenesisState)
+			evmGenesisState.Accounts = append(evmGenesisState.Accounts, contracts.MustGetEVMAccounts(app.appCodec)...)
+
+			// Setting new genesis JSON
+			evmGenesis = cdc.MustMarshalJSON(evmGenesisState)
+
+			// ---- Identity module upgrade ----
+
+			// Exporting Genesis with new params
+			identityGenesis := app.mm.Modules[identitymoduletypes.ModuleName].ExportGenesis(ctx, app.appCodec)
+
+			var identityGenesisState identitymoduletypes.GenesisState
+			cdc.MustUnmarshalJSON(identityGenesis, &identityGenesisState)
+			identityGenesisState.Params = identitymoduletypes.Params{
+				LcgA:                    1664525,
+				LcgB:                    1013904223,
+				LcgMod:                  4294967296,
+				LcgValue:                12345,
+				IdentityContractAddress: "0x753a8678c85d5fb70A97CFaE37c84CE2fD67EDE8",
+				ChainName:               "Rarimo",
+				GISTHash:                "0x",
+				GISTUpdatedTimestamp:    0,
+				TreapRootKey:            "0x",
+				StatesWaitingForSign:    nil,
+			}
+
+			// Setting new genesis JSON
+			identityGenesis = cdc.MustMarshalJSON(identityGenesisState)
+
+			// Initializing genesis with pre-set params
+			app.mm.InitGenesis(ctx, app.appCodec, map[string]json.RawMessage{
+				feemarkettypes.ModuleName:      feeGenesis,
+				evmtypes.ModuleName:            evmGenesis,
+				identitymoduletypes.ModuleName: identityGenesis,
+			})
+
+			// Disabling repeated call of InitGenesis for new identity module
+			fromVM[identitymoduletypes.ModuleName] = identitymodule.AppModule{}.ConsensusVersion()
+
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
