@@ -5,4 +5,12 @@ option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
 
 // Msg defines the Msg service.
 service Msg {
+  rpc SetIdentityContractAddress(MsgSetIdentityContractAddress) returns (MsgSetIdentityContractAddressResponse);
 }
+
+message MsgSetIdentityContractAddress {
+  string creator = 1;
+  string address = 2;
+}
+
+message MsgSetIdentityContractAddressResponse {}
