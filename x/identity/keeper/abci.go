@@ -13,12 +13,17 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		return
 	}
 
+	node, ok := k.GetNode(ctx, params.TreapRootKey)
+	if !ok {
+		return
+	}
+
 	index, err := k.rarimo.CreateIdentityAggregatedTransferOperation(ctx, types.ModuleName, &rarimocoremoduletypes.IdentityAggregatedTransfer{
 		Contract:      params.IdentityContractAddress,
 		Chain:         params.ChainName,
 		GISTHash:      params.GISTHash,
-		StateRootHash: k.GetRootKey(ctx),
-		Timestamp:     uint64(ctx.BlockTime().UTC().Unix()),
+		StateRootHash: node.Hash,
+		Timestamp:     params.GISTUpdatedTimestamp,
 	})
 
 	if err != nil {
