@@ -1,0 +1,10 @@
+{
+  "@type": "/ethermint.types.v1.EthAccount",
+  "base_account": {
+    "account_number": "26",
+    "address": "rarimo1upmmkwcr2gpwx4xvtup07mp9dqjwj0twpxuehn",
+    "pub_key": null,
+    "sequence": "1"
+  },
+  "code_hash": "0xa52f274f0408ded05a7bfa9166cd024eb728774dd6a8dc8374ccd0605671d4e0"
+}

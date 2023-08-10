@@ -922,6 +922,8 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		"v1.0.4",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			evmAccounts, authAccounts := contracts.MustGetEVMAccounts(app.appCodec)
+
 			// --- FeeMarket module upgrade ----
 
 			// Exporting current evm genesis
@@ -943,10 +945,23 @@ func New(
 			// Adding new accounts to EVM genesis state
 			var evmGenesisState evmtypes.GenesisState
 			cdc.MustUnmarshalJSON(evmGenesis, &evmGenesisState)
-			evmGenesisState.Accounts = append(evmGenesisState.Accounts, contracts.MustGetEVMAccounts(app.appCodec)...)
+			evmGenesisState.Accounts = append(evmGenesisState.Accounts, evmAccounts...)
 
 			// Setting new genesis JSON
 			evmGenesis = cdc.MustMarshalJSON(evmGenesisState)
+
+			// ---- Auth module upgrade ----
+
+			// Exporting current evm genesis
+			authGenesis := app.mm.Modules[authtypes.ModuleName].ExportGenesis(ctx, app.appCodec)
+
+			// Adding new accounts to EVM genesis state
+			var authGenesisState authtypes.GenesisState
+			cdc.MustUnmarshalJSON(authGenesis, &authGenesisState)
+			authGenesisState.Accounts = append(authGenesisState.Accounts, authAccounts...)
+
+			// Setting new genesis JSON
+			authGenesis = cdc.MustMarshalJSON(authGenesisState)
 
 			// ---- Identity module upgrade ----
 
@@ -975,6 +990,7 @@ func New(
 			app.mm.InitGenesis(ctx, app.appCodec, map[string]json.RawMessage{
 				feemarkettypes.ModuleName:      feeGenesis,
 				evmtypes.ModuleName:            evmGenesis,
+				authtypes.ModuleName:           authGenesis,
 				identitymoduletypes.ModuleName: identityGenesis,
 			})
 
