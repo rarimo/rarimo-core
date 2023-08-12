@@ -25,7 +25,6 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/ethereum/go-ethereum/common"
 	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
 	"gitlab.com/rarimo/rarimo-core/x/evm/types"
@@ -124,9 +123,7 @@ func (k *Keeper) SetAccount(ctx sdk.Context, addr common.Address, account stated
 	cosmosAddr := sdk.AccAddress(addr.Bytes())
 	acct := k.accountKeeper.GetAccount(ctx, cosmosAddr)
 	if acct == nil {
-		acct = &ethermint.EthAccount{
-			BaseAccount: k.accountKeeper.NewAccountWithAddress(ctx, cosmosAddr).(*authtypes.BaseAccount),
-		}
+		acct = k.accountKeeper.NewAccountWithAddress(ctx, cosmosAddr)
 	}
 
 	if err := acct.SetSequence(account.Nonce); err != nil {

@@ -16,6 +16,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set all the confirmation
 	for _, elem := range genState.ConfirmationList {
 		k.SetConfirmation(ctx, elem)
+
+		for _, op := range elem.Indexes {
+			k.SetOperationConfirmationId(ctx, op, elem.Root)
+		}
 	}
 
 	// Set all the vote

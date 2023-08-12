@@ -118,6 +118,9 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/feemarket"
 	feemarketkeeper "gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
 	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	identitymodule "gitlab.com/rarimo/rarimo-core/x/identity"
+	identitymodulekeeper "gitlab.com/rarimo/rarimo-core/x/identity/keeper"
+	identitymoduletypes "gitlab.com/rarimo/rarimo-core/x/identity/types"
 	multisigmodule "gitlab.com/rarimo/rarimo-core/x/multisig"
 	multisigmodulekeeper "gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
 	multisigmoduletypes "gitlab.com/rarimo/rarimo-core/x/multisig/types"
@@ -198,6 +201,7 @@ var (
 		feemarket.AppModuleBasic{},
 
 		vestingmintmodule.AppModuleBasic{},
+		identitymodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -278,6 +282,7 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	VestingmintKeeper vestingmintmodulekeeper.Keeper
+	IdentityKeeper    identitymodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
@@ -340,6 +345,7 @@ func New(
 		tokenmanagermoduletypes.StoreKey, bridgemoduletypes.StoreKey, oraclemanagermoduletypes.StoreKey,
 		multisigmoduletypes.StoreKey, evmtypes.StoreKey, feemarkettypes.StoreKey,
 		vestingmintmoduletypes.StoreKey,
+		identitymoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -507,6 +513,14 @@ func New(
 
 	app.TokenmanagerKeeper.SetRarimoCore(app.RarimocoreKeeper)
 
+	app.IdentityKeeper = *identitymodulekeeper.NewKeeper(
+		appCodec,
+		keys[identitymoduletypes.StoreKey],
+		keys[identitymoduletypes.MemStoreKey],
+		app.RarimocoreKeeper,
+	)
+	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
 		appCodec,
@@ -622,6 +636,7 @@ func New(
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
 	)
+	app.EvmKeeper = app.EvmKeeper.SetHooks(app.IdentityKeeper)
 	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs) // <- ACTUAL module creation in app.go that you need
 
 	app.VestingmintKeeper = *vestingmintmodulekeeper.NewKeeper(
@@ -705,6 +720,7 @@ func New(
 		feeMarketModule,
 		evmModule,
 		vestingmintModule,
+		identityModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -742,6 +758,7 @@ func New(
 		oraclemanagermoduletypes.ModuleName,
 		multisigmoduletypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -773,8 +790,8 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -816,6 +833,8 @@ func New(
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
+		identitymoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 

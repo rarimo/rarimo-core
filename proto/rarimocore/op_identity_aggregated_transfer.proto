@@ -1,0 +1,20 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+
+import "tokenmanager/item.proto";
+import "gogoproto/gogo.proto";
+
+message IdentityAggregatedTransfer {
+  // Hex 0x
+  string contract = 1;
+  // Rarimo
+  string chain = 2;
+  // Hex 0x
+  string GISTHash = 3;
+  string stateRootHash = 5;
+  // Dec
+  uint64 timestamp = 4;
+}
+

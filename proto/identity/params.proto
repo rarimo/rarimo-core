@@ -1,0 +1,26 @@
+syntax = "proto3";
+package rarimo.rarimocore.identity;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+
+
+
+
+// Params defines the parameters for the module.
+message Params {
+  // Linear congruential generator params
+  // https://en.wikipedia.org/wiki/Linear_congruential_generator
+  uint64 lcgA = 1;
+  uint64 lcgB = 2;
+  uint64 lcgMod = 3;
+  uint64 lcgValue = 4;
+  // Address of identity state smart contract in rarimo chain
+  string identityContractAddress = 5;
+  string chainName = 6;
+  string GISTHash = 7;
+  uint64 GISTUpdatedTimestamp = 8;
+  string treapRootKey = 9;
+  repeated string statesWaitingForSign = 10;
+}

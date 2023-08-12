@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rarimo.rarimocore.identity;
+
+import "gogoproto/gogo.proto";
+import "identity/params.proto";
+import "identity/state.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+
+// GenesisState defines the vestingmint module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated Node node = 3 [(gogoproto.nullable) = false];
+  repeated StateInfo stateInfo = 4 [(gogoproto.nullable) = false];
+}

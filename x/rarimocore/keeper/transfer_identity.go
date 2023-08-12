@@ -51,6 +51,9 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 			k.RemoveVote(ctx, vote.Index)
 			return false
 		})
+
+		// And remove confirmation mapping
+		k.RemoveOperationConfirmationId(ctx, op.Index)
 	}
 
 	k.SetOperation(

@@ -1,0 +1,89 @@
+syntax = "proto3";
+package rarimo.rarimocore.identity;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "identity/params.proto";
+import "identity/state.proto";
+
+option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/params";
+  }
+
+  rpc Node(QueryGetNodeRequest) returns (QueryGetNodeResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/node/{key}";
+  };
+
+  rpc NodeAll(QueryAllNodeRequest) returns (QueryAllNodeResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/node";
+  };
+
+  rpc State(QueryGetStateRequest) returns (QueryGetStateResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/state/{id}";
+  };
+
+  rpc StateAll(QueryAllStateRequest) returns (QueryAllStateResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/state";
+  };
+
+  rpc MerkleProof(QueryGetMerkleProofRequest) returns (QueryGetMerkleProofResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/identity/state/{id}/proof";
+  };
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetNodeRequest {
+  string key = 1;
+}
+
+message QueryGetNodeResponse {
+  Node node = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllNodeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllNodeResponse {
+  repeated Node node = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetStateRequest {
+  string id = 1;
+}
+
+message QueryGetStateResponse {
+  StateInfo state = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStateRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStateResponse {
+  repeated StateInfo state = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMerkleProofRequest {
+  string id = 1;
+}
+
+message QueryGetMerkleProofResponse {
+  repeated string proof = 1 [(gogoproto.nullable) = false];
+}

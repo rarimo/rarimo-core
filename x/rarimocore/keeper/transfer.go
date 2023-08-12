@@ -52,6 +52,9 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 			k.RemoveVote(ctx, vote.Index)
 			return false
 		})
+
+		// And remove confirmation mapping
+		k.RemoveOperationConfirmationId(ctx, op.Index)
 	}
 
 	k.SetOperation(

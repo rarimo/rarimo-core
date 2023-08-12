@@ -13,7 +13,7 @@ func (k Keeper) SetVote(ctx sdk.Context, v types.Vote) {
 	store.Set(types.VoteKey(v.Index), b)
 }
 
-// GetVote returns an Vote from its index
+// GetVote returns a Vote from its index
 func (k Keeper) GetVote(
 	ctx sdk.Context,
 	index *types.VoteIndex,
@@ -31,7 +31,7 @@ func (k Keeper) GetVote(
 	return val, true
 }
 
-// RemoveVote removes an Vote from the store
+// RemoveVote removes a Vote from the store
 func (k Keeper) RemoveVote(
 	ctx sdk.Context,
 	index *types.VoteIndex,

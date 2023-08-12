@@ -10,7 +10,8 @@ var _ binary.ByteOrder
 
 const (
 	// OperationKeyPrefix is the prefix to retrieve all Operation
-	OperationKeyPrefix = "Operation/value/"
+	OperationKeyPrefix               = "Operation/value/"
+	OperationConfirmationIdKeyPrefix = "Operation/ConfirmationId/value/"
 )
 
 // OperationKey returns the store key to retrieve an Operation from the index fields
