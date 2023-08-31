@@ -21,7 +21,7 @@ func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *type
 		NewPublicKey: msg.NewPublicKey,
 	}
 
-	if err := k.Keeper.CreateChangePartiesOperation(ctx, changeOp); err != nil {
+	if err := k.Keeper.CreateChangePartiesOperation(ctx, msg.Creator, changeOp); err != nil {
 		return nil, err
 	}
 
