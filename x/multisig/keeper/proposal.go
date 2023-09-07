@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -108,6 +109,8 @@ func (k Keeper) doExecuteMsgs(ctx sdk.Context, proposal types.Proposal) error {
 		return err
 	}
 
+	var events sdk.Events
+
 	for i, msg := range msgs {
 		handler := k.router.Handler(msg)
 		if handler == nil {
@@ -121,6 +124,9 @@ func (k Keeper) doExecuteMsgs(ctx sdk.Context, proposal types.Proposal) error {
 		if r == nil {
 			return fmt.Errorf("got nil sdk.Result for message %q at position %d", msg, i)
 		}
+		events = append(events, r.GetEvents()...)
 	}
+
+	ctx.EventManager().EmitEvents(events)
 	return nil
 }
