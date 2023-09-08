@@ -61,6 +61,7 @@ func (k Keeper) UpdateIdentity(ctx sdk.Context, gist string, id string, hash str
 		Index:              id,
 		Hash:               hash,
 		CreatedAtTimestamp: uint64(ctx.BlockTime().UTC().Unix()),
+		CreatedAtBlock:     uint64(ctx.BlockHeight()),
 	}
 
 	k.SetStateInfo(ctx, state)
