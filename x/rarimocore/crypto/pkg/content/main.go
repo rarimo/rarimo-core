@@ -64,6 +64,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_IDENTITY_AGGREGATED_TRANSFER:
+			content, err := GetIdentityAggregatedTransferContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		default:
 			return nil, ErrUnsupportedContent
 		}
@@ -154,5 +163,15 @@ func GetIdentityDefaultTransferContent(op *types.Operation) (merkle.Content, err
 	}
 
 	content, err := pkg.GetIdentityDefaultTransferContent(transfer)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetIdentityAggregatedTransferContent(op *types.Operation) (merkle.Content, error) {
+	transfer, err := pkg.GetIdentityAggregatedTransfer(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetIdentityAggregatedTransferContent(transfer)
 	return content, errors.Wrap(err, "error creating content")
 }
