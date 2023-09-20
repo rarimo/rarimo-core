@@ -8,6 +8,7 @@ import (
 
 func (k Keeper) EndBlocker(ctx sdk.Context) {
 	params := k.GetParams(ctx)
+	// Check is there any states that was changed during that block
 	if len(params.StatesWaitingForSign) == 0 {
 		// Nothing to do
 		return
@@ -18,6 +19,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		return
 	}
 
+	// Creating operation to be signed by TSS parties
 	index, err := k.rarimo.CreateIdentityAggregatedTransferOperation(ctx, types.ModuleName, &rarimocoremoduletypes.IdentityAggregatedTransfer{
 		Contract:      params.IdentityContractAddress,
 		Chain:         params.ChainName,
@@ -31,6 +33,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		return
 	}
 
+	// Saving operation index for any state that was changed during that block
 	for _, id := range params.StatesWaitingForSign {
 		state, ok := k.GetStateInfo(ctx, id)
 		if ok {
@@ -39,6 +42,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		}
 	}
 
+	// Resetting list of changed states
 	params.StatesWaitingForSign = []string{}
 	k.SetParams(ctx, params)
 }
