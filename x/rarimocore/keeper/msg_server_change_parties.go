@@ -11,6 +11,7 @@ import (
 func (k msgServer) CreateChangePartiesOperation(goCtx context.Context, msg *types.MsgCreateChangePartiesOp) (*types.MsgCreateChangePartiesOpResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Only active party can submit such operation
 	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "only active parties can submit that transaction")
 	}
