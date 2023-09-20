@@ -16,6 +16,7 @@ func (k msgServer) CreateIdentityDefaultTransferOperation(c context.Context, msg
 		return nil, err
 	}
 
+	// Checking oracle exists and active.
 	oracle, ok := k.GetOracle(ctx, &types.OracleIndex{Chain: msg.Chain, Account: msg.Creator})
 	if !ok {
 		return nil, types.ErrOracleNotFound
@@ -25,6 +26,7 @@ func (k msgServer) CreateIdentityDefaultTransferOperation(c context.Context, msg
 		return nil, types.ErrInactiveOracle
 	}
 
+	// Creating transfer operation
 	if err := k.rarimo.CreateIdentityDefaultTransferOperation(ctx, msg.Creator, transfer); err != nil {
 		return nil, err
 	}
