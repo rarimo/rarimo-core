@@ -111,3 +111,12 @@ func GetThreshold(n int) int {
 	var res float32 = float32(n) * 2 / 3
 	return int(res)
 }
+
+func GetPublicKeyHash(pk string) string {
+	pkBytes := hexutil.MustDecode(pk)
+	if pkBytes[0] == 0x04 {
+		pkBytes = pkBytes[1:]
+	}
+
+	return hexutil.Encode(crypto.Keccak256(pkBytes))
+}

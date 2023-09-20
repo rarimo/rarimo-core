@@ -6,8 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
@@ -124,8 +122,7 @@ func (k Keeper) ApplyOperation(ctx sdk.Context, op types.Operation, confirmation
 func (k Keeper) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
 	params := k.GetParams(ctx)
 
-	hash := hexutil.Encode(eth.Keccak256(hexutil.MustDecode(op.NewPublicKey)))
-	if err := crypto.VerifyECDSA(op.Signature, hash, params.KeyECDSA); err != nil {
+	if err := crypto.VerifyECDSA(op.Signature, crypto.GetPublicKeyHash(op.NewPublicKey), params.KeyECDSA); err != nil {
 		return err
 	}
 
