@@ -13,6 +13,8 @@ import (
 func (k msgServer) WithdrawFee(goCtx context.Context, msg *types.MsgWithdrawFee) (*types.MsgWithdrawFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Checking for operation validness
+
 	op, found := k.rarimocoreKeeper.GetOperation(ctx, msg.Origin)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation not found (%s)", msg.Origin)
@@ -26,6 +28,7 @@ func (k msgServer) WithdrawFee(goCtx context.Context, msg *types.MsgWithdrawFee)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation is not signed (%s)", msg.Origin)
 	}
 
+	// Checking that current operation has not been executed yet
 	if _, found := k.GetHash(ctx, msg.Origin); found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "transfer already withdrawn (%s)", msg.Origin)
 	}
@@ -49,6 +52,7 @@ func (k msgServer) WithdrawFee(goCtx context.Context, msg *types.MsgWithdrawFee)
 		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", manage.Receiver)
 	}
 
+	// Transferring tokens
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(sdk.NewCoin(k.GetParams(ctx).WithdrawDenom, amount)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to transfer tokens to address (%s)", receiverAddress.String())
