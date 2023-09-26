@@ -12,8 +12,13 @@ import (
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
-const ECDSASignatureSize = 64
+const (
+	ECDSASignatureSize = 64
+	ECDSAKeySize       = 65
+)
 
+// VerifyECDSA accepts signature in [R||S] 64 gyte format and uncompressed public key in 64 bytes format
+// (without leading 0x04).
 func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) error {
 	if targetPublicKey == "" {
 		return nil
@@ -33,12 +38,11 @@ func VerifyECDSA(hexSignature string, hexHash string, targetPublicKey string) er
 		return sdkerrors.Wrap(ErrInvalidSignature, "invalid ECDSA signature format")
 	}
 
-	targetKeyBytes, err := hexutil.Decode(targetPublicKey)
-	if err != nil {
-		return sdkerrors.Wrapf(ErrInvalidKey, "invalid ECDSA target key format %v", err)
-	}
+	var targetKey [ECDSAKeySize]byte
+	targetKey[0] = 4
+	copy(targetKey[1:], (hexutil.MustDecode(targetPublicKey))[:])
 
-	if !crypto.VerifySignature(targetKeyBytes, rootBytes, sigBytes[:ECDSASignatureSize]) {
+	if !crypto.VerifySignature(targetKey[:], rootBytes, sigBytes[:ECDSASignatureSize]) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "signed ECDSA key does not match")
 	}
 
