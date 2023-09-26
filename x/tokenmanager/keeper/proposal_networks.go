@@ -82,104 +82,78 @@ func (k Keeper) HandleRemoveNetworkProposal(ctx sdk.Context, proposal *types.Rem
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	params := k.GetParams(ctx)
-
-	networks := make([]*types.Network, 0, len(params.Networks)-1)
-	for _, network := range params.Networks {
-		if network.Name != proposal.Chain {
-			networks = append(networks, network)
-		}
-	}
-
-	params.Networks = networks
-	k.SetParams(ctx, params)
+	k.RemoveNetwork(ctx, proposal.Chain)
 	return nil
 }
 
 func (k Keeper) HandleAddFeeTokenProposal(ctx sdk.Context, proposal *types.AddFeeTokenProposal) error {
-	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+	network, ok := k.GetNetwork(ctx, proposal.Chain)
+	if !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	params := k.GetParams(ctx)
-	for _, network := range params.Networks {
-		if network.Name == proposal.Chain {
-			feeparams := network.GetFeeParams()
-			if feeparams == nil {
-				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
-			}
-
-			feeparams.SetFeeToken(&proposal.Token)
-			break
-		}
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
 	}
+
+	feeparams.SetFeeToken(&proposal.Token)
+	network.SetFeeParams(feeparams)
+	k.SetNetwork(ctx, network)
 
 	if err := k.rarimo.CreateAddFeeTokenOperation(ctx, proposal.Token, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
-	k.SetParams(ctx, params)
 	return nil
 }
 
 func (k Keeper) HandleUpdateFeeTokenProposal(ctx sdk.Context, proposal *types.UpdateFeeTokenProposal) error {
-	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+	network, ok := k.GetNetwork(ctx, proposal.Chain)
+	if !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	params := k.GetParams(ctx)
-
-	for _, network := range params.Networks {
-		if network.Name == proposal.Chain {
-			feeparams := network.GetFeeParams()
-			if feeparams == nil {
-				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
-			}
-
-			feeparams.SetFeeToken(&proposal.Token)
-			break
-		}
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
 	}
+
+	feeparams.SetFeeToken(&proposal.Token)
+	network.SetFeeParams(feeparams)
+	k.SetNetwork(ctx, network)
 
 	if err := k.rarimo.CreateUpdateFeeTokenOperation(ctx, proposal.Token, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
-	k.SetParams(ctx, params)
 	return nil
 }
 
 func (k Keeper) HandleRemoveFeeTokenProposal(ctx sdk.Context, proposal *types.RemoveFeeTokenProposal) error {
-	if _, ok := k.GetNetwork(ctx, proposal.Chain); !ok {
+	network, ok := k.GetNetwork(ctx, proposal.Chain)
+	if !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
 	}
 
-	params := k.GetParams(ctx)
-
-	var feeTokenToRemove *types.FeeToken
-
-	for _, network := range params.Networks {
-		if network.Name == proposal.Chain {
-			feeparams := network.GetFeeParams()
-			if feeparams == nil {
-				return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
-			}
-
-			feeTokenToRemove = feeparams.GetFeeToken(proposal.Contract)
-			feeparams.RemoveFeeToken(feeTokenToRemove)
-			break
-		}
+	feeparams := network.GetFeeParams()
+	if feeparams == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee params not found")
 	}
 
+	feeTokenToRemove := feeparams.GetFeeToken(proposal.Contract)
 	if feeTokenToRemove == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "fee token not found")
 	}
+
+	feeparams.RemoveFeeToken(feeTokenToRemove)
+	network.SetFeeParams(feeparams)
+	k.SetNetwork(ctx, network)
 
 	if err := k.rarimo.CreateRemoveFeeTokenOperation(ctx, *feeTokenToRemove, proposal.Chain, proposal.Nonce); err != nil {
 		return sdkerrors.Wrap(err, "failed to create operation")
 	}
 
-	k.SetParams(ctx, params)
 	return nil
 }
 
