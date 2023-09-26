@@ -16,6 +16,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateConfirmation{}, "rarimocore/CreateConfirmation", nil)
 	cdc.RegisterConcrete(&MsgCreateChangePartiesOp{}, "rarimocore/CreateChangeParties", nil)
 	cdc.RegisterConcrete(&MsgSetupInitial{}, "rarimocore/SetupInitial", nil)
+	cdc.RegisterConcrete(&MsgResign{}, "rarimocore/Resign", nil)
 	cdc.RegisterConcrete(&Transfer{}, "rarimocore/Transfer", nil)
 	cdc.RegisterConcrete(&ChangeParties{}, "rarimocore/ChangeParties", nil)
 	cdc.RegisterConcrete(&FeeTokenManagement{}, "rarimocore/FeeTokenManagement", nil)
@@ -47,6 +48,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetupInitial{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgResign{},
 	)
 	registry.RegisterImplementations(
 		(*govv1beta1.Content)(nil),
