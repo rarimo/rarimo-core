@@ -27,6 +27,8 @@ In such case operation can be already approved.
 - Identity transfer: `HASH(source contract, id, state hash, state timestamps, GIST hash, GIST timestamps, replaced state hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
 
+To add new operation check the following [manual](../../docs/common/core/001-adding-operation.md). 
+
 ----
 
 ## State
