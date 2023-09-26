@@ -34,6 +34,7 @@ In such case operation can be already approved.
 ### Params
 
 **Params** - defines all TSS information: parties, threshold, pub key, etc.
+Note that public keys (parties and global) should be in uncompressed form without leading 0x04 (64 bytes format).
 
 Definition:
   ```protobuf
