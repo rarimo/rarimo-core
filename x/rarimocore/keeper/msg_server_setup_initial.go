@@ -24,6 +24,7 @@ func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitia
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not set up: params are already initialized")
 	}
 
+	// Flag indicates that all parties were initialized
 	isFullyInitialized := true
 
 	for _, party := range params.Parties {
@@ -38,8 +39,10 @@ func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitia
 
 	if !isFullyInitialized {
 		k.SetParams(ctx, params)
+		return &types.MsgSetupInitialResponse{}, nil
 	}
 
+	// If all parties was initialized -> setting up new public key and thresold.
 	if params.KeyECDSA = getThresholdPublicKey(params.Parties); params.KeyECDSA != "" {
 		params.IsUpdateRequired = false
 		params.Threshold = uint64(crypto.GetThreshold(getActivePartiesAmount(params.Parties)))

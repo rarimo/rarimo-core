@@ -17,6 +17,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "can not stake for oracle: invalid status in existing entry")
 	}
 
+	// For recalculating of stake summary. Will be default values if oracle does not exist yet.
 	existingDelegations := make([]types.Delegation, 0, 1)
 	existingStake := sdk.ZeroInt()
 
@@ -41,9 +42,13 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 
 	// REQUIRES: validated account
 	payerAddr, _ := sdk.AccAddressFromBech32(msg.From)
+
+	// Transferring tokens to module account
 	if err := k.bank.SendCoins(ctx, payerAddr, moduleAccount.GetAddress(), sdk.NewCoins(sdk.NewCoin(params.StakeDenom, amount))); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error withdrawing coins: %s", err.Error())
 	}
+
+	// Calculation of total stake and check it stake is enough to be active.
 
 	totalStake := existingStake.Add(amount)
 	resultStatus := types.OracleStatus_Active
@@ -54,6 +59,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		resultStatus = types.OracleStatus_Inactive
 	}
 
+	// Iterating over existing delegators to check if wee need to increment the existing or add new ones to the list.
 	delegatorExist := false
 	for i, d := range existingDelegations {
 		if d.Delegator == msg.From {

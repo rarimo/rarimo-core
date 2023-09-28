@@ -7,7 +7,7 @@ import (
 
 const EmptyHashStr = "0x"
 
-// Treap implements dynamic Merkle tree.
+// Treap implements dynamic Merkle tree using treap data structure.
 // Proof of concept: https://github.com/olegfomenko/go-treap-merkle
 type Treap struct {
 	Keeper
