@@ -24,6 +24,7 @@ func (k msgServer) SetIdentityContractAddress(goCtx context.Context, msg *types.
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
+	// IdentityContractAddress will be set only once
 	if decoded, err := hexutil.Decode(params.IdentityContractAddress); err != nil || len(decoded) == 0 {
 		params.IdentityContractAddress = msg.Address
 		k.SetParams(ctx, params)

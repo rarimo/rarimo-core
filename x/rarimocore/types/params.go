@@ -7,10 +7,6 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-const (
-	ECDSAPublicKeySize = 65
-)
-
 // NewParams creates a new Params instance
 func NewParams(keyECDSA string) Params {
 	return Params{
@@ -59,13 +55,8 @@ func validateKeyECDSA(i interface{}) error {
 		return nil
 	}
 
-	keyBytes, err := hexutil.Decode(v)
-	if err != nil {
+	if _, err := hexutil.Decode(v); err != nil {
 		return fmt.Errorf("invalid ECDSA key format %v", err)
-	}
-
-	if len(keyBytes) != ECDSAPublicKeySize {
-		return fmt.Errorf("invalid ECDSA key len")
 	}
 
 	return nil
