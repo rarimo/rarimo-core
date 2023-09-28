@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	v2 "gitlab.com/rarimo/rarimo-core/x/rarimocore/migrations/v3"
+	v3 "gitlab.com/rarimo/rarimo-core/x/rarimocore/migrations/v3"
 )
 
 type Migrator struct {
@@ -15,8 +15,8 @@ func NewMigrator(keeper Keeper) Migrator {
 	}
 }
 
-func (m Migrator) Migrate1to2(ctx sdk.Context) error {
-	if err := v2.MigrateStore(ctx, m.keeper.storeKey, m.keeper.cdc); err != nil {
+func (m Migrator) Migrate2to3(ctx sdk.Context) error {
+	if err := v3.MigrateStore(ctx, m.keeper.storeKey, m.keeper.cdc); err != nil {
 		return err
 	}
 
