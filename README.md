@@ -1,5 +1,7 @@
 # Rarimo core
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 - Repo: [Rarimo Core](https://gitlab.com/rarimo/rarimo-core)
 
 **rarimocore** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
