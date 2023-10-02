@@ -122,3 +122,13 @@ To run in full mode:
 ```bash
 evm-identity-saver-svc run state-update-all
 ```
+
+## Staking
+
+To stake for the Oracle use the following CLI command: 
+
+```shell
+export ACCOUNT_HOME=/path/to/your/account/prv/data
+export ACCOUNT_ADDR=rarimo...
+rarimo-core tx oraclemanager stake [Network name, example: Solana] [Stake amount (urmo), example: 1000000] --chain-id rarimo --fees 0urmo --from=$ACCOUNT_ADDR --home=$ACCOUNT_HOME --keyring-backend=test
+```
