@@ -28,8 +28,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // GetCode returns the contract code at the given address and block number.

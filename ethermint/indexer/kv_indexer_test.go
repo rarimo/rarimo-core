@@ -8,17 +8,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	evmenc "github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/indexer"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmlog "github.com/tendermint/tendermint/libs/log"
 	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	evmenc "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/indexer"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func TestKVIndexer(t *testing.T) {

@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/rarimo/rarimo-core/x/tokenmanager/types"
 	"github.com/tendermint/tendermint/libs/log"
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 type (

@@ -7,7 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "identity/params.proto";
 import "identity/state.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/identity/types";
+option go_package = "github.com/rarimo/rarimo-core/x/identity/types";
 
 // Query defines the gRPC querier service.
 service Query {

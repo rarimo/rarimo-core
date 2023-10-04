@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) Resign(goCtx context.Context, msg *types.MsgResign) (*types.MsgResignResponse, error) {

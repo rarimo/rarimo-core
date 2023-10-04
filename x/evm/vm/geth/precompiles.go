@@ -21,7 +21,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
 
-	evm "gitlab.com/rarimo/rarimo-core/x/evm/vm"
+	evm "github.com/rarimo/rarimo-core/x/evm/vm"
 )
 
 // GetPrecompiles returns all the precompiled contracts defined given the

@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	tokentypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 const (

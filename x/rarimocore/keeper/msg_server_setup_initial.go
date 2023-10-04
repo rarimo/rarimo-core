@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) SetupInitial(goCtx context.Context, msg *types.MsgSetupInitial) (*types.MsgSetupInitialResponse, error) {

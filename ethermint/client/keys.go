@@ -21,10 +21,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/keys"
+	clientkeys "github.com/rarimo/rarimo-core/ethermint/client/keys"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
 	"github.com/spf13/cobra"
 	"github.com/tendermint/tendermint/libs/cli"
-	clientkeys "gitlab.com/rarimo/rarimo-core/ethermint/client/keys"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 )

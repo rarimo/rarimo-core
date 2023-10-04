@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/identity/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
+	"github.com/rarimo/rarimo-core/x/identity/keeper"
+	"github.com/rarimo/rarimo-core/x/identity/types"
 )
 
 // NewHandler ...

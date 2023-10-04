@@ -20,8 +20,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/keeper"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 // InitGenesis initializes genesis state based on exported genesis

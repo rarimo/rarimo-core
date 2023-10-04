@@ -6,7 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 var upgradeVerifiers = map[types.NetworkType]func(details *types.ContractUpgradeDetails) error{

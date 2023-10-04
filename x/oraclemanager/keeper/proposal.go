@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 func (k Keeper) OracleUnfreezeProposal(ctx sdk.Context, proposal *types.OracleUnfreezeProposal) error {

@@ -22,8 +22,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
 	"github.com/spf13/cobra"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
 	"golang.org/x/net/netutil"
 
 	sdkserver "github.com/cosmos/cosmos-sdk/server"

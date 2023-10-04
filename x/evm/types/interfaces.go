@@ -26,7 +26,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 // AccountKeeper defines the expected account keeper interface

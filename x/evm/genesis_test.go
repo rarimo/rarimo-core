@@ -7,13 +7,13 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	etherminttypes "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	etherminttypes "github.com/rarimo/rarimo-core/ethermint/types"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite *EvmTestSuite) TestInitGenesis() {

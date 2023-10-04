@@ -33,12 +33,12 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
+	ethsecp256k12 "github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // Accounts returns the list of accounts available to this node.

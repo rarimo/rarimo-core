@@ -3,7 +3,7 @@ package rarimo.rarimocore.oraclemanager;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+option go_package = "github.com/rarimo/rarimo-core/x/oraclemanager/types";
 
 enum OracleStatus {
   Inactive = 0;

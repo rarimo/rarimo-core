@@ -20,8 +20,8 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
-	"gitlab.com/rarimo/rarimo-core/app/params"
-	"gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/app/params"
+	"github.com/rarimo/rarimo-core/ethermint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	txTypes "github.com/cosmos/cosmos-sdk/types/tx"

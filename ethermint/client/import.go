@@ -18,9 +18,9 @@ package client
 import (
 	"bufio"
 
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
 	"github.com/spf13/cobra"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/input"

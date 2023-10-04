@@ -5,7 +5,7 @@ import "cosmos/msg/v1/msg.proto";
 import "ethermint/feemarket/v1/feemarket.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/feemarket/types";
+option go_package = "github.com/rarimo/rarimo-core/x/feemarket/types";
 
 // Msg defines the erc20 Msg service.
 service Msg {

@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/app"
-	cmdcfg "gitlab.com/rarimo/rarimo-core/cmd/config"
+	"github.com/rarimo/rarimo-core/app"
+	cmdcfg "github.com/rarimo/rarimo-core/cmd/config"
 )
 
 const EnvPrefix = "RARIMOCORE"

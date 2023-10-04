@@ -29,8 +29,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"

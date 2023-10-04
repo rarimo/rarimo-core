@@ -4,7 +4,7 @@ RUN apk add build-base git
 
 ARG CI_JOB_TOKEN
 
-WORKDIR /go/src/gitlab.com/rarimo/rarimo-core
+WORKDIR /go/src/github.com/rarimo/rarimo-core
 
 ENV GO111MODULE="on"
 ENV CGO_ENABLED=1
@@ -23,7 +23,7 @@ COPY . .
 
 RUN go mod vendor
 
-RUN go build -o /usr/local/bin/rarimo-core gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
+RUN go build -o /usr/local/bin/rarimo-core github.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 
 

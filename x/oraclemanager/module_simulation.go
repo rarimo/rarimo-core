@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"gitlab.com/rarimo/rarimo-core/testutil/sample"
-	oraclemanagersimulation "gitlab.com/rarimo/rarimo-core/x/oraclemanager/simulation"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/testutil/sample"
+	oraclemanagersimulation "github.com/rarimo/rarimo-core/x/oraclemanager/simulation"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 // avoid unused import issue

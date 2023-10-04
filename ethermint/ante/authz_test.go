@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/rarimo/rarimo-core/ethermint/ante"
 	abci "github.com/tendermint/tendermint/abci/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -13,12 +13,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	utiltx "gitlab.com/rarimo/rarimo-core/ethermint/testutil/tx"
+	utiltx "github.com/rarimo/rarimo-core/ethermint/testutil/tx"
 
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite *AnteTestSuite) TestAuthzLimiterDecorator() {

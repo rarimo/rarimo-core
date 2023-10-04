@@ -34,9 +34,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/client/cli"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/client/cli"
+	"github.com/rarimo/rarimo-core/x/feemarket/keeper"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 var (

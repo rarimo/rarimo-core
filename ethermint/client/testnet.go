@@ -26,11 +26,11 @@ import (
 	"path/filepath"
 
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
-	network2 "gitlab.com/rarimo/rarimo-core/ethermint/testutil/network"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	srvflags "github.com/rarimo/rarimo-core/ethermint/server/flags"
+	network2 "github.com/rarimo/rarimo-core/ethermint/testutil/network"
+	types2 "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/spf13/cobra"
 	tmconfig "github.com/tendermint/tendermint/config"
@@ -58,7 +58,7 @@ import (
 	mintypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var (

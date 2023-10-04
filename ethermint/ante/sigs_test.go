@@ -3,10 +3,10 @@ package ante_test
 import (
 	"math/big"
 
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestSignatures() {

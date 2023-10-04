@@ -25,7 +25,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
+	types2 "github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -38,8 +38,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/tendermint/tendermint/proto/tendermint/crypto"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 type txGasAndReward struct {

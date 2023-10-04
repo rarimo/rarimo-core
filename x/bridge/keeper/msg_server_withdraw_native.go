@@ -6,9 +6,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	rarimocoretypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawNative) (*types.MsgWithdrawNativeResponse, error) {

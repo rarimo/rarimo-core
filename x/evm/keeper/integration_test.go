@@ -13,19 +13,19 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	"github.com/rarimo/rarimo-core/ethermint/testutil"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var _ = Describe("Feemarket", func() {

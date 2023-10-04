@@ -22,10 +22,10 @@ import (
 	"math/big"
 
 	"github.com/pkg/errors"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/backend"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"github.com/tendermint/tendermint/libs/log"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"

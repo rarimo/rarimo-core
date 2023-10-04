@@ -6,7 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "github.com/rarimo/go-merkle"
-	tokenmanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	tokenmanagermoduletypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 // ContractUpgradeContent implements the Content interface provided by go-merkle and represents the content stored in the tree.

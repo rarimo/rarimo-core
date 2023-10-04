@@ -18,8 +18,8 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 	abci "github.com/tendermint/tendermint/abci/types"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"

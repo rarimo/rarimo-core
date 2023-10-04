@@ -28,10 +28,10 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/backend"
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 
 	stderrors "github.com/pkg/errors"
 

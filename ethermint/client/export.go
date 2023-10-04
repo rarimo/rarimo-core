@@ -25,9 +25,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
+	ethsecp256k12 "github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
 	"github.com/spf13/cobra"
-	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 )

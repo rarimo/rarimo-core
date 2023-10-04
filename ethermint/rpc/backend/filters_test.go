@@ -5,10 +5,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	ethrpc "github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	ethrpc "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestGetLogs() {

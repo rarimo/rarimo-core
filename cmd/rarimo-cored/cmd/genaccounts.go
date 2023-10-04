@@ -17,9 +17,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/ethereum/go-ethereum/common"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/spf13/cobra"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 const (

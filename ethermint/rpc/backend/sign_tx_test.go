@@ -10,10 +10,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	goethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	mocks2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	mocks2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"google.golang.org/grpc/metadata"
 )
 

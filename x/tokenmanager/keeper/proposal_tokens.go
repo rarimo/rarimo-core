@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k Keeper) HandleUpdateTokenItemProposal(ctx sdk.Context, proposal *types.UpdateTokenItemProposal) error {

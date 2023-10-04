@@ -7,7 +7,7 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"gitlab.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/app"
 )
 
 // Commit commits a block at a given time. Reminder: At the end of each

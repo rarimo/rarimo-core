@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 var (

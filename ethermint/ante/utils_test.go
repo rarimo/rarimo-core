@@ -12,8 +12,8 @@ import (
 	"math/big"
 	"time"
 
-	ante2 "gitlab.com/rarimo/rarimo-core/ethermint/ante"
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	ante2 "github.com/rarimo/rarimo-core/ethermint/ante"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/stretchr/testify/suite"
@@ -22,9 +22,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
-	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
-	utiltx "gitlab.com/rarimo/rarimo-core/ethermint/testutil/tx"
+	"github.com/rarimo/rarimo-core/ethereum/eip712"
+	"github.com/rarimo/rarimo-core/ethermint/testutil"
+	utiltx "github.com/rarimo/rarimo-core/ethermint/testutil/tx"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -45,7 +45,7 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	authz "github.com/cosmos/cosmos-sdk/x/authz"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
@@ -53,11 +53,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/feegrant"
 	govtypesv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )

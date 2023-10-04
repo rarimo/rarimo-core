@@ -28,7 +28,7 @@ import (
 
 	ibckeeper "github.com/cosmos/ibc-go/v6/modules/core/keeper"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC

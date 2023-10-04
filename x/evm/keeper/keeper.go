@@ -29,12 +29,12 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
+	types2 "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/tendermint/tendermint/libs/log"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
-	evm "gitlab.com/rarimo/rarimo-core/x/evm/vm"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
+	evm "github.com/rarimo/rarimo-core/x/evm/vm"
 )
 
 // Keeper grants access to the EVM module state and implements the go-ethereum StateDB interface.

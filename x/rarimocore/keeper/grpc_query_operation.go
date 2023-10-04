@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	merkle "github.com/rarimo/go-merkle"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

@@ -25,8 +25,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	"gitlab.com/rarimo/rarimo-core/app"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/app"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var (

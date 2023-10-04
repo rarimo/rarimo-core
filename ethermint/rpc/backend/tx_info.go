@@ -26,10 +26,10 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/pkg/errors"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // GetTransactionByHash returns the Ethereum format transaction identified by Ethereum transaction hash

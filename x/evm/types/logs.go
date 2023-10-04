@@ -21,7 +21,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 )
 
 // NewTransactionLogs creates a new NewTransactionLogs instance.

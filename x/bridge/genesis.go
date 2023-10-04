@@ -2,8 +2,8 @@ package bridge
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/bridge/keeper"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

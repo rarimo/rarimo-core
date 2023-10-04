@@ -11,12 +11,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/ethereum/go-ethereum/params"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var _ DynamicFeeEVMKeeper = MockEVMKeeper{}

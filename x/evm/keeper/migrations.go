@@ -17,9 +17,9 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	v4 "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v4"
-	v5 "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v5"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	v4 "github.com/rarimo/rarimo-core/x/evm/migrations/v4"
+	v5 "github.com/rarimo/rarimo-core/x/evm/migrations/v5"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // Migrator is a struct for handling in-place store migrations.

@@ -25,11 +25,11 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 // ChainID is the EIP-155 replay-protection chain id for the current ethereum chain config.

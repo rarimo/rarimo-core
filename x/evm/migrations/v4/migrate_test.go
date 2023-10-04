@@ -3,16 +3,16 @@ package v4_test
 import (
 	"testing"
 
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
 	"github.com/stretchr/testify/require"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/app"
-	v4 "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v4"
-	v4types "gitlab.com/rarimo/rarimo-core/x/evm/migrations/v4/types"
+	"github.com/rarimo/rarimo-core/app"
+	v4 "github.com/rarimo/rarimo-core/x/evm/migrations/v4"
+	v4types "github.com/rarimo/rarimo-core/x/evm/migrations/v4/types"
 )
 
 type mockSubspace struct {

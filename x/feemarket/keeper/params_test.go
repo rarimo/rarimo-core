@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"reflect"
 
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 func (suite *KeeperTestSuite) TestSetGetParams() {

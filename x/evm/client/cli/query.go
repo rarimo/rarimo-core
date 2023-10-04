@@ -18,10 +18,10 @@ package cli
 import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"github.com/spf13/cobra"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // GetQueryCmd returns the parent command for all x/bank CLi query commands.

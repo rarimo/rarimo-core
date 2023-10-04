@@ -16,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.com/rarimo/rarimo-core/x/identity/client/cli"
-	"gitlab.com/rarimo/rarimo-core/x/identity/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
+	"github.com/rarimo/rarimo-core/x/identity/client/cli"
+	"github.com/rarimo/rarimo-core/x/identity/keeper"
+	"github.com/rarimo/rarimo-core/x/identity/types"
 )
 
 var (

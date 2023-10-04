@@ -21,7 +21,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	ethsecp256k12 "github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 )
 
 // RegisterCrypto registers all crypto dependency types with the provided Amino
