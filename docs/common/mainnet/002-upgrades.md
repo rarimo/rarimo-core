@@ -1,10 +1,23 @@
 # Mainnet upgrades
 
+## V1.0.6
+
+Core binary: (alpine-linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.6/rarimo-core>"
+
+Upgrade will perform automatically if you are using `cosmovisor` under Alpine linux.
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to use Alpine binary on your machine.
+
+Upgrade V1.0.6 introduces:
+- Adding message for operation resign by Threshold signature producers.
+- Changing of stored TSS pub-key format: removing constant 0x04 prefix.
+- Adding `admin` field in supported network BridgeParams that will contain the pub-key of the bridge admin on Solana. 
+- Some minor fixes in: several operation creation entrypoints, updating params of the supported networks, 
+
 ## V1.0.5
 
 Core binary: (alpine-linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.5/rarimo-core>"
 
-Upgrade will perform automatically if you are using cosmovisor under Alpine linux.
+Upgrade will perform automatically if you are using `cosmovisor` under Alpine linux.
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to use Alpine binary on your machine.
 
 Upgrade v1.0.5 introduces several fixes:
@@ -16,7 +29,7 @@ Upgrade v1.0.5 introduces several fixes:
 
 Core binary (linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.4/rarimo-core>"
 
-Upgrade will perform automatically if you are using cosmovisor under Alpine linux.
+Upgrade will perform automatically if you are using `cosmovisor` under Alpine linux.
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to use Alpine binary on your machine.
 
 Upgrade v1.0.4 introduces `identity` core module that is responsible for storing aggregated information about
