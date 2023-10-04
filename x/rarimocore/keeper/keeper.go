@@ -91,12 +91,9 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
-	if op, ok := k.GetOperation(ctx, operation.Index); ok {
-		if op.Status != types.OpStatus_SIGNED {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be signed")
-		}
-
-		operation.Details = op.Details
+	// Mostly impossible case cause operation index depends on block height.
+	if _, ok := k.GetOperation(ctx, operation.Index); ok {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can not recreate operation with type: %s", operation.OperationType.String())
 	}
 
 	k.SetOperation(
@@ -109,6 +106,7 @@ func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 	))
 
+	// Operation is auto-approved (cause created by proposal)
 	if err := k.ApproveOperation(ctx, operation); err != nil {
 		return sdkerrors.Wrap(err, "failed to auto-approve operation")
 	}
@@ -134,12 +132,9 @@ func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.Fee
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
-	if op, ok := k.GetOperation(ctx, index); ok {
-		if op.Status != types.OpStatus_SIGNED {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be signed")
-		}
-
-		operation.Details = op.Details
+	// Mostly impossible case cause operation index depends on block height.
+	if _, ok := k.GetOperation(ctx, operation.Index); ok {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can not recreate operation with type: %s", operation.OperationType.String())
 	}
 
 	k.SetOperation(
@@ -152,6 +147,7 @@ func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.Fee
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 	))
 
+	// Operation is auto-approved (cause created by proposal)
 	if err := k.ApproveOperation(ctx, operation); err != nil {
 		return sdkerrors.Wrap(err, "failed to auto-approve operation")
 	}
@@ -171,13 +167,13 @@ func (k Keeper) CreateChangePartiesOperation(ctx sdk.Context, creator string, ch
 		Index:         hexutil.Encode(content.CalculateHash()),
 		OperationType: types.OpType_CHANGE_PARTIES,
 		Details:       details,
-		Status:        types.OpStatus_APPROVED, // Auto approve
+		Status:        types.OpStatus_APPROVED, // Auto approve without event emitting
 		Creator:       creator,
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
 	if _, ok := k.GetOperation(ctx, operation.Index); ok {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "that operation can not be changed")
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can not recreate operation with type: %s", operation.OperationType.String())
 	}
 
 	k.SetOperation(
@@ -220,9 +216,10 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
+	// Only not approved operation can be changed
 	if op, ok := k.GetOperation(ctx, index); ok {
-		if op.Status != types.OpStatus_NOT_APPROVED && op.Status != types.OpStatus_SIGNED {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved or signed")
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
 		}
 
 		// Otherwise - clear votes
@@ -230,8 +227,6 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 			k.RemoveVote(ctx, vote.Index)
 			return false
 		})
-
-		operation.Details = op.Details
 	}
 
 	k.SetOperation(
@@ -245,6 +240,7 @@ func (k Keeper) CreateTransferOperation(ctx sdk.Context, creator string, transfe
 	))
 
 	if approved {
+		// Auto-approve operation if requested
 		if err := k.ApproveOperation(ctx, operation); err != nil {
 			return sdkerrors.Wrap(err, "failed to auto-approve operation")
 		}
@@ -287,6 +283,7 @@ func (k Keeper) CreateIdentityAggregatedTransferOperation(ctx sdk.Context, creat
 		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
 	))
 
+	// Operation is auto-approved (cause created by EndBlock)
 	if err := k.ApproveOperation(ctx, operation); err != nil {
 		return "", sdkerrors.Wrap(err, "failed to auto-approve operation")
 	}
@@ -325,9 +322,10 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 		Timestamp:     uint64(ctx.BlockTime().Unix()),
 	}
 
+	// Only not approved operation can be changed
 	if op, ok := k.GetOperation(ctx, operation.Index); ok {
-		if op.Status != types.OpStatus_NOT_APPROVED && op.Status != types.OpStatus_SIGNED {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved or signed")
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
 		}
 
 		// Otherwise - clear votes
@@ -335,8 +333,6 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 			k.RemoveVote(ctx, vote.Index)
 			return false
 		})
-
-		operation.Details = op.Details
 	}
 
 	k.SetOperation(
@@ -427,4 +423,26 @@ func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint
 	}
 
 	return value.String()
+}
+
+func getPartyByAccount(account string, parties []*types.Party) *types.Party {
+	for _, party := range parties {
+		if party.Account == account {
+			return party
+		}
+	}
+
+	return nil
+}
+
+func getActivePartiesAmount(parties []*types.Party) int {
+	activePartyCount := 0
+
+	for _, party := range parties {
+		if party.Status == types.PartyStatus_Active {
+			activePartyCount++
+		}
+	}
+
+	return activePartyCount
 }

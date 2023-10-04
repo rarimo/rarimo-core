@@ -12,20 +12,20 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
+	// Only active party can unstake
 	if err := k.checkIsAnActiveParty(ctx, msg.Account); err != nil {
 		return nil, err
 	}
 
+	// Exists (non nil) cause checkIsAnActiveParty passes
 	party := getPartyByAccount(msg.Account, params.Parties)
 
-	if party == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: not found")
-	}
-
+	// Only delegator or party can unstake
 	if msg.Creator != party.Account && msg.Creator != party.Delegator {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid party account: not authorized")
 	}
 
+	// Choosing the receiver
 	receiver := party.Account
 	if party.Delegator != "" {
 		receiver = party.Delegator
@@ -35,8 +35,8 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 		return nil, err
 	}
 
+	// Removing party from parties list
 	parties := make([]*types.Party, 0)
-
 	for _, p := range params.Parties {
 		if p.Account != msg.Account {
 			parties = append(parties, p)
@@ -44,6 +44,7 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	}
 
 	params.Parties = parties
+	// Every parties list changes requires keys resharing
 	params.IsUpdateRequired = true
 	k.SetParams(ctx, params)
 
@@ -67,6 +68,7 @@ func (k Keeper) unstake(ctx sdk.Context, receiver string) error {
 		return sdkerrors.Wrap(err, "failed to get stake coin")
 	}
 
+	// Transferring tokens from module account to receiver
 	if err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddr, sdk.NewCoins(stakeCoin)); err != nil {
 		return sdkerrors.Wrapf(err, "failed to send coins from module to account, account: %s", receiver)
 	}

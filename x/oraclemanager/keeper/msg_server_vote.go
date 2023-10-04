@@ -18,6 +18,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		return nil, types.ErrOracleNotFound
 	}
 
+	// Only active oracle can vote
 	if oracle.Status != types.OracleStatus_Active {
 		return nil, types.ErrInactiveOracle
 	}
@@ -30,11 +31,13 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 		Vote: msg.Vote,
 	}
 
+	// Votes are stored in rarimocore module.
 	voteCreated, err := k.rarimo.CreateVote(ctx, vote)
 	if err != nil {
 		return nil, err
 	}
 
+	// If vote was successfully created - then we have to recalculate votes to check if results can be evaluated.
 	if voteCreated {
 		if err := k.collectVotes(ctx, msg.Operation); err != nil {
 			return nil, err
@@ -48,6 +51,7 @@ func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVo
 
 func (k Keeper) collectVotes(ctx sdk.Context, index string) error {
 	operation, _ := k.rarimo.GetOperation(ctx, index)
+	// Votes colelcting can be different for different types of operation.
 	switch operation.OperationType {
 	case rarimotypes.OpType_TRANSFER, rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
 		return k.collectOperationVotes(ctx, operation)
@@ -62,6 +66,8 @@ func (k Keeper) collectOperationVotes(ctx sdk.Context, operation rarimotypes.Ope
 	if err != nil {
 		return err
 	}
+
+	// Calculating results depending on voting power. Oracle voting power is equal to amount of staked tokens.
 
 	yesResult := sdk.ZeroInt()
 	noResult := sdk.ZeroInt()
@@ -103,6 +109,7 @@ func (k Keeper) collectOperationVotes(ctx sdk.Context, operation rarimotypes.Ope
 		k.AddToMonitorQueue(ctx, uint64(ctx.BlockHeight())+params.CheckOperationDelta, operation.Index)
 	}
 
+	// After successful quorum check - check the threshold for yes votes.
 	if sdk.NewDecFromInt(yesResult).Quo(sdk.NewDecFromInt(totalVotingPower)).GT(threshold) {
 		return k.rarimo.ApproveOperation(ctx, operation)
 	}

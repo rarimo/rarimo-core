@@ -16,6 +16,8 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 
 	creatorAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
+	// Checking for operation validness
+
 	op, found := k.rarimocoreKeeper.GetOperation(ctx, msg.Origin)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation not found (%s)", msg.Origin)
@@ -28,6 +30,8 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 	if op.Status != rarimocoretypes.OpStatus_SIGNED {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "operation is not signed (%s)", msg.Origin)
 	}
+
+	// Checking that current operation has not been executed yet
 
 	if _, found := k.GetHash(ctx, msg.Origin); found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "transfer already withdrawn (%s)", msg.Origin)
@@ -54,6 +58,7 @@ func (k msgServer) WithdrawNative(goCtx context.Context, msg *types.MsgWithdrawN
 		return nil, sdkerrors.Wrapf(err, "failed to parse receiver address (%s)", transfer.Receiver)
 	}
 
+	// Minting native token to the receiver
 	err = k.bankKeeper.MintTokens(ctx, receiverAddress, sdk.Coins{{
 		Amount: amount,
 		Denom:  params.GetWithdrawDenom(),

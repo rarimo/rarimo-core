@@ -9,16 +9,7 @@ import (
 func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.UnfreezeSignerPartyProposal) error {
 	params := k.GetParams(ctx)
 
-	var frozenSignerParty *types.Party
-
-	for _, party := range params.Parties {
-		if party.Account != proposal.Account {
-			continue
-		}
-
-		frozenSignerParty = party
-	}
-
+	frozenSignerParty := getPartyByAccount(proposal.Account, params.Parties)
 	if frozenSignerParty == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid party account: not found")
 	}
@@ -27,6 +18,7 @@ func (k Keeper) UnfreezeSignerPartyProposal(ctx sdk.Context, proposal *types.Unf
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid party status: %s, party not frozen", frozenSignerParty.Status)
 	}
 
+	// Unfreezing resets violations and sets up status as Inactive. Keys resharing is required.
 	frozenSignerParty.Status = types.PartyStatus_Inactive
 	frozenSignerParty.ViolationsCount = 0
 	frozenSignerParty.FreezeEndBlock = 0
@@ -62,6 +54,7 @@ func (k Keeper) SlashProposal(ctx sdk.Context, proposal *types.SlashProposal) er
 func (k Keeper) DropPartiesProposal(ctx sdk.Context, _ *types.DropPartiesProposal) error {
 	params := k.GetParams(ctx)
 
+	// Unstaking for all unslashed parties
 	for _, party := range params.Parties {
 		if party.Status != types.PartyStatus_Slashed {
 			receiver := party.Account

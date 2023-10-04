@@ -11,16 +11,19 @@ import (
 func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateViolationReport) (*types.MsgCreateViolationReportResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Only Active party can submit report
 	if err := t.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
 		return nil, sdkerrors.Wrap(err, "only active party can report the violation")
 	}
 
+	// Only Active party can be reported
 	if err := t.checkIsAnActiveParty(ctx, msg.Offender); err != nil {
 		return nil, sdkerrors.Wrap(err, "only active party can be reported")
 	}
 
 	index := types.NewViolationReportIndex(msg.SessionId, msg.Offender, msg.Creator, msg.ViolationType)
 
+	// Report can be submitted only once for same `sessionId|offender|creator|violationType`
 	if _, found := t.GetViolationReport(ctx, index); found {
 		return nil, sdkerrors.Wrapf(
 			sdkerrors.ErrConflict,
@@ -37,6 +40,8 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		Msg:   msg.Msg,
 	})
 
+	// Iterating over existing reports for our sessionId|offender to calculate violations count.
+
 	params := t.GetParams(ctx)
 	reports := make(map[string]struct{})
 
@@ -47,11 +52,14 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 
 	party := getPartyByAccount(msg.Offender, params.Parties)
 
+	// Check if party violations count was already incremented for that session.
 	alreadyIncremented := false
 	for _, sessionReported := range party.ReportedSessions {
 		alreadyIncremented = alreadyIncremented || (sessionReported == msg.SessionId)
 	}
 
+	// If party was not incremented then increment.
+	// If violations reaches threshold then party becomes frozen.
 	if !alreadyIncremented {
 		if uint64(len(reports)) >= params.Threshold {
 			party.ViolationsCount++
@@ -80,14 +88,4 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 	))
 
 	return &types.MsgCreateViolationReportResponse{}, nil
-}
-
-func getPartyByAccount(account string, parties []*types.Party) *types.Party {
-	for _, party := range parties {
-		if party.Account == account {
-			return party
-		}
-	}
-
-	return nil
 }
