@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	eth "github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarimo/go-merkle"
+	merkle "github.com/rarimo/go-merkle"
 )
 
 // IdentityDefaultTransferContent implements the Content interface provided by go-merkle and represents the content stored in the tree.

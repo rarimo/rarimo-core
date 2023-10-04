@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	merkle "gitlab.com/rarimo/go-merkle"
+	merkle "github.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
