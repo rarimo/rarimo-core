@@ -25,6 +25,7 @@ require (
 	github.com/onsi/gomega v1.11.0
 	github.com/pkg/errors v0.9.1
 	github.com/rakyll/statik v0.1.7
+	github.com/rarimo/go-merkle v0.0.0-20231004122345-36fa49031c66
 	github.com/rs/cors v1.9.0
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/cobra v1.7.0
@@ -36,7 +37,6 @@ require (
 	github.com/tidwall/gjson v1.14.4
 	github.com/tidwall/sjson v1.2.5
 	github.com/tyler-smith/go-bip39 v1.1.0
-	gitlab.com/rarimo/go-merkle v0.0.0-20230724075915-b549d3430709
 	golang.org/x/net v0.15.0
 	golang.org/x/text v0.13.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d
@@ -202,7 +202,7 @@ require (
 replace (
 	github.com/btcsuite/btcd => github.com/btcsuite/btcd v0.22.0-beta
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
-	github.com/cosmos/cosmos-sdk => gitlab.com/rarimo/cosmos-sdk v0.46.7-rc.9
+	github.com/cosmos/cosmos-sdk => github.com/rarimo/cosmos-sdk v0.46.7
 	github.com/cosmos/iavl => github.com/cosmos/iavl v0.19.4
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/tendermint/tendermint => github.com/tendermint/tendermint v0.34.24
