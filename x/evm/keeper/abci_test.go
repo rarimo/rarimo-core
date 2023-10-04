@@ -1,8 +1,8 @@
 package keeper_test
 
 import (
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/tendermint/tendermint/abci/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite *KeeperTestSuite) TestEndBlock() {

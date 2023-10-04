@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
+	"github.com/rarimo/rarimo-core/x/identity/types"
 )
 
 const EmptyHashStr = "0x"

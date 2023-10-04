@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/pkg/errors"
-	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
+	"github.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 // SetProposal set a specific proposal in the store from its id

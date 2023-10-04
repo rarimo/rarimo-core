@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 )
 
 func BenchmarkEthSecp256k1Algo_Derive(b *testing.B) {

@@ -3,8 +3,8 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	rarimocoretypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagertypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 type RarimocoreKeeper interface {

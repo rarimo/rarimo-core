@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // SetVote set a specific deposit in the store from its index

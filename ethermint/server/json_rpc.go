@@ -20,10 +20,10 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	ethmintrpc2 "github.com/rarimo/rarimo-core/ethermint/rpc"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/rs/cors"
-	ethmintrpc2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"

@@ -8,7 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
 )
 
 var (

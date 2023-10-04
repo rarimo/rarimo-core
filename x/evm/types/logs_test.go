@@ -3,8 +3,8 @@ package types
 import (
 	"testing"
 
+	"github.com/rarimo/rarimo-core/ethermint/tests"
 	"github.com/stretchr/testify/require"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	"github.com/ethereum/go-ethereum/common"
 )

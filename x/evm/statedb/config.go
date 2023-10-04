@@ -20,7 +20,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/params"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // TxConfig encapulates the readonly information of current tx for `StateDB`.

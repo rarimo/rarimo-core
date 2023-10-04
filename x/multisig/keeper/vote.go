@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
+	"github.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 // SetVote set a specific vote in the store from its proposal id and voter

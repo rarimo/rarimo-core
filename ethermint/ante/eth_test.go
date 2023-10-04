@@ -5,13 +5,13 @@ import (
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
+	"github.com/rarimo/rarimo-core/ethermint/ante"
 
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )

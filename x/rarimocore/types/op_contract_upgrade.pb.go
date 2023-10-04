@@ -8,7 +8,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/codec/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
-	types "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	types "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 	io "io"
 	math "math"
 	math_bits "math/bits"

@@ -9,9 +9,9 @@ import (
 	"math/big"
 
 	sdkmath "cosmossdk.io/math"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -19,11 +19,11 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	ethlogger "github.com/ethereum/go-ethereum/eth/tracers/logger"
 	ethparams "github.com/ethereum/go-ethereum/params"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // Not valid Ethereum address

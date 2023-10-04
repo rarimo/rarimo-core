@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	rarimocoremoduletypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

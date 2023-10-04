@@ -1,6 +1,6 @@
 FROM golang:1.20-alpine as buildbase
 
-WORKDIR /go/src/gitlab.com/rarimo/rarimo-core
+WORKDIR /go/src/github.com/rarimo/rarimo-core
 COPY vendor .
 COPY . .
 
@@ -10,7 +10,7 @@ ENV GO111MODULE="on"
 ENV CGO_ENABLED=1
 ENV GOOS="linux"
 
-RUN go build -o /usr/local/bin/rarimo-core gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
+RUN go build -o /usr/local/bin/rarimo-core github.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 ###
 

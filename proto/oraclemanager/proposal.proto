@@ -5,7 +5,7 @@ import "oraclemanager/oracle.proto";
 import "gogoproto/gogo.proto";
 import "oraclemanager/params.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types";
+option go_package = "github.com/rarimo/rarimo-core/x/oraclemanager/types";
 
 message OracleUnfreezeProposal {
   string title = 1;

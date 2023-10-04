@@ -4,8 +4,8 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
+	rarimotypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {

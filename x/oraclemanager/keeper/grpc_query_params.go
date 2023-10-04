@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

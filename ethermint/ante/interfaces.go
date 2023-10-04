@@ -26,10 +26,10 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/ethereum/go-ethereum/params"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	evm "gitlab.com/rarimo/rarimo-core/x/evm/vm"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	evm "github.com/rarimo/rarimo-core/x/evm/vm"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 // DynamicFeeEVMKeeper is a subset of EVMKeeper interface that supports dynamic fee checker

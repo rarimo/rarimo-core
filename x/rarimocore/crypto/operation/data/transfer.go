@@ -3,10 +3,10 @@ package data
 import (
 	"bytes"
 
-	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	tokentypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 // TransferData defines the token transfer operation - from one network to another with full token metadata

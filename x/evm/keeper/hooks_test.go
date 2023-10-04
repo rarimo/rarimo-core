@@ -12,9 +12,9 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // LogRecordHook records all the logs

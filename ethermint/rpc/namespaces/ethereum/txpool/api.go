@@ -16,8 +16,8 @@
 package txpool
 
 import (
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"github.com/tendermint/tendermint/libs/log"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )

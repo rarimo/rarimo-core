@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/indexer"
+	mocks2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
 	dbm "github.com/tendermint/tm-db"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/indexer"
-	mocks2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -25,8 +25,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
-	"gitlab.com/rarimo/rarimo-core/app"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/app"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 type BackendTestSuite struct {

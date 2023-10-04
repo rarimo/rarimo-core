@@ -20,9 +20,9 @@ import (
 	"os"
 	"path"
 
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/tendermint/tendermint/libs/cli"
 

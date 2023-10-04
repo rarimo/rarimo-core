@@ -25,8 +25,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 // QueryClient defines a gRPC Client used for:

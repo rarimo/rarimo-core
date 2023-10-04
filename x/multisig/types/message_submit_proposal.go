@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/multisig/tx"
+	"github.com/rarimo/rarimo-core/x/multisig/tx"
 )
 
 const (

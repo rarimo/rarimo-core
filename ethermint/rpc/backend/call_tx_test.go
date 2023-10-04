@@ -9,10 +9,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/rlp"
-	mocks2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	mocks2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"google.golang.org/grpc/metadata"
 )
 

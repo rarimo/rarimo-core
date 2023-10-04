@@ -2,8 +2,8 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
-	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/identity/types"
+	rarimocoremoduletypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k Keeper) EndBlocker(ctx sdk.Context) {

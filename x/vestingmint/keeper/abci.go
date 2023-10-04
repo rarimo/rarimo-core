@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 func (k Keeper) EndBlocker(ctx sdk.Context) {

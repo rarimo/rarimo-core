@@ -5,8 +5,8 @@ package keeper_test
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	evmkeeper "gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmkeeper "github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 type mockSubspace struct {

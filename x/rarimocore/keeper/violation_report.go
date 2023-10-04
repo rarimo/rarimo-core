@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // SetViolationReport set a violation report in the store from its index

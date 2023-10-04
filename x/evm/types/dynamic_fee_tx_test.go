@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	sdkmath "cosmossdk.io/math"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"

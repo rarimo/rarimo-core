@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
 )
 
 // SetHash set a specific hash in the store from its index

@@ -6,10 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
-	operationorigin "gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
-	rarimocoretypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
+	operationorigin "github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
+	rarimocoretypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagertypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNative) (*types.MsgDepositNativeResponse, error) {

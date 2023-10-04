@@ -23,8 +23,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // EVMConfig creates the EVMConfig based on current state

@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
+	rarimotypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k Keeper) AddToMonitorQueue(ctx sdk.Context, block uint64, operationId string) {

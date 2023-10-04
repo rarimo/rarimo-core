@@ -11,7 +11,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
+	"github.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 type (

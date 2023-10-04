@@ -9,16 +9,16 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmkeeper "gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
+	evmkeeper "github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/ethash"

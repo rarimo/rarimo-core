@@ -20,8 +20,8 @@ import (
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 // PublicAPI is the eth_ prefixed set of APIs in the Web3 JSON-RPC spec.

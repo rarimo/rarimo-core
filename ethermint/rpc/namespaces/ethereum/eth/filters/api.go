@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	types2 "github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"github.com/tendermint/tendermint/libs/log"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
 	coretypes "github.com/tendermint/tendermint/rpc/core/types"
 	rpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
@@ -34,7 +34,7 @@ import (
 	"github.com/ethereum/go-ethereum/eth/filters"
 	"github.com/ethereum/go-ethereum/rpc"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // FilterAPI gathers

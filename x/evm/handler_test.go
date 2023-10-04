@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/x/evm/keeper"
 
 	sdkmath "cosmossdk.io/math"
 	"github.com/gogo/protobuf/proto"
@@ -24,7 +24,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -39,10 +39,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/x/evm"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/x/evm"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

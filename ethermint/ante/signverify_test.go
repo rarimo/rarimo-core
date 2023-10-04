@@ -3,12 +3,12 @@ package ante_test
 import (
 	"math/big"
 
-	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	"github.com/rarimo/rarimo-core/ethermint/ante"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestEthSigVerificationDecorator() {

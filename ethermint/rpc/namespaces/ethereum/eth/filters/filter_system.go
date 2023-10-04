@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/ethereum/pubsub"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/ethereum/pubsub"
 
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	"github.com/tendermint/tendermint/libs/log"
@@ -38,7 +38,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var (

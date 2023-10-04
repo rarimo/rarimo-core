@@ -24,8 +24,8 @@ import (
 	"math/big"
 	"strings"
 
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/spf13/cast"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 	"google.golang.org/grpc/metadata"
 
 	"github.com/ethereum/go-ethereum/common"

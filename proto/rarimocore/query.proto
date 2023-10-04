@@ -13,7 +13,7 @@ import "rarimocore/tx.proto";
 import "rarimocore/op_transfer.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/rarimocore/types";
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
 
 // Query defines the gRPC querier service.
 service Query {

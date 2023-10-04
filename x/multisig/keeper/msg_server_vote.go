@@ -5,7 +5,7 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
+	"github.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 func (k msgServer) Vote(goCtx context.Context, msg *types.MsgVote) (*types.MsgVoteResponse, error) {

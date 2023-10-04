@@ -22,7 +22,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // EthSigVerificationDecorator validates an ethereum signatures

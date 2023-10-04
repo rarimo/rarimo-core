@@ -19,9 +19,9 @@ import (
 	"context"
 
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	backend2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	backend2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/ethereum/go-ethereum/rpc"
 
@@ -31,7 +31,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // The Ethereum API allows applications to connect to an Evmos node that is

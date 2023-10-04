@@ -23,8 +23,8 @@ import (
 	"sort"
 
 	bip39 "github.com/cosmos/go-bip39"
+	etherminthd "github.com/rarimo/rarimo-core/ethermint/crypto/hd"
 	"github.com/spf13/cobra"
-	etherminthd "gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

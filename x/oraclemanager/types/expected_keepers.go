@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	rarimotypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // AccountKeeper defines the account contract that must be fulfilled when

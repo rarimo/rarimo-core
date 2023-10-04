@@ -18,15 +18,15 @@ package keeper
 import (
 	"math/big"
 
+	types2 "github.com/rarimo/rarimo-core/ethermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
-	evm "gitlab.com/rarimo/rarimo-core/x/evm/vm"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	"github.com/rarimo/rarimo-core/x/evm/types"
+	evm "github.com/rarimo/rarimo-core/x/evm/vm"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"

@@ -29,11 +29,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"gitlab.com/rarimo/rarimo-core/ethermint/indexer"
-	ethdebug "gitlab.com/rarimo/rarimo-core/ethermint/rpc/namespaces/ethereum/debug"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethermint/indexer"
+	ethdebug "github.com/rarimo/rarimo-core/ethermint/rpc/namespaces/ethereum/debug"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	srvflags "github.com/rarimo/rarimo-core/ethermint/server/flags"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/spf13/cobra"
 

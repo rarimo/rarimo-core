@@ -21,10 +21,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // EventFormat is the format version of the events.

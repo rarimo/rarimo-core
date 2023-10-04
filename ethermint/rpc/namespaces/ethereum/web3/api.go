@@ -18,7 +18,7 @@ package web3
 import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/rarimo/rarimo-core/ethermint/version"
+	"github.com/rarimo/rarimo-core/ethermint/version"
 )
 
 // PublicAPI is the web3_ prefixed set of APIs in the Web3 JSON-RPC spec.

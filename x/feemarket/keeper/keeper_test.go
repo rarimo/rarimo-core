@@ -10,10 +10,10 @@ import (
 	"time"
 
 	. "github.com/onsi/gomega"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -27,9 +27,9 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	"gitlab.com/rarimo/rarimo-core/app"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/app"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"

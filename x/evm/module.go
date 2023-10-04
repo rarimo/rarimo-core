@@ -34,9 +34,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/client/cli"
-	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/client/cli"
+	"github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var (

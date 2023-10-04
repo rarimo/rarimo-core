@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func BenchmarkSetParams(b *testing.B) {

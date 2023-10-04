@@ -1,7 +1,7 @@
 syntax = "proto3";
 package rarimo.rarimocore.vestingmint;
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/vestingmint/types";
+option go_package = "github.com/rarimo/rarimo-core/x/vestingmint/types";
 
 // Msg defines the Msg service.
 service Msg {}

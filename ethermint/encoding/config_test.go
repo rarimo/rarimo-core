@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	encoding "github.com/rarimo/rarimo-core/ethermint/encoding"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
 	"github.com/stretchr/testify/require"
-	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
 
-	"gitlab.com/rarimo/rarimo-core/app"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/app"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func TestTxEncoding(t *testing.T) {

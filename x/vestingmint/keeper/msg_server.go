@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 type msgServer struct {

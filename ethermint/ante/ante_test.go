@@ -24,11 +24,11 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/ethereum/go-ethereum/core/types"
 	ethparams "github.com/ethereum/go-ethereum/params"
+	"github.com/rarimo/rarimo-core/ethermint/ante"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	tests "github.com/rarimo/rarimo-core/ethermint/tests"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	"github.com/stretchr/testify/suite"
-	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	tests "gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func TestAnteTestSuite(t *testing.T) {

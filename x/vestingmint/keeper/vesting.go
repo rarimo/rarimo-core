@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 func (k Keeper) SetVesting(ctx sdk.Context, v types.Vesting) {

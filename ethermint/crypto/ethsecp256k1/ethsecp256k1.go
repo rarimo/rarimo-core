@@ -26,8 +26,8 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/rarimo/rarimo-core/ethereum/eip712"
 	tmcrypto "github.com/tendermint/tendermint/crypto"
-	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
 )
 
 const (

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 type msgServer struct {

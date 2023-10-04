@@ -7,7 +7,7 @@ import "tokenmanager/item.proto";
 import "tokenmanager/params.proto";
 import "google/protobuf/any.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types";
+option go_package = "github.com/rarimo/rarimo-core/x/tokenmanager/types";
 
 enum UpgradeType {
   NONE = 0;

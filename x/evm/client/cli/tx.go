@@ -25,10 +25,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/input"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
 	"github.com/spf13/cobra"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // GetTxCmd returns the transaction commands for this module

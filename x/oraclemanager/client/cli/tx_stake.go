@@ -4,8 +4,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
 	"github.com/spf13/cobra"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 func CmdStake() *cobra.Command {

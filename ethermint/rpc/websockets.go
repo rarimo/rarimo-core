@@ -30,10 +30,10 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/ethereum/pubsub"
-	filters2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/namespaces/ethereum/eth/filters"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/ethereum/pubsub"
+	filters2 "github.com/rarimo/rarimo-core/ethermint/rpc/namespaces/ethereum/eth/filters"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -45,7 +45,7 @@ import (
 	rpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 type WebsocketsServer interface {

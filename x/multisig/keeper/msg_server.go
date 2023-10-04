@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"gitlab.com/rarimo/rarimo-core/x/multisig/types"
+	"github.com/rarimo/rarimo-core/x/multisig/types"
 )
 
 type msgServer struct {

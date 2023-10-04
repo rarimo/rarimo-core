@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
+	cryptocodec "github.com/rarimo/rarimo-core/ethermint/crypto/codec"
+	enccodec "github.com/rarimo/rarimo-core/ethermint/encoding/codec"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/stretchr/testify/require"
-	cryptocodec "gitlab.com/rarimo/rarimo-core/ethermint/crypto/codec"
-	enccodec "gitlab.com/rarimo/rarimo-core/ethermint/encoding/codec"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/ethereum/go-ethereum/common"
 

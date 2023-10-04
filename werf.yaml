@@ -4,10 +4,10 @@ project: "backend"
 image: builder # Название собираемого образа.
 from: golang:1.20-alpine # Базовый образ.
 docker:
-  WORKDIR: /go/src/gitlab.com/rarimo/rarimo-core
+  WORKDIR: /go/src/github.com/rarimo/rarimo-core
 git: # Секция с директивами для добавления исходных файлов из git-репозитория.
   - add: / # Исходный путь в репозитории.
-    to: /go/src/gitlab.com/rarimo/rarimo-core # Путь назначения в образе.
+    to: /go/src/github.com/rarimo/rarimo-core # Путь назначения в образе.
     stageDependencies: # Настройка перевыполнения сборочных инструкций при изменениях определённых файлов в репозитории.
       install:
         - go.mod
@@ -22,7 +22,7 @@ shell: # Shell сборочные инструкции.
     - go env -w GOPRIVATE=gitlab.com/*
     - go env -w GONOSUMDB=gitlab.com/*
     - go env -w GONOPROXY=gitlab.com/*
-    - cd /go/src/gitlab.com/rarimo/rarimo-core
+    - cd /go/src/github.com/rarimo/rarimo-core
     - go mod tidy
     - go mod vendor
     - go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
@@ -34,8 +34,8 @@ shell: # Shell сборочные инструкции.
     - export CGO_ENABLED=1
     - export GO111MODULE=on
     - export GOOS=linux
-    - cd /go/src/gitlab.com/rarimo/rarimo-core
-    - go build -o /usr/local/bin/rarimo-core /go/src/gitlab.com/rarimo/rarimo-core/cmd/rarimo-cored
+    - cd /go/src/github.com/rarimo/rarimo-core
+    - go build -o /usr/local/bin/rarimo-core /go/src/github.com/rarimo/rarimo-core/cmd/rarimo-cored
 
 ---
 image: service # Название собираемого образа.

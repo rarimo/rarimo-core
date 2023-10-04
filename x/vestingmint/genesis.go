@@ -2,8 +2,8 @@ package vestingmint
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/keeper"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

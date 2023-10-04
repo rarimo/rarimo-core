@@ -20,8 +20,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"gitlab.com/rarimo/rarimo-core/app/params"
-	enccodec "gitlab.com/rarimo/rarimo-core/ethermint/encoding/codec"
+	"github.com/rarimo/rarimo-core/app/params"
+	enccodec "github.com/rarimo/rarimo-core/ethermint/encoding/codec"
 )
 
 // MakeConfig creates an EncodingConfig for testing

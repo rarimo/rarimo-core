@@ -8,13 +8,13 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	mocks2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
 	tmrpcclient "github.com/tendermint/tendermint/rpc/client"
-	mocks2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
 	"google.golang.org/grpc/metadata"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite *BackendTestSuite) TestGetCode() {

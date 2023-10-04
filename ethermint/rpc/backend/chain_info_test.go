@@ -6,17 +6,17 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethrpc "github.com/ethereum/go-ethereum/rpc"
-	mocks2 "gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
-	rpc "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
+	mocks2 "github.com/rarimo/rarimo-core/ethermint/rpc/backend/mocks"
+	rpc "github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
 	"google.golang.org/grpc/metadata"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/abci/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 func (suite *BackendTestSuite) TestBaseFee() {

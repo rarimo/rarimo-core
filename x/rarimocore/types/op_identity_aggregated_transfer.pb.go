@@ -7,7 +7,7 @@ import (
 	fmt "fmt"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
-	_ "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	_ "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 	io "io"
 	math "math"
 	math_bits "math/bits"

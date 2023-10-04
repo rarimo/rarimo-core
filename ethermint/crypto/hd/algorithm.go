@@ -19,8 +19,8 @@ import (
 	"github.com/btcsuite/btcd/btcutil/hdkeychain"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
+	ethsecp256k12 "github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 	bip39 "github.com/tyler-smith/go-bip39"
-	ethsecp256k12 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/crypto"

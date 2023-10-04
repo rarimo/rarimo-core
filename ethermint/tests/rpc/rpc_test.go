@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
+	rpctypes "github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/stretchr/testify/require"
-	rpctypes "gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"

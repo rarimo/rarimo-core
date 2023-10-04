@@ -3,10 +3,10 @@ package data
 import (
 	"bytes"
 
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
-	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	rarimotypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagertypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 // FeeTokenData defines the fee token management operation

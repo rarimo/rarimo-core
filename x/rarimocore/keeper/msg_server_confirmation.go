@@ -7,11 +7,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	merkle "github.com/rarimo/go-merkle"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokentypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {

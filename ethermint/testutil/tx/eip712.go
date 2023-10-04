@@ -21,8 +21,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
-	cryptocodec "gitlab.com/rarimo/rarimo-core/ethermint/crypto/codec"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	cryptocodec "github.com/rarimo/rarimo-core/ethermint/crypto/codec"
+	types2 "github.com/rarimo/rarimo-core/ethermint/types"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -30,12 +30,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
+	"github.com/rarimo/rarimo-core/ethereum/eip712"
 
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 
-	"gitlab.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/app"
 )
 
 type EIP712TxArgs struct {

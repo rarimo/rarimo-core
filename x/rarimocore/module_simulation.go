@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"gitlab.com/rarimo/rarimo-core/testutil/sample"
-	rarimocoresimulation "gitlab.com/rarimo/rarimo-core/x/rarimocore/simulation"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/testutil/sample"
+	rarimocoresimulation "github.com/rarimo/rarimo-core/x/rarimocore/simulation"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 // avoid unused import issue
