@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	merkle "gitlab.com/rarimo/go-merkle"
+	merkle "github.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"

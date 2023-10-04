@@ -63,7 +63,7 @@ Operation entity contains the following fields:
 
 ----
 
-2. In `x/rarimocore/crypto/operation` define the operation content that should implement `merkle.Content` interface from `merkle "gitlab.com/rarimo/go-merkle"`.
+2. In `x/rarimocore/crypto/operation` define the operation content that should implement `merkle.Content` interface from `merkle "github.com/rarimo/go-merkle"`.
   Example:
   <details>
     <summary>x/rarimocore/crypto/operation/op_fee_token_management.go</summary>
@@ -75,7 +75,7 @@ Operation entity contains the following fields:
       "bytes"
 
       eth "github.com/ethereum/go-ethereum/crypto"
-      merkle "gitlab.com/rarimo/go-merkle"
+      merkle "github.com/rarimo/go-merkle"
     )
 
     // FeeTokenManagementContent implements the Content interface provided by go-merkle and represents the content stored in the tree.

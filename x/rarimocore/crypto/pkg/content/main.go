@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	merkle "gitlab.com/rarimo/go-merkle"
+	merkle "github.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 	token "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
