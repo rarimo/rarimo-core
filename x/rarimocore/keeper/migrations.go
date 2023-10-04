@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	v3 "gitlab.com/rarimo/rarimo-core/x/rarimocore/migrations/v3"
+	v3 "github.com/rarimo/rarimo-core/x/rarimocore/migrations/v3"
 )
 
 type Migrator struct {

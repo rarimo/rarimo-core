@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -904,6 +905,58 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
+
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
+	}
+
+	if upgradeInfo.Name == "v1.0.4" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: []string{identitymoduletypes.ModuleName},
+		}))
+	}
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.0.4",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			params := app.FeeMarketKeeper.GetParams(ctx)
+			params.BaseFee = sdk.NewIntFromUint64(0)
+			app.FeeMarketKeeper.SetParams(ctx, params)
+
+			app.IdentityKeeper.SetParams(ctx, identitymoduletypes.Params{
+				LcgA:                    1664525,
+				LcgB:                    1013904223,
+				LcgMod:                  4294967296,
+				LcgValue:                12345,
+				IdentityContractAddress: "0x",
+				ChainName:               "Rarimo",
+				GISTHash:                "0x",
+				GISTUpdatedTimestamp:    0,
+				TreapRootKey:            "0x",
+				StatesWaitingForSign:    []string{},
+			})
+
+			// Disabling repeated call of InitGenesis for new identity module
+			fromVM[identitymoduletypes.ModuleName] = identitymodule.AppModule{}.ConsensusVersion()
+
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.0.5",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.0.6",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
