@@ -1,11 +1,13 @@
 # Mainnet information
 
-```Core branch:``` [chains/mainnet](https://gitlab.com/rarimo/rarimo-core/-/tree/chains/mainnet)
-
-```Explorer:``` [scan.rarimo.com](https://scan.rarimo.com/)
-
 * [Upgrades](./002-upgrades.md)
 * [Validator Guide](./003-validator-guide.md)
+
+----
+
+```Core branch:``` ***chains/mainnet***
+
+```Explorer:``` [scan.rarimo.com](https://scan.rarimo.com/)
 
 ----
 
