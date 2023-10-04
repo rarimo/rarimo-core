@@ -17,10 +17,12 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 
 	creatorAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
+	// Charging constant comission
 	if err := k.chargeCommission(ctx, creatorAddr); err != nil {
 		return nil, sdkerrors.Wrap(err, "failed to charge commission")
 	}
 
+	// Burning native tokens
 	if err := k.bankKeeper.BurnTokens(ctx, creatorAddr, sdk.Coins{*msg.Amount}); err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to burn tokens for address (%s)", creatorAddr.String())
 	}
@@ -32,6 +34,7 @@ func (k msgServer) DepositNative(goCtx context.Context, msg *types.MsgDepositNat
 		Build().
 		GetOrigin()
 
+	// Crating transfer operation in `x/rarimocore` module (approved cause already verified)
 	err := k.rarimocoreKeeper.CreateTransferOperation(ctx, msg.Creator, &rarimocoretypes.Transfer{
 		Origin:     hexutil.Encode(origin[:]),
 		Tx:         msg.Seed,

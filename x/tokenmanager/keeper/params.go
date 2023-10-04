@@ -38,3 +38,37 @@ func (k Keeper) GetNetwork(ctx sdk.Context, name string) (param types.Network, o
 
 	return
 }
+
+func (k Keeper) SetNetwork(ctx sdk.Context, network types.Network) {
+	params := k.GetParams(ctx)
+
+	defer func() {
+		k.SetParams(ctx, params)
+	}()
+
+	for index, n := range params.Networks {
+		if n.Name == network.Name {
+			params.Networks[index] = &network
+			return
+		}
+	}
+
+	params.Networks = append(params.Networks, &network)
+}
+
+func (k Keeper) RemoveNetwork(ctx sdk.Context, chain string) {
+	params := k.GetParams(ctx)
+
+	defer func() {
+		k.SetParams(ctx, params)
+	}()
+
+	networks := make([]*types.Network, 0, len(params.Networks)-1)
+	for _, network := range params.Networks {
+		if network.Name != chain {
+			networks = append(networks, network)
+		}
+	}
+
+	params.Networks = networks
+}
