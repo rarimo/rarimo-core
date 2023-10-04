@@ -17,9 +17,12 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 		return nil, types.ErrOracleNotFound
 	}
 
+	// Slashed or freezed parties can not unstake
 	if oracle.Status == types.OracleStatus_Slashed || oracle.Status == types.OracleStatus_Freezed {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "oracle is slashed or frozen: can not unstake")
 	}
+
+	// Getting unstake amount by searching delegator
 
 	params := k.GetParams(ctx)
 	amount := sdk.ZeroInt()
@@ -38,10 +41,12 @@ func (k msgServer) Unstake(goCtx context.Context, msg *types.MsgUnstake) (*types
 	}
 
 	senderAddr, _ := sdk.AccAddressFromBech32(msg.Sender)
+	// Transferring tokens from module account to delegator
 	if err := k.bank.SendCoins(ctx, moduleAccount.GetAddress(), senderAddr, sdk.NewCoins(sdk.NewCoin(params.StakeDenom, amount))); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error withdrawing coins: %s", err.Error())
 	}
 
+	// Checking if oracle resulting stake is enough to be active
 	totalStake, _ := sdk.NewIntFromString(oracle.Stake)
 	totalStake = totalStake.Sub(amount)
 	oracle.Stake = totalStake.String()

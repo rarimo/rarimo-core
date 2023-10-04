@@ -12,6 +12,7 @@ func (k msgServer) ChangePartyAddress(goCtx context.Context, msg *types.MsgChang
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
+	// Party can change only self address
 	party := getPartyByAccount(msg.Creator, params.Parties)
 	if party == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "party not found")

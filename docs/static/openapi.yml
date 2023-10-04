@@ -48120,9 +48120,15 @@ paths:
                       type: string
                       format: uint64
                       title: Creation timestamps
+                    createdAtBlock:
+                      type: string
+                      format: uint64
+                      title: Creation block (will not be used in state hash)
                     lastUpdateOperationIndex:
                       type: string
-                      title: Index of last update/create operation
+                      title: >-
+                        Index of last update/create operation (will not be used
+                        in state hash)
               pagination:
                 type: object
                 properties:
@@ -48250,9 +48256,15 @@ paths:
                     type: string
                     format: uint64
                     title: Creation timestamps
+                  createdAtBlock:
+                    type: string
+                    format: uint64
+                    title: Creation block (will not be used in state hash)
                   lastUpdateOperationIndex:
                     type: string
-                    title: Index of last update/create operation
+                    title: >-
+                      Index of last update/create operation (will not be used in
+                      state hash)
         default:
           description: An unexpected error response.
           schema:
@@ -88244,6 +88256,8 @@ definitions:
         type: string
       tokenID:
         type: string
+  rarimo.rarimocore.identity.MsgSetIdentityContractAddressResponse:
+    type: object
   rarimo.rarimocore.identity.Node:
     type: object
     properties:
@@ -88372,9 +88386,15 @@ definitions:
               type: string
               format: uint64
               title: Creation timestamps
+            createdAtBlock:
+              type: string
+              format: uint64
+              title: Creation block (will not be used in state hash)
             lastUpdateOperationIndex:
               type: string
-              title: Index of last update/create operation
+              title: >-
+                Index of last update/create operation (will not be used in state
+                hash)
       pagination:
         type: object
         properties:
@@ -88449,9 +88469,15 @@ definitions:
             type: string
             format: uint64
             title: Creation timestamps
+          createdAtBlock:
+            type: string
+            format: uint64
+            title: Creation block (will not be used in state hash)
           lastUpdateOperationIndex:
             type: string
-            title: Index of last update/create operation
+            title: >-
+              Index of last update/create operation (will not be used in state
+              hash)
   rarimo.rarimocore.identity.QueryParamsResponse:
     type: object
     properties:
@@ -88504,9 +88530,13 @@ definitions:
         type: string
         format: uint64
         title: Creation timestamps
+      createdAtBlock:
+        type: string
+        format: uint64
+        title: Creation block (will not be used in state hash)
       lastUpdateOperationIndex:
         type: string
-        title: Index of last update/create operation
+        title: Index of last update/create operation (will not be used in state hash)
   rarimo.rarimocore.multisig.Group:
     type: object
     properties:
@@ -90181,6 +90211,8 @@ definitions:
   rarimo.rarimocore.rarimocore.MsgCreateConfirmationResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgCreateViolationReportResponse:
+    type: object
+  rarimo.rarimocore.rarimocore.MsgResignResponse:
     type: object
   rarimo.rarimocore.rarimocore.MsgSetupInitialResponse:
     type: object

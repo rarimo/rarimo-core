@@ -6,8 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	eth "github.com/ethereum/go-ethereum/crypto"
 	merkle "gitlab.com/rarimo/go-merkle"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto"
 	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
@@ -19,17 +17,22 @@ import (
 func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreateConfirmation) (*types.MsgCreateConfirmationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Verification if global signature for the provided root
 	if err := crypto.VerifyECDSA(msg.SignatureECDSA, msg.Root, k.GetKeyECDSA(ctx)); err != nil {
 		return nil, sdkerrors.Wrap(err, "invalid signature")
 	}
 
+	// Check that creator is an Active party
 	if err := k.checkIsAnActiveParty(ctx, msg.Creator); err != nil {
 		return nil, sdkerrors.Wrap(err, "creator is not an active party")
 	}
 
+	// Check that confirmation does not exist
 	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
+
+	// Iterate over provided indexes to check the validity of provided tree root.
 
 	operations := make([]types.Operation, 0, len(msg.Indexes))
 	contents := make([]merkle.Content, 0, len(msg.Indexes))
@@ -53,6 +56,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		contents = append(contents, content)
 	}
 
+	// Verifying that provided tree root corresponds provided content indexes
 	if err := crypto.VerifyMerkleRoot(contents, msg.Root); err != nil {
 		return nil, err
 	}
@@ -64,12 +68,17 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 		SignatureECDSA: msg.SignatureECDSA,
 	}
 
+	// Now signature checks seems to be successful.
+	// We have to call special methods for different type of operations to apply operation signature.
+
+	// Call of apply operation
 	for _, op := range operations {
 		err := k.ApplyOperation(ctx, op, msg.Root)
 		if err != nil {
 			return nil, err
 		}
 
+		// Saving operation confirmation index
 		k.SetOperationConfirmationId(ctx, op.Index, confirmation.Root)
 	}
 
@@ -87,7 +96,11 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 	return &types.MsgCreateConfirmationResponse{}, nil
 }
 
+// ApplyOperation method that should be called to apply operation successful signing.
+// Should implement certain logic depending on operation type.
 func (k Keeper) ApplyOperation(ctx sdk.Context, op types.Operation, confirmationId string) error {
+	// List of operation types that can be applied if parties set is inactive.
+	// If operation type is not in that list and parties set is not active - operation can not be applied.
 	canBeAppliedByInactivePartiesSet := map[types.OpType]struct{}{
 		types.OpType_CHANGE_PARTIES: {},
 	}
@@ -124,8 +137,7 @@ func (k Keeper) ApplyOperation(ctx sdk.Context, op types.Operation, confirmation
 func (k Keeper) applyChangeParties(ctx sdk.Context, op *types.ChangeParties) error {
 	params := k.GetParams(ctx)
 
-	hash := hexutil.Encode(eth.Keccak256(hexutil.MustDecode(op.NewPublicKey)))
-	if err := crypto.VerifyECDSA(op.Signature, hash, params.KeyECDSA); err != nil {
+	if err := crypto.VerifyECDSA(op.Signature, crypto.GetPublicKeyHash(op.NewPublicKey), params.KeyECDSA); err != nil {
 		return err
 	}
 

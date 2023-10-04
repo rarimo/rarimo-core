@@ -9,6 +9,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 	param := k.GetParams(ctx)
 	currentBlock := uint64(ctx.BlockHeight())
 
+	// Checking Frozen parties that reach FreezeEndBlock
 	for _, party := range param.Parties {
 		if party.FreezeEndBlock == 0 || party.FreezeEndBlock != currentBlock {
 			continue

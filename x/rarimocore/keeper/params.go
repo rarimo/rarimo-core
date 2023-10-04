@@ -43,15 +43,3 @@ func (k Keeper) getActivePartiesAmount(ctx sdk.Context) int {
 	params := k.GetParams(ctx)
 	return getActivePartiesAmount(params.Parties)
 }
-
-func getActivePartiesAmount(parties []*types.Party) int {
-	activePartyCount := 0
-
-	for _, party := range parties {
-		if party.Status == types.PartyStatus_Active {
-			activePartyCount++
-		}
-	}
-
-	return activePartyCount
-}

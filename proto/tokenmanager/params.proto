@@ -33,6 +33,8 @@ message NetworkParams {
 
 message BridgeNetworkParams {
   string contract = 1;
+  // BridgeAdmin only for Solana
+  string admin = 2;
 }
 
 message FeeNetworkParams {

@@ -56,6 +56,12 @@ func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 		// Nothing to do
 	}
 
+	k.ApproveOperationDefault(ctx, op)
+
+	return nil
+}
+
+func (k Keeper) ApproveOperationDefault(ctx sdk.Context, op types.Operation) {
 	op.Status = types.OpStatus_APPROVED
 	k.SetOperation(ctx, op)
 
@@ -63,8 +69,6 @@ func (k Keeper) ApproveOperation(ctx sdk.Context, op types.Operation) error {
 		sdk.NewAttribute(types.AttributeKeyOperationId, op.Index),
 		sdk.NewAttribute(types.AttributeKeyOperationType, op.OperationType.String()),
 	))
-
-	return nil
 }
 
 func (k Keeper) ApproveTransferOperation(ctx sdk.Context, transfer *types.Transfer) error {

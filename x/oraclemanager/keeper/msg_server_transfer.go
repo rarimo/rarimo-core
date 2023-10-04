@@ -17,6 +17,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, err
 	}
 
+	// Checking oracle exists and active.
 	oracle, ok := k.GetOracle(ctx, &types.OracleIndex{Chain: msg.From.Chain, Account: msg.Creator})
 	if !ok {
 		return nil, types.ErrOracleNotFound
@@ -26,6 +27,7 @@ func (k msgServer) CreateTransferOperation(goCtx context.Context, msg *types.Msg
 		return nil, types.ErrInactiveOracle
 	}
 
+	// Creating transfer operation
 	if err := k.rarimo.CreateTransferOperation(ctx, msg.Creator, transfer, false); err != nil {
 		return nil, err
 	}

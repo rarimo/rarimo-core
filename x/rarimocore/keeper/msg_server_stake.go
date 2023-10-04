@@ -12,12 +12,12 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
-	for _, party := range params.Parties {
-		if party.Account == msg.Account {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "account already set")
-		}
+	// Can not stake twice for account.
+	if getPartyByAccount(msg.Account, params.Parties) != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "account already set")
 	}
 
+	// Staking coins (transfer to module account)
 	if err := k.stake(ctx, msg.Creator); err != nil {
 		return nil, err
 	}
@@ -29,11 +29,13 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		Status:  types.PartyStatus_Inactive,
 	}
 
+	// Setting the delegator if exists.
 	if msg.Creator != msg.Account {
 		party.Delegator = msg.Creator
 	}
 
 	params.Parties = append(params.Parties, party)
+	// Every parties change requires keys resharing.
 	params.IsUpdateRequired = true
 	k.SetParams(ctx, params)
 
@@ -50,8 +52,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 }
 
 func (k Keeper) stake(ctx sdk.Context, sender string) error {
-	params := k.GetParams(ctx)
-
+	// Already valid (checked during message validation)
 	senderAddr, _ := sdk.AccAddressFromBech32(sender)
 
 	stakeCoin, err := k.getStakeCoin(ctx)
@@ -59,12 +60,13 @@ func (k Keeper) stake(ctx sdk.Context, sender string) error {
 		return sdkerrors.Wrap(err, "failed to get stake coin")
 	}
 
-	balance := k.bank.GetBalance(ctx, senderAddr, params.StakeDenom)
-
+	// Checking sender balance
+	balance := k.bank.GetBalance(ctx, senderAddr, stakeCoin.Denom)
 	if balance.IsLT(stakeCoin) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "insufficient funds")
 	}
 
+	// Transferring tokens to the module account
 	if err = k.bank.SendCoinsFromAccountToModule(ctx, senderAddr, types.ModuleName, sdk.NewCoins(stakeCoin)); err != nil {
 		return sdkerrors.Wrapf(err, "failed to send coins from account to module, account: %s", sender)
 	}

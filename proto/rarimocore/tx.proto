@@ -20,6 +20,7 @@ service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
   rpc ReportViolation(MsgCreateViolationReport) returns (MsgCreateViolationReportResponse);
+  rpc Resign(MsgResign) returns (MsgResignResponse);
 
   // this line is used by starport scaffolding # proto/tx/rpc
 }
@@ -84,5 +85,12 @@ message MsgChangePartyAddress {
 }
 
 message MsgChangePartyAddressResponse {}
+
+message MsgResign {
+  string creator = 1;
+  string operation = 2;
+}
+
+message MsgResignResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
