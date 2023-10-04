@@ -1,3 +1,4 @@
+name: Build Rarimo Core docker image
 on:
   push:
     branches:
