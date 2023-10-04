@@ -2,9 +2,9 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	rarimotypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	rarimotypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 func (k Keeper) EndBlocker(ctx sdk.Context) {

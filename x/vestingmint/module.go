@@ -16,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/client/cli"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
+	"github.com/rarimo/rarimo-core/x/vestingmint/client/cli"
+	"github.com/rarimo/rarimo-core/x/vestingmint/keeper"
+	"github.com/rarimo/rarimo-core/x/vestingmint/types"
 )
 
 var (

@@ -23,9 +23,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // TraceTransaction returns the structured logs created during the execution of EVM

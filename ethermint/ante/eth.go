@@ -25,10 +25,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/statedb"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/statedb"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"

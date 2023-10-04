@@ -5,8 +5,8 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/ante"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/ethermint/ante"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 func (suite AnteTestSuite) TestEthSetupContextDecorator() {

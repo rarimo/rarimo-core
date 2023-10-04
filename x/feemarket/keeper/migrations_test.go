@@ -2,8 +2,8 @@ package keeper_test
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	feemarketkeeper "gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	feemarketkeeper "github.com/rarimo/rarimo-core/x/feemarket/keeper"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 type mockSubspace struct {

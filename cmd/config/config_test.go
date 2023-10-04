@@ -5,8 +5,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/stretchr/testify/require"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 func TestSetBech32Prefixes(t *testing.T) {

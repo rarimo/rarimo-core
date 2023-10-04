@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   validator:
-    image: registry.gitlab.com/rarimo/rarimo-core:ba434e3e818e50796042b5b0b5a1a6d74e6f2ada
+    image: registry.github.com/rarimo/rarimo-core:ba434e3e818e50796042b5b0b5a1a6d74e6f2ada
     entrypoint: sh -c "rarimo-core start --home=/usr/local/bin/genesis"
     environment:
       - Solana_ADDR_ENV=solana-saver:8000

@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "vestingmint/params.proto";
 import "vestingmint/vesting.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/vestingmint/types";
+option go_package = "github.com/rarimo/rarimo-core/x/vestingmint/types";
 
 // GenesisState defines the vestingmint module's genesis state.
 message GenesisState {

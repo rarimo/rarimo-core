@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 func (s StateInfo) CalculateHash() []byte {

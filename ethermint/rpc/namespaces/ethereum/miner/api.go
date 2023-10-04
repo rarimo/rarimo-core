@@ -17,7 +17,7 @@ package miner
 
 import (
 	"github.com/cosmos/cosmos-sdk/server"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/backend"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/backend"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"

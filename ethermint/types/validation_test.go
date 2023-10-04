@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	types2 "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	types2 "gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 func TestIsEmptyHash(t *testing.T) {

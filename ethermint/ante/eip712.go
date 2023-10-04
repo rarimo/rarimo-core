@@ -33,11 +33,11 @@ import (
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
-	"gitlab.com/rarimo/rarimo-core/ethereum/eip712"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/ethereum/eip712"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 var ethermintCodec codec.ProtoCodecMarshaler

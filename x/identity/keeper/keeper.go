@@ -12,10 +12,10 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/identity/pkg/state"
+	"github.com/rarimo/rarimo-core/x/identity/types"
 	"github.com/tendermint/tendermint/libs/log"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	"gitlab.com/rarimo/rarimo-core/x/identity/pkg/state"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
 )
 
 type (

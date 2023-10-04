@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/x/oraclemanager/types"
 )
 
 func (k Keeper) AddToFreezedQueue(ctx sdk.Context, block uint64, index *types.OracleIndex) {

@@ -3,7 +3,7 @@ package rarimo.rarimocore.multisig;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/multisig/types";
+option go_package = "github.com/rarimo/rarimo-core/x/multisig/types";
 
 // Params defines the parameters for the module.
 message Params {

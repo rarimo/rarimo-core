@@ -5,11 +5,11 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	v4 "github.com/rarimo/rarimo-core/x/feemarket/migrations/v4"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 	"github.com/stretchr/testify/require"
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	v4 "gitlab.com/rarimo/rarimo-core/x/feemarket/migrations/v4"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 type mockSubspace struct {

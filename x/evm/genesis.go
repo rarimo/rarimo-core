@@ -23,11 +23,11 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	abci "github.com/tendermint/tendermint/abci/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 
-	"gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/keeper"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // InitGenesis initializes genesis state based on exported genesis

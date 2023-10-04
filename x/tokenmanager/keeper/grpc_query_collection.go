@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k Keeper) Collection(ctx context.Context, r *types.QueryGetCollectionRequest) (*types.QueryGetCollectionResponse, error) {

@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"gitlab.com/rarimo/rarimo-core/x/identity/types"
+	"github.com/rarimo/rarimo-core/x/identity/types"
 )
 
 type msgServer struct {

@@ -33,6 +33,10 @@ import (
 	sdkmath "cosmossdk.io/math"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/hd"
+	encoding "github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/server/config"
+	"github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/spf13/cobra"
 	tmcfg "github.com/tendermint/tendermint/config"
 	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
@@ -41,10 +45,6 @@ import (
 	"github.com/tendermint/tendermint/node"
 	tmclient "github.com/tendermint/tendermint/rpc/client"
 	dbm "github.com/tendermint/tm-db"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/hd"
-	encoding "gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/server/config"
-	"gitlab.com/rarimo/rarimo-core/ethermint/types"
 	"google.golang.org/grpc"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -66,11 +66,11 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"gitlab.com/rarimo/rarimo-core/app/params"
+	"github.com/rarimo/rarimo-core/app/params"
 
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 
-	"gitlab.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/app"
 )
 
 // network lock to only allow one test network at a time

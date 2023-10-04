@@ -20,8 +20,8 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/std"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	codec2 "gitlab.com/rarimo/rarimo-core/ethermint/crypto/codec"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	codec2 "github.com/rarimo/rarimo-core/ethermint/crypto/codec"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 )
 
 // RegisterLegacyAminoCodec registers Interfaces from types, crypto, and SDK std.

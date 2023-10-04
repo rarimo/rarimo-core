@@ -1,14 +1,14 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
-	ante2 "gitlab.com/rarimo/rarimo-core/ethermint/ante"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
+	ante2 "github.com/rarimo/rarimo-core/ethermint/ante"
+
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -99,43 +99,43 @@ import (
 	ibcporttypes "github.com/cosmos/ibc-go/v6/modules/core/05-port/types"
 	ibchost "github.com/cosmos/ibc-go/v6/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v6/modules/core/keeper"
+	appparams "github.com/rarimo/rarimo-core/app/params"
+	"github.com/rarimo/rarimo-core/docs"
+	srvflags "github.com/rarimo/rarimo-core/ethermint/server/flags"
+	bridgemodule "github.com/rarimo/rarimo-core/x/bridge"
+	bridgemodulekeeper "github.com/rarimo/rarimo-core/x/bridge/keeper"
+	bridgemoduletypes "github.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/evm"
+	evmkeeper "github.com/rarimo/rarimo-core/x/evm/keeper"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/evm/vm/geth"
+	"github.com/rarimo/rarimo-core/x/feemarket"
+	feemarketkeeper "github.com/rarimo/rarimo-core/x/feemarket/keeper"
+	feemarkettypes "github.com/rarimo/rarimo-core/x/feemarket/types"
+	identitymodule "github.com/rarimo/rarimo-core/x/identity"
+	identitymodulekeeper "github.com/rarimo/rarimo-core/x/identity/keeper"
+	identitymoduletypes "github.com/rarimo/rarimo-core/x/identity/types"
+	multisigmodule "github.com/rarimo/rarimo-core/x/multisig"
+	multisigmodulekeeper "github.com/rarimo/rarimo-core/x/multisig/keeper"
+	multisigmoduletypes "github.com/rarimo/rarimo-core/x/multisig/types"
+	oraclemanagermodule "github.com/rarimo/rarimo-core/x/oraclemanager"
+	oraclemanagermodulekeeper "github.com/rarimo/rarimo-core/x/oraclemanager/keeper"
+	oraclemanagermoduletypes "github.com/rarimo/rarimo-core/x/oraclemanager/types"
+	rarimocoremodule "github.com/rarimo/rarimo-core/x/rarimocore"
+	rarimocoremodulekeeper "github.com/rarimo/rarimo-core/x/rarimocore/keeper"
+	rarimocoremoduletypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokenmanagermodule "github.com/rarimo/rarimo-core/x/tokenmanager"
+	tokenmanagermodulekeeper "github.com/rarimo/rarimo-core/x/tokenmanager/keeper"
+	tokenmanagermoduletypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
+	vestingmintmodule "github.com/rarimo/rarimo-core/x/vestingmint"
+	vestingmintmodulekeeper "github.com/rarimo/rarimo-core/x/vestingmint/keeper"
+	vestingmintmoduletypes "github.com/rarimo/rarimo-core/x/vestingmint/types"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
-	appparams "gitlab.com/rarimo/rarimo-core/app/params"
-	"gitlab.com/rarimo/rarimo-core/docs"
-	srvflags "gitlab.com/rarimo/rarimo-core/ethermint/server/flags"
-	bridgemodule "gitlab.com/rarimo/rarimo-core/x/bridge"
-	bridgemodulekeeper "gitlab.com/rarimo/rarimo-core/x/bridge/keeper"
-	bridgemoduletypes "gitlab.com/rarimo/rarimo-core/x/bridge/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm"
-	evmkeeper "gitlab.com/rarimo/rarimo-core/x/evm/keeper"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/vm/geth"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket"
-	feemarketkeeper "gitlab.com/rarimo/rarimo-core/x/feemarket/keeper"
-	feemarkettypes "gitlab.com/rarimo/rarimo-core/x/feemarket/types"
-	identitymodule "gitlab.com/rarimo/rarimo-core/x/identity"
-	identitymodulekeeper "gitlab.com/rarimo/rarimo-core/x/identity/keeper"
-	identitymoduletypes "gitlab.com/rarimo/rarimo-core/x/identity/types"
-	multisigmodule "gitlab.com/rarimo/rarimo-core/x/multisig"
-	multisigmodulekeeper "gitlab.com/rarimo/rarimo-core/x/multisig/keeper"
-	multisigmoduletypes "gitlab.com/rarimo/rarimo-core/x/multisig/types"
-	oraclemanagermodule "gitlab.com/rarimo/rarimo-core/x/oraclemanager"
-	oraclemanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/oraclemanager/keeper"
-	oraclemanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	rarimocoremodule "gitlab.com/rarimo/rarimo-core/x/rarimocore"
-	rarimocoremodulekeeper "gitlab.com/rarimo/rarimo-core/x/rarimocore/keeper"
-	rarimocoremoduletypes "gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokenmanagermodule "gitlab.com/rarimo/rarimo-core/x/tokenmanager"
-	tokenmanagermodulekeeper "gitlab.com/rarimo/rarimo-core/x/tokenmanager/keeper"
-	tokenmanagermoduletypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
-	vestingmintmodule "gitlab.com/rarimo/rarimo-core/x/vestingmint"
-	vestingmintmodulekeeper "gitlab.com/rarimo/rarimo-core/x/vestingmint/keeper"
-	vestingmintmoduletypes "gitlab.com/rarimo/rarimo-core/x/vestingmint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -904,58 +904,6 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
-
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
-	}
-
-	if upgradeInfo.Name == "v1.0.4" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
-			Added: []string{identitymoduletypes.ModuleName},
-		}))
-	}
-
-	app.UpgradeKeeper.SetUpgradeHandler(
-		"v1.0.4",
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			params := app.FeeMarketKeeper.GetParams(ctx)
-			params.BaseFee = sdk.NewIntFromUint64(0)
-			app.FeeMarketKeeper.SetParams(ctx, params)
-
-			app.IdentityKeeper.SetParams(ctx, identitymoduletypes.Params{
-				LcgA:                    1664525,
-				LcgB:                    1013904223,
-				LcgMod:                  4294967296,
-				LcgValue:                12345,
-				IdentityContractAddress: "0x",
-				ChainName:               "Rarimo",
-				GISTHash:                "0x",
-				GISTUpdatedTimestamp:    0,
-				TreapRootKey:            "0x",
-				StatesWaitingForSign:    []string{},
-			})
-
-			// Disabling repeated call of InitGenesis for new identity module
-			fromVM[identitymoduletypes.ModuleName] = identitymodule.AppModule{}.ConsensusVersion()
-
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
-		},
-	)
-
-	app.UpgradeKeeper.SetUpgradeHandler(
-		"v1.0.5",
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
-		},
-	)
-
-	app.UpgradeKeeper.SetUpgradeHandler(
-		"v1.0.6",
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
-		},
-	)
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {

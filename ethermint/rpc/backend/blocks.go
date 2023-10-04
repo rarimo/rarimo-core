@@ -28,9 +28,9 @@ import (
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/trie"
 	"github.com/pkg/errors"
+	"github.com/rarimo/rarimo-core/ethermint/rpc/types"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
 	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"gitlab.com/rarimo/rarimo-core/ethermint/rpc/types"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )

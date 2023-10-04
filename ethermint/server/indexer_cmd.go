@@ -18,8 +18,8 @@ package server
 import (
 	"fmt"
 
+	"github.com/rarimo/rarimo-core/ethermint/indexer"
 	"github.com/spf13/cobra"
-	"gitlab.com/rarimo/rarimo-core/ethermint/indexer"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"

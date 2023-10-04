@@ -5,9 +5,9 @@
 EVM module was copy-pasted from `evmos/ethermint` project.
 The goal of EVM module is to provide Solidity smart contracts support into the Cosmos-based core.
 
-You can find the full specification for that module here: `https://gitlab.com/rarimo/rarimo-core/tree/master/x/evm/spec`
+You can find the full specification for that module here: `https://github.com/rarimo/rarimo-core/tree/master/x/evm/spec`
 Also, EVM module works in couple with `feemarket` module that has been designed to support EIP1559 in Cosmos-SDK.
-The `feemarket` module doc: `https://gitlab.com/rarimo/rarimo-core/tree/master/x/feemarket/spec`.
+The `feemarket` module doc: `https://github.com/rarimo/rarimo-core/tree/master/x/feemarket/spec`.
 
 ----
 

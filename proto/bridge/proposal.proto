@@ -4,7 +4,7 @@ package rarimo.rarimocore.bridge;
 import "gogoproto/gogo.proto";
 import "bridge/params.proto";
 
-option go_package = "gitlab.com/rarimo/rarimo-core/x/bridge/types";
+option go_package = "github.com/rarimo/rarimo-core/x/bridge/types";
 
 message ChangeParamsProposal {
   string title = 1;

@@ -9,15 +9,15 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	oracletypes "gitlab.com/rarimo/rarimo-core/x/oraclemanager/types"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	tokenmanagertypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	oracletypes "github.com/rarimo/rarimo-core/x/oraclemanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation/origin"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	tokenmanagertypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 	"github.com/tendermint/tendermint/libs/log"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
 type (

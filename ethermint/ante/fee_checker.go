@@ -25,8 +25,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
-	"gitlab.com/rarimo/rarimo-core/x/evm/types"
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
+	"github.com/rarimo/rarimo-core/x/evm/types"
 )
 
 // NewDynamicFeeChecker returns a `TxFeeChecker` that applies a dynamic fee to

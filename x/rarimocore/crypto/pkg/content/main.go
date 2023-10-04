@@ -5,9 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 	merkle "github.com/rarimo/go-merkle"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	token "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
+	token "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 	"google.golang.org/grpc"
 )
 

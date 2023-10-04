@@ -2,7 +2,7 @@ package origin
 
 import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	xcrypto "gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
+	xcrypto "github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 type StringOrigin struct {

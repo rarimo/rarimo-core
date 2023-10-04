@@ -19,10 +19,10 @@ import (
 	"context"
 	"time"
 
+	ethermint "github.com/rarimo/rarimo-core/ethermint/types"
 	"github.com/tendermint/tendermint/libs/service"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	"github.com/tendermint/tendermint/types"
-	ethermint "gitlab.com/rarimo/rarimo-core/ethermint/types"
 )
 
 const (

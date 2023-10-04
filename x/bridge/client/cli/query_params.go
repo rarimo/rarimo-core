@@ -5,8 +5,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
 	"github.com/spf13/cobra"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
 )
 
 func CmdQueryParams() *cobra.Command {

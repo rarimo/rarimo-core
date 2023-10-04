@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/rarimo/rarimo-core/ethermint/testutil/network"
 	"github.com/stretchr/testify/suite"
-	"gitlab.com/rarimo/rarimo-core/ethermint/testutil/network"
 )
 
 type IntegrationTestSuite struct {

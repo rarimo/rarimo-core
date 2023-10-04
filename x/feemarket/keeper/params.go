@@ -18,7 +18,7 @@ package keeper
 import (
 	"math/big"
 
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

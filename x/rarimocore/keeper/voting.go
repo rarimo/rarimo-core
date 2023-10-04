@@ -3,9 +3,9 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
-	"gitlab.com/rarimo/rarimo-core/x/rarimocore/types"
-	tokentypes "gitlab.com/rarimo/rarimo-core/x/tokenmanager/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/pkg"
+	"github.com/rarimo/rarimo-core/x/rarimocore/types"
+	tokentypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
 )
 
 func (k Keeper) CreateVote(ctx sdk.Context, vote types.Vote) (bool, error) {

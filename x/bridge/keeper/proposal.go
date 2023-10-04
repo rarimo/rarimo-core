@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
 )
 
 func (k Keeper) ChangeParamsProposal(ctx sdk.Context, proposal *types.ChangeParamsProposal) error {

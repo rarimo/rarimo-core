@@ -9,16 +9,16 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"gitlab.com/rarimo/rarimo-core/x/bridge/types"
+	"github.com/rarimo/rarimo-core/x/bridge/types"
 )
 
 type (
 	Keeper struct {
-		cdc              codec.BinaryCodec
-		storeKey         storetypes.StoreKey
-		memKey           storetypes.StoreKey
-		rarimocoreKeeper types.RarimocoreKeeper
-		bankKeeper       types.BankKeeper
+		cdc               codec.BinaryCodec
+		storeKey          storetypes.StoreKey
+		memKey            storetypes.StoreKey
+		rarimocoreKeeper  types.RarimocoreKeeper
+		bankKeeper        types.BankKeeper
 		tokenmanagerKeepr types.TokenmanagerKeeper
 	}
 )

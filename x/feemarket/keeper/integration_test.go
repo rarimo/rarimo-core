@@ -21,16 +21,16 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	. "github.com/onsi/gomega"
+	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
+	"github.com/rarimo/rarimo-core/ethermint/encoding"
+	"github.com/rarimo/rarimo-core/ethermint/tests"
+	"github.com/rarimo/rarimo-core/ethermint/testutil"
+	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
+	"github.com/rarimo/rarimo-core/x/feemarket/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
-	"gitlab.com/rarimo/rarimo-core/app"
-	"gitlab.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
-	"gitlab.com/rarimo/rarimo-core/ethermint/encoding"
-	"gitlab.com/rarimo/rarimo-core/ethermint/tests"
-	"gitlab.com/rarimo/rarimo-core/ethermint/testutil"
-	evmtypes "gitlab.com/rarimo/rarimo-core/x/evm/types"
-	"gitlab.com/rarimo/rarimo-core/x/feemarket/types"
 )
 
 var _ = Describe("Feemarket", func() {

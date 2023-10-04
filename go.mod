@@ -1,4 +1,4 @@
-module gitlab.com/rarimo/rarimo-core
+module github.com/rarimo/rarimo-core
 
 go 1.20
 
