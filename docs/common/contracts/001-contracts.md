@@ -8,9 +8,9 @@ Whenever possible, we made sure to maintain similar interface and signatures to 
 
 ## Bridge & commissions
 
-- Repo: [Solana Bridge Program](https://gitlab.com/rarimo/contracts/solana-bridge-program)
-- Repo: [Near Bridge](https://gitlab.com/rarimo/contracts/near-bridge)
-- Repo: [EVM Bridge](https://gitlab.com/rarimo/contracts/evm-bridge)
+- Repo: [Solana Bridge Program](https://github.com/rarimo/contracts/solana-bridge-program)
+- Repo: [Near Bridge](https://github.com/rarimo/contracts/near-bridge)
+- Repo: [EVM Bridge](https://github.com/rarimo/contracts/evm-bridge)
 
 Documentation:
 * [Bridge architecture](./002-bridge.md)
