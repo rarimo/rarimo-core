@@ -104,7 +104,8 @@ profiler:
 ## Issuer information
 
 state_contract_cfg:
-  issuer_id: "issuer id in decimal format"
+  issuer_id: ['', '']
+  disable_filtration: true
 ```
 
 Also, some environment variables will be needed to run

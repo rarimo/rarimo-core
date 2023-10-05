@@ -14,7 +14,7 @@ git:
         - go.sum
       setup:
         - "**/*"
-shell: 
+shell:
   install:
     - apk add git build-base
     - go env -w GOPRIVATE=github.com/*

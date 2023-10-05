@@ -1,9 +1,9 @@
 # Oracles (Savers)
 
-- Repo: [Saver Lib](https://gitlab.com/rarimo/savers/saver-grpc-lib)
-- Repo: [EVM Saver](https://gitlab.com/rarimo/savers/evm-saver-svc)
-- Repo: [Solana Saver](https://gitlab.com/rarimo/savers/solana-saver-svc)
-- Repo: [Near Saver](https://gitlab.com/rarimo/savers/near-saver-svc)
+- Repo: [Saver Lib](https://github.com/rarimo/saver-grpc-lib)
+- Repo: [EVM Saver](https://github.com/rarimo/evm-saver-svc)
+- Repo: [Solana Saver](https://github.com/rarimo/solana-saver-svc)
+- Repo: [Near Saver](https://github.com/rarimo/near-saver-svc)
 
 Managing events' creation requires some special logic for every chain that will observe blockchain state for new events,
 parse in accordance with chain rules, etc. Rarimo core can not fetch events data by itself because interaction with
@@ -63,7 +63,7 @@ Let's describe the flow more accurately:
 
 ## Library
 
-In `gitlab.com/rarimo/savers/saver-grpc-lib` we defined the common utils for all oracles.
+In `github.com/rarimo/saver-grpc-lib` we defined the common utils for all oracles.
 Every oracle should implement `verifiers.TransferOperator` interface for every supported token type
 and put that implementations into the `voter.Subscriber` and `voter.Catchupper` using `verifiers.TransferVerifier` wrapper.
 
