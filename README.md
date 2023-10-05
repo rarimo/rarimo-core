@@ -14,7 +14,7 @@ Documentation:
 * [Rarimo core modules business logic](./x/README.md)
 * [Bridge contract architecture](./docs/common/contracts/001-contracts.md)
 * [Bridging flow overview](./docs/common/bridging/001-bridging.md)
-* [Oracles atrcitecture overview](./docs/common/oracles/001-oracles.md)
+* [Oracles architecture overview](./docs/common/oracles/001-oracles.md)
 
 ## Build
 
