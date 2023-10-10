@@ -7,7 +7,11 @@
 
 ```Core branch:``` ***chains/mainnet***
 
+```Launch commin hash:``` ***4dd670ddef36bc058c5f68057ad1b885f1dcbfbe***
+
 ```Explorer:``` [scan.rarimo.com](https://scan.rarimo.com/)
+
+```Denom name:``` ***urmo***
 
 ----
 
