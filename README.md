@@ -2,11 +2,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## [Mainnet information](./docs/common/mainnet/001-mainnet.md)
+
+***Chains:***
+* [***Mainnet information***](./docs/common/mainnet/001-mainnet.md)
+
+* [***Testnet (Mainnet-beta) information***](./docs/common/testnet/001-testnet.md)
 
 ## Introduction
 
-**rarimocore** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+**rarimo-core** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
 Based on Tendermint + Cosmos SDK blockchain core the main goal is to provide validated information about different cross-chain operations.
 

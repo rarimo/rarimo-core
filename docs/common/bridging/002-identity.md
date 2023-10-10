@@ -3,7 +3,7 @@
 Identity transfers currently implemented in the following way:
 - There is an operation type `IDENTITY_DEFAULT_TRANSFER` that should be used to transfer simple state from one chain to another.
 
-- An [evm-identity-oracle-svc](https://gitlab.com/rarimo/polygonid/evm-identity-saver-svc) exists, that is responsible
+- An [evm-identity-oracle-svc](https://github.com/rarimo/evm-identity-saver-svc) exists, that is responsible
   for delivering information from certain Iden3 state contract into the Rarimo chain.
 
 - After delivering information about state update, oracles (`evm-identity-saver-svc`) vote for information correctness.
@@ -93,7 +93,7 @@ After fetching of some event, oracle will create the corresponding transaction a
 After transaction appears in Rarimo blockchain all chain oracles have to vote for its correctness.
 So they will fetch the information about state update from Rarimo chain, verify it and submit their votes (YES/NO answers).
 
-For submitting transactions, savers (oracles) uses the [broadcaster-svc](https://gitlab.com/rarimo/broadcaster-svc).
+For submitting transactions, savers (oracles) uses the [broadcaster-svc](https://github.com/rarimo/broadcaster-svc).
 It accepts the transaction by GRPC endpoint, signs it with configured private key and submits it to the Rarimo chain.
 
 The following configuration .yaml file should be provided to launch your broadcaster service:
@@ -130,7 +130,7 @@ version: "3.7"
 services:
 
   broadcaster:
-    image: registry.gitlab.com/rarimo/broadcaster-svc:v1.0.1
+    image: registry.github.com/rarimo/broadcaster-svc:v1.0.1
     restart: unless-stopped
     depends_on:
       - broadcaster-db
@@ -152,7 +152,7 @@ services:
       - broadcaster-data:/pgdata
 
   evm-identity-saver:
-    image: registry.gitlab.com/rarimo/polygonid/evm-identity-saver-svc:v1.0.2
+    image: registry.github.com/rarimo/evm-identity-saver-svc:v1.0.2
     restart: unless-stopped
     depends_on:
      - broadcaster
