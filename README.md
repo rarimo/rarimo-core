@@ -2,7 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## [Mainnet information](./docs/common/mainnet/001-mainnet.md)
+
+***Chains:***
+* [***Mainnet information***](./docs/common/mainnet/001-mainnet.md)
+
+* [***Testnet (Mainnet-beta) information***](./docs/common/testnet/001-testnet.md)
 
 ## Introduction
 
