@@ -101,8 +101,8 @@ func confirmViolation(party *types.Party, sessionId string) {
 	// we are assuming that session ids is an integer values encoded into string
 	sessionIdInt, _ := strconv.Atoi(sessionId)
 
-	// dropReportSessionDelta is an amount of block when report is considered to old and can be removed
-	const dropReportSessionDelta = 1000
+	// dropReportSessionDelta is an amount of sessions when report is considered to old and can be removed
+	const dropReportSessionDelta = 100
 
 	actualReportedSessions := make([]string, 0, len(party.ReportedSessions))
 	actualCounter := 0
