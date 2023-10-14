@@ -105,16 +105,14 @@ func confirmViolation(party *types.Party, sessionId string) {
 	const dropReportSessionDelta = 100
 
 	actualReportedSessions := make([]string, 0, len(party.ReportedSessions))
-	actualCounter := 0
 
 	for _, ssi := range party.ReportedSessions {
 		ssiInt, _ := strconv.Atoi(ssi)
 		if ssiInt+dropReportSessionDelta > sessionIdInt {
 			actualReportedSessions = append(actualReportedSessions, ssi)
-			actualCounter++
 		}
 	}
 
 	party.ReportedSessions = actualReportedSessions
-	party.ViolationsCount = uint64(actualCounter)
+	party.ViolationsCount = uint64(len(party.ReportedSessions))
 }
