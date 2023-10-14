@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -58,14 +59,14 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 		alreadyIncremented = alreadyIncremented || (sessionReported == msg.SessionId)
 	}
 
-	// If party was not incremented then increment.
-	// If violations reaches threshold then party becomes frozen.
+	// Trying to apply new violation if was not applied yet.
 	if !alreadyIncremented {
+		// Check that already have enough reports to confirm violation
 		if uint64(len(reports)) >= params.Threshold {
-			party.ViolationsCount++
-			party.ReportedSessions = append(party.ReportedSessions, msg.SessionId)
+			confirmViolation(party, msg.SessionId)
 		}
 
+		// If violations reaches threshold then party becomes frozen.
 		if party.ViolationsCount == params.MaxViolationsCount {
 			party.Status = types.PartyStatus_Frozen
 			party.FreezeEndBlock = uint64(ctx.BlockHeight()) + params.FreezeBlocksPeriod
@@ -88,4 +89,32 @@ func (t msgServer) ReportViolation(goCtx context.Context, msg *types.MsgCreateVi
 	))
 
 	return &types.MsgCreateViolationReportResponse{}, nil
+}
+
+// confirmViolation updates party entry with:
+// 1. increments violations counter
+// 2. adds new sessionId to the reported sessions
+// 3. removes old reports with corresponding decreasing of counter
+func confirmViolation(party *types.Party, sessionId string) {
+	party.ReportedSessions = append(party.ReportedSessions, sessionId)
+
+	// we are assuming that session ids is an integer values encoded into string
+	sessionIdInt, _ := strconv.Atoi(sessionId)
+
+	// dropReportSessionDelta is an amount of block when report is considered to old and can be removed
+	const dropReportSessionDelta = 1000
+
+	actualReportedSessions := make([]string, 0, len(party.ReportedSessions))
+	actualCounter := 0
+
+	for _, ssi := range party.ReportedSessions {
+		ssiInt, _ := strconv.Atoi(ssi)
+		if ssiInt+dropReportSessionDelta > sessionIdInt {
+			actualReportedSessions = append(actualReportedSessions, ssi)
+			actualCounter++
+		}
+	}
+
+	party.ReportedSessions = actualReportedSessions
+	party.ViolationsCount = uint64(actualCounter)
 }
