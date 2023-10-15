@@ -1,5 +1,17 @@
 # Mainnet upgrades
 
+## V1.0.7
+Core binary: (alpine-linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.7/rarimo-core>".
+
+Also, you can build core from sources by yourself: Use <"https://github.com/rarimo/rarimo-core"> repo and `chains/mainnet` branch.
+
+Upgrade will perform automatically if you are using `cosmovisor` under Alpine linux.
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to use Alpine binary on your machine.
+
+Upgrade v1.0.7 introduces fixes to the `rarimocore` module:
+- Adding feature to clear old TSS violation reports.
+- Manual unfreeze of all TSS parties without necessity to reshare keys. 
+
 ## V1.0.6
 
 Core binary: (alpine-linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.6/rarimo-core>"
