@@ -1,3 +1,8 @@
+---
+layout: default
+title: x/rarimocore
+---
+
 # `x/rarimocore`
 
 ## Abstract

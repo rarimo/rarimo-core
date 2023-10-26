@@ -1,3 +1,8 @@
+---
+layout: default
+title: Adding new operation
+---
+
 # Adding new operation
 
 To provide TSS signature core uses operations and confirmation entities.

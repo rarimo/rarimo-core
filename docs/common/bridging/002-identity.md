@@ -1,3 +1,8 @@
+---
+layout: default
+title: Identity transfers
+---
+
 # Identity transfers
 
 Identity transfers currently implemented in the following way:

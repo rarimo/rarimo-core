@@ -1,3 +1,8 @@
+---
+layout: default
+title: Bridge overview
+---
+
 # Bridge overview
 
 Rarimo decentralized bridge contract is responsible for managing deposits and withdrawals for Native, fungible and non-fungible tokens. All withdrawal operations are protected by ECDSA secp256k1 threshold (t-n) signature.

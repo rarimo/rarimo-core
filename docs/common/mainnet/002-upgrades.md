@@ -1,3 +1,8 @@
+---
+layout: default
+title: Mainnet upgrades
+---
+
 # Mainnet upgrades
 
 ## V1.0.7

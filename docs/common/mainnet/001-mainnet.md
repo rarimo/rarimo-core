@@ -1,3 +1,8 @@
+---
+layout: default
+title: Mainnet information
+---
+
 # Mainnet information
 
 * [Upgrades](./002-upgrades.md)

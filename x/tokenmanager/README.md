@@ -1,3 +1,8 @@
+---
+layout: default
+title: x/tokenamanager
+---
+
 # `x/tokenamanager`
 
 ## Abstract

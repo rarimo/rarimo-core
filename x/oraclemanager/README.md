@@ -1,3 +1,8 @@
+---
+layout: default
+title: x/oraclemanager
+---
+
 # `x/oraclemanager`
 
 ## Abstract

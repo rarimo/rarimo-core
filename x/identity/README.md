@@ -1,3 +1,8 @@
+---
+layout: default
+title: x/identity
+---
+
 # `x/identity`
 
 ## Abstract

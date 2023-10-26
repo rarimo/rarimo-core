@@ -1,3 +1,8 @@
+---
+layout: default
+title: Rarimo Identity
+---
+
 # Rarimo Identity
 
 Rarimo identity transfers provides issuers with opportunity to publish cheap state updates into Rarimo chain directly,

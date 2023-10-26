@@ -1,3 +1,8 @@
+---
+layout: default
+title: Setup local genesis state
+---
+
 # Setup local genesis state 
 
 ### Creating validator key

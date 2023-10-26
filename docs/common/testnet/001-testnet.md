@@ -1,3 +1,8 @@
+---
+layout: default
+title: Testnet information
+---
+
 # Testnet information
 
 * [Validator Guide](./002-validator-guide.md)
@@ -10,7 +15,7 @@
 
 ```Explorer:``` [scan.mainnet-beta.rarimo.com](https://scan.mainnet-beta.rarimo.com/)
 
-```Denom name:``` ***urmo***
+```Denom name:``` ***stake***
 
 ----
 

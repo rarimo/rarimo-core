@@ -1,3 +1,8 @@
+---
+layout: default
+title: Commission overview
+---
+
 # Commission overview
 
 The bridge feature is the main component of Rarimo cross-chain messaging protocol.

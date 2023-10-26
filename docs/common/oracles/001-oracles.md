@@ -1,3 +1,8 @@
+---
+layout: default
+title: Oracles (Savers)
+---
+
 # Oracles (Savers)
 
 - Repo: [Saver Lib](https://github.com/rarimo/saver-grpc-lib)

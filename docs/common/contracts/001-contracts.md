@@ -1,3 +1,8 @@
+---
+layout: default
+title: Smart-contracts overview
+---
+
 # Smart-contracts overview
 
 Rarimo smart-contracts are the primary way to interact with our multi-chain protocol.
