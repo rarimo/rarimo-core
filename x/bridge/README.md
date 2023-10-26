@@ -42,24 +42,25 @@ is the target of minting, and the amount of tokens to mint. And also BurnTokens 
 ### Params
 
 Definition:
-  ```protobuf
-  message Params {
-    option (gogoproto.goproto_stringer) = false;
-    string withdrawDenom = 1;
-  }
-  ```
+```protobuf
+message Params {
+   option (gogoproto.goproto_stringer) = false;
+   string withdrawDenom = 1;
+}
+```
 
-  <details>
-    <summary>Example</summary>
+<details>
+<summary>Example</summary>
 
-    ```json
-    {
-      "params": {
-        "withdrawDenom": "stake"
-      }
-    }
-    ```
-  </details>
+```json
+{
+   "params": {
+      "withdrawDenom": "stake"
+   }
+}
+```
+
+</details>
 
 ### Hash
 
