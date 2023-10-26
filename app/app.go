@@ -965,6 +965,24 @@ func New(
 		},
 	)
 
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.0.8",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			params := app.RarimocoreKeeper.GetParams(ctx)
+			params.IsUpdateRequired = false
+			params.MaxViolationsCount = 1000000000
+			for _, p := range params.Parties {
+				p.Status = rarimocoremoduletypes.PartyStatus_Active
+				p.ViolationsCount = 0
+				p.ReportedSessions = []string{}
+				p.FreezeEndBlock = 0
+			}
+
+			app.RarimocoreKeeper.SetParams(ctx, params)
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
