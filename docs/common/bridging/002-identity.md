@@ -35,14 +35,20 @@ TBD
 In the current implementation the identity saver subscribes to the certain EVM chain state smart contract and tracks the `StateLibStateUpdated` events.
 
 Event definition:
+
 ```go
+package main
+
+import "math/big"
+
 type StateLibStateUpdated struct {
-	Id        *big.Int
-	BlockN    *big.Int
-	Timestamp *big.Int
-	State     *big.Int
-	Raw       types.Log // Blockchain specific contextual infos
+  Id        *big.Int
+  BlockN    *big.Int
+  Timestamp *big.Int
+  State     *big.Int
+  Raw       types.Log // Blockchain specific contextual infos
 }
+
 ```
 
 The following configuration .yaml file should be provided to launch your oracle:

@@ -10,6 +10,7 @@ To maintain successful work and reward validators and other people that support 
 should charge protocol usage fee.
 
 Protocol fee in Rarimo will be charged for every type of cross-chain token transfer:
+
 - Native
 - FT
 - and NFT transfers.
@@ -21,8 +22,10 @@ For every transfer we will charge a constant amount on start and prepare ground 
 ## Architecture
 
 In parameters, fee smart contract should contain the acceptable token addresses list,
-amount for every token to be charged and bridge contract address. Those parameters should be managed by threshold signature.
-To check the signature fee contract should execute a cross-contract call to the bridge contract to fetch the threshold public key.
+amount for every token to be charged and bridge contract address. Those parameters should be managed by threshold
+signature.
+To check the signature fee contract should execute a cross-contract call to the bridge contract to fetch the threshold
+public key.
 
 ----
 
@@ -33,11 +36,12 @@ address of selected fee token. Deposit method should check if the provided token
 If everything is well, deposit method performs charging of the corresponding fee amount and executes
 deposit method on the bridge contract.
 
-
 Lets described flow more accurately:
+
 1. User selects the fee token and calls the deposit method on the fee contract.
 2. Fee contract checks if the token is available to be charged fee in, and gets the fee amount.
-3. Fee contract charges a fee amount from the user. (If it is EVM or Near, the approval token method should be called before by the user).
+3. Fee contract charges a fee amount from the user. (If it is EVM or Near, the approval token method should be called
+   before by the user).
 4. If charging was successful, the fee contract calls a bridge contract with provided deposit arguments.
 
 Also bridge smart-contract should be extended to receive deposit calls only from corresponding fee smart-contract.
@@ -55,10 +59,12 @@ The public key should be taken from the bridge contract state.
 
 ## Management
 
-For managing fee tokens, fee smart-contract should implement the **AddFeeToken**, **UpdateFeeToken**, **RemoveFeeToken**,
+For managing fee tokens, fee smart-contract should implement the **AddFeeToken**, **UpdateFeeToken**, **RemoveFeeToken
+**,
 **Withdraw** methods that accept token information and signature for corresponding hash.
 
 Let’s define the operation type enum with the following fields:
+
 ```
 0 => AddFeeToken
 1 => RemoveFeeToken
@@ -69,30 +75,31 @@ Let’s define the operation type enum with the following fields:
 Let’s described flow more accurately:
 
 1. Core provides signature and data to be changed on the fee contract.
-  For the AddFeeToken, UpdateFeeToken and RemoveFeeToken operation it should be:
-  __HASH(
-  nonce 32 byte,
-  contract addr,
-  network name,
-  operation type,
-  token addr if non-native otherwise none (in evm 20 zero bytes for native),
-  amount
-  )__
+   For the AddFeeToken, UpdateFeeToken and RemoveFeeToken operation it should be:
+   __HASH(
+   nonce 32 byte,
+   contract addr,
+   network name,
+   operation type,
+   token addr if non-native otherwise none (in evm 20 zero bytes for native),
+   amount
+   )__
 
 2. For the withdrawal operation it should be:
-  __HASH(
-  nonce 32 byte,
-  receiver address,
-  contract addr,
-  network name,
-  operation type,
-  token addr if non-native otherwise none (in evm 20 zero bytes for native),
-  amount
-  )__
+   __HASH(
+   nonce 32 byte,
+   receiver address,
+   contract addr,
+   network name,
+   operation type,
+   token addr if non-native otherwise none (in evm 20 zero bytes for native),
+   amount
+   )__
 
 3. Someone submits that information to the fee smart-contract.
 
-4. Fee contract calculates hash of provided data and checks that signature public key corresponds to the key on bridge smart contract.
+4. Fee contract calculates hash of provided data and checks that signature public key corresponds to the key on bridge
+   smart contract.
 
 5. If all checks were correct, fee smart-contract updates state according to the provided information.
 
@@ -100,5 +107,6 @@ Let’s described flow more accurately:
 
 ## Conclusion
 
-On different networks the smart contracts architecture can be may differ from what is described cause of chain smart contracts peculiarities.
+On different networks the smart contracts architecture can be may differ from what is described cause of chain smart
+contracts peculiarities.
 Explore every contract by yourself to gent better understanding.
