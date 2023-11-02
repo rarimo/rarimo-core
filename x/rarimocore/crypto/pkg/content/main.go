@@ -166,6 +166,16 @@ func GetIdentityDefaultTransferContent(op *types.Operation) (merkle.Content, err
 	return content, errors.Wrap(err, "error creating content")
 }
 
+func GetIdentityGISTTransferContent(op *types.Operation) (merkle.Content, error) {
+	transfer, err := pkg.GetIdentityGISTTransfer(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetIdentityGISTTransferContent(transfer)
+	return content, errors.Wrap(err, "error creating content")
+}
+
 func GetIdentityAggregatedTransferContent(op *types.Operation) (merkle.Content, error) {
 	transfer, err := pkg.GetIdentityAggregatedTransfer(*op)
 	if err != nil {

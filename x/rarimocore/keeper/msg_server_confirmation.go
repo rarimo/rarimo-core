@@ -199,6 +199,12 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getIdentityDefaultTransferContent(ctx, transfer)
+	case types.OpType_IDENTITY_GIST_TRANSFER:
+		transfer, err := pkg.GetIdentityGISTTransfer(op)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+		}
+		return k.getIdentityGISTTransferContent(ctx, transfer)
 	case types.OpType_IDENTITY_AGGREGATED_TRANSFER:
 		transfer, err := pkg.GetIdentityAggregatedTransfer(op)
 		if err != nil {
@@ -269,6 +275,10 @@ func (k Keeper) getContractUpgradeContent(ctx sdk.Context, upgrade *types.Contra
 
 func (k Keeper) getIdentityDefaultTransferContent(_ sdk.Context, transfer *types.IdentityDefaultTransfer) (*operation.IdentityDefaultTransferContent, error) {
 	return pkg.GetIdentityDefaultTransferContent(transfer)
+}
+
+func (k Keeper) getIdentityGISTTransferContent(_ sdk.Context, transfer *types.IdentityGISTTransfer) (*operation.IdentityGISTTransferContent, error) {
+	return pkg.GetIdentityGISTTransferContent(transfer)
 }
 
 func (k Keeper) getChangePartiesContent(_ sdk.Context, change *types.ChangeParties) (*operation.ChangePartiesContent, error) {
