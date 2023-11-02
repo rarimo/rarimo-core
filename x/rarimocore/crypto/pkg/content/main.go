@@ -64,6 +64,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_IDENTITY_GIST_TRANSFER:
+			content, err := GetIdentityGISTTransferContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		case types.OpType_IDENTITY_AGGREGATED_TRANSFER:
 			content, err := GetIdentityAggregatedTransferContent(op)
 			if err != nil {
