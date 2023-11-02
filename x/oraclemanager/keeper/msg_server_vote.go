@@ -53,7 +53,7 @@ func (k Keeper) collectVotes(ctx sdk.Context, index string) error {
 	operation, _ := k.rarimo.GetOperation(ctx, index)
 	// Votes colelcting can be different for different types of operation.
 	switch operation.OperationType {
-	case rarimotypes.OpType_TRANSFER, rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
+	case rarimotypes.OpType_TRANSFER, rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER, rarimotypes.OpType_IDENTITY_GIST_TRANSFER:
 		return k.collectOperationVotes(ctx, operation)
 	default:
 		// Nothing to do

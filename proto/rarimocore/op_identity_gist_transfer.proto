@@ -12,11 +12,11 @@ message IdentityGISTTransfer {
   string chain = 2;
   // Hex 0x
   string GISTHash = 3;
-  string GISTReplacedBy = 11;
+  string GISTReplacedBy = 4;
   // Dec
-  string GISTCreatedAtTimestamp = 12;
-  string GISTCreatedAtBlock = 13;
+  string GISTCreatedAtTimestamp = 5;
+  string GISTCreatedAtBlock = 6;
   // HEX 0x
-  string replacedGISTHash = 17;
+  string replacedGISTHash = 7;
 }
 
