@@ -35,6 +35,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgCreateIdentityGISTTransferOp:
 			res, err := msgServer.CreateIdentityGISTTransferOperation(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateIdentityStateTransferOp:
+			res, err := msgServer.CreateIdentityStateTransferOperation(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgVote:
 			res, err := msgServer.Vote(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

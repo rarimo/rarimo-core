@@ -15,6 +15,7 @@ service Msg {
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
   rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
   rpc CreateIdentityGISTTransferOperation(MsgCreateIdentityGISTTransferOp) returns (MsgCreateIdentityGISTTransferOpResponse);
+  rpc CreateIdentityStateTransferOperation(MsgCreateIdentityStateTransferOp) returns (MsgCreateIdentityStateTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -80,6 +81,8 @@ message MsgCreateIdentityDefaultTransferOp {
   string replacedGISTtHash = 18;
 }
 
+message MsgCreateIdentityDefaultTransferOpResponse {}
+
 message MsgCreateIdentityGISTTransferOp {
   string creator = 1;
   // Hex 0x
@@ -96,9 +99,25 @@ message MsgCreateIdentityGISTTransferOp {
   string replacedGISTtHash = 8;
 }
 
-message MsgCreateIdentityDefaultTransferOpResponse {}
-
 message MsgCreateIdentityGISTTransferOpResponse {}
+
+message MsgCreateIdentityStateTransferOp {
+  string creator = 1;
+  // Hex 0x
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x
+  string id = 5;
+  // Hex 0x
+  string stateHash = 6;
+  // Dec
+  string stateCreatedAtTimestamp = 7;
+  string stateCreatedAtBlock = 8;
+  // HEx 0x
+  string replacedStateHash = 17;
+}
+
+message MsgCreateIdentityStateTransferOpResponse {}
 
 message MsgVote{
   rarimo.rarimocore.oraclemanager.OracleIndex index = 1;

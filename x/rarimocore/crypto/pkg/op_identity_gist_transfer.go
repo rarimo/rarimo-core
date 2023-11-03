@@ -9,7 +9,7 @@ import (
 )
 
 func GetIdentityGISTTransfer(operation types.Operation) (*types.IdentityGISTTransfer, error) {
-	if operation.OperationType == types.OpType_IDENTITY_DEFAULT_TRANSFER {
+	if operation.OperationType == types.OpType_IDENTITY_GIST_TRANSFER {
 		change := new(types.IdentityGISTTransfer)
 		return change, proto.Unmarshal(operation.Details.Value, change)
 	}

@@ -82,6 +82,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_IDENTITY_STATE_TRANSFER:
+			content, err := GetIdentityStateTransferContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		default:
 			return nil, ErrUnsupportedContent
 		}
@@ -182,6 +191,16 @@ func GetIdentityGISTTransferContent(op *types.Operation) (merkle.Content, error)
 	}
 
 	content, err := pkg.GetIdentityGISTTransferContent(transfer)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetIdentityStateTransferContent(op *types.Operation) (merkle.Content, error) {
+	transfer, err := pkg.GetIdentityStateTransfer(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetIdentityStateTransferContent(transfer)
 	return content, errors.Wrap(err, "error creating content")
 }
 
