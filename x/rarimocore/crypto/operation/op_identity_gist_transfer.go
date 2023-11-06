@@ -11,7 +11,6 @@ import (
 type IdentityGISTTransferContent struct {
 	Contract               []byte
 	GISTHash               []byte
-	GISTReplacedBy         []byte
 	GISTCreatedAtTimestamp []byte
 	GISTCreatedAtBlock     []byte
 	ReplacedGISTHash       []byte
@@ -23,7 +22,6 @@ func (c IdentityGISTTransferContent) CalculateHash() []byte {
 	return eth.Keccak256(
 		c.Contract,
 		c.GISTHash,
-		c.GISTReplacedBy,
 		c.GISTCreatedAtTimestamp,
 		c.GISTCreatedAtBlock,
 		c.ReplacedGISTHash,

@@ -518,7 +518,6 @@ func (k Keeper) GetIdentityGISTTransfer(_ sdk.Context, msg *oracletypes.MsgCreat
 		Contract:               msg.Contract,
 		Chain:                  msg.Chain,
 		GISTHash:               msg.GISTHash,
-		GISTReplacedBy:         msg.GISTReplacedBy,
 		GISTCreatedAtTimestamp: msg.GISTCreatedAtTimestamp,
 		GISTCreatedAtBlock:     msg.GISTCreatedAtBlock,
 		ReplacedGISTHash:       msg.ReplacedGISTtHash,

@@ -21,7 +21,6 @@ func GetIdentityGISTTransferContent(op *types.IdentityGISTTransfer) (*operation.
 	return &operation.IdentityGISTTransferContent{
 		Contract:               hexutil.MustDecode(op.Contract),
 		GISTHash:               operation.To32Bytes(hexutil.MustDecode(op.GISTHash)),
-		GISTReplacedBy:         operation.To32Bytes(hexutil.MustDecode(op.GISTReplacedBy)),
 		GISTCreatedAtTimestamp: operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtTimestamp)),
 		GISTCreatedAtBlock:     operation.To32Bytes(operation.AmountBytes(op.GISTCreatedAtBlock)),
 		ReplacedGISTHash:       operation.To32Bytes(hexutil.MustDecode(op.ReplacedGISTHash)),

@@ -48,7 +48,7 @@ The following list full describes system rules and architecture:
    at least min_oracle_stake tokens through the `oraclemanager` by submitting the `Stake` transaction.
    To use the same oracle account for several chains, the account owner should stake tokens for every chain separately.
 
-4. It is possible to unstake tokens and stop taking part in voting and creating new operations if the oracle owner
+4. It is possible to unstake tokens and finish taking part in voting and creating new operations if the oracle owner
    wants.
    Through the `oraclemanager` oracle owner can submit `Unstake` transaction and return the staked coins.
    After that oracle will not be able to create operations and vote for the created one.
@@ -229,6 +229,52 @@ message MsgCreateIdentityDefaultTransferOp {
   // HEx 0x
   string replacedStateHash = 17;
   string replacedGISTtHash = 18;
+}
+```
+
+### CreateIdentityGISTTransferOperation
+
+**CreateIdentityGISTTransferOperation** - crates Operation with type `IDENTITY_GIST_TRANSFER` and `INITIALIZED`
+status.
+
+```protobuf
+message MsgCreateIdentityGISTTransferOp {
+   string creator = 1;
+   // Hex 0x
+   string contract = 2;
+   string chain = 3;
+   // Hex 0x
+   string GISTHash = 4;
+   // Hex 0x
+   string GISTReplacedBy = 5;
+   // Dec
+   string GISTCreatedAtTimestamp = 6;
+   string GISTCreatedAtBlock = 7;
+   // HEx 0x
+   string replacedGISTtHash = 8;
+}
+```
+
+### CreateIdentityStateTransferOperation
+
+**CreateIdentityStateTransferOperation** - crates Operation with type `IDENTITY_STATE_TRANSFER` and `INITIALIZED`
+status.
+
+```protobuf
+message MsgCreateIdentityStateTransferOp {
+   string creator = 1;
+   // Hex 0x
+   string contract = 2;
+   string chain = 3;
+   // Hex 0x
+   string id = 5;
+   // Hex 0x
+   string stateHash = 6;
+   // Dec
+   string stateCreatedAtTimestamp = 7;
+   string stateCreatedAtBlock = 8;
+   // HEx 0x
+   string replacedStateHash = 17;
 }
 ```
 
