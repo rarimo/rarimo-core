@@ -90,13 +90,11 @@ message MsgCreateIdentityGISTTransferOp {
   string chain = 3;
   // Hex 0x
   string GISTHash = 4;
-  // Hex 0x
-  string GISTReplacedBy = 5;
   // Dec
-  string GISTCreatedAtTimestamp = 6;
-  string GISTCreatedAtBlock = 7;
+  string GISTCreatedAtTimestamp = 5;
+  string GISTCreatedAtBlock = 6;
   // HEx 0x
-  string replacedGISTtHash = 8;
+  string replacedGISTtHash = 7;
 }
 
 message MsgCreateIdentityGISTTransferOpResponse {}
