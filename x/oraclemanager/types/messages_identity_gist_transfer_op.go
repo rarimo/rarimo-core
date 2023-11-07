@@ -52,10 +52,6 @@ func (msg *MsgCreateIdentityGISTTransferOp) ValidateBody() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid gist hash (%s)", err)
 	}
 
-	if _, err := hexutil.Decode(msg.GISTReplacedBy); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid gist replaced by (%s)", err)
-	}
-
 	if _, ok := new(big.Int).SetString(msg.GISTCreatedAtTimestamp, 10); !ok {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid timestamp")
 	}
