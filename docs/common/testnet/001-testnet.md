@@ -21,9 +21,9 @@ title: Testnet information
 
 ## RPC Node
 
-```Tendermint API:``` [core-api.mainnet-beta.rarimo.com](https://core-api.node1.mainnet-beta.rarimo.com/)
+``` Cosmos API:``` [core-api.mainnet-beta.rarimo.com](https://core-api.node1.mainnet-beta.rarimo.com/)
 
-```Cosmos API:``` [rpc.node1.mainnet-beta.rarimo.com](https://rpc.node1.mainnet-beta.rarimo.com/)
+```Tendermint API:``` [rpc.node1.mainnet-beta.rarimo.com](https://rpc.node1.mainnet-beta.rarimo.com/)
 
 ```Swagger API:``` [rpc-api.node1.mainnet-beta.rarimo.com](https://rpc-api.node1.mainnet-beta.rarimo.com/)
 
