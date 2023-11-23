@@ -56,8 +56,8 @@ Rarimo core leverages on the following branches:
 - `mainnet-beta` branch with testnet core with all testnet upgrades
 - `mainnet` branch with mainnet core with all mainnet upgrades
 
-For the tags we are using an approach when stable releases with `vx.x.x` tag has only the `mainnet` core. On the other
-side `mainnet-beta` releases are build under `vx.x.x.rc-x` tag. For the master branch releases only hash tagged images
+For the tags we are using an approach when stable releases with `vX.X.X` tag has only the `mainnet` core. On the other
+side `mainnet-beta` releases are build under `vX.X.X-rcX` tag. For the master branch releases only hash tagged images
 will be provided.
 
 Before creating the `mainnet` release be sure that it includes all unreleased changes from `mainnet-beta` and then
