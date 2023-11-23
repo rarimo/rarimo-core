@@ -26,9 +26,9 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
 
-      - name: GCC multilib
+      - name: Build base
         run: |
-          sudo apt-get install gcc-multilib g++-multilib
+          sudo apt install build-essential
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5

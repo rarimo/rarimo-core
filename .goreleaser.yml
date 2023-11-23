@@ -1,13 +1,14 @@
 before:
   hooks:
     - go mod tidy
+    - go mod vendor
 
 builds:
   - id: linux-amd64-build
     main: ./cmd/rarimo-cored
     binary: rarimo-core
     env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
     goos:
       - linux
     goarch:
