@@ -1,3 +1,8 @@
+---
+layout: default
+title: List of Modules
+---
+
 # List of Modules
 
 * [x/rarimocore](./rarimocore/README.md) - Base transfer logic (signing, storing operations, tss parties staking).

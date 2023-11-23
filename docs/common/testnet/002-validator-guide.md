@@ -1,3 +1,8 @@
+---
+layout: default
+title: Validators' Guide
+---
+
 # Validators' Guide
 
 This instruction tells how to start one or another system service.
