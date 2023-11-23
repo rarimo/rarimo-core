@@ -28,7 +28,7 @@ jobs:
 
       - name: Build base
         run: |
-          apk add build-base
+          sudo apt install build-essential
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
