@@ -41,10 +41,18 @@ jobs:
           path: "/usr/local/bin/rarimo-core"
 
       - uses: ncipollo/release-action@v1
+        id: create-release
         with:
           allowUpdates: true
-          artifactErrorsFailBuild: true
-          artifacts: ${{steps.extract.outputs.destination}}/rarimo-core
-          tag: $GITHUB_REF_NAME
-          name: Release $GITHUB_REF_NAME
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ${{steps.extract.outputs.destination}}/rarimo-core
+          asset_name: rarimo-core-alpine-linux-amd64
