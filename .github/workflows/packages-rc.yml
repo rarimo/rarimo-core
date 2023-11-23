@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: golang:1.20-alpine
+    runs-on: ubuntu-latest
     steps:
       - name: Check branch
         if: endsWith(github.event.base_ref, 'mainnet-beta') == false
