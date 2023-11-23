@@ -45,7 +45,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: ${{ steps.extract.outputs.destination }}
+          files: ${{steps.extract.outputs.destination}}rarimo-core
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
           draft: false
