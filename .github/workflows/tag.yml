@@ -10,7 +10,6 @@ jobs:
     name: Converge
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
         with:
@@ -29,7 +28,32 @@ jobs:
           docker version
           echo $GITHUB_REPOSITORY
           echo $GITHUB_REF_NAME
+
       - name: Run Build
         run: |
           . $(werf ci-env github --as-file) 
           werf export service --tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
+
+      - uses: shrink/actions-docker-extract@v3
+        id: extract
+        with:
+          image: ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
+          path: "/usr/local/bin/rarimo-core"
+
+      - uses: ncipollo/release-action@v1
+        id: create-release
+        with:
+          allowUpdates: true
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ${{steps.extract.outputs.destination}}/rarimo-core
+          asset_name: rarimo-core-alpine-linux-amd64
+          asset_content_type: application/octet-stream
