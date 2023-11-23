@@ -9,9 +9,15 @@ permissions:
 
 jobs:
   goreleaser:
-    if: endsWith(github.ref, 'mainnet')
     runs-on: ubuntu-latest
     steps:
+      - name: Check branch
+        if: endsWith(github.event.base_ref, 'mainnet') == false
+        run: |
+          echo ${{ github.event.base_ref }}
+          echo ${{github.ref}}
+          exit -1
+
       - name: Checkout
         uses: actions/checkout@v4
         with:

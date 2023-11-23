@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check branch
-        if: endsWith(github.ref, 'mainnet-beta') == false
+        if: endsWith(github.event.base_ref, 'mainnet-beta') == false
         run: |
           echo ${{ github.event.base_ref }}
           echo ${{github.ref}}
