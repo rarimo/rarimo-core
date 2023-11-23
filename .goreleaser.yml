@@ -1,0 +1,8 @@
+builds:
+  - id: linux-amd64-build
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64

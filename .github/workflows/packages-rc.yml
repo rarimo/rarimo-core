@@ -26,11 +26,16 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
 
+      - name: GCC multilib
+        run: |
+          sudo apt-get install gcc-multilib g++-multilib
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser
           version: latest
           args: release --clean
+          workdir: ./cmd/rarimo-cored
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
