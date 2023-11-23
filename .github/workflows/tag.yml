@@ -56,3 +56,4 @@ jobs:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ${{steps.extract.outputs.destination}}/rarimo-core
           asset_name: rarimo-core-alpine-linux-amd64
+          asset_content_type: application/octet-stream
