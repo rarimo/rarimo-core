@@ -40,13 +40,11 @@ jobs:
           image: ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
           path: "/usr/local/bin/rarimo-core"
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ncipollo/release-action@v1
         with:
-          files: ${{steps.extract.outputs.destination}}rarimo-core
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: ${{steps.extract.outputs.destination}}/rarimo-core
+          tag: $GITHUB_REF_NAME
+          name: Release $GITHUB_REF_NAME
+          token: ${{ secrets.GITHUB_TOKEN }}
