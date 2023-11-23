@@ -2,16 +2,22 @@ name: Build Rarimo Core executables
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+.rc-[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
 
 permissions:
   contents: write
 
 jobs:
   goreleaser:
-    if: endsWith(github.ref, 'mainnet-beta')
     runs-on: ubuntu-latest
     steps:
+      - name: Check branch
+        if: endsWith(github.event.base_ref, 'mainnet-beta') == false
+        run: |
+          echo ${{ github.event.base_ref }}
+          echo ${{github.ref}}
+          exit -1
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
