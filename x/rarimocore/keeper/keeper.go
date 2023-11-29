@@ -348,6 +348,116 @@ func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator 
 	return nil
 }
 
+func (k Keeper) CreateIdentityGISTTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityGISTTransfer) error {
+	network, ok := k.tm.GetNetwork(ctx, transfer.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "source network not found")
+	}
+
+	if network.GetIdentityParams() == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "identity transfers is not supported due to lack of parameters")
+	}
+
+	details, err := cosmostypes.NewAnyWithValue(transfer)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
+	}
+
+	content, err := pkg.GetIdentityGISTTransferContent(transfer)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content %s", err.Error())
+	}
+
+	var operation = types.Operation{
+		Index:         hexutil.Encode(content.CalculateHash()),
+		OperationType: types.OpType_IDENTITY_GIST_TRANSFER,
+		Details:       details,
+		Status:        types.OpStatus_INITIALIZED,
+		Creator:       creator,
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
+	}
+
+	// Only not approved operation can be changed
+	if op, ok := k.GetOperation(ctx, operation.Index); ok {
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
+		}
+
+		// Otherwise - clear votes
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
+	}
+
+	k.SetOperation(
+		ctx,
+		operation,
+	)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+	))
+
+	return nil
+}
+
+func (k Keeper) CreateIdentityStateTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityStateTransfer) error {
+	network, ok := k.tm.GetNetwork(ctx, transfer.Chain)
+	if !ok {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "source network not found")
+	}
+
+	if network.GetIdentityParams() == nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "identity transfers is not supported due to lack of parameters")
+	}
+
+	details, err := cosmostypes.NewAnyWithValue(transfer)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
+	}
+
+	content, err := pkg.GetIdentityStateTransferContent(transfer)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content %s", err.Error())
+	}
+
+	var operation = types.Operation{
+		Index:         hexutil.Encode(content.CalculateHash()),
+		OperationType: types.OpType_IDENTITY_STATE_TRANSFER,
+		Details:       details,
+		Status:        types.OpStatus_INITIALIZED,
+		Creator:       creator,
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
+	}
+
+	// Only not approved operation can be changed
+	if op, ok := k.GetOperation(ctx, operation.Index); ok {
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
+		}
+
+		// Otherwise - clear votes
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
+	}
+
+	k.SetOperation(
+		ctx,
+		operation,
+	)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+	))
+
+	return nil
+}
+
 func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferOp) (*types.Transfer, error) {
 	hash := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).
@@ -400,6 +510,29 @@ func (k Keeper) GetIdentityDefaultTransfer(_ sdk.Context, msg *oracletypes.MsgCr
 		GISTCreatedAtBlock:      msg.GISTCreatedAtBlock,
 		ReplacedStateHash:       msg.ReplacedStateHash,
 		ReplacedGISTHash:        msg.ReplacedGISTtHash,
+	}, nil
+}
+
+func (k Keeper) GetIdentityGISTTransfer(_ sdk.Context, msg *oracletypes.MsgCreateIdentityGISTTransferOp) (*types.IdentityGISTTransfer, error) {
+	return &types.IdentityGISTTransfer{
+		Contract:               msg.Contract,
+		Chain:                  msg.Chain,
+		GISTHash:               msg.GISTHash,
+		GISTCreatedAtTimestamp: msg.GISTCreatedAtTimestamp,
+		GISTCreatedAtBlock:     msg.GISTCreatedAtBlock,
+		ReplacedGISTHash:       msg.ReplacedGISTtHash,
+	}, nil
+}
+
+func (k Keeper) GetIdentityStateTransfer(_ sdk.Context, msg *oracletypes.MsgCreateIdentityStateTransferOp) (*types.IdentityStateTransfer, error) {
+	return &types.IdentityStateTransfer{
+		Contract:                msg.Contract,
+		Chain:                   msg.Chain,
+		Id:                      msg.Id,
+		StateHash:               msg.StateHash,
+		StateCreatedAtTimestamp: msg.StateCreatedAtTimestamp,
+		StateCreatedAtBlock:     msg.StateCreatedAtBlock,
+		ReplacedStateHash:       msg.ReplacedStateHash,
 	}, nil
 }
 

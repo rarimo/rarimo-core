@@ -10,7 +10,14 @@ import (
 func (k Keeper) EndBlocker(ctx sdk.Context) {
 	k.IterateOverMonitorQueue(ctx, uint64(ctx.BlockHeight()), func(operation rarimotypes.Operation) (stop bool) {
 		k.RemoveFromMonitorQueue(ctx, uint64(ctx.BlockHeight()), operation.Index)
-		if operation.OperationType != rarimotypes.OpType_TRANSFER || operation.OperationType != rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER {
+
+		monitoringOperationTypes := map[rarimotypes.OpType]struct{}{
+			rarimotypes.OpType_TRANSFER:                  struct{}{},
+			rarimotypes.OpType_IDENTITY_GIST_TRANSFER:    struct{}{},
+			rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER: struct{}{},
+		}
+
+		if _, ok := monitoringOperationTypes[operation.OperationType]; !ok {
 			return false
 		}
 
@@ -133,6 +140,14 @@ func getSourceChain(op rarimotypes.Operation) (string, error) {
 
 	case rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
 		transfer, err := pkg.GetIdentityDefaultTransfer(op)
+		if err != nil {
+			return "", err
+		}
+
+		return transfer.Chain, nil
+
+	case rarimotypes.OpType_IDENTITY_GIST_TRANSFER:
+		transfer, err := pkg.GetIdentityGISTTransfer(op)
 		if err != nil {
 			return "", err
 		}

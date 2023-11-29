@@ -23,20 +23,21 @@ message Operation {
 }
 ```
 
-- index is the unique string that should be deterministic created depending on operation data
-- operation type defines the type of operation details
-- details contain any necessary information about operation to provide signature for
-- status defines the current status of operation (signed, approved, initialize, etc.)
-- creator defines the creator of certain operation
-- timestamp contains the unix block timestamp then operation was created (the timestamp should be received from the
+- `index` is the unique string that should be deterministic created depending on operation data
+- `operationType` defines the type of operation details
+- `details` contain any necessary information about operation to provide signature for
+- `status` defines the current status of operation (signed, approved, initialize, etc.)
+- `creator` defines the creator of certain operation
+- `timestamp` contains the unix block timestamp then operation was created (the timestamp should be received from the
   context)
 
 ----
 
 **To add new operation developer should lead the following steps:**
 
-1. Add operation data definition in the `proto/rarimocore`. Example:
+1. Add operation data definition in the `proto/rarimocore`. 
 
+   Example:
    ___proto/ratimocore/op_fee_token_management.proto___
 
     ```protobuf
@@ -57,6 +58,7 @@ message Operation {
 
    Also, add new operation type in `proto/rarimocore/operation.proto`.
 
+   Example:
    ___proto/rarimocore/operation.proto___
 
     ```protobuf
@@ -67,12 +69,10 @@ message Operation {
     }
     ```
 
-----
-
 2. In `x/rarimocore/crypto/operation` define the operation content that should implement `merkle.Content` interface
    from `merkle "github.com/rarimo/go-merkle"`.
-   Example:
 
+   Example:
    ___x/rarimocore/crypto/operation/op_fee_token_management.go___
 
     ```go
@@ -113,9 +113,7 @@ message Operation {
       return false
     }
     ```
-
-----
-
+   
 3. In `x/rarimocore/crypto/pkg` define the following methods: `Get{op name}` and `Get{op name} content`.
 
    Example:
@@ -144,17 +142,54 @@ message Operation {
 
     ```
 
-**Tips**: explore the `x/rarimocore/crypto/operation/data` and `x/rarimocore/crypto/operation/origin` packages to use
-some useful utils from it or add the new if required.
+   **Tips**: explore the `x/rarimocore/crypto/operation/data` and `x/rarimocore/crypto/operation/origin` packages to use
+   some useful utils from it or add the new if required. 
 
-----
+4. Add Get{op name}Content method and the corresponding case block to the `x/rarimocore/crypto/pkg/content/main.go`
 
-4. In the `x/rarimocore/keeper` define function that creates the operation and define function call where it is
-   required.
+   Example:
+   ___x/rarimocore/crypto/pkg/content/main.go___
 
-----
+   ```go
+   case types.OpType_FEE_TOKEN_MANAGEMENT:
+			content, err := GetFeeManagementContent(client, op)
+			if err != nil {
+				return nil, err
+			}
 
-5. In the `x/rarimocore/keeper/msg_server_confirmation.go` extend the existing logic
+			if content != nil {
+				contents = append(contents, content)
+			}
+   ```
+
+   ```go
+    package content
+   
+    func GetFeeManagementContent(client *grpc.ClientConn, op *types.Operation) (merkle.Content, error) {
+       manage, err := pkg.GetFeeTokenManagement(*op)
+       if err != nil {
+           return nil, errors.Wrap(err, "error parsing operation details")
+       }
+   
+       networkResp, err := token.NewQueryClient(client).NetworkParams(context.TODO(), &token.QueryNetworkParamsRequest{Name: manage.Chain})
+       if err != nil {
+           return nil, errors.Wrap(err, "error getting network param entry")
+       }
+   
+       feeparams := networkResp.Params.GetFeeParams()
+       if err != nil {
+           return nil, errors.New("bridge params not found")
+       }
+   
+       content, err := pkg.GetFeeTokenManagementContent(feeparams, manage)
+       return content, errors.Wrap(err, "error creating content")
+	}
+   ```
+   
+5. In the `x/rarimocore/keeper` define function that creates the operation and define function call where it is
+   required. 
+
+6. In the `x/rarimocore/keeper/msg_server_confirmation.go` extend the existing logic
    of `getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error)` method.
    For example add:
 
@@ -197,15 +232,8 @@ some useful utils from it or add the new if required.
      }
    }
    ```
-
-
-----
-
-6. Also, you can provide additional logic in `ApplyOperation(ctx sdk.Context, op types.Operation) error` to execute some
+   
+7. Also, you can provide additional logic in `ApplyOperation(ctx sdk.Context, op types.Operation) error` to execute some
    stuff after signing if required.
 
-----
-
-7. Extend `tss-svc`
-   service ` GetContents(client *grpc.ClientConn, operations ...*rarimo.Operation) ([]merkle.Content, error)` method
-   in `internal/core/controllers/util.go` to include new operation in the signing process.
+8. Update the core dependency version in `tss-svc`. (It will use methods that you've defined in 4)

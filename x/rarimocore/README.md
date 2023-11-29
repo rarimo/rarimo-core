@@ -33,8 +33,10 @@ In such case operation can be already approved.
 - Change parties: `HASH(new set, new key, signature)`
 - Fee contract management: `HASH(block height, chain, fee token contract, fee amount)`
 - Contract upgrade: `HASH(block, content [depends on chain])`
-- Identity
-  transfer: `HASH(source contract, id, state hash, state timestamps, GIST hash, GIST timestamps, replaced state hash)`
+- Identity default
+  transfer: `HASH(source contract, id, state hash, state timestamps, state replaced by, GIST hash, GIST replaced by, GIST timestamps, replaced state hash, replaced GIST hash)`
+- Identity state transfer: `HASH(source contract, id, state hash, state timestamps, replaced state hash)`
+- Identity GIST transfer: `HASH(source contract, id, GIST hash, GIST timestamps, replaced GIST hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
 
 To add new operation check the following [manual](../../docs/common/core/001-adding-operation.md).
@@ -355,7 +357,7 @@ Flow:
 - Check operation status (should be `INITIALIZED`)
 - Save vote
 
-### CreateIdentityDefaultTransferOperation
+### CreateIdentityDefaultTransferOperation/CreateIdentityStateTransferOperation/CreateIdentityGISTTransferOperation
 
 **CreateIdentityDefaultTransferOperation** - used by `oraclemanager` module to create identity transfer operations
 

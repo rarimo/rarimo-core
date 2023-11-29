@@ -22,9 +22,9 @@ title: Mainnet information
 
 ## RPC Node
 
-```Tendermint API:``` [core-api.mainnet.rarimo.com](https://core-api.mainnet.rarimo.com)
+```Cosmos API:``` [core-api.mainnet.rarimo.com](https://core-api.mainnet.rarimo.com)
 
-```Cosmos API:``` [rpc.mainnet.rarimo.com](https://rpc.mainnet.rarimo.com)
+```Tendermint API:``` [rpc.mainnet.rarimo.com](https://rpc.mainnet.rarimo.com)
 
 ```Swagger API:``` [rpc-api.mainnet.rarimo.com](https://rpc-api.mainnet.rarimo.com)
 
