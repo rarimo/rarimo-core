@@ -578,6 +578,17 @@ func (k Keeper) GetIdentityStateTransfer(_ sdk.Context, msg *oracletypes.MsgCrea
 	}, nil
 }
 
+func (k Keeper) GetWorldCoinIdentityTransfer(
+	_ sdk.Context,
+	msg *oracletypes.MsgCreateWorldCoinIdentityTransferOp,
+) (*types.WorldCoinIdentityTransfer, error) {
+
+	return &types.WorldCoinIdentityTransfer{
+		State:     msg.State,
+		Timestamp: msg.Timestamp,
+	}, nil
+}
+
 func castAmount(currentAmount string, currentDecimals uint8, targetDecimals uint8) string {
 	if currentDecimals == targetDecimals {
 		return currentAmount
