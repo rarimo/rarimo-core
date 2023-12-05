@@ -459,7 +459,7 @@ func (k Keeper) CreateIdentityStateTransferOperation(ctx sdk.Context, creator st
 	return nil
 }
 
-func (k Keeper) CreateWorldcoinIdentityTransferOperation(ctx sdk.Context, creator string, transfer *types.WorldCoinIdentityTransfer) error {
+func (k Keeper) CreateWorldCoinIdentityTransferOperation(ctx sdk.Context, creator string, transfer *types.WorldCoinIdentityTransfer) error {
 	details, err := cosmostypes.NewAnyWithValue(transfer)
 	if err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
