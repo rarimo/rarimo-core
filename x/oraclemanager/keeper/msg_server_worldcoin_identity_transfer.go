@@ -20,8 +20,7 @@ func (k msgServer) CreateWorldCoinIdentityTransferOperation(
 		return nil, err
 	}
 
-	// TODO: add chain and hash into msg
-	oracle, ok := k.GetOracle(ctx, &types.OracleIndex{Chain: "solana", Account: msg.Creator})
+	oracle, ok := k.GetOracle(ctx, &types.OracleIndex{Chain: msg.Chain, Account: msg.Creator})
 	if !ok {
 		return nil, types.ErrOracleNotFound
 	}

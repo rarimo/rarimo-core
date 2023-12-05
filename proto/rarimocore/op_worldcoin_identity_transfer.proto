@@ -4,8 +4,10 @@ package rarimo.rarimocore.rarimocore;
 option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
 
 message WorldCoinIdentityTransfer {
+  string contract = 1;
+  string chain = 2;
   // Hex 0x uint256
-  string state = 1;
+  string state = 3;
   // Dec uint256
-  string timestamp = 2;
+  string timestamp = 4;
 }

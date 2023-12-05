@@ -9,6 +9,7 @@ import (
 
 // WorldCoinIdentityTransferContent implements the Content interface provided by go-merkle and represents the content stored in the tree.
 type WorldCoinIdentityTransferContent struct {
+	Contract []byte
 	// Worldcoin identity state
 	State []byte
 	// Worldcoin timestamp
@@ -18,7 +19,7 @@ type WorldCoinIdentityTransferContent struct {
 var _ merkle.Content = WorldCoinIdentityTransferContent{}
 
 func (c WorldCoinIdentityTransferContent) CalculateHash() []byte {
-	return eth.Keccak256(c.State, c.Timestamp)
+	return eth.Keccak256(c.Contract, c.State, c.Timestamp)
 }
 
 // Equals tests for equality of two Contents
