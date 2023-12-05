@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"cosmossdk.io/errors"
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -449,6 +450,47 @@ func (k Keeper) CreateIdentityStateTransferOperation(ctx sdk.Context, creator st
 		ctx,
 		operation,
 	)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+	))
+
+	return nil
+}
+
+func (k Keeper) CreateWorldcoinIdentityTransferOperation(ctx sdk.Context, creator string, transfer *types.WorldCoinIdentityTransfer) error {
+	details, err := cosmostypes.NewAnyWithValue(transfer)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
+	}
+
+	content, err := pkg.GetWorldCoinIdentityTransferContent(transfer)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
+	}
+
+	operation := types.Operation{
+		Index:         hexutil.Encode(content.CalculateHash()),
+		OperationType: types.OpType_WORLDCOIN_IDENTITY_TRANSFER,
+		Details:       details,
+		Status:        types.OpStatus_INITIALIZED,
+		Creator:       creator,
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
+	}
+
+	if op, ok := k.GetOperation(ctx, operation.Index); ok {
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return errors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
+		}
+
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
+	}
+
+	k.SetOperation(ctx, operation)
 
 	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
 		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),

@@ -16,6 +16,7 @@ service Msg {
   rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
   rpc CreateIdentityGISTTransferOperation(MsgCreateIdentityGISTTransferOp) returns (MsgCreateIdentityGISTTransferOpResponse);
   rpc CreateIdentityStateTransferOperation(MsgCreateIdentityStateTransferOp) returns (MsgCreateIdentityStateTransferOpResponse);
+  rpc CreateWorldCoinIdentityTransferOperation(MsgCreateWorldCoinIdentityTransferOp) returns (MsgCreateWorldCoinIdentityTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -116,6 +117,16 @@ message MsgCreateIdentityStateTransferOp {
 }
 
 message MsgCreateIdentityStateTransferOpResponse {}
+
+message MsgCreateWorldCoinIdentityTransferOp {
+  string creator = 1;
+  // Hex 0x uint256
+  string state = 2;
+  // Dec uint256
+  string timestamp = 3;
+}
+
+message MsgCreateWorldCoinIdentityTransferOpResponse {}
 
 message MsgVote{
   rarimo.rarimocore.oraclemanager.OracleIndex index = 1;

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message WorldCoinIdentityTransfer {
+  // Hex 0x uint256
+  string state = 1;
+  // Dec uint256
+  string timestamp = 2;
+}
