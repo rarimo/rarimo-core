@@ -7,7 +7,9 @@ message WorldCoinIdentityTransfer {
   string contract = 1;
   string chain = 2;
   // Hex 0x uint256
-  string state = 3;
+  string prevState = 3;
+  // Hex 0x uint256
+  string state = 4;
   // Dec uint256
-  string timestamp = 4;
+  string timestamp = 5;
 }

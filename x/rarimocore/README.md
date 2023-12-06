@@ -38,6 +38,7 @@ In such case operation can be already approved.
 - Identity state transfer: `HASH(source contract, id, state hash, state timestamps, replaced state hash)`
 - Identity GIST transfer: `HASH(source contract, id, GIST hash, GIST timestamps, replaced GIST hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
+- WorldCoin identity transfer: `HASH(source contract, old state, new state, timestamp)`
 
 To add new operation check the following [manual](../../docs/common/core/001-adding-operation.md).
 

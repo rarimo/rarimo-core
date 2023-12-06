@@ -51734,6 +51734,9 @@ paths:
                     type: string
                   chain:
                     type: string
+                  prevState:
+                    type: string
+                    title: Hex 0x uint256
                   state:
                     type: string
                     title: Hex 0x uint256
@@ -51768,6 +51771,11 @@ paths:
           required: false
           type: string
         - name: msg.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.prevState
+          description: Hex 0x uint256
           in: query
           required: false
           type: string
@@ -89971,6 +89979,9 @@ definitions:
         type: string
       chain:
         type: string
+      prevState:
+        type: string
+        title: Hex 0x uint256
       state:
         type: string
         title: Hex 0x uint256
@@ -90408,6 +90419,9 @@ definitions:
             type: string
           chain:
             type: string
+          prevState:
+            type: string
+            title: Hex 0x uint256
           state:
             type: string
             title: Hex 0x uint256
@@ -90595,6 +90609,9 @@ definitions:
         type: string
       chain:
         type: string
+      prevState:
+        type: string
+        title: Hex 0x uint256
       state:
         type: string
         title: Hex 0x uint256

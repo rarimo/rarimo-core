@@ -289,9 +289,11 @@ message MsgCreateWorldCoinIdentityTransferOp {
    string contract = 2;
    string chain = 3;
    // Hex 0x uint256
-   string state = 4;
+   string prevState = 4;
+   // Hex 0x uint256
+   string state = 5;
    // Dec uint256
-   string timestamp = 5;
+   string timestamp = 6;
 }
 ```
 

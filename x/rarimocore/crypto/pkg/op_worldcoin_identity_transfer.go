@@ -20,6 +20,7 @@ func GetWorldCoinIdentityTransfer(operation types.Operation) (*types.WorldCoinId
 func GetWorldCoinIdentityTransferContent(op *types.WorldCoinIdentityTransfer) (*operation.WorldCoinIdentityTransferContent, error) {
 	return &operation.WorldCoinIdentityTransferContent{
 		Contract:  hexutil.MustDecode(op.Contract),
+		PrevState: operation.To32Bytes(hexutil.MustDecode(op.PrevState)),
 		State:     operation.To32Bytes(hexutil.MustDecode(op.State)),
 		Timestamp: operation.To32Bytes(operation.AmountBytes(op.Timestamp)),
 	}, nil

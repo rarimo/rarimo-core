@@ -43,6 +43,12 @@ func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBasic() error {
 }
 
 func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBody() error {
+	if _, err := hexutil.Decode(m.Contract); err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid contract address (%s)", err)
+	}
+	if _, err := hexutil.Decode(m.PrevState); err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid previous state (%s)", err)
+	}
 	if _, err := hexutil.Decode(m.State); err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid state (%s)", err)
 	}
