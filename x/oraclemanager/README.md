@@ -176,7 +176,7 @@ Example:
 
 ### CreateTransferOperation
 
-**CreateTransferOperation** - crates Operation with type `TRANSFER` and `INITIALIZED` status.
+**CreateTransferOperation** - creates Operation with type `TRANSFER` and `INITIALIZED` status.
 Metadata should be provided in case of first NFT transfer. Tx, EventId, Sender can be specified in native for source
 chain format.
 Other data should be formatted into hex with `0x` prefix.
@@ -202,7 +202,7 @@ message MsgCreateTransferOp {
 
 ### CreateIdentityDefaultTransferOperation
 
-**CreateIdentityDefaultTransferOperation** - crates Operation with type `IDENTITY_DEFAULT_TRANSFER` and `INITIALIZED`
+**CreateIdentityDefaultTransferOperation** - creates Operation with type `IDENTITY_DEFAULT_TRANSFER` and `INITIALIZED`
 status.
 
 ```protobuf
@@ -234,7 +234,7 @@ message MsgCreateIdentityDefaultTransferOp {
 
 ### CreateIdentityGISTTransferOperation
 
-**CreateIdentityGISTTransferOperation** - crates Operation with type `IDENTITY_GIST_TRANSFER` and `INITIALIZED`
+**CreateIdentityGISTTransferOperation** - creates Operation with type `IDENTITY_GIST_TRANSFER` and `INITIALIZED`
 status.
 
 ```protobuf
@@ -257,7 +257,7 @@ message MsgCreateIdentityGISTTransferOp {
 
 ### CreateIdentityStateTransferOperation
 
-**CreateIdentityStateTransferOperation** - crates Operation with type `IDENTITY_STATE_TRANSFER` and `INITIALIZED`
+**CreateIdentityStateTransferOperation** - creates Operation with type `IDENTITY_STATE_TRANSFER` and `INITIALIZED`
 status.
 
 ```protobuf
@@ -275,6 +275,23 @@ message MsgCreateIdentityStateTransferOp {
    string stateCreatedAtBlock = 8;
    // HEx 0x
    string replacedStateHash = 17;
+}
+```
+
+### CreateWorldCoinIdentifierTransferOperation
+
+**CreateWorldCoinIdentifierTransferOperation** - creates Operation with type `WORLDCOIN_IDENTITY_TRANSFER` and
+`INITIALIZED` status.
+
+```protobuf
+message MsgCreateWorldCoinIdentityTransferOp {
+   string creator = 1;
+   string contract = 2;
+   string chain = 3;
+   // Hex 0x uint256
+   string state = 4;
+   // Dec uint256
+   string timestamp = 5;
 }
 ```
 

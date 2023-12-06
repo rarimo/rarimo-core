@@ -357,7 +357,7 @@ Flow:
 - Check operation status (should be `INITIALIZED`)
 - Save vote
 
-### CreateIdentityDefaultTransferOperation/CreateIdentityStateTransferOperation/CreateIdentityGISTTransferOperation
+### CreateIdentityDefaultTransferOperation/CreateIdentityStateTransferOperation/CreateIdentityGISTTransferOperation/CreateWorldCoinIdentityTransferOperation
 
 **CreateIdentityDefaultTransferOperation** - used by `oraclemanager` module to create identity transfer operations
 
