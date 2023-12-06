@@ -38,6 +38,11 @@ func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBasic() error {
 	if _, err := types.AccAddressFromBech32(m.Creator); err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	return m.ValidateBody()
+}
+
+func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBody() error {
 	if _, err := hexutil.Decode(m.State); err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid state (%s)", err)
 	}

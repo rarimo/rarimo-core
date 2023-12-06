@@ -12,9 +12,10 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		k.RemoveFromMonitorQueue(ctx, uint64(ctx.BlockHeight()), operation.Index)
 
 		monitoringOperationTypes := map[rarimotypes.OpType]struct{}{
-			rarimotypes.OpType_TRANSFER:                  struct{}{},
-			rarimotypes.OpType_IDENTITY_GIST_TRANSFER:    struct{}{},
-			rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER: struct{}{},
+			rarimotypes.OpType_TRANSFER:                    {},
+			rarimotypes.OpType_IDENTITY_GIST_TRANSFER:      {},
+			rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:   {},
+			rarimotypes.OpType_WORLDCOIN_IDENTITY_TRANSFER: {},
 		}
 
 		if _, ok := monitoringOperationTypes[operation.OperationType]; !ok {
@@ -127,7 +128,6 @@ func (k Keeper) NoteMissed(ctx sdk.Context, index *types.OracleIndex) {
 	}
 }
 
-// getSourceChain requires OpType: TRANSFER or IDENTITY_DEFAULT_TRANSFER
 func getSourceChain(op rarimotypes.Operation) (string, error) {
 	switch op.OperationType {
 	case rarimotypes.OpType_TRANSFER:
@@ -152,6 +152,13 @@ func getSourceChain(op rarimotypes.Operation) (string, error) {
 			return "", err
 		}
 
+		return transfer.Chain, nil
+
+	case rarimotypes.OpType_WORLDCOIN_IDENTITY_TRANSFER:
+		transfer, err := pkg.GetWorldCoinIdentityTransfer(op)
+		if err != nil {
+			return "", err
+		}
 		return transfer.Chain, nil
 	}
 
