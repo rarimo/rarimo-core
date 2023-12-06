@@ -14,6 +14,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		monitoringOperationTypes := map[rarimotypes.OpType]struct{}{
 			rarimotypes.OpType_TRANSFER:                    {},
 			rarimotypes.OpType_IDENTITY_GIST_TRANSFER:      {},
+			rarimotypes.OpType_IDENTITY_STATE_TRANSFER:     {},
 			rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:   {},
 			rarimotypes.OpType_WORLDCOIN_IDENTITY_TRANSFER: {},
 		}
@@ -148,6 +149,14 @@ func getSourceChain(op rarimotypes.Operation) (string, error) {
 
 	case rarimotypes.OpType_IDENTITY_GIST_TRANSFER:
 		transfer, err := pkg.GetIdentityGISTTransfer(op)
+		if err != nil {
+			return "", err
+		}
+
+		return transfer.Chain, nil
+
+	case rarimotypes.OpType_IDENTITY_STATE_TRANSFER:
+		transfer, err := pkg.GetIdentityStateTransfer(op)
 		if err != nil {
 			return "", err
 		}
