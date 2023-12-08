@@ -46,6 +46,9 @@ func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBody() error {
 	if _, err := hexutil.Decode(m.Contract); err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid contract address (%s)", err)
 	}
+	if m.Chain == "" {
+		return errors.Wrap(sdkerrors.ErrInvalidRequest, "chain required")
+	}
 	if _, err := hexutil.Decode(m.PrevState); err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid previous state (%s)", err)
 	}
@@ -54,6 +57,9 @@ func (m *MsgCreateWorldCoinIdentityTransferOp) ValidateBody() error {
 	}
 	if _, ok := new(big.Int).SetString(m.Timestamp, 10); !ok {
 		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid timestamp %s", m.Timestamp)
+	}
+	if m.BlockNumber == 0 {
+		return errors.Wrap(sdkerrors.ErrInvalidRequest, "block number required")
 	}
 
 	return nil

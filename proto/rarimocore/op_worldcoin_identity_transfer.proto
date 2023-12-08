@@ -12,4 +12,6 @@ message WorldCoinIdentityTransfer {
   string state = 4;
   // Dec uint256
   string timestamp = 5;
+  // simplifies voting flow
+  uint64 blockNumber = 6;
 }

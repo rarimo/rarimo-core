@@ -294,6 +294,7 @@ message MsgCreateWorldCoinIdentityTransferOp {
    string state = 5;
    // Dec uint256
    string timestamp = 6;
+   uint64 blockNumber = 7;
 }
 ```
 

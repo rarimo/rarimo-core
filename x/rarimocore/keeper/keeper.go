@@ -584,10 +584,12 @@ func (k Keeper) GetWorldCoinIdentityTransfer(
 ) (*types.WorldCoinIdentityTransfer, error) {
 
 	return &types.WorldCoinIdentityTransfer{
-		Contract:  msg.Contract,
-		PrevState: msg.PrevState,
-		State:     msg.State,
-		Timestamp: msg.Timestamp,
+		Contract:    msg.Contract,
+		Chain:       msg.Chain,
+		PrevState:   msg.PrevState,
+		State:       msg.State,
+		Timestamp:   msg.Timestamp,
+		BlockNumber: msg.BlockNumber,
 	}, nil
 }
 
