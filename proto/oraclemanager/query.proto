@@ -11,6 +11,7 @@ import "rarimocore/op_transfer.proto";
 import "rarimocore/op_identity_default_transfer.proto";
 import "rarimocore/op_identity_gist_transfer.proto";
 import "rarimocore/op_identity_state_transfer.proto";
+import "rarimocore/op_worldcoin_identity_transfer.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/rarimo/rarimo-core/x/oraclemanager/types";
@@ -36,6 +37,10 @@ service Query {
 
   rpc IdentityStateTransfer(QueryGetIdentityStateTransferRequest) returns (QueryGetIdentityStateTransferResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/identity_state_transfer";
+  }
+
+  rpc WorldCoinIdentityTransfer(QueryGetWorldCoinIdentityTransferRequest) returns (QueryGetWorldCoinIdentityTransferResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/world_coin_identity_transfer";
   }
 
   rpc OracleAll(QueryGetAllOracleRequest) returns (QueryGetAllOracleResponse) {
@@ -92,6 +97,14 @@ message QueryGetIdentityStateTransferRequest {
 
 message QueryGetIdentityStateTransferResponse {
   rarimo.rarimocore.rarimocore.IdentityStateTransfer transfer = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetWorldCoinIdentityTransferRequest {
+  rarimo.rarimocore.oraclemanager.MsgCreateWorldCoinIdentityTransferOp msg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetWorldCoinIdentityTransferResponse {
+  rarimo.rarimocore.rarimocore.WorldCoinIdentityTransfer transfer = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetAllOracleRequest {

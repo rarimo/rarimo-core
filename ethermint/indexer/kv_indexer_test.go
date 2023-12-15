@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/rarimo/rarimo-core/app"
+	"github.com/rarimo/rarimo-core/app/params"
 	"github.com/rarimo/rarimo-core/ethermint/crypto/ethsecp256k1"
 	evmenc "github.com/rarimo/rarimo-core/ethermint/encoding"
 	"github.com/rarimo/rarimo-core/ethermint/indexer"
@@ -37,7 +37,7 @@ func TestKVIndexer(t *testing.T) {
 	txHash := tx.AsTransaction().Hash()
 
 	encodingConfig := MakeEncodingConfig()
-	clientCtx := client.Context{}.WithTxConfig(encodingConfig.TxConfig).WithCodec(encodingConfig.Codec)
+	clientCtx := client.Context{}.WithTxConfig(encodingConfig.TxConfig).WithCodec(encodingConfig.Marshaler)
 
 	// build cosmos-sdk wrapper tx
 	tmTx, err := tx.BuildTx(clientCtx.TxConfig.NewTxBuilder(), "astake")

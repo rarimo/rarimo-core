@@ -38,6 +38,9 @@ type RarimoKeeper interface {
 	GetTransfer(ctx sdk.Context, msg *MsgCreateTransferOp) (*rarimotypes.Transfer, error)
 	CreateTransferOperation(ctx sdk.Context, creator string, transfer *rarimotypes.Transfer, approved bool) error
 
+	GetWorldCoinIdentityTransfer(_ sdk.Context, msg *MsgCreateWorldCoinIdentityTransferOp) (*rarimotypes.WorldCoinIdentityTransfer, error)
+	CreateWorldCoinIdentityTransferOperation(ctx sdk.Context, creator string, transfer *rarimotypes.WorldCoinIdentityTransfer) error
+
 	GetVote(ctx sdk.Context, index *rarimotypes.VoteIndex) (val rarimotypes.Vote, found bool)
 	CreateVote(ctx sdk.Context, vote rarimotypes.Vote) (bool, error)
 

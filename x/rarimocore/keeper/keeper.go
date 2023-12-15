@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"cosmossdk.io/errors"
 	cosmostypes "github.com/cosmos/cosmos-sdk/codec/types"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -458,6 +459,47 @@ func (k Keeper) CreateIdentityStateTransferOperation(ctx sdk.Context, creator st
 	return nil
 }
 
+func (k Keeper) CreateWorldCoinIdentityTransferOperation(ctx sdk.Context, creator string, transfer *types.WorldCoinIdentityTransfer) error {
+	details, err := cosmostypes.NewAnyWithValue(transfer)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
+	}
+
+	content, err := pkg.GetWorldCoinIdentityTransferContent(transfer)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
+	}
+
+	operation := types.Operation{
+		Index:         hexutil.Encode(content.CalculateHash()),
+		OperationType: types.OpType_WORLDCOIN_IDENTITY_TRANSFER,
+		Details:       details,
+		Status:        types.OpStatus_INITIALIZED,
+		Creator:       creator,
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
+	}
+
+	if op, ok := k.GetOperation(ctx, operation.Index); ok {
+		if op.Status != types.OpStatus_NOT_APPROVED {
+			return errors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
+		}
+
+		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
+			k.RemoveVote(ctx, vote.Index)
+			return false
+		})
+	}
+
+	k.SetOperation(ctx, operation)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+	))
+
+	return nil
+}
+
 func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferOp) (*types.Transfer, error) {
 	hash := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).
@@ -533,6 +575,21 @@ func (k Keeper) GetIdentityStateTransfer(_ sdk.Context, msg *oracletypes.MsgCrea
 		StateCreatedAtTimestamp: msg.StateCreatedAtTimestamp,
 		StateCreatedAtBlock:     msg.StateCreatedAtBlock,
 		ReplacedStateHash:       msg.ReplacedStateHash,
+	}, nil
+}
+
+func (k Keeper) GetWorldCoinIdentityTransfer(
+	_ sdk.Context,
+	msg *oracletypes.MsgCreateWorldCoinIdentityTransferOp,
+) (*types.WorldCoinIdentityTransfer, error) {
+
+	return &types.WorldCoinIdentityTransfer{
+		Contract:    msg.Contract,
+		Chain:       msg.Chain,
+		PrevState:   msg.PrevState,
+		State:       msg.State,
+		Timestamp:   msg.Timestamp,
+		BlockNumber: msg.BlockNumber,
 	}, nil
 }
 
