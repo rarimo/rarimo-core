@@ -51012,8 +51012,6 @@ paths:
                   GISTHash:
                     type: string
                     title: Hex 0x
-                  GISTReplacedBy:
-                    type: string
                   GISTCreatedAtTimestamp:
                     type: string
                     title: Dec
@@ -51055,11 +51053,6 @@ paths:
           required: false
           type: string
         - name: msg.GISTHash
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTReplacedBy
           description: Hex 0x
           in: query
           required: false
@@ -51725,6 +51718,79 @@ paths:
           type: string
       tags:
         - Query
+  /rarimo/rarimo-core/oraclemanager/world_coin_identity_transfer:
+    get:
+      operationId: RarimoRarimocoreOraclemanagerWorldCoinIdentityTransfer
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              transfer:
+                type: object
+                properties:
+                  contract:
+                    type: string
+                  chain:
+                    type: string
+                  prevState:
+                    type: string
+                    title: Hex 0x uint256
+                  state:
+                    type: string
+                    title: Hex 0x uint256
+                  timestamp:
+                    type: string
+                    title: Dec uint256
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: msg.creator
+          in: query
+          required: false
+          type: string
+        - name: msg.contract
+          in: query
+          required: false
+          type: string
+        - name: msg.chain
+          in: query
+          required: false
+          type: string
+        - name: msg.prevState
+          description: Hex 0x uint256
+          in: query
+          required: false
+          type: string
+        - name: msg.state
+          description: Hex 0x uint256
+          in: query
+          required: false
+          type: string
+        - name: msg.timestamp
+          description: Dec uint256
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /rarimo/rarimo-core/rarimocore/confirmation:
     get:
       summary: Queries a list of Confirmation items.
@@ -52272,6 +52338,7 @@ paths:
                         - IDENTITY_AGGREGATED_TRANSFER
                         - IDENTITY_GIST_TRANSFER
                         - IDENTITY_STATE_TRANSFER
+                        - WORLDCOIN_IDENTITY_TRANSFER
                       default: TRANSFER
                     details:
                       title: Corresponding to type details
@@ -52761,6 +52828,7 @@ paths:
                       - IDENTITY_AGGREGATED_TRANSFER
                       - IDENTITY_GIST_TRANSFER
                       - IDENTITY_STATE_TRANSFER
+                      - WORLDCOIN_IDENTITY_TRANSFER
                     default: TRANSFER
                   details:
                     title: Corresponding to type details
@@ -89808,9 +89876,6 @@ definitions:
       GISTHash:
         type: string
         title: Hex 0x
-      GISTReplacedBy:
-        type: string
-        title: Hex 0x
       GISTCreatedAtTimestamp:
         type: string
         title: Dec
@@ -89904,6 +89969,26 @@ definitions:
           uri:
             type: string
   rarimo.rarimocore.oraclemanager.MsgCreateTransferOpResponse:
+    type: object
+  rarimo.rarimocore.oraclemanager.MsgCreateWorldCoinIdentityTransferOp:
+    type: object
+    properties:
+      creator:
+        type: string
+      contract:
+        type: string
+      chain:
+        type: string
+      prevState:
+        type: string
+        title: Hex 0x uint256
+      state:
+        type: string
+        title: Hex 0x uint256
+      timestamp:
+        type: string
+        title: Dec uint256
+  rarimo.rarimocore.oraclemanager.MsgCreateWorldCoinIdentityTransferOpResponse:
     type: object
   rarimo.rarimocore.oraclemanager.MsgStakeResponse:
     type: object
@@ -90131,8 +90216,6 @@ definitions:
           GISTHash:
             type: string
             title: Hex 0x
-          GISTReplacedBy:
-            type: string
           GISTCreatedAtTimestamp:
             type: string
             title: Dec
@@ -90326,6 +90409,25 @@ definitions:
                 title: Seed is used to generate PDA address for Solana
               uri:
                 type: string
+  rarimo.rarimocore.oraclemanager.QueryGetWorldCoinIdentityTransferResponse:
+    type: object
+    properties:
+      transfer:
+        type: object
+        properties:
+          contract:
+            type: string
+          chain:
+            type: string
+          prevState:
+            type: string
+            title: Hex 0x uint256
+          state:
+            type: string
+            title: Hex 0x uint256
+          timestamp:
+            type: string
+            title: Dec uint256
   rarimo.rarimocore.oraclemanager.QueryParamsResponse:
     type: object
     properties:
@@ -90405,8 +90507,6 @@ definitions:
       GISTHash:
         type: string
         title: Hex 0x
-      GISTReplacedBy:
-        type: string
       GISTCreatedAtTimestamp:
         type: string
         title: Dec
@@ -90502,6 +90602,22 @@ definitions:
       - 'YES'
       - 'NO'
     default: 'YES'
+  rarimo.rarimocore.rarimocore.WorldCoinIdentityTransfer:
+    type: object
+    properties:
+      contract:
+        type: string
+      chain:
+        type: string
+      prevState:
+        type: string
+        title: Hex 0x uint256
+      state:
+        type: string
+        title: Hex 0x uint256
+      timestamp:
+        type: string
+        title: Dec uint256
   rarimo.rarimocore.tokenmanager.ItemMetadata:
     type: object
     properties:
@@ -90566,6 +90682,7 @@ definitions:
       - IDENTITY_AGGREGATED_TRANSFER
       - IDENTITY_GIST_TRANSFER
       - IDENTITY_STATE_TRANSFER
+      - WORLDCOIN_IDENTITY_TRANSFER
     default: TRANSFER
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -90584,6 +90701,7 @@ definitions:
           - IDENTITY_AGGREGATED_TRANSFER
           - IDENTITY_GIST_TRANSFER
           - IDENTITY_STATE_TRANSFER
+          - WORLDCOIN_IDENTITY_TRANSFER
         default: TRANSFER
       details:
         title: Corresponding to type details
@@ -90932,6 +91050,7 @@ definitions:
                 - IDENTITY_AGGREGATED_TRANSFER
                 - IDENTITY_GIST_TRANSFER
                 - IDENTITY_STATE_TRANSFER
+                - WORLDCOIN_IDENTITY_TRANSFER
               default: TRANSFER
             details:
               title: Corresponding to type details
@@ -91288,6 +91407,7 @@ definitions:
               - IDENTITY_AGGREGATED_TRANSFER
               - IDENTITY_GIST_TRANSFER
               - IDENTITY_STATE_TRANSFER
+              - WORLDCOIN_IDENTITY_TRANSFER
             default: TRANSFER
           details:
             title: Corresponding to type details

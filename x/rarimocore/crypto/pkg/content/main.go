@@ -91,6 +91,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_WORLDCOIN_IDENTITY_TRANSFER:
+			content, err := GetWorldCoinIdentityTransferContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		default:
 			return nil, ErrUnsupportedContent
 		}
@@ -211,5 +220,15 @@ func GetIdentityAggregatedTransferContent(op *types.Operation) (merkle.Content, 
 	}
 
 	content, err := pkg.GetIdentityAggregatedTransferContent(transfer)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetWorldCoinIdentityTransferContent(op *types.Operation) (merkle.Content, error) {
+	transfer, err := pkg.GetWorldCoinIdentityTransfer(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetWorldCoinIdentityTransferContent(transfer)
 	return content, errors.Wrap(err, "error creating content")
 }
