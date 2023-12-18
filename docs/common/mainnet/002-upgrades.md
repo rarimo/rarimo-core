@@ -5,6 +5,25 @@ title: Mainnet upgrades
 
 # Mainnet upgrades
 
+## V1.1.0
+
+Core binary: (
+alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.0/rarimo-core-alpine-linux-amd64>".
+
+Also, you can build core from sources by yourself: use <"https://github.com/rarimo/rarimo-core/releases/tag/v1.1.0">
+release information.
+
+Upgrade will perform automatically if you are using `cosmovisor` under Alpine linux.
+
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
+use Alpine binary on your machine.
+
+Upgrade v1.1.0 introduces a couple of features for identity transfers:
+
+- New WorldCoin identity transfer
+- Fix for the Iden3 identity transfers: GIST and state transfers are split into two different operations.
+- Double-sending of confirmation messages will not cause TX error. 
+
 ## V1.0.7
 
 Core binary: (alpine-linux/amd64): "<https://storage.googleapis.com/rarimo-mainnet/1.0.7/rarimo-core>".
