@@ -29,7 +29,7 @@ func (k msgServer) CreateConfirmation(goCtx context.Context, msg *types.MsgCreat
 
 	// Check that confirmation does not exist
 	if _, isFound := k.GetConfirmation(ctx, msg.Root); isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return &types.MsgCreateConfirmationResponse{}, nil
 	}
 
 	// Iterate over provided indexes to check the validity of provided tree root.
@@ -217,6 +217,12 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getIdentityAggregatedTransferContent(ctx, transfer)
+	case types.OpType_WORLDCOIN_IDENTITY_TRANSFER:
+		transfer, err := pkg.GetWorldCoinIdentityTransfer(op)
+		if err != nil {
+			return nil, fmt.Errorf("%w: failed to unmarshal details: %s", sdkerrors.ErrInvalidRequest, err.Error())
+		}
+		return pkg.GetWorldCoinIdentityTransferContent(transfer)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
