@@ -294,6 +294,276 @@ func (m *QueryGetIdentityDefaultTransferResponse) GetTransfer() types.IdentityDe
 	return types.IdentityDefaultTransfer{}
 }
 
+type QueryGetIdentityGISTTransferRequest struct {
+	Msg MsgCreateIdentityGISTTransferOp `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg"`
+}
+
+func (m *QueryGetIdentityGISTTransferRequest) Reset()         { *m = QueryGetIdentityGISTTransferRequest{} }
+func (m *QueryGetIdentityGISTTransferRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetIdentityGISTTransferRequest) ProtoMessage()    {}
+func (*QueryGetIdentityGISTTransferRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{6}
+}
+func (m *QueryGetIdentityGISTTransferRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetIdentityGISTTransferRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetIdentityGISTTransferRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetIdentityGISTTransferRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetIdentityGISTTransferRequest.Merge(m, src)
+}
+func (m *QueryGetIdentityGISTTransferRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetIdentityGISTTransferRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetIdentityGISTTransferRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetIdentityGISTTransferRequest proto.InternalMessageInfo
+
+func (m *QueryGetIdentityGISTTransferRequest) GetMsg() MsgCreateIdentityGISTTransferOp {
+	if m != nil {
+		return m.Msg
+	}
+	return MsgCreateIdentityGISTTransferOp{}
+}
+
+type QueryGetIdentityGISTTransferResponse struct {
+	Transfer types.IdentityGISTTransfer `protobuf:"bytes,1,opt,name=transfer,proto3" json:"transfer"`
+}
+
+func (m *QueryGetIdentityGISTTransferResponse) Reset()         { *m = QueryGetIdentityGISTTransferResponse{} }
+func (m *QueryGetIdentityGISTTransferResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetIdentityGISTTransferResponse) ProtoMessage()    {}
+func (*QueryGetIdentityGISTTransferResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{7}
+}
+func (m *QueryGetIdentityGISTTransferResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetIdentityGISTTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetIdentityGISTTransferResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetIdentityGISTTransferResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetIdentityGISTTransferResponse.Merge(m, src)
+}
+func (m *QueryGetIdentityGISTTransferResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetIdentityGISTTransferResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetIdentityGISTTransferResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetIdentityGISTTransferResponse proto.InternalMessageInfo
+
+func (m *QueryGetIdentityGISTTransferResponse) GetTransfer() types.IdentityGISTTransfer {
+	if m != nil {
+		return m.Transfer
+	}
+	return types.IdentityGISTTransfer{}
+}
+
+type QueryGetIdentityStateTransferRequest struct {
+	Msg MsgCreateIdentityStateTransferOp `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg"`
+}
+
+func (m *QueryGetIdentityStateTransferRequest) Reset()         { *m = QueryGetIdentityStateTransferRequest{} }
+func (m *QueryGetIdentityStateTransferRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetIdentityStateTransferRequest) ProtoMessage()    {}
+func (*QueryGetIdentityStateTransferRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{8}
+}
+func (m *QueryGetIdentityStateTransferRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetIdentityStateTransferRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetIdentityStateTransferRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetIdentityStateTransferRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetIdentityStateTransferRequest.Merge(m, src)
+}
+func (m *QueryGetIdentityStateTransferRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetIdentityStateTransferRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetIdentityStateTransferRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetIdentityStateTransferRequest proto.InternalMessageInfo
+
+func (m *QueryGetIdentityStateTransferRequest) GetMsg() MsgCreateIdentityStateTransferOp {
+	if m != nil {
+		return m.Msg
+	}
+	return MsgCreateIdentityStateTransferOp{}
+}
+
+type QueryGetIdentityStateTransferResponse struct {
+	Transfer types.IdentityStateTransfer `protobuf:"bytes,1,opt,name=transfer,proto3" json:"transfer"`
+}
+
+func (m *QueryGetIdentityStateTransferResponse) Reset()         { *m = QueryGetIdentityStateTransferResponse{} }
+func (m *QueryGetIdentityStateTransferResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetIdentityStateTransferResponse) ProtoMessage()    {}
+func (*QueryGetIdentityStateTransferResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{9}
+}
+func (m *QueryGetIdentityStateTransferResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetIdentityStateTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetIdentityStateTransferResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetIdentityStateTransferResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetIdentityStateTransferResponse.Merge(m, src)
+}
+func (m *QueryGetIdentityStateTransferResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetIdentityStateTransferResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetIdentityStateTransferResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetIdentityStateTransferResponse proto.InternalMessageInfo
+
+func (m *QueryGetIdentityStateTransferResponse) GetTransfer() types.IdentityStateTransfer {
+	if m != nil {
+		return m.Transfer
+	}
+	return types.IdentityStateTransfer{}
+}
+
+type QueryGetWorldCoinIdentityTransferRequest struct {
+	Msg MsgCreateWorldCoinIdentityTransferOp `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg"`
+}
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) Reset() {
+	*m = QueryGetWorldCoinIdentityTransferRequest{}
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetWorldCoinIdentityTransferRequest) ProtoMessage()    {}
+func (*QueryGetWorldCoinIdentityTransferRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{10}
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetWorldCoinIdentityTransferRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetWorldCoinIdentityTransferRequest.Merge(m, src)
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetWorldCoinIdentityTransferRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetWorldCoinIdentityTransferRequest proto.InternalMessageInfo
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) GetMsg() MsgCreateWorldCoinIdentityTransferOp {
+	if m != nil {
+		return m.Msg
+	}
+	return MsgCreateWorldCoinIdentityTransferOp{}
+}
+
+type QueryGetWorldCoinIdentityTransferResponse struct {
+	Transfer types.WorldCoinIdentityTransfer `protobuf:"bytes,1,opt,name=transfer,proto3" json:"transfer"`
+}
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) Reset() {
+	*m = QueryGetWorldCoinIdentityTransferResponse{}
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) String() string {
+	return proto.CompactTextString(m)
+}
+func (*QueryGetWorldCoinIdentityTransferResponse) ProtoMessage() {}
+func (*QueryGetWorldCoinIdentityTransferResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2117d55003291e95, []int{11}
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetWorldCoinIdentityTransferResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetWorldCoinIdentityTransferResponse.Merge(m, src)
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetWorldCoinIdentityTransferResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetWorldCoinIdentityTransferResponse proto.InternalMessageInfo
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) GetTransfer() types.WorldCoinIdentityTransfer {
+	if m != nil {
+		return m.Transfer
+	}
+	return types.WorldCoinIdentityTransfer{}
+}
+
 type QueryGetAllOracleRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
@@ -302,7 +572,7 @@ func (m *QueryGetAllOracleRequest) Reset()         { *m = QueryGetAllOracleReque
 func (m *QueryGetAllOracleRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAllOracleRequest) ProtoMessage()    {}
 func (*QueryGetAllOracleRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{6}
+	return fileDescriptor_2117d55003291e95, []int{12}
 }
 func (m *QueryGetAllOracleRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -347,7 +617,7 @@ func (m *QueryGetAllOracleResponse) Reset()         { *m = QueryGetAllOracleResp
 func (m *QueryGetAllOracleResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAllOracleResponse) ProtoMessage()    {}
 func (*QueryGetAllOracleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{7}
+	return fileDescriptor_2117d55003291e95, []int{13}
 }
 func (m *QueryGetAllOracleResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -399,7 +669,7 @@ func (m *QueryGetOracleRequest) Reset()         { *m = QueryGetOracleRequest{} }
 func (m *QueryGetOracleRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetOracleRequest) ProtoMessage()    {}
 func (*QueryGetOracleRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{8}
+	return fileDescriptor_2117d55003291e95, []int{14}
 }
 func (m *QueryGetOracleRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -450,7 +720,7 @@ func (m *QueryGetOracleResponse) Reset()         { *m = QueryGetOracleResponse{}
 func (m *QueryGetOracleResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetOracleResponse) ProtoMessage()    {}
 func (*QueryGetOracleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{9}
+	return fileDescriptor_2117d55003291e95, []int{15}
 }
 func (m *QueryGetOracleResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -494,7 +764,7 @@ func (m *QueryGetOracleForChainRequest) Reset()         { *m = QueryGetOracleFor
 func (m *QueryGetOracleForChainRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetOracleForChainRequest) ProtoMessage()    {}
 func (*QueryGetOracleForChainRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{10}
+	return fileDescriptor_2117d55003291e95, []int{16}
 }
 func (m *QueryGetOracleForChainRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -538,7 +808,7 @@ func (m *QueryGetOracleForChainResponse) Reset()         { *m = QueryGetOracleFo
 func (m *QueryGetOracleForChainResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetOracleForChainResponse) ProtoMessage()    {}
 func (*QueryGetOracleForChainResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_2117d55003291e95, []int{11}
+	return fileDescriptor_2117d55003291e95, []int{17}
 }
 func (m *QueryGetOracleForChainResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -581,6 +851,12 @@ func init() {
 	proto.RegisterType((*QueryGetTransferResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetTransferResponse")
 	proto.RegisterType((*QueryGetIdentityDefaultTransferRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityDefaultTransferRequest")
 	proto.RegisterType((*QueryGetIdentityDefaultTransferResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityDefaultTransferResponse")
+	proto.RegisterType((*QueryGetIdentityGISTTransferRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityGISTTransferRequest")
+	proto.RegisterType((*QueryGetIdentityGISTTransferResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityGISTTransferResponse")
+	proto.RegisterType((*QueryGetIdentityStateTransferRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityStateTransferRequest")
+	proto.RegisterType((*QueryGetIdentityStateTransferResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetIdentityStateTransferResponse")
+	proto.RegisterType((*QueryGetWorldCoinIdentityTransferRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetWorldCoinIdentityTransferRequest")
+	proto.RegisterType((*QueryGetWorldCoinIdentityTransferResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetWorldCoinIdentityTransferResponse")
 	proto.RegisterType((*QueryGetAllOracleRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetAllOracleRequest")
 	proto.RegisterType((*QueryGetAllOracleResponse)(nil), "rarimo.rarimocore.oraclemanager.QueryGetAllOracleResponse")
 	proto.RegisterType((*QueryGetOracleRequest)(nil), "rarimo.rarimocore.oraclemanager.QueryGetOracleRequest")
@@ -592,56 +868,72 @@ func init() {
 func init() { proto.RegisterFile("oraclemanager/query.proto", fileDescriptor_2117d55003291e95) }
 
 var fileDescriptor_2117d55003291e95 = []byte{
-	// 769 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcd, 0x4f, 0x13, 0x4d,
-	0x18, 0xef, 0xc0, 0x4b, 0x5f, 0xfa, 0xbc, 0xc9, 0x7b, 0x18, 0x11, 0xca, 0x46, 0x17, 0xb2, 0x07,
-	0x20, 0x44, 0x76, 0xa1, 0x80, 0x22, 0x7e, 0x05, 0xaa, 0x14, 0x13, 0x09, 0xd8, 0x98, 0x98, 0xa8,
-	0x09, 0x99, 0xb6, 0xc3, 0xba, 0xc9, 0x76, 0x67, 0xd9, 0x5d, 0x0c, 0x84, 0x70, 0x21, 0xf1, 0x6e,
-	0xe2, 0xdd, 0x9b, 0x27, 0x8f, 0x7a, 0xf5, 0x4e, 0xe2, 0x85, 0xc4, 0x8b, 0x27, 0x63, 0xc0, 0x7f,
-	0xc0, 0xff, 0xc0, 0x74, 0x67, 0x86, 0xb2, 0xfd, 0x60, 0xb7, 0xd5, 0xd3, 0xee, 0x74, 0xe6, 0xf7,
-	0xf5, 0x74, 0x9e, 0xa7, 0x85, 0x61, 0xe6, 0x91, 0xb2, 0x4d, 0xab, 0xc4, 0x21, 0x26, 0xf5, 0x8c,
-	0xed, 0x1d, 0xea, 0xed, 0xe9, 0xae, 0xc7, 0x02, 0x86, 0x47, 0x3c, 0xe2, 0x59, 0x55, 0xa6, 0xf3,
-	0x47, 0x99, 0x79, 0x54, 0x8f, 0x1c, 0x56, 0x06, 0x4c, 0x66, 0xb2, 0xf0, 0xac, 0x51, 0x7b, 0xe3,
-	0x30, 0xe5, 0x8a, 0xc9, 0x98, 0x69, 0x53, 0x83, 0xb8, 0x96, 0x41, 0x1c, 0x87, 0x05, 0x24, 0xb0,
-	0x98, 0xe3, 0x8b, 0xdd, 0xc9, 0x32, 0xf3, 0xab, 0xcc, 0x37, 0x4a, 0xc4, 0xa7, 0x5c, 0xcd, 0x78,
-	0x35, 0x53, 0xa2, 0x01, 0x99, 0x31, 0x5c, 0x62, 0x5a, 0x4e, 0x78, 0x58, 0x9c, 0x55, 0xa2, 0xde,
-	0x5c, 0xe2, 0x91, 0xaa, 0xe4, 0x19, 0x8c, 0xee, 0x05, 0xbb, 0xad, 0x31, 0x7c, 0x25, 0x9d, 0xd5,
-	0x93, 0x18, 0xcc, 0xdd, 0x0c, 0x3c, 0xe2, 0xf8, 0x5b, 0xd4, 0x13, 0xbb, 0x53, 0xd1, 0x5d, 0xab,
-	0x42, 0x9d, 0xc0, 0x0a, 0xf6, 0x36, 0x2b, 0x74, 0x8b, 0xec, 0xd8, 0x41, 0xc3, 0x71, 0x6d, 0x00,
-	0xf0, 0xe3, 0x9a, 0xfd, 0x8d, 0xd0, 0x55, 0x91, 0x6e, 0xef, 0x50, 0x3f, 0xd0, 0x5e, 0xc0, 0xa5,
-	0xc8, 0xa7, 0xbe, 0xcb, 0x1c, 0x9f, 0xe2, 0x07, 0x90, 0xe6, 0xee, 0xb3, 0x68, 0x14, 0x4d, 0xfc,
-	0x97, 0x1b, 0xd7, 0x63, 0x6a, 0xab, 0x73, 0x82, 0xe5, 0x7f, 0x8e, 0xbe, 0x8f, 0xa4, 0x8a, 0x02,
-	0xac, 0x99, 0x30, 0x14, 0xb2, 0x17, 0x68, 0xf0, 0x44, 0xb8, 0x11, 0xc2, 0xf8, 0x11, 0xf4, 0x56,
-	0x7d, 0x53, 0xd0, 0xcf, 0xc5, 0xd2, 0xaf, 0xf9, 0x66, 0xde, 0xa3, 0x24, 0xa0, 0x92, 0x67, 0xdd,
-	0x15, 0x5a, 0x35, 0x1a, 0xad, 0x02, 0xd9, 0x66, 0x21, 0x91, 0x65, 0x15, 0xfa, 0x65, 0x29, 0x84,
-	0xdc, 0x58, 0x0b, 0xb9, 0x73, 0xaf, 0x92, 0x41, 0x08, 0x9c, 0xa1, 0xb5, 0xd7, 0x08, 0xc6, 0xa4,
-	0xcc, 0x43, 0x51, 0xee, 0xfb, 0xbc, 0xda, 0x8d, 0xf1, 0x9e, 0x9f, 0x8f, 0x97, 0x4f, 0x1e, 0xaf,
-	0x0d, 0x6d, 0x34, 0xed, 0x21, 0x82, 0xf1, 0x58, 0x1f, 0x22, 0xfd, 0xd3, 0xa6, 0xf4, 0xf3, 0x17,
-	0xa7, 0x6f, 0x43, 0xd8, 0x54, 0x8c, 0x52, 0xbd, 0xe4, 0x4b, 0xb6, 0xbd, 0x1e, 0xc6, 0x91, 0xe9,
-	0x57, 0x00, 0xea, 0xcd, 0x71, 0x56, 0x74, 0xde, 0x49, 0x7a, 0xad, 0x93, 0x74, 0xde, 0xb7, 0xa2,
-	0x93, 0xf4, 0x0d, 0x62, 0x4a, 0x6c, 0xf1, 0x1c, 0x52, 0xfb, 0x80, 0x60, 0xb8, 0x85, 0x48, 0xfd,
-	0x92, 0xf2, 0x2a, 0x66, 0xd1, 0x68, 0x6f, 0xa2, 0x4b, 0xca, 0x09, 0xe4, 0x25, 0xe5, 0x7b, 0xb8,
-	0x10, 0x31, 0xdb, 0x23, 0xee, 0x7b, 0x9c, 0x59, 0xee, 0x21, 0xe2, 0xb6, 0x00, 0x97, 0xa5, 0xd9,
-	0x68, 0x39, 0x06, 0xa0, 0xaf, 0xfc, 0x92, 0x58, 0xbc, 0x12, 0x99, 0x22, 0x5f, 0xe0, 0x2c, 0xfc,
-	0x4b, 0x2a, 0x15, 0x8f, 0xfa, 0x7e, 0x28, 0x9a, 0x29, 0xca, 0xa5, 0xb6, 0x09, 0x83, 0x8d, 0x44,
-	0x2d, 0x22, 0xa3, 0xae, 0x23, 0x6b, 0xf3, 0x70, 0x35, 0x2a, 0xb0, 0xc2, 0xbc, 0x7c, 0xcd, 0xd4,
-	0x85, 0x8e, 0x35, 0x13, 0xd4, 0x76, 0xb0, 0xbf, 0xfa, 0x95, 0xe4, 0xde, 0x65, 0xa0, 0x2f, 0x54,
-	0xc2, 0xef, 0x11, 0xa4, 0xf9, 0x68, 0xc1, 0xb3, 0xb1, 0x5c, 0xcd, 0xf3, 0x4d, 0x99, 0xeb, 0x0c,
-	0xc4, 0x63, 0x68, 0xd3, 0x87, 0x5f, 0x7f, 0xbe, 0xed, 0x99, 0xc4, 0x13, 0x06, 0x87, 0x89, 0xc7,
-	0x14, 0x9f, 0xb5, 0x2d, 0x86, 0x3c, 0xfe, 0x88, 0xa0, 0x5f, 0xb6, 0x0a, 0x5e, 0x48, 0x26, 0xda,
-	0x3c, 0x15, 0x95, 0x9b, 0x5d, 0x20, 0x85, 0xe7, 0x5c, 0xe8, 0xf9, 0x1a, 0x9e, 0x8c, 0xf7, 0x2c,
-	0x7b, 0x18, 0xff, 0x42, 0x30, 0xd4, 0xa6, 0xdf, 0x71, 0x21, 0xb1, 0x95, 0x8b, 0x47, 0xa1, 0xb2,
-	0xfa, 0xe7, 0x44, 0x22, 0x62, 0x3e, 0x8c, 0x78, 0x07, 0xdf, 0x8a, 0x8f, 0xd8, 0xf6, 0xd7, 0x10,
-	0x7f, 0x42, 0x90, 0xe1, 0x97, 0x6e, 0xc9, 0xb6, 0x71, 0xf2, 0x82, 0x37, 0x0e, 0x39, 0x65, 0xb1,
-	0x1b, 0x68, 0xe7, 0x17, 0x4c, 0x4c, 0xa9, 0xcf, 0x08, 0xd2, 0x9c, 0x04, 0x5f, 0x4f, 0x2c, 0x1c,
-	0x35, 0x7c, 0xa3, 0x63, 0x9c, 0x70, 0xbb, 0x1c, 0xba, 0xbd, 0x8d, 0x17, 0x93, 0xba, 0x35, 0xf6,
-	0xc3, 0x81, 0x71, 0x60, 0xec, 0x8b, 0x91, 0x76, 0x80, 0xbf, 0x20, 0xf8, 0x3f, 0x3a, 0x34, 0xf0,
-	0xdd, 0x0e, 0xfd, 0x34, 0x0c, 0x29, 0xe5, 0x5e, 0xd7, 0x78, 0x91, 0x6b, 0x21, 0xcc, 0x95, 0xc3,
-	0xd3, 0x9d, 0xe6, 0x5a, 0x5e, 0x3b, 0x3a, 0x51, 0xd1, 0xf1, 0x89, 0x8a, 0x7e, 0x9c, 0xa8, 0xe8,
-	0xcd, 0xa9, 0x9a, 0x3a, 0x3e, 0x55, 0x53, 0xdf, 0x4e, 0xd5, 0xd4, 0xb3, 0x59, 0xd3, 0x0a, 0x6c,
-	0x52, 0xd2, 0xcb, 0xac, 0xda, 0x8a, 0x75, 0xb7, 0xb1, 0x15, 0xf7, 0x5c, 0xea, 0x97, 0xd2, 0xe1,
-	0x5f, 0xb4, 0xd9, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0x05, 0xbe, 0x79, 0xec, 0xdd, 0x0a, 0x00,
-	0x00,
+	// 1034 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0x4d, 0x6f, 0xdc, 0x54,
+	0x14, 0xcd, 0x6b, 0x69, 0x68, 0x2e, 0x52, 0x17, 0x8f, 0xb4, 0x4d, 0x2c, 0x98, 0x56, 0x06, 0xda,
+	0x10, 0xa8, 0xdd, 0x4e, 0x5a, 0x9a, 0xa6, 0x50, 0x92, 0x4c, 0x93, 0x69, 0x10, 0x55, 0xcb, 0x34,
+	0xa8, 0x94, 0x0f, 0x45, 0x6f, 0x66, 0x5e, 0x5d, 0x4b, 0x33, 0x7e, 0x53, 0xdb, 0x81, 0x46, 0xa5,
+	0x20, 0x2a, 0x81, 0xc4, 0x0e, 0x89, 0xdf, 0xc0, 0x8a, 0x25, 0x6c, 0xd9, 0x57, 0x62, 0x53, 0x89,
+	0x0d, 0x2b, 0x84, 0x12, 0x58, 0xb0, 0x42, 0x6c, 0x59, 0x55, 0xf3, 0x3e, 0x3a, 0x7e, 0xfe, 0x18,
+	0xdb, 0x93, 0xac, 0x66, 0x1c, 0xdf, 0x7b, 0xee, 0x39, 0xc7, 0x99, 0x7b, 0x9e, 0x61, 0x9a, 0xf9,
+	0xa4, 0xd5, 0xa1, 0x5d, 0xe2, 0x11, 0x87, 0xfa, 0xf6, 0xdd, 0x4d, 0xea, 0x6f, 0x59, 0x3d, 0x9f,
+	0x85, 0x0c, 0x1f, 0xf3, 0x89, 0xef, 0x76, 0x99, 0x25, 0x3e, 0x5a, 0xcc, 0xa7, 0x96, 0x56, 0x6c,
+	0x4c, 0x3a, 0xcc, 0x61, 0xbc, 0xd6, 0xee, 0x7f, 0x13, 0x6d, 0xc6, 0x0b, 0x0e, 0x63, 0x4e, 0x87,
+	0xda, 0xa4, 0xe7, 0xda, 0xc4, 0xf3, 0x58, 0x48, 0x42, 0x97, 0x79, 0x81, 0xbc, 0x3b, 0xdb, 0x62,
+	0x41, 0x97, 0x05, 0x76, 0x93, 0x04, 0x54, 0x4c, 0xb3, 0x3f, 0x3d, 0xd3, 0xa4, 0x21, 0x39, 0x63,
+	0xf7, 0x88, 0xe3, 0x7a, 0xbc, 0x58, 0xd6, 0x1a, 0x3a, 0xb7, 0x1e, 0xf1, 0x49, 0x57, 0xe1, 0x1c,
+	0xd1, 0xef, 0x85, 0xf7, 0xd2, 0x7b, 0xc4, 0x95, 0x62, 0x36, 0x50, 0x62, 0xb3, 0xde, 0x46, 0xe8,
+	0x13, 0x2f, 0xb8, 0x4d, 0x7d, 0x79, 0xf7, 0x94, 0x7e, 0xd7, 0x6d, 0x53, 0x2f, 0x74, 0xc3, 0xad,
+	0x8d, 0x36, 0xbd, 0x4d, 0x36, 0x3b, 0x61, 0xbc, 0x7c, 0x36, 0xa3, 0xdc, 0x71, 0x83, 0x44, 0xed,
+	0x6b, 0x19, 0xb5, 0x41, 0x48, 0x42, 0x1a, 0x2f, 0xb6, 0xf5, 0xe2, 0xcf, 0x98, 0xdf, 0x69, 0xb7,
+	0x98, 0xeb, 0x0d, 0xda, 0xf4, 0x06, 0x73, 0x12, 0xf0, 0x7b, 0x7d, 0x23, 0xaf, 0x73, 0x7f, 0x1a,
+	0xf4, 0xee, 0x26, 0x0d, 0x42, 0xf3, 0x63, 0x78, 0x5e, 0xfb, 0x6b, 0xd0, 0x63, 0x5e, 0x40, 0xf1,
+	0x0a, 0x8c, 0x0b, 0x1f, 0xa7, 0xd0, 0x71, 0x34, 0xf3, 0x5c, 0xf5, 0xa4, 0x95, 0xf3, 0x94, 0x2d,
+	0x01, 0xb0, 0xfc, 0xcc, 0xa3, 0x3f, 0x8e, 0x8d, 0x35, 0x64, 0xb3, 0xe9, 0xc0, 0x51, 0x8e, 0x5e,
+	0xa7, 0xe1, 0xba, 0x64, 0x23, 0x07, 0xe3, 0x77, 0x61, 0x7f, 0x37, 0x70, 0x24, 0xfc, 0xd9, 0x5c,
+	0xf8, 0xab, 0x81, 0x53, 0xf3, 0x29, 0x09, 0xa9, 0xc2, 0xb9, 0xd6, 0x93, 0xb3, 0xfa, 0x30, 0x66,
+	0x1b, 0xa6, 0x92, 0x83, 0xa4, 0x96, 0x2b, 0x70, 0x50, 0x59, 0x21, 0xc7, 0x9d, 0x48, 0x19, 0x17,
+	0xf9, 0xaa, 0x10, 0xe4, 0x80, 0xa7, 0xdd, 0xe6, 0xd7, 0x08, 0x4e, 0xa8, 0x31, 0x6b, 0xd2, 0xe6,
+	0xcb, 0xe2, 0xb9, 0xc7, 0xe5, 0x7d, 0x14, 0x95, 0x57, 0x2b, 0x2e, 0x2f, 0x03, 0x56, 0x57, 0xfb,
+	0x10, 0xc1, 0xc9, 0x5c, 0x1e, 0x52, 0xfd, 0xcd, 0x84, 0xfa, 0x73, 0xc3, 0xd5, 0x67, 0x00, 0x26,
+	0xcc, 0xf8, 0x12, 0x5e, 0x8a, 0x73, 0xa8, 0xaf, 0xdd, 0x58, 0x8f, 0x1b, 0xf1, 0x41, 0xd4, 0x88,
+	0xc5, 0xf2, 0x46, 0x44, 0x31, 0x75, 0x17, 0x3e, 0x87, 0x97, 0x87, 0x13, 0x90, 0x0e, 0xac, 0x27,
+	0x1c, 0xa8, 0x16, 0x73, 0x20, 0x8a, 0x96, 0x90, 0xff, 0x15, 0x4a, 0x8e, 0xbf, 0x11, 0x46, 0xfe,
+	0x41, 0x95, 0x01, 0xb7, 0xa2, 0x06, 0x2c, 0x95, 0x37, 0x40, 0x03, 0xd5, 0x1d, 0xf8, 0x02, 0x5e,
+	0xc9, 0xa1, 0x20, 0x2d, 0x78, 0x3f, 0x61, 0xc1, 0x5c, 0x31, 0x0b, 0x34, 0xb8, 0x84, 0x07, 0xdf,
+	0x22, 0x98, 0x51, 0x04, 0x6e, 0xf6, 0x17, 0x50, 0x8d, 0xb9, 0x9e, 0x6a, 0x8d, 0xfb, 0xf0, 0x49,
+	0xd4, 0x87, 0x95, 0xe2, 0x3e, 0x64, 0x02, 0xeb, 0x5e, 0x7c, 0x83, 0xe0, 0xd5, 0x02, 0x5c, 0xa4,
+	0x21, 0xb7, 0x12, 0x86, 0x9c, 0x1f, 0x6e, 0x48, 0x26, 0x64, 0xc2, 0x94, 0xe6, 0x60, 0x15, 0x2d,
+	0x75, 0x3a, 0xd7, 0xb8, 0x28, 0xe5, 0xc1, 0x2a, 0xc0, 0x20, 0xbe, 0x9e, 0x2e, 0x23, 0x91, 0x75,
+	0x56, 0x3f, 0xeb, 0x2c, 0x91, 0xac, 0x32, 0xeb, 0xac, 0xeb, 0xc4, 0x51, 0xbd, 0x8d, 0x48, 0xa7,
+	0xf9, 0x23, 0x82, 0xe9, 0x94, 0x21, 0x83, 0xe5, 0x2d, 0xbc, 0x9c, 0x42, 0xc7, 0xf7, 0x17, 0x5a,
+	0xde, 0x02, 0x40, 0x2d, 0x6f, 0x71, 0x0f, 0xd7, 0x35, 0xb2, 0xfb, 0x64, 0x0e, 0xe4, 0x91, 0x15,
+	0x1c, 0x34, 0xb6, 0x75, 0x38, 0xac, 0xc8, 0xea, 0x76, 0x4c, 0xc2, 0x81, 0xd6, 0x1d, 0xe2, 0x0a,
+	0x27, 0x26, 0x1a, 0xe2, 0x02, 0x4f, 0xc1, 0xb3, 0xa4, 0xdd, 0xf6, 0x69, 0x10, 0xf0, 0xa1, 0x13,
+	0x0d, 0x75, 0x69, 0x6e, 0xc0, 0x91, 0x38, 0x50, 0x8a, 0x64, 0x34, 0xb2, 0x64, 0xf3, 0x1c, 0xbc,
+	0xa8, 0x0f, 0x58, 0x65, 0x7e, 0xad, 0x4f, 0x6a, 0x28, 0x63, 0xd3, 0x81, 0x4a, 0x56, 0xdb, 0x9e,
+	0x3e, 0x92, 0xea, 0xbf, 0x87, 0xe0, 0x00, 0x9f, 0x84, 0x7f, 0x40, 0x30, 0x2e, 0x22, 0x17, 0xcf,
+	0xe5, 0x62, 0x25, 0x73, 0xdf, 0x38, 0x5b, 0xae, 0x49, 0xc8, 0x30, 0x4f, 0x3f, 0xfc, 0xed, 0xaf,
+	0xef, 0xf7, 0xcd, 0xe2, 0x19, 0x79, 0xfa, 0x90, 0x1f, 0xa7, 0xc4, 0x29, 0x24, 0xe5, 0x18, 0x86,
+	0x7f, 0x42, 0x70, 0x50, 0xfd, 0x54, 0xf0, 0x7c, 0xb1, 0xa1, 0xc9, 0xd3, 0x82, 0x71, 0x61, 0x84,
+	0x4e, 0xc9, 0xb9, 0xca, 0x39, 0xbf, 0x8e, 0x67, 0xf3, 0x39, 0xab, 0xdf, 0x30, 0xfe, 0x0f, 0xc1,
+	0xd1, 0x8c, 0x1c, 0xc4, 0xf5, 0xc2, 0x54, 0x86, 0x1f, 0x11, 0x8c, 0x2b, 0xbb, 0x07, 0x92, 0x12,
+	0x6b, 0x5c, 0xe2, 0x5b, 0xf8, 0x62, 0xbe, 0xc4, 0xcc, 0xf3, 0x2a, 0xfe, 0x1b, 0xc1, 0x64, 0x5a,
+	0xf2, 0xe1, 0xcb, 0xa5, 0x79, 0xa6, 0x9c, 0x03, 0x8c, 0x95, 0x5d, 0xa2, 0x48, 0xa9, 0x8b, 0x5c,
+	0xea, 0x02, 0x9e, 0x2f, 0x21, 0x55, 0x3b, 0x6b, 0xe3, 0x7f, 0x10, 0x1c, 0x4e, 0x8d, 0x37, 0x5c,
+	0x9e, 0x62, 0x5a, 0xe0, 0x1b, 0xab, 0xbb, 0x85, 0x91, 0x52, 0x97, 0xb8, 0xd4, 0x8b, 0xf8, 0x42,
+	0x09, 0xa9, 0xfa, 0xab, 0x02, 0xfe, 0x1f, 0xc1, 0x74, 0x66, 0x72, 0xe1, 0xb5, 0xc2, 0x44, 0xf3,
+	0xc2, 0xdd, 0x78, 0x67, 0x2f, 0xa0, 0xa4, 0xee, 0x55, 0xae, 0x7b, 0x11, 0x5f, 0xca, 0xd7, 0xcd,
+	0xdf, 0x7a, 0x36, 0xd2, 0x5f, 0x7b, 0xf0, 0xcf, 0x08, 0x26, 0xc4, 0x16, 0x5d, 0xea, 0x74, 0x70,
+	0xf1, 0x0d, 0x12, 0x4f, 0x6d, 0x63, 0x61, 0x94, 0xd6, 0xf2, 0x1b, 0x53, 0xc6, 0xee, 0x2f, 0x08,
+	0xc6, 0x05, 0x08, 0x7e, 0xa3, 0xf0, 0x60, 0x9d, 0xf0, 0xf9, 0xd2, 0x7d, 0x92, 0xed, 0x32, 0x67,
+	0xfb, 0x26, 0x5e, 0x28, 0xca, 0xd6, 0xbe, 0xcf, 0x13, 0xf0, 0x81, 0x7d, 0x5f, 0x66, 0xf4, 0x03,
+	0xfc, 0x2b, 0x82, 0x43, 0x7a, 0x0a, 0xe2, 0x4b, 0x25, 0xf9, 0xc4, 0x52, 0xd7, 0x78, 0x7b, 0xe4,
+	0x7e, 0xa9, 0x6b, 0x9e, 0xeb, 0xaa, 0xe2, 0xd3, 0x65, 0x75, 0x2d, 0x5f, 0x7d, 0xb4, 0x5d, 0x41,
+	0x8f, 0xb7, 0x2b, 0xe8, 0xcf, 0xed, 0x0a, 0xfa, 0x6e, 0xa7, 0x32, 0xf6, 0x78, 0xa7, 0x32, 0xf6,
+	0xfb, 0x4e, 0x65, 0xec, 0xc3, 0x39, 0xc7, 0x0d, 0xef, 0x6c, 0x36, 0xad, 0x16, 0xeb, 0xa6, 0xa1,
+	0xde, 0x8b, 0x67, 0xcb, 0x56, 0x8f, 0x06, 0xcd, 0x71, 0xfe, 0x2e, 0x3e, 0xf7, 0x24, 0x00, 0x00,
+	0xff, 0xff, 0xd5, 0x2f, 0x33, 0x14, 0x50, 0x11, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -660,6 +952,9 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	Transfer(ctx context.Context, in *QueryGetTransferRequest, opts ...grpc.CallOption) (*QueryGetTransferResponse, error)
 	IdentityDefaultTransfer(ctx context.Context, in *QueryGetIdentityDefaultTransferRequest, opts ...grpc.CallOption) (*QueryGetIdentityDefaultTransferResponse, error)
+	IdentityGISTTransfer(ctx context.Context, in *QueryGetIdentityGISTTransferRequest, opts ...grpc.CallOption) (*QueryGetIdentityGISTTransferResponse, error)
+	IdentityStateTransfer(ctx context.Context, in *QueryGetIdentityStateTransferRequest, opts ...grpc.CallOption) (*QueryGetIdentityStateTransferResponse, error)
+	WorldCoinIdentityTransfer(ctx context.Context, in *QueryGetWorldCoinIdentityTransferRequest, opts ...grpc.CallOption) (*QueryGetWorldCoinIdentityTransferResponse, error)
 	OracleAll(ctx context.Context, in *QueryGetAllOracleRequest, opts ...grpc.CallOption) (*QueryGetAllOracleResponse, error)
 	Oracle(ctx context.Context, in *QueryGetOracleRequest, opts ...grpc.CallOption) (*QueryGetOracleResponse, error)
 	OracleForChain(ctx context.Context, in *QueryGetOracleForChainRequest, opts ...grpc.CallOption) (*QueryGetOracleForChainResponse, error)
@@ -700,6 +995,33 @@ func (c *queryClient) IdentityDefaultTransfer(ctx context.Context, in *QueryGetI
 	return out, nil
 }
 
+func (c *queryClient) IdentityGISTTransfer(ctx context.Context, in *QueryGetIdentityGISTTransferRequest, opts ...grpc.CallOption) (*QueryGetIdentityGISTTransferResponse, error) {
+	out := new(QueryGetIdentityGISTTransferResponse)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.oraclemanager.Query/IdentityGISTTransfer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) IdentityStateTransfer(ctx context.Context, in *QueryGetIdentityStateTransferRequest, opts ...grpc.CallOption) (*QueryGetIdentityStateTransferResponse, error) {
+	out := new(QueryGetIdentityStateTransferResponse)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.oraclemanager.Query/IdentityStateTransfer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) WorldCoinIdentityTransfer(ctx context.Context, in *QueryGetWorldCoinIdentityTransferRequest, opts ...grpc.CallOption) (*QueryGetWorldCoinIdentityTransferResponse, error) {
+	out := new(QueryGetWorldCoinIdentityTransferResponse)
+	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.oraclemanager.Query/WorldCoinIdentityTransfer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *queryClient) OracleAll(ctx context.Context, in *QueryGetAllOracleRequest, opts ...grpc.CallOption) (*QueryGetAllOracleResponse, error) {
 	out := new(QueryGetAllOracleResponse)
 	err := c.cc.Invoke(ctx, "/rarimo.rarimocore.oraclemanager.Query/OracleAll", in, out, opts...)
@@ -733,6 +1055,9 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	Transfer(context.Context, *QueryGetTransferRequest) (*QueryGetTransferResponse, error)
 	IdentityDefaultTransfer(context.Context, *QueryGetIdentityDefaultTransferRequest) (*QueryGetIdentityDefaultTransferResponse, error)
+	IdentityGISTTransfer(context.Context, *QueryGetIdentityGISTTransferRequest) (*QueryGetIdentityGISTTransferResponse, error)
+	IdentityStateTransfer(context.Context, *QueryGetIdentityStateTransferRequest) (*QueryGetIdentityStateTransferResponse, error)
+	WorldCoinIdentityTransfer(context.Context, *QueryGetWorldCoinIdentityTransferRequest) (*QueryGetWorldCoinIdentityTransferResponse, error)
 	OracleAll(context.Context, *QueryGetAllOracleRequest) (*QueryGetAllOracleResponse, error)
 	Oracle(context.Context, *QueryGetOracleRequest) (*QueryGetOracleResponse, error)
 	OracleForChain(context.Context, *QueryGetOracleForChainRequest) (*QueryGetOracleForChainResponse, error)
@@ -750,6 +1075,15 @@ func (*UnimplementedQueryServer) Transfer(ctx context.Context, req *QueryGetTran
 }
 func (*UnimplementedQueryServer) IdentityDefaultTransfer(ctx context.Context, req *QueryGetIdentityDefaultTransferRequest) (*QueryGetIdentityDefaultTransferResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IdentityDefaultTransfer not implemented")
+}
+func (*UnimplementedQueryServer) IdentityGISTTransfer(ctx context.Context, req *QueryGetIdentityGISTTransferRequest) (*QueryGetIdentityGISTTransferResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IdentityGISTTransfer not implemented")
+}
+func (*UnimplementedQueryServer) IdentityStateTransfer(ctx context.Context, req *QueryGetIdentityStateTransferRequest) (*QueryGetIdentityStateTransferResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IdentityStateTransfer not implemented")
+}
+func (*UnimplementedQueryServer) WorldCoinIdentityTransfer(ctx context.Context, req *QueryGetWorldCoinIdentityTransferRequest) (*QueryGetWorldCoinIdentityTransferResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WorldCoinIdentityTransfer not implemented")
 }
 func (*UnimplementedQueryServer) OracleAll(ctx context.Context, req *QueryGetAllOracleRequest) (*QueryGetAllOracleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OracleAll not implemented")
@@ -815,6 +1149,60 @@ func _Query_IdentityDefaultTransfer_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).IdentityDefaultTransfer(ctx, req.(*QueryGetIdentityDefaultTransferRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_IdentityGISTTransfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetIdentityGISTTransferRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).IdentityGISTTransfer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarimo.rarimocore.oraclemanager.Query/IdentityGISTTransfer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).IdentityGISTTransfer(ctx, req.(*QueryGetIdentityGISTTransferRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_IdentityStateTransfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetIdentityStateTransferRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).IdentityStateTransfer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarimo.rarimocore.oraclemanager.Query/IdentityStateTransfer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).IdentityStateTransfer(ctx, req.(*QueryGetIdentityStateTransferRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_WorldCoinIdentityTransfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetWorldCoinIdentityTransferRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).WorldCoinIdentityTransfer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rarimo.rarimocore.oraclemanager.Query/WorldCoinIdentityTransfer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).WorldCoinIdentityTransfer(ctx, req.(*QueryGetWorldCoinIdentityTransferRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -888,6 +1276,18 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IdentityDefaultTransfer",
 			Handler:    _Query_IdentityDefaultTransfer_Handler,
+		},
+		{
+			MethodName: "IdentityGISTTransfer",
+			Handler:    _Query_IdentityGISTTransfer_Handler,
+		},
+		{
+			MethodName: "IdentityStateTransfer",
+			Handler:    _Query_IdentityStateTransfer_Handler,
+		},
+		{
+			MethodName: "WorldCoinIdentityTransfer",
+			Handler:    _Query_WorldCoinIdentityTransfer_Handler,
 		},
 		{
 			MethodName: "OracleAll",
@@ -1077,6 +1477,204 @@ func (m *QueryGetIdentityDefaultTransferResponse) MarshalTo(dAtA []byte) (int, e
 }
 
 func (m *QueryGetIdentityDefaultTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Transfer.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetIdentityGISTTransferRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetIdentityGISTTransferRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetIdentityGISTTransferRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetIdentityGISTTransferResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetIdentityGISTTransferResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetIdentityGISTTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Transfer.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetIdentityStateTransferRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetIdentityStateTransferRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetIdentityStateTransferRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetIdentityStateTransferResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetIdentityStateTransferResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetIdentityStateTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Transfer.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Msg.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1380,6 +1978,72 @@ func (m *QueryGetIdentityDefaultTransferRequest) Size() (n int) {
 }
 
 func (m *QueryGetIdentityDefaultTransferResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Transfer.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetIdentityGISTTransferRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Msg.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetIdentityGISTTransferResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Transfer.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetIdentityStateTransferRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Msg.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetIdentityStateTransferResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Transfer.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetWorldCoinIdentityTransferRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Msg.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetWorldCoinIdentityTransferResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1893,6 +2557,504 @@ func (m *QueryGetIdentityDefaultTransferResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: QueryGetIdentityDefaultTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Transfer", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Transfer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetIdentityGISTTransferRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetIdentityGISTTransferRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetIdentityGISTTransferRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetIdentityGISTTransferResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetIdentityGISTTransferResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetIdentityGISTTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Transfer", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Transfer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetIdentityStateTransferRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetIdentityStateTransferRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetIdentityStateTransferRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetIdentityStateTransferResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetIdentityStateTransferResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetIdentityStateTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Transfer", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Transfer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetWorldCoinIdentityTransferRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetWorldCoinIdentityTransferRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetWorldCoinIdentityTransferRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Msg.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetWorldCoinIdentityTransferResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetWorldCoinIdentityTransferResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetWorldCoinIdentityTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

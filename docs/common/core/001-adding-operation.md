@@ -1,35 +1,44 @@
+---
+layout: default
+title: Adding new operation
+---
+
 # Adding new operation
 
 To provide TSS signature core uses operations and confirmation entities.
 Operation entity represents some data to be signed by threshold signature producers.
-Confirmation entity represents information about signature: indexes list, merkle root based on provided list and signature.
+Confirmation entity represents information about signature: indexes list, merkle root based on provided list and
+signature.
 
 Operation entity contains the following fields:
+
 ```protobuf
-  message Operation {
-    string index = 1;
-    opType operationType = 2;
-    google.protobuf.Any details = 3;
-    opStatus status = 4;
-    string creator = 5;
-    uint64 timestamp = 6;
-  }
+message Operation {
+  string index = 1;
+  opType operationType = 2;
+  google.protobuf.Any details = 3;
+  opStatus status = 4;
+  string creator = 5;
+  uint64 timestamp = 6;
+}
 ```
 
-- index is the unique string that should be deterministic created depending on operation data
-- operation type defines the type of operation details
-- details contain any necessary information about operation to provide signature for
-- status defines the current status of operation (signed, approved, initialize, etc.)
-- creator defines the creator of certain operation
-- timestamp contains the unix block timestamp then operation was created (the timestamp should be received from the context)
+- `index` is the unique string that should be deterministic created depending on operation data
+- `operationType` defines the type of operation details
+- `details` contain any necessary information about operation to provide signature for
+- `status` defines the current status of operation (signed, approved, initialize, etc.)
+- `creator` defines the creator of certain operation
+- `timestamp` contains the unix block timestamp then operation was created (the timestamp should be received from the
+  context)
 
 ----
 
 **To add new operation developer should lead the following steps:**
 
-1. Add operation data definition in the `proto/rarimocore`. Example:
-  <details>
-    <summary>proto/ratimocore/op_fee_token_management.proto</summary>
+1. Add operation data definition in the `proto/rarimocore`. 
+
+   Example:
+   ___proto/ratimocore/op_fee_token_management.proto___
 
     ```protobuf
     enum FeeTokenManagementType {
@@ -46,11 +55,11 @@ Operation entity contains the following fields:
       string receiver = 4;
     }
     ```
-  </details>
 
-  Also, add new operation type in `proto/rarimocore/operation.proto`.
-  <details>
-    <summary>proto/rarimocore/operation.proto</summary>
+   Also, add new operation type in `proto/rarimocore/operation.proto`.
+
+   Example:
+   ___proto/rarimocore/operation.proto___
 
     ```protobuf
     enum opType {
@@ -59,14 +68,12 @@ Operation entity contains the following fields:
       FEE_TOKEN_MANAGEMENT = 2;
     }
     ```
-  </details>
 
-----
+2. In `x/rarimocore/crypto/operation` define the operation content that should implement `merkle.Content` interface
+   from `merkle "github.com/rarimo/go-merkle"`.
 
-2. In `x/rarimocore/crypto/operation` define the operation content that should implement `merkle.Content` interface from `merkle "github.com/rarimo/go-merkle"`.
-  Example:
-  <details>
-    <summary>x/rarimocore/crypto/operation/op_fee_token_management.go</summary>
+   Example:
+   ___x/rarimocore/crypto/operation/op_fee_token_management.go___
 
     ```go
     package operation
@@ -106,17 +113,15 @@ Operation entity contains the following fields:
       return false
     }
     ```
-  </details>
-
-----
-
+   
 3. In `x/rarimocore/crypto/pkg` define the following methods: `Get{op name}` and `Get{op name} content`.
 
-  Example:
-  <details>
-    <summary>x/rarimocore/crypto/operation/op_fee_token_management.go</summary>
+   Example:
+   ___x/rarimocore/crypto/operation/op_fee_token_management.go___
 
     ```go
+    package operation
+
     func GetFeeTokenManagement(operation types.Operation) (*types.FeeTokenManagement, error) {
       if operation.OperationType == types.OpType_FEE_TOKEN_MANAGEMENT {
         op := new(types.FeeTokenManagement)
@@ -134,65 +139,101 @@ Operation entity contains the following fields:
         Data:           data.NewFeeTokenDataBuilder().SetOpType(op.OpType).SetAmount(op.Token.Amount).SetAmount(op.Token.Amount).Build().GetContent(),
       }, nil
     }
+
     ```
-  </details>
 
-  **Tips**: explore the `x/rarimocore/crypto/operation/data` and `x/rarimocore/crypto/operation/origin` packages to use some useful utils from it or add the new if required.
+   **Tips**: explore the `x/rarimocore/crypto/operation/data` and `x/rarimocore/crypto/operation/origin` packages to use
+   some useful utils from it or add the new if required. 
 
-----
+4. Add Get{op name}Content method and the corresponding case block to the `x/rarimocore/crypto/pkg/content/main.go`
 
-4. In the `x/rarimocore/keeper` define function that creates the operation and define function call where it is required.
+   Example:
+   ___x/rarimocore/crypto/pkg/content/main.go___
 
-----
+   ```go
+   case types.OpType_FEE_TOKEN_MANAGEMENT:
+			content, err := GetFeeManagementContent(client, op)
+			if err != nil {
+				return nil, err
+			}
 
-5. In the `x/rarimocore/keeper/msg_server_confirmation.go` extend the existing logic of `getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error)` method.
-  For example add:
-  ```go
+			if content != nil {
+				contents = append(contents, content)
+			}
+   ```
+
+   ```go
+    package content
+   
+    func GetFeeManagementContent(client *grpc.ClientConn, op *types.Operation) (merkle.Content, error) {
+       manage, err := pkg.GetFeeTokenManagement(*op)
+       if err != nil {
+           return nil, errors.Wrap(err, "error parsing operation details")
+       }
+   
+       networkResp, err := token.NewQueryClient(client).NetworkParams(context.TODO(), &token.QueryNetworkParamsRequest{Name: manage.Chain})
+       if err != nil {
+           return nil, errors.Wrap(err, "error getting network param entry")
+       }
+   
+       feeparams := networkResp.Params.GetFeeParams()
+       if err != nil {
+           return nil, errors.New("bridge params not found")
+       }
+   
+       content, err := pkg.GetFeeTokenManagementContent(feeparams, manage)
+       return content, errors.Wrap(err, "error creating content")
+	}
+   ```
+   
+5. In the `x/rarimocore/keeper` define function that creates the operation and define function call where it is
+   required. 
+
+6. In the `x/rarimocore/keeper/msg_server_confirmation.go` extend the existing logic
+   of `getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error)` method.
+   For example add:
+
+   ```go
     case types.OpType_FEE_TOKEN_MANAGEMENT:
-      manage, err := pkg.GetFeeTokenManagement(op)
-      if err != nil {
-        return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-      }
-      return k.getFeeTokenManagementContent(ctx, op.Index, manage)
-  ```
-
-  <details>
-    <summary>Example</summary>
-
-    ```go
-      func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
-        switch op.OperationType {
-        case types.OpType_TRANSFER:
-          transfer, err := pkg.GetTransfer(op)
-          if err != nil {
+        manage, err := pkg.GetFeeTokenManagement(op)
+        if err != nil {
             return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-          }
-
-          return k.getTransferOperationContent(ctx, transfer)
-        case types.OpType_CHANGE_PARTIES:
-          change, err := pkg.GetChangeParties(op)
-          if err != nil {
-            return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-          }
-
-          return pkg.GetChangePartiesContent(change)
-        case types.OpType_FEE_TOKEN_MANAGEMENT:
-          manage, err := pkg.GetFeeTokenManagement(op)
-          if err != nil {
-            return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-          }
-          return k.getFeeTokenManagementContent(ctx, op.Index, manage)
-        default:
-          return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
         }
-      }
-    ```
-  </details>
+        return k.getFeeTokenManagementContent(ctx, op.Index, manage)
+   ```
 
-----
+   Example:
 
-6. Also, you can provide additional logic in `ApplyOperation(ctx sdk.Context, op types.Operation) error` to execute some stuff after signing if required.
+   ```go
+   func (k msgServer) getContent(ctx sdk.Context, op types.Operation) (merkle.Content, error) {
+     switch op.OperationType {
+     case types.OpType_TRANSFER:
+       transfer, err := pkg.GetTransfer(op)
+       if err != nil {
+         return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+       }
 
-----
+       return k.getTransferOperationContent(ctx, transfer)
+     case types.OpType_CHANGE_PARTIES:
+       change, err := pkg.GetChangeParties(op)
+       if err != nil {
+         return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+       }
 
-7. Extend `tss-svc` service ` GetContents(client *grpc.ClientConn, operations ...*rarimo.Operation) ([]merkle.Content, error)` method in `internal/core/controllers/util.go` to include new operation in the signing process.
+       return pkg.GetChangePartiesContent(change)
+     case types.OpType_FEE_TOKEN_MANAGEMENT:
+       manage, err := pkg.GetFeeTokenManagement(op)
+       if err != nil {
+         return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
+       }
+       return k.getFeeTokenManagementContent(ctx, op.Index, manage)
+     default:
+       return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
+     }
+   }
+   ```
+   
+7. Also, you can provide additional logic in `ApplyOperation(ctx sdk.Context, op types.Operation) error` to execute some
+   stuff after signing if required.
+
+8. Update the core dependency version in `tss-svc`. (It will use methods that you've defined in 4)

@@ -1,9 +1,14 @@
+---
+layout: default
+title: Running saver (oracle) service
+---
+
 # Running saver (oracle) service
 
 ## Broadcaster service
 
 The broadcaster service should be the only one entrypoint for submitting transactions from certain rarimo account.
-All your oracle services that uses the same account should submit transaction though the same roadcaster service.
+All your oracle services that uses the same account should submit transaction though the same broadcaster service.
 
 To start `broadcaster-svc` service you need a hex private key that will be used to sign messages.
 

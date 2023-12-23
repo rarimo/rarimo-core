@@ -14,6 +14,9 @@ service Msg {
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
   rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
+  rpc CreateIdentityGISTTransferOperation(MsgCreateIdentityGISTTransferOp) returns (MsgCreateIdentityGISTTransferOpResponse);
+  rpc CreateIdentityStateTransferOperation(MsgCreateIdentityStateTransferOp) returns (MsgCreateIdentityStateTransferOpResponse);
+  rpc CreateWorldCoinIdentityTransferOperation(MsgCreateWorldCoinIdentityTransferOp) returns (MsgCreateWorldCoinIdentityTransferOpResponse);
   rpc Vote(MsgVote) returns(MsgVoteResponse);
   rpc Unjail(MsgUnjail) returns(MsgUnjailResponse);
 }
@@ -80,6 +83,55 @@ message MsgCreateIdentityDefaultTransferOp {
 }
 
 message MsgCreateIdentityDefaultTransferOpResponse {}
+
+message MsgCreateIdentityGISTTransferOp {
+  string creator = 1;
+  // Hex 0x
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x
+  string GISTHash = 4;
+  // Dec
+  string GISTCreatedAtTimestamp = 5;
+  string GISTCreatedAtBlock = 6;
+  // HEx 0x
+  string replacedGISTtHash = 7;
+}
+
+message MsgCreateIdentityGISTTransferOpResponse {}
+
+message MsgCreateIdentityStateTransferOp {
+  string creator = 1;
+  // Hex 0x
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x
+  string id = 5;
+  // Hex 0x
+  string stateHash = 6;
+  // Dec
+  string stateCreatedAtTimestamp = 7;
+  string stateCreatedAtBlock = 8;
+  // HEx 0x
+  string replacedStateHash = 17;
+}
+
+message MsgCreateIdentityStateTransferOpResponse {}
+
+message MsgCreateWorldCoinIdentityTransferOp {
+  string creator = 1;
+  string contract = 2;
+  string chain = 3;
+  // Hex 0x uint256
+  string prevState = 4;
+  // Hex 0x uint256
+  string state = 5;
+  // Dec uint256
+  string timestamp = 6;
+  uint64 blockNumber = 7;
+}
+
+message MsgCreateWorldCoinIdentityTransferOpResponse {}
 
 message MsgVote{
   rarimo.rarimocore.oraclemanager.OracleIndex index = 1;

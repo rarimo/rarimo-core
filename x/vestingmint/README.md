@@ -1,3 +1,8 @@
+---
+layout: default
+title: x/vestingmint
+---
+
 # `x/vestingmint`
 
 ## Abstract

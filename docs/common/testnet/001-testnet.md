@@ -1,3 +1,8 @@
+---
+layout: default
+title: Testnet information
+---
+
 # Testnet information
 
 * [Validator Guide](./002-validator-guide.md)
@@ -10,15 +15,15 @@
 
 ```Explorer:``` [scan.mainnet-beta.rarimo.com](https://scan.mainnet-beta.rarimo.com/)
 
-```Denom name:``` ***urmo***
+```Denom name:``` ***stake***
 
 ----
 
 ## RPC Node
 
-```Tendermint API:``` [core-api.mainnet-beta.rarimo.com](https://core-api.node1.mainnet-beta.rarimo.com/)
+``` Cosmos API:``` [core-api.mainnet-beta.rarimo.com](https://core-api.node1.mainnet-beta.rarimo.com/)
 
-```Cosmos API:``` [rpc.node1.mainnet-beta.rarimo.com](https://rpc.node1.mainnet-beta.rarimo.com/)
+```Tendermint API:``` [rpc.node1.mainnet-beta.rarimo.com](https://rpc.node1.mainnet-beta.rarimo.com/)
 
 ```Swagger API:``` [rpc-api.node1.mainnet-beta.rarimo.com](https://rpc-api.node1.mainnet-beta.rarimo.com/)
 

@@ -1,3 +1,7 @@
+---
+layout: default
+title: x/bridge
+---
 
 # `x/bridge`
 
@@ -38,36 +42,34 @@ is the target of minting, and the amount of tokens to mint. And also BurnTokens 
 ### Params
 
 Definition:
-  ```protobuf
-  message Params {
-    option (gogoproto.goproto_stringer) = false;
-    string withdrawDenom = 1;
-  }
-  ```
+```protobuf
+message Params {
+   option (gogoproto.goproto_stringer) = false;
+   string withdrawDenom = 1;
+}
+```
 
-  <details>
-    <summary>Example</summary>
-
-    ```json
-    {
-      "params": {
-        "withdrawDenom": "stake"
-      }
-    }
-    ```
-  </details>
+Example:
+```json
+{
+   "params": {
+      "withdrawDenom": "stake"
+   }
+}
+```
 
 ### Hash
 
 **Hash** - stores the hash of withdrawal operation to prevent double-spending.
 
 Definition:
-  ```protobuf
-  message Hash {
-    // hex-encoded
-    string index = 1;
-  }
-  ```
+
+```protobuf
+message Hash {
+   // hex-encoded
+   string index = 1;
+}
+```
 
 ----
 
@@ -76,31 +78,33 @@ Definition:
 ### DepositNative
 
 **DepositNative** - burns user's tokens and creates transfer operation in ```rarimocore``` module (will be already approved).
-  ```protobuf
-  message MsgDepositNative {
-    string creator = 1;
-    // Random 32 bytes slice encoded to the hex string
-    string seed = 2;
-    // Information about deposit
-    string receiver = 3;
-    cosmos.base.v1beta1.Coin amount = 4;
-    string bundleData = 5;// hex-encoded
-    string bundleSalt = 6;// hex-encoded
-    // Information about target chain
-    rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7;
-  }
-  ```
+
+```protobuf
+message MsgDepositNative {
+   string creator = 1;
+   // Random 32 bytes slice encoded to the hex string
+   string seed = 2;
+   // Information about deposit
+   string receiver = 3;
+   cosmos.base.v1beta1.Coin amount = 4;
+   string bundleData = 5;// hex-encoded
+   string bundleSalt = 6;// hex-encoded
+   // Information about target chain
+   rarimo.rarimocore.tokenmanager.OnChainItemIndex to = 7;
+}
+```
 
 ### WithdrawNative
 
 **WithdrawNative** - checks that operation in ```rarimocore``` is signed and valid and mints tokens to the receiver account.
    Operation hash (origin) will be stored in modules hash list.
-  ```protobuf
-  message MsgWithdrawNative {
-  string creator = 1;
-  // Evidence information
-  string origin = 2;
+
+```protobuf
+message MsgWithdrawNative {
+   string creator = 1;
+   // Evidence information
+   string origin = 2;
 }
-  ```
+```
 
 ----
