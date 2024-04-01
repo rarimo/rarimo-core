@@ -1,0 +1,31 @@
+syntax = "proto3";
+package rarimo.rarimocore.cscalist;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
+
+message Params {
+  // Linear congruential generator params
+  // https://en.wikipedia.org/wiki/Linear_congruential_generator
+  uint64 lcgA = 1;
+  uint64 lcgB = 2;
+  uint64 lcgMod = 3;
+  uint64 lcgValue = 4;
+  string rootKey = 5;
+}
+
+message Node {
+  // Node self key
+  string key = 1;
+  // Node priority (should be random)
+  uint64 priority = 2;
+  // Node left son key
+  string left = 4;
+  // Node right son key
+  string right = 5;
+  // Merkle hash. H = Hash(Hash(left_key|right_key)|self_key)
+  string hash = 6;
+  // Hash(left_key|right_key)
+  string childrenHash = 7;
+}

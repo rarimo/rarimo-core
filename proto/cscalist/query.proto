@@ -1,0 +1,47 @@
+syntax = "proto3";
+package rarimo.rarimocore.cscalist;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cscalist/cscalist.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
+
+service Query {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/cscalist/params";
+  }
+
+  rpc Tree(QueryTreeRequest) returns (QueryTreeResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/cscalist/tree";
+  };
+
+  rpc MerkleProof(QueryGetMerkleProofRequest) returns (QueryGetMerkleProofResponse) {
+    option (google.api.http).get = "/rarimo/rarimo-core/cscalist/proof";
+  };
+}
+
+message QueryParamsRequest {}
+
+message QueryParamsResponse {
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryTreeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryTreeResponse {
+  repeated Node tree = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMerkleProofRequest {
+  // Leaf is a hash value of the leaf node in the tree
+  string leaf = 1;
+}
+
+message QueryGetMerkleProofResponse {
+  repeated string proof = 1 [(gogoproto.nullable) = false];
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package rarimo.rarimocore.cscalist;
+
+option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
+
+// EditCSCAListProposal allows to propose a different CSCA list, which
+// may happen in case of a CSCA key compromise or adding new authorities.
+message EditCSCAListProposal {
+  string title = 1;
+  string description = 2;
+  // Poseidon hashes of CSCA public keys
+  repeated string leaves = 3;
+}
