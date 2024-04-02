@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"fmt"
+	"math"
 	"strconv"
 
 	// "strings"
@@ -17,6 +18,8 @@ import (
 
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
+
+const maxPageLimit = math.MaxUint64
 
 // GetQueryCmd returns the CLI query commands for this module
 func GetQueryCmd() *cobra.Command {
@@ -65,27 +68,43 @@ func cmdQueryParams() *cobra.Command {
 
 func cmdQueryTree() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "tree <limit> <offset>",
-		Short: "Fetch the CSCA-based Merkle tree with pagination",
-		Long: `Get all the nodes of CSCA Merkle tree. You might need to query params beforehand
-to acquire the Merkle root. Having a root, you can build the tree from the list,
+		Use:   "tree [limit] [offset]",
+		Short: "Fetch the CSCA-based Merkle",
+		Long: `Get nodes of CSCA Merkle tree. You might need to fetch params beforehand to
+acquire the Merkle root. Having a root, you can build the tree from the list,
 where each node has links to children.
 
-Paginate over a list with <offset> parameter, adding <limit> to it on each new
-request. Example: tree 30 0; tree 30 30; tree 30 60; ...`,
-		Args: cobra.ExactArgs(2),
+If neither limit nor offset is provided, the entire tree is fetched at once.
+
+You can paginate over a list with [offset] parameter, adding [limit] to it on
+each new request. Example: tree 30 0; tree 30 30; tree 30 60; ...`,
+		Args: cobra.MaximumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// argument count is ensured by cobra.ExactArgs(2)
+			cliCtx := client.GetClientContextFromCmd(cmd)
+
+			if len(args) == 0 {
+				res, err := queryTree(cliCtx, maxPageLimit, 0)
+				if err != nil {
+					return fmt.Errorf("query entire tree: %w", err)
+				}
+
+				res.Pagination = nil
+				return cliCtx.PrintProto(res)
+			}
+
 			limit, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return fmt.Errorf("parse limit: %w", err)
 			}
-			offset, err := strconv.ParseUint(args[1], 10, 64)
-			if err != nil {
-				return fmt.Errorf("parse offset: %w", err)
+
+			var offset uint64
+			if len(args) == 2 {
+				offset, err = strconv.ParseUint(args[1], 10, 64)
+				if err != nil {
+					return fmt.Errorf("parse offset: %w", err)
+				}
 			}
 
-			cliCtx := client.GetClientContextFromCmd(cmd)
 			res, err := queryTree(cliCtx, limit, offset)
 			if err != nil {
 				return fmt.Errorf("query tree: %w", err)
@@ -102,16 +121,11 @@ request. Example: tree 30 0; tree 30 30; tree 30 60; ...`,
 func queryTree(ctx client.Context, limit, offset uint64) (*types.QueryTreeResponse, error) {
 	cli := types.NewQueryClient(ctx)
 
-	res, err := cli.Tree(context.Background(), &types.QueryTreeRequest{
+	return cli.Tree(context.Background(), &types.QueryTreeRequest{
 		Pagination: &query.PageRequest{
 			Limit:      limit,
 			Offset:     offset,
 			CountTotal: true,
 		},
 	})
-	if err != nil {
-		return nil, fmt.Errorf("query tree: %w", err)
-	}
-
-	return res, nil
 }

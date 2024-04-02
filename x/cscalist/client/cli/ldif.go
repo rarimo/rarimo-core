@@ -3,7 +3,9 @@ package cli
 import (
 	"fmt"
 
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/rarimo/rarimo-core/x/cscalist/types"
 	"github.com/spf13/cobra"
 )
 
@@ -48,6 +50,20 @@ Use cases:
 		SuggestionsMinimumDistance: 2,
 		Args:                       cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := client.GetClientContextFromCmd(cmd)
+
+			res, err := queryTree(cliCtx, maxPageLimit, 0)
+			if err != nil {
+				return fmt.Errorf("query entire tree: %w", err)
+			}
+
+			leaves := make([]types.Node, 0, len(res.Tree)/2+1)
+			for _, node := range res.Tree {
+				if node.Left == "" && node.Right == "" {
+					leaves = append(leaves, node)
+				}
+			}
+
 			// TODO: use the new SDK to implement
 			return fmt.Errorf("not implemented")
 		},
