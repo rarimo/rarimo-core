@@ -55,7 +55,7 @@ func cmdQueryParams() *cobra.Command {
 
 			res, err := queryClient.Params(context.Background(), &types.QueryParamsRequest{})
 			if err != nil {
-				return err
+				return fmt.Errorf("query params: %w", err)
 			}
 
 			return clientCtx.PrintProto(res)
