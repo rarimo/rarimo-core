@@ -13,6 +13,8 @@ func NewProposalHandler(k keeper.Keeper) govv1beta1.Handler {
 		switch c := content.(type) {
 		case *types.EditCSCAListProposal:
 			return k.EditCSCAListProposal(ctx, c)
+		case *types.ReplaceCSCAListProposal:
+			return k.ReplaceCSCAListProposal(ctx, c)
 		default:
 			return errors.Wrapf(types.ErrUnknownRequest, "unrecognized proposal content type: %T", content)
 		}

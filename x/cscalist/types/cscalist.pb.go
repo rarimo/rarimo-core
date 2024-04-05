@@ -24,6 +24,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Params struct {
+	// Linear congruential generator params
+	// https://en.wikipedia.org/wiki/Linear_congruential_generator
 	LcgA     uint64 `protobuf:"varint,1,opt,name=lcgA,proto3" json:"lcgA,omitempty"`
 	LcgB     uint64 `protobuf:"varint,2,opt,name=lcgB,proto3" json:"lcgB,omitempty"`
 	LcgMod   uint64 `protobuf:"varint,3,opt,name=lcgMod,proto3" json:"lcgMod,omitempty"`

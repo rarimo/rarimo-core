@@ -3,11 +3,24 @@ package rarimo.rarimocore.cscalist;
 
 option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
 
-// EditCSCAListProposal allows to propose a different CSCA list, which
-// may happen in case of a CSCA key compromise or adding new authorities.
+// EditCSCAListProposal allows to propose changes in CSCA list, which are required
+// in case of a CSCA key compromise or adding new authorities. Use it when you want
+// to add or remove a few CSCA keys.
 message EditCSCAListProposal {
   string title = 1;
   string description = 2;
-  // Poseidon hashes of CSCA public keys
+  // Poseidon hashes of new CSCA public keys
+  repeated string toAdd = 3;
+  // Poseidon hashes of existing CSCA public keys
+  repeated string toRemove = 4;
+}
+
+// ReplaceCSCAListProposal allows to propose a different CSCA list. This drops the
+// old tree and rebuilds the new one from scratch. Use EditCSCAListProposal instead,
+// unless you know what you are doing.
+message ReplaceCSCAListProposal {
+  string title = 1;
+  string description = 2;
+  // Poseidon hashes of all CSCA public keys
   repeated string leaves = 3;
 }
