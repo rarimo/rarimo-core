@@ -205,6 +205,7 @@ var (
 
 		vestingmintmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
+		cscalistmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
