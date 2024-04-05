@@ -1,7 +1,13 @@
 package keeper
 
 import (
+	"math"
+	"math/big"
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
 
@@ -106,10 +112,10 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 	t.SetRootKey(ctx, t.Merge(ctx, r1, r2))
 }
 
-func (t Treap) Insert(ctx sdk.Context, key string, priority uint64) {
+func (t Treap) Insert(ctx sdk.Context, key string) {
 	node := types.Node{
 		Key:          key,
-		Priority:     priority,
+		Priority:     derivePriority(key),
 		Left:         EmptyHashStr,
 		Right:        EmptyHashStr,
 		ChildrenHash: EmptyHashStr,
@@ -193,4 +199,20 @@ func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
 	}
 
 	return hash(r.Hash, l.Hash)
+}
+
+// priority = hash(key) % (2^64-1)
+// function panics if key is not hex-encoded
+func derivePriority(key string) uint64 {
+	if !strings.HasPrefix(key, "0x") && !strings.HasPrefix(key, "0X") {
+		key = "0x" + key
+	}
+
+	var (
+		bytes  = hexutil.MustDecode(key)
+		keccak = new(big.Int).SetBytes(crypto.Keccak256(bytes))
+		u64    = new(big.Int).SetUint64(math.MaxUint64)
+	)
+
+	return keccak.Mod(keccak, u64).Uint64()
 }
