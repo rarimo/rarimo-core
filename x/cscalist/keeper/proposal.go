@@ -7,6 +7,7 @@ import (
 
 func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCAListProposal) error {
 	tree := Treap{k}
+	root := tree.GetRootKey(ctx)
 
 	for _, leaf := range proposal.GetToRemove() {
 		tree.Remove(ctx, leaf)
@@ -15,15 +16,28 @@ func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCALi
 		tree.Insert(ctx, leaf)
 	}
 
+	if root != tree.GetRootKey(ctx) {
+		params := k.GetParams(ctx)
+		params.RootUpdated = true
+		k.SetParams(ctx, params)
+	}
+
 	return nil
 }
 
 func (k Keeper) ReplaceCSCAListProposal(ctx sdk.Context, proposal *types.ReplaceCSCAListProposal) error {
+	tree := Treap{k}
+	root := tree.GetRootKey(ctx)
 	k.RemoveTree(ctx) // safe while no errors are expected, otherwise think about a backup
 
-	tree := Treap{k}
 	for _, leaf := range proposal.GetLeaves() {
 		tree.Insert(ctx, leaf)
+	}
+
+	if root != tree.GetRootKey(ctx) {
+		params := k.GetParams(ctx)
+		params.RootUpdated = true
+		k.SetParams(ctx, params)
 	}
 
 	return nil

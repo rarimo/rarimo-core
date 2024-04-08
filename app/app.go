@@ -530,6 +530,7 @@ func New(
 		appCodec,
 		keys[cscalisttypes.StoreKey],
 		keys[cscalisttypes.MemStoreKey],
+		app.RarimocoreKeeper,
 	)
 	cscaListModule := cscalistmodule.NewAppModule(appCodec, app.CSCAListKeeper)
 

@@ -223,6 +223,12 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, fmt.Errorf("%w: failed to unmarshal details: %s", sdkerrors.ErrInvalidRequest, err.Error())
 		}
 		return pkg.GetWorldCoinIdentityTransferContent(transfer)
+	case types.OpType_CSCA_ROOT_UPDATE:
+		update, err := pkg.GetCSCARootUpdate(op)
+		if err != nil {
+			return nil, fmt.Errorf("%w: failed to unmarshal details: %s", sdkerrors.ErrInvalidRequest, err.Error())
+		}
+		return pkg.GetCSCARootUpdateContent(update)
 	default:
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid operation")
 	}
