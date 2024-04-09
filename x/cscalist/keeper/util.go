@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/rarimo/ldif-sdk/mt"
 )
 
 const emptyHex = "0x"
@@ -29,10 +29,11 @@ func hash(a, b string) string {
 	bb := mustDecodeHex(b)
 
 	if bytes.Compare(aa, bb) < 0 {
-		return hexutil.Encode(crypto.Keccak256(aa, bb))
+
+		return hexutil.Encode(mt.MustPoseidon(aa, bb).Bytes())
 	}
 
-	return hexutil.Encode(crypto.Keccak256(bb, aa))
+	return hexutil.Encode(mt.MustPoseidon(bb, aa).Bytes())
 }
 
 func mustDecodeHex(key string) []byte {
