@@ -140,7 +140,7 @@ Use cases:
 				return fmt.Errorf("marshal pem string array: %w", err)
 			}
 
-			tree, err := mt.BuildTree(string(raw))
+			tree, err := mt.BuildTree(raw)
 			if err != nil {
 				return fmt.Errorf("build Merkle tree: %w", err)
 			}

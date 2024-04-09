@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/rarimo/ldif-sdk/mt"
 )
 
 func less(a, b string) bool {
@@ -26,8 +26,9 @@ func hash(a, b string) string {
 	bb := hexutil.MustDecode(b)
 
 	if bytes.Compare(aa, bb) < 0 {
-		return hexutil.Encode(crypto.Keccak256(aa, bb))
+
+		return hexutil.Encode(mt.MustPoseidon(aa, bb).Bytes())
 	}
 
-	return hexutil.Encode(crypto.Keccak256(bb, aa))
+	return hexutil.Encode(mt.MustPoseidon(bb, aa).Bytes())
 }
