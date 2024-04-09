@@ -6,12 +6,9 @@ import (
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
-
-const EmptyHashStr = "0x"
 
 // Treap implements dynamic Merkle tree using treap data structure.
 // Proof of concept: https://github.com/olegfomenko/crypto/tree/master/go/dynamic-merkle
@@ -20,13 +17,13 @@ type Treap struct {
 }
 
 func (t Treap) Split(ctx sdk.Context, root, key string) (string, string) {
-	if root == EmptyHashStr {
-		return EmptyHashStr, EmptyHashStr
+	if isEmptyHex(root) {
+		return emptyHex, emptyHex
 	}
 
 	node, ok := t.GetNode(ctx, root)
 	if !ok {
-		return EmptyHashStr, EmptyHashStr
+		return emptyHex, emptyHex
 	}
 
 	if less(root, key) {
@@ -45,22 +42,22 @@ func (t Treap) Split(ctx sdk.Context, root, key string) (string, string) {
 }
 
 func (t Treap) Merge(ctx sdk.Context, r1, r2 string) string {
-	if r1 == EmptyHashStr {
+	if isEmptyHex(r1) {
 		return r2
 	}
 
-	if r2 == EmptyHashStr {
+	if isEmptyHex(r2) {
 		return r1
 	}
 
 	node1, ok := t.GetNode(ctx, r1)
 	if !ok {
-		return EmptyHashStr
+		return emptyHex
 	}
 
 	node2, ok := t.GetNode(ctx, r2)
 	if !ok {
-		return EmptyHashStr
+		return emptyHex
 	}
 
 	if node1.Priority > node2.Priority {
@@ -78,7 +75,7 @@ func (t Treap) Merge(ctx sdk.Context, r1, r2 string) string {
 
 func (t Treap) Remove(ctx sdk.Context, key string) {
 	root := t.GetRootKey(ctx)
-	if root == EmptyHashStr {
+	if isEmptyHex(root) {
 		return
 	}
 
@@ -99,7 +96,7 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 		}
 
 		if node.Left == key {
-			node.Left = EmptyHashStr
+			node.Left = emptyHex
 			t.RemoveNode(ctx, key)
 			t.updateNode(ctx, &node)
 			t.SetNode(ctx, node)
@@ -116,15 +113,15 @@ func (t Treap) Insert(ctx sdk.Context, key string) {
 	node := types.Node{
 		Key:          key,
 		Priority:     derivePriority(key),
-		Left:         EmptyHashStr,
-		Right:        EmptyHashStr,
-		ChildrenHash: EmptyHashStr,
+		Left:         emptyHex,
+		Right:        emptyHex,
+		ChildrenHash: emptyHex,
 		Hash:         key,
 	}
 	t.SetNode(ctx, node)
 
 	root := t.GetRootKey(ctx)
-	if root == EmptyHashStr {
+	if isEmptyHex(root) {
 		t.SetRootKey(ctx, node.Key)
 		return
 	}
@@ -138,7 +135,7 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 	current := t.GetRootKey(ctx)
 	result := make([]string, 0, 64)
 
-	for current != EmptyHashStr {
+	for !isEmptyHex(current) {
 		node, ok := t.GetNode(ctx, current)
 		if !ok {
 			return nil
@@ -174,7 +171,7 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 
 func (t Treap) updateNode(ctx sdk.Context, node *types.Node) {
 	node.ChildrenHash = t.merkleHashNodes(ctx, node.Left, node.Right)
-	if node.ChildrenHash == EmptyHashStr {
+	if isEmptyHex(node.ChildrenHash) {
 		node.Hash = node.Key
 		return
 	}
@@ -187,7 +184,7 @@ func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
 	r, okr := t.GetNode(ctx, right)
 
 	if !okl && !okr {
-		return EmptyHashStr
+		return emptyHex
 	}
 
 	if !okr {
@@ -209,7 +206,7 @@ func derivePriority(key string) uint64 {
 	}
 
 	var (
-		bytes  = hexutil.MustDecode(key)
+		bytes  = mustDecodeHex(key)
 		keccak = new(big.Int).SetBytes(crypto.Keccak256(bytes))
 		u64    = new(big.Int).SetUint64(math.MaxUint64)
 	)

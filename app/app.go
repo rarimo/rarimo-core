@@ -351,6 +351,7 @@ func New(
 		multisigmoduletypes.StoreKey, evmtypes.StoreKey, feemarkettypes.StoreKey,
 		vestingmintmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
+		cscalisttypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -774,6 +775,7 @@ func New(
 		multisigmoduletypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -807,6 +809,7 @@ func New(
 		vestingtypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -849,6 +852,7 @@ func New(
 		crisistypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)

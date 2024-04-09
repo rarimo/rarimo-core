@@ -56,7 +56,7 @@ func (k Keeper) MerkleProof(c context.Context, req *types.QueryGetMerkleProofReq
 	)
 
 	for i := len(path) - 1; i >= 0; i-- {
-		if path[i] != EmptyHashStr {
+		if !isEmptyHex(path[i]) {
 			resp.Proof = append(resp.Proof, path[i])
 		}
 	}
