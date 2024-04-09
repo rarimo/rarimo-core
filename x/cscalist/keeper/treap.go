@@ -14,7 +14,7 @@ import (
 const EmptyHashStr = "0x"
 
 // Treap implements dynamic Merkle tree using treap data structure.
-// Proof of concept: https://github.com/olegfomenko/go-treap-merkle
+// Proof of concept: https://github.com/olegfomenko/crypto/tree/master/go/dynamic-merkle
 type Treap struct {
 	Keeper
 }

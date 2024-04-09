@@ -1417,6 +1417,8 @@ github.com/rarimo/ldif-sdk v0.2.2-0.20240404150408-142e22c7ab94 h1:neI8isPtjpOuO
 github.com/rarimo/ldif-sdk v0.2.2-0.20240404150408-142e22c7ab94/go.mod h1:AH1yaYvkDHaZgnd3+zGWEy627Wnsl4b9QTXmUCiI7Uo=
 github.com/rarimo/ldif-sdk v0.2.2-0.20240405100554-d276b792de38 h1:58QP9eyZ4dhTicE2u9lCaGpa8vPBXOEo3UYZGsRACFg=
 github.com/rarimo/ldif-sdk v0.2.2-0.20240405100554-d276b792de38/go.mod h1:AH1yaYvkDHaZgnd3+zGWEy627Wnsl4b9QTXmUCiI7Uo=
+github.com/rarimo/ldif-sdk v0.3.0 h1:D85F0Oz9Mf3+vUkEzfApbjc2PdIFkPM9Wl7qRNrCBB8=
+github.com/rarimo/ldif-sdk v0.3.0/go.mod h1:1unZjdjwSbxBNot5CuG5+uMfgVXS/HaewZnGI/QUjl4=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 h1:N/ElC8H3+5XpJzTSTfLsJV/mx9Q9g7kxmchpfZyxgzM=
 github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
@@ -1853,6 +1855,8 @@ golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.1.0/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.6.0 h1:5BMeUDZ7vkXGfEr1x9B4bRcTH4lpkTkpdh0T/J+qjbQ=
 golang.org/x/sync v0.6.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
+golang.org/x/sync v0.7.0 h1:YsImfSBoP9QPYL0xyKJPq0gcaJdG3rInoqxTWbfQu9M=
+golang.org/x/sync v0.7.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
 golang.org/x/sys v0.0.0-20180823144017-11551d06cbcc/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180905080454-ebe1bf3edb33/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180909124046-d0be0721c37e/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=

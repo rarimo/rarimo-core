@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -47,9 +48,14 @@ automatically, see ldif-tree-diff)`,
 		SuggestionsMinimumDistance: 2,
 		Args:                       cobra.RangeArgs(1, 2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			pubKeys, err := ldif.LDIFToPubKeys(args[0])
+			data, err := ldif.FromFile(args[0])
 			if err != nil {
-				return fmt.Errorf("parse public keys from LDIF: %w", err)
+				return fmt.Errorf("parse LDIF from file: %w", err)
+			}
+
+			pubKeys, err := data.RawPubKeys()
+			if err != nil {
+				return fmt.Errorf("extract raw public keys: %w", err)
 			}
 			if len(pubKeys) == 0 {
 				return errors.New("no public keys found in file")
@@ -124,12 +130,17 @@ Use cases:
 		SuggestionsMinimumDistance: 2,
 		Args:                       cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			certs, err := ldif.LDIFToPEM(args[0])
+			data, err := ldif.FromFile(args[0])
 			if err != nil {
-				return fmt.Errorf("parse certificates as PEM from LDIF: %w", err)
+				return fmt.Errorf("parse LDIF from file: %w", err)
 			}
 
-			tree, err := mt.BuildTree(certs)
+			raw, err := json.Marshal(data.ToPem())
+			if err != nil {
+				return fmt.Errorf("marshal pem string array: %w", err)
+			}
+
+			tree, err := mt.BuildTree(string(raw))
 			if err != nil {
 				return fmt.Errorf("build Merkle tree: %w", err)
 			}
