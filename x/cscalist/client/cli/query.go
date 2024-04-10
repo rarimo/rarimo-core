@@ -3,7 +3,6 @@ package cli
 import (
 	"context"
 	"fmt"
-	"math"
 	"strconv"
 
 	// "strings"
@@ -19,7 +18,7 @@ import (
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
 
-const maxPageLimit = math.MaxUint64
+const maxPageLimit = 100000
 
 // GetQueryCmd returns the CLI query commands for this module
 func GetQueryCmd() *cobra.Command {

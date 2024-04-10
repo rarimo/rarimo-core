@@ -23,9 +23,16 @@ func (k Keeper) Tree(c context.Context, req *types.QueryTreeRequest) (*types.Que
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
+	optCap := req.Pagination.Limit
+	// prevent extreme memory usage on bigger numbers, while the storage shouldn't
+	// contain more than that
+	if optCap > 600 {
+		optCap = 600
+	}
+
 	var (
 		ctx   = sdk.UnwrapSDKContext(c)
-		nodes = make([]types.Node, 0, req.Pagination.Limit)
+		nodes = make([]types.Node, 0, optCap)
 		store = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
 	)
 
