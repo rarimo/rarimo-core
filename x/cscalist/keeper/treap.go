@@ -3,6 +3,7 @@ package keeper
 import (
 	"math"
 	"math/big"
+	"slices"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -143,6 +144,7 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 
 		if current == key {
 			result = append(result, node.ChildrenHash)
+			slices.Reverse(result)
 			return result
 		}
 
