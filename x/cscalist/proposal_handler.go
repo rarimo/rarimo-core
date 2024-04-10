@@ -10,6 +10,10 @@ import (
 
 func NewProposalHandler(k keeper.Keeper) govv1beta1.Handler {
 	return func(ctx sdk.Context, content govv1beta1.Content) error {
+		if err := content.ValidateBasic(); err != nil {
+			return err
+		}
+
 		switch c := content.(type) {
 		case *types.EditCSCAListProposal:
 			return k.EditCSCAListProposal(ctx, c)

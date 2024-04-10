@@ -18,9 +18,7 @@ func (k Keeper) GetNode(
 ) (val types.Node, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
 
-	b := store.Get(types.NodeKey(
-		key,
-	))
+	b := store.Get(types.NodeKey(key))
 	if b == nil {
 		return val, false
 	}

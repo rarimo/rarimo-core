@@ -1,11 +1,10 @@
 package types
 
 import (
-	"encoding/hex"
-
 	"cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 const (
@@ -35,7 +34,7 @@ func (m *EditCSCAListProposal) ValidateBasic() error {
 	}
 
 	for _, leaf := range leaves {
-		if _, err := hex.DecodeString(leaf); err != nil {
+		if _, err := hexutil.Decode(leaf); err != nil {
 			return errors.Wrapf(types.ErrInvalidProposalContent, "invalid hex string: %s", leaf)
 		}
 	}
@@ -53,7 +52,7 @@ func (m *ReplaceCSCAListProposal) ValidateBasic() error {
 	}
 
 	for _, leaf := range m.GetLeaves() {
-		if _, err := hex.DecodeString(leaf); err != nil {
+		if _, err := hexutil.Decode(leaf); err != nil {
 			return errors.Wrapf(types.ErrInvalidProposalContent, "invalid hex string: %s", leaf)
 		}
 	}

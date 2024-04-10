@@ -58,6 +58,9 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 
 func (k Keeper) GetRootKey(ctx sdk.Context) string {
 	params := k.GetParams(ctx)
+	if params.RootKey == "" {
+		return emptyHex
+	}
 	return params.RootKey
 }
 

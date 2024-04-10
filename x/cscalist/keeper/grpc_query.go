@@ -54,9 +54,9 @@ func (k Keeper) MerkleProof(c context.Context, req *types.QueryGetMerkleProofReq
 		path = Treap{k}.MerklePath(ctx, req.Leaf)
 		resp = &types.QueryGetMerkleProofResponse{Proof: make([]string, 0, len(path))}
 	)
-
+	// reverse path: go from leaves to root
 	for i := len(path) - 1; i >= 0; i-- {
-		if !isEmptyHex(path[i]) {
+		if path[i] != emptyHex {
 			resp.Proof = append(resp.Proof, path[i])
 		}
 	}
