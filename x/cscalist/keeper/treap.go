@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rarimo/ldif-sdk/mt"
+	"github.com/rarimo/ldif-sdk/utils"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
-	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 // Treap implements dynamic Merkle tree using treap data structure.
@@ -58,7 +58,7 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 	var (
 		keyBig       = new(big.Int).SetBytes(hexutil.MustDecode(key))
 		keySub1Big   = new(big.Int).Sub(keyBig, big.NewInt(1))
-		keySub1Bytes = operation.To32Bytes(keySub1Big.Bytes()) // padding is lost on conversion to big
+		keySub1Bytes = utils.To32Bytes(keySub1Big.Bytes()) // padding is lost on conversion to big
 		keySub1      = hexutil.Encode(keySub1Bytes)
 	)
 
@@ -161,7 +161,7 @@ func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
 func derivePriority(key string) uint64 {
 	var (
 		hex     = hexutil.MustDecode(key)
-		keyHash = new(big.Int).SetBytes(mt.MustPoseidon(hex).Bytes())
+		keyHash = new(big.Int).SetBytes(mt.MustPoseidon(hex))
 		u64     = new(big.Int).SetUint64(math.MaxUint64)
 	)
 

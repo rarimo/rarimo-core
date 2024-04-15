@@ -28,8 +28,8 @@ func hash(a, b string) string {
 	bb := hexutil.MustDecode(b)
 
 	if bytes.Compare(aa, bb) < 0 {
-		return hexutil.Encode(mt.MustPoseidon(aa, bb).Bytes())
+		return hexutil.Encode(mt.MustPoseidon(aa, bb))
 	}
 
-	return hexutil.Encode(mt.MustPoseidon(bb, aa).Bytes())
+	return hexutil.Encode(mt.MustPoseidon(bb, aa))
 }

@@ -2,14 +2,14 @@ package cli
 
 import (
 	"context"
-	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rarimo/ldif-sdk/ldif"
 	"github.com/rarimo/ldif-sdk/mt"
 	"github.com/rarimo/ldif-sdk/utils"
@@ -74,7 +74,7 @@ automatically, see ldif-tree-diff)`,
 			switch outputFormat {
 			case rawFormat:
 				for _, pk := range pubKeys {
-					if _, err = fmt.Fprintln(dst, hex.EncodeToString(pk)); err != nil {
+					if _, err = fmt.Fprintln(dst, hexutil.Encode(pk)); err != nil {
 						return fmt.Errorf("write to destination: %w", err)
 					}
 				}
@@ -85,7 +85,7 @@ automatically, see ldif-tree-diff)`,
 					if err != nil {
 						return fmt.Errorf("hash public key: %w", err)
 					}
-					if _, err = fmt.Fprintln(dst, hash.Text(16)); err != nil {
+					if _, err = fmt.Fprintln(dst, hexutil.Encode(hash)); err != nil {
 						return fmt.Errorf("write to destination: %w", err)
 					}
 				}
@@ -135,27 +135,29 @@ Use cases:
 				return fmt.Errorf("parse LDIF from file: %w", err)
 			}
 
-			raw, err := json.Marshal(data.ToPem())
+			pubKeys, err := data.RawPubKeys()
 			if err != nil {
-				return fmt.Errorf("marshal pem string array: %w", err)
+				return fmt.Errorf("extract raw public keys: %w", err)
+			}
+			sPubKeys := make([]string, len(pubKeys))
+			for i, pk := range pubKeys {
+				sPubKeys[i] = string(pk)
 			}
 
-			tree, err := mt.BuildTree(raw)
+			tree, err := mt.BuildFromRaw(sPubKeys)
 			if err != nil {
 				return fmt.Errorf("build Merkle tree: %w", err)
 			}
 
 			cliCtx := client.GetClientContextFromCmd(cmd)
 			cli := types.NewQueryClient(cliCtx)
-
-			params, err := cli.Params(context.Background(), &types.QueryParamsRequest{})
+			root, err := getRootNode(cli)
 			if err != nil {
-				return fmt.Errorf("query params: %w", err)
+				return fmt.Errorf("get root node: %w", err)
 			}
 
-			// TODO @violog use a different tree implementation, or adjust this tree to a treap
-			if tree.Root() != params.Params.RootKey {
-				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", tree.Root(), params.Params.RootKey)
+			if tree.Root() != root.Hash {
+				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", tree.Root(), root.Hash)
 				return nil
 			}
 
@@ -166,4 +168,27 @@ Use cases:
 
 	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
+}
+
+func getRootNode(cli types.QueryClient) (*types.Node, error) {
+	params, err := cli.Params(context.Background(), &types.QueryParamsRequest{})
+	if err != nil {
+		return nil, fmt.Errorf("query params: %w", err)
+	}
+
+	resp, err := cli.Tree(context.Background(), &types.QueryTreeRequest{
+		Pagination: &query.PageRequest{
+			Key:   []byte(params.Params.RootKey),
+			Limit: 1,
+		},
+	})
+	if err != nil {
+		return nil, fmt.Errorf("query tree: %w", err)
+	}
+
+	if len(resp.Tree) == 0 {
+		return nil, errors.New("root node not found")
+	}
+
+	return &resp.Tree[0], nil
 }
