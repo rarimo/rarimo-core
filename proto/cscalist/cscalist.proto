@@ -6,12 +6,6 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
 
 message Params {
-  // Linear congruential generator params
-  // https://en.wikipedia.org/wiki/Linear_congruential_generator
-  uint64 lcgA = 1;
-  uint64 lcgB = 2;
-  uint64 lcgMod = 3;
-  uint64 lcgValue = 4;
   // RootKey is the key of the current root node
   string rootKey = 5;
   // RootUpdated is true when the root node was updated in Rarimo, but not in Chain
