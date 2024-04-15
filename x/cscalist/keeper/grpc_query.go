@@ -33,7 +33,7 @@ func (k Keeper) Tree(c context.Context, req *types.QueryTreeRequest) (*types.Que
 	var (
 		ctx   = sdk.UnwrapSDKContext(c)
 		nodes = make([]types.Node, 0, optCap)
-		store = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
+		store = prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
 	)
 
 	pageRes, err := query.Paginate(store, req.Pagination, func(key []byte, value []byte) error {

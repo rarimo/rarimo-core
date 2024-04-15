@@ -7,18 +7,15 @@ import (
 )
 
 func (k Keeper) SetNode(ctx sdk.Context, n types.Node) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
 	b := k.cdc.MustMarshal(&n)
-	store.Set(types.NodeKey(n.Key), b)
+	store.Set([]byte(n.Key), b)
 }
 
-func (k Keeper) GetNode(
-	ctx sdk.Context,
-	key string,
-) (val types.Node, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
+func (k Keeper) GetNode(ctx sdk.Context, key string) (val types.Node, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
 
-	b := store.Get(types.NodeKey(key))
+	b := store.Get([]byte(key))
 	if b == nil {
 		return val, false
 	}
@@ -28,21 +25,34 @@ func (k Keeper) GetNode(
 }
 
 func (k Keeper) RemoveNode(ctx sdk.Context, key string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
-	store.Delete(types.NodeKey(key))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
+	store.Delete([]byte(key))
 }
 
-// RemoveTree removes all nodes along with NodeKeyPrefix from the store
+// RemoveTree removes all nodes iteratively from the store. It should be done
+// with dropping just NodeKeyPrefix content, but requires deep research of Cosmos
+// SDK store.
 func (k Keeper) RemoveTree(ctx sdk.Context) {
-	ctx.KVStore(k.storeKey).Delete(types.NodeKey(types.NodeKeyPrefix))
+	var (
+		store = prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
+		it    = sdk.KVStorePrefixIterator(store, nil)
+	)
+
+	defer func() { _ = it.Close() }()
+
+	for ; it.Valid(); it.Next() {
+		store.Delete(it.Key())
+	}
+
+	k.SetRootKey(ctx, emptyHex)
 }
 
 func (k Keeper) GetAllNode(ctx sdk.Context) []types.Node {
-	const optCap = 64 // we definitely have more than 50 certificates now
+	const optCap = 382 // current number of certificates
 	var (
 		tree  = make([]types.Node, 0, optCap)
-		store = prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NodeKeyPrefix))
-		it    = sdk.KVStorePrefixIterator(store, []byte{})
+		store = prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.NodeKeyPrefix))
+		it    = sdk.KVStorePrefixIterator(store, nil)
 	)
 
 	defer func() { _ = it.Close() }()

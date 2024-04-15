@@ -29,16 +29,9 @@ func (m *EditCSCAListProposal) ProposalType() string { return ProposalTypeEditCS
 
 func (m *EditCSCAListProposal) ValidateBasic() error {
 	leaves := append(m.GetToAdd(), m.GetToRemove()...)
-	if len(leaves) == 0 {
-		return errors.Wrap(types.ErrInvalidProposalContent, "nothing to add or remove")
+	if err := validateInputLeaves(leaves); err != nil {
+		return err
 	}
-
-	for _, leaf := range leaves {
-		if _, err := hexutil.Decode(leaf); err != nil {
-			return errors.Wrapf(types.ErrInvalidProposalContent, "invalid hex string: %s", leaf)
-		}
-	}
-
 	return govv1beta1.ValidateAbstract(m)
 }
 
@@ -47,15 +40,27 @@ func (m *ReplaceCSCAListProposal) ProposalRoute() string { return RouterKey }
 func (m *ReplaceCSCAListProposal) ProposalType() string { return ProposalTypeReplaceCSCAList }
 
 func (m *ReplaceCSCAListProposal) ValidateBasic() error {
-	if len(m.GetLeaves()) == 0 {
-		return errors.Wrap(types.ErrInvalidProposalContent, "empty leaves")
+	if err := validateInputLeaves(m.GetLeaves()); err != nil {
+		return err
+	}
+	return govv1beta1.ValidateAbstract(m)
+}
+
+func validateInputLeaves(leaves []string) error {
+	if len(leaves) == 0 {
+		return errors.Wrap(types.ErrInvalidProposalContent, "no leaves provided")
 	}
 
-	for _, leaf := range m.GetLeaves() {
+	unique := make(map[string]struct{}, len(leaves))
+	for _, leaf := range leaves {
 		if _, err := hexutil.Decode(leaf); err != nil {
 			return errors.Wrapf(types.ErrInvalidProposalContent, "invalid hex string: %s", leaf)
 		}
+
+		if _, ok := unique[leaf]; ok {
+			return errors.Wrapf(types.ErrInvalidProposalContent, "duplicate leaf: %s", leaf)
+		}
 	}
 
-	return govv1beta1.ValidateAbstract(m)
+	return nil
 }

@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
 
@@ -13,6 +15,10 @@ func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCALi
 		tree.Remove(ctx, leaf)
 	}
 	for _, leaf := range proposal.GetToAdd() {
+		_, ok := k.GetNode(ctx, leaf)
+		if ok {
+			return errors.Wrapf(govtypes.ErrInvalidProposalContent, "node already exists")
+		}
 		tree.Insert(ctx, leaf)
 	}
 

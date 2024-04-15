@@ -9,17 +9,26 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rarimo/ldif-sdk/mt"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
+	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 )
 
 // Treap implements dynamic Merkle tree using treap data structure.
 // Proof of concept: https://github.com/olegfomenko/crypto/tree/master/go/dynamic-merkle
 type Treap struct {
-	k Keeper
+	store treapStore
+}
+
+type treapStore interface {
+	GetRootKey(ctx sdk.Context) string
+	SetRootKey(ctx sdk.Context, key string)
+	GetNode(ctx sdk.Context, node string) (types.Node, bool)
+	SetNode(ctx sdk.Context, node types.Node)
+	RemoveNode(ctx sdk.Context, node string)
 }
 
 // Insert adds key to the treap. Key must be hex string with 0x prefix.
 func (t Treap) Insert(ctx sdk.Context, key string) {
-	node := types.Node{
+	middle := types.Node{
 		Key:          key,
 		Priority:     derivePriority(key),
 		Left:         emptyHex,
@@ -27,64 +36,53 @@ func (t Treap) Insert(ctx sdk.Context, key string) {
 		Hash:         key,
 		ChildrenHash: emptyHex,
 	}
-	t.k.SetNode(ctx, node)
+	t.store.SetNode(ctx, middle)
 
-	root := t.k.GetRootKey(ctx)
-	if root != emptyHex {
-		t.k.SetRootKey(ctx, node.Key)
+	root := t.store.GetRootKey(ctx)
+	if root == emptyHex {
+		t.store.SetRootKey(ctx, middle.Key)
 		return
 	}
 
-	r1, r2 := t.split(ctx, root, key)
-	r1 = t.merge(ctx, r1, key)
-	t.k.SetRootKey(ctx, t.merge(ctx, r1, r2))
+	left, right := t.split(ctx, root, key)
+	left = t.merge(ctx, left, key)
+	t.store.SetRootKey(ctx, t.merge(ctx, left, right))
 }
 
 // Remove removes key from the treap. Key must be hex string with 0x prefix.
 func (t Treap) Remove(ctx sdk.Context, key string) {
-	root := t.k.GetRootKey(ctx)
+	root := t.store.GetRootKey(ctx)
 	if root == emptyHex {
 		return
 	}
 
-	r1, r2 := t.split(ctx, root, key)
+	var (
+		keyBig       = new(big.Int).SetBytes(hexutil.MustDecode(key))
+		keySub1Big   = new(big.Int).Sub(keyBig, big.NewInt(1))
+		keySub1Bytes = operation.To32Bytes(keySub1Big.Bytes()) // padding is lost on conversion to big
+		keySub1      = hexutil.Encode(keySub1Bytes)
+	)
 
-	if r2 == key {
-		node, _ := t.k.GetNode(ctx, r2)
-		t.k.RemoveNode(ctx, r2)
-		t.k.SetRootKey(ctx, t.merge(ctx, r1, node.Right))
+	// Split the tree by key-1 => target key in the right subtree
+	left, right := t.split(ctx, root, keySub1)
+	if right == emptyHex {
 		return
 	}
 
-	root = r2
-	for {
-		node, ok := t.k.GetNode(ctx, root)
-		if !ok {
-			return
-		}
-
-		if node.Left == key {
-			node.Left = emptyHex
-			t.k.RemoveNode(ctx, key)
-			t.updateNode(ctx, &node)
-			t.k.SetNode(ctx, node)
-			break
-		}
-
-		root = node.Left
-	}
-
-	t.k.SetRootKey(ctx, t.merge(ctx, r1, r2))
+	// Split the subtree by key => target key is one left node (middle)
+	middle, right := t.split(ctx, right, key)
+	t.store.RemoveNode(ctx, middle)
+	t.store.SetRootKey(ctx, t.merge(ctx, left, right))
 }
 
 // MerklePath provides a Merkle path with Node.MerkleHash sibling values.
 // Key must be hex string with 0x prefix.
 func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
-	current := t.k.GetRootKey(ctx)
+	current := t.store.GetRootKey(ctx)
 	result := make([]string, 0, 64)
 
 	for current != emptyHex {
-		node, ok := t.k.GetNode(ctx, current)
+		node, ok := t.store.GetNode(ctx, current)
 		if !ok {
 			return nil
 		}
@@ -96,8 +94,7 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 		}
 
 		if less(current, key) {
-			result = append(result, current)
-			left, ok := t.k.GetNode(ctx, node.Left)
+			left, ok := t.store.GetNode(ctx, node.Left)
 			if ok {
 				result = append(result, left.Hash)
 			}
@@ -106,8 +103,7 @@ func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
 			continue
 		}
 
-		result = append(result, current)
-		right, ok := t.k.GetNode(ctx, node.Right)
+		right, ok := t.store.GetNode(ctx, node.Right)
 		if ok {
 			result = append(result, right.Hash)
 		}
@@ -123,71 +119,68 @@ func (t Treap) split(ctx sdk.Context, root, key string) (string, string) {
 		return emptyHex, emptyHex
 	}
 
-	node, ok := t.k.GetNode(ctx, root)
+	node, ok := t.store.GetNode(ctx, root)
 	if !ok {
 		return emptyHex, emptyHex
 	}
 
-	if less(root, key) {
-		r1, r2 := t.split(ctx, node.Right, key)
-		node.Right = r1
+	// Removal implementation relies on 'root <= key'
+	if less(root, key) || root == key {
+		left, right := t.split(ctx, node.Right, key)
+		node.Right = left
 		t.updateNode(ctx, &node)
-		t.k.SetNode(ctx, node)
-		return root, r2
+		return root, right
 	}
 
-	r1, r2 := t.split(ctx, node.Left, key)
-	node.Left = r2
+	left, right := t.split(ctx, node.Left, key)
+	node.Left = right
 	t.updateNode(ctx, &node)
-	t.k.SetNode(ctx, node)
-	return r1, root
+	return left, root
 }
 
-func (t Treap) merge(ctx sdk.Context, r1, r2 string) string {
-	if r1 == emptyHex {
-		return r2
+func (t Treap) merge(ctx sdk.Context, left, right string) string {
+	if left == emptyHex {
+		return right
 	}
 
-	if r2 == emptyHex {
-		return r1
+	if right == emptyHex {
+		return left
 	}
 
-	node1, ok := t.k.GetNode(ctx, r1)
+	node1, ok := t.store.GetNode(ctx, left)
 	if !ok {
 		return emptyHex
 	}
 
-	node2, ok := t.k.GetNode(ctx, r2)
+	node2, ok := t.store.GetNode(ctx, right)
 	if !ok {
 		return emptyHex
 	}
 
 	if node1.Priority > node2.Priority {
-		node1.Right = t.merge(ctx, node1.Right, r2)
+		node1.Right = t.merge(ctx, node1.Right, right)
 		t.updateNode(ctx, &node1)
-		t.k.SetNode(ctx, node1)
-		return r1
+		return left
 	}
 
-	node2.Left = t.merge(ctx, r1, node2.Left)
+	node2.Left = t.merge(ctx, left, node2.Left)
 	t.updateNode(ctx, &node2)
-	t.k.SetNode(ctx, node2)
-	return r2
+	return right
 }
 
 func (t Treap) updateNode(ctx sdk.Context, node *types.Node) {
 	node.ChildrenHash = t.merkleHashNodes(ctx, node.Left, node.Right)
-	if node.ChildrenHash == emptyHex {
-		node.Hash = node.Key
-		return
+	node.Hash = node.Key
+	if node.ChildrenHash != emptyHex {
+		node.Hash = hash(node.ChildrenHash, node.Key)
 	}
 
-	node.Hash = hash(node.ChildrenHash, node.Key)
+	t.store.SetNode(ctx, *node)
 }
 
 func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
-	l, okl := t.k.GetNode(ctx, left)
-	r, okr := t.k.GetNode(ctx, right)
+	l, okl := t.store.GetNode(ctx, left)
+	r, okr := t.store.GetNode(ctx, right)
 
 	if !okl && !okr {
 		return emptyHex

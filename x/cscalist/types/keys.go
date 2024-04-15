@@ -11,8 +11,6 @@ const (
 	MemStoreKey = "mem_cscalist"
 	// ParamsKey defines the store key for module params entry
 	ParamsKey = "params"
+	// NodeKeyPrefix defines the prefix for the Merkle tree's node entry
+	NodeKeyPrefix = "Node/value/"
 )
-
-func KeyPrefix(p string) []byte {
-	return []byte(p)
-}
