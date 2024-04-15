@@ -3,7 +3,6 @@ package keeper
 import (
 	"math"
 	"math/big"
-	"slices"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -73,45 +72,6 @@ func (t Treap) Remove(ctx sdk.Context, key string) {
 	middle, right := t.split(ctx, right, key)
 	t.store.RemoveNode(ctx, middle)
 	t.store.SetRootKey(ctx, t.merge(ctx, left, right))
-}
-
-// MerklePath provides a Merkle path with Node.MerkleHash sibling values.
-// Key must be hex string with 0x prefix.
-func (t Treap) MerklePath(ctx sdk.Context, key string) []string {
-	current := t.store.GetRootKey(ctx)
-	result := make([]string, 0, 64)
-
-	for current != emptyHex {
-		node, ok := t.store.GetNode(ctx, current)
-		if !ok {
-			return nil
-		}
-
-		if current == key {
-			result = append(result, node.ChildrenHash)
-			slices.Reverse(result)
-			return result
-		}
-
-		if less(current, key) {
-			left, ok := t.store.GetNode(ctx, node.Left)
-			if ok {
-				result = append(result, left.Hash)
-			}
-
-			current = node.Right
-			continue
-		}
-
-		right, ok := t.store.GetNode(ctx, node.Right)
-		if ok {
-			result = append(result, right.Hash)
-		}
-
-		current = node.Left
-	}
-
-	return nil
 }
 
 func (t Treap) split(ctx sdk.Context, root, key string) (string, string) {

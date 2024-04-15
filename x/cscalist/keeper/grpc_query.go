@@ -50,23 +50,3 @@ func (k Keeper) Tree(c context.Context, req *types.QueryTreeRequest) (*types.Que
 
 	return &types.QueryTreeResponse{Tree: nodes, Pagination: pageRes}, nil
 }
-
-func (k Keeper) MerkleProof(c context.Context, req *types.QueryGetMerkleProofRequest) (*types.QueryGetMerkleProofResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
-	}
-
-	var (
-		ctx  = sdk.UnwrapSDKContext(c)
-		path = Treap{k}.MerklePath(ctx, req.Leaf)
-		resp = &types.QueryGetMerkleProofResponse{Proof: make([]string, 0, len(path))}
-	)
-	// reverse path: go from leaves to root
-	for i := len(path) - 1; i >= 0; i-- {
-		if path[i] != emptyHex {
-			resp.Proof = append(resp.Proof, path[i])
-		}
-	}
-
-	return resp, nil
-}

@@ -16,10 +16,6 @@ service Query {
   rpc Tree(QueryTreeRequest) returns (QueryTreeResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/cscalist/tree";
   };
-
-  rpc MerkleProof(QueryGetMerkleProofRequest) returns (QueryGetMerkleProofResponse) {
-    option (google.api.http).get = "/rarimo/rarimo-core/cscalist/proof";
-  };
 }
 
 message QueryParamsRequest {}
@@ -35,13 +31,4 @@ message QueryTreeRequest {
 message QueryTreeResponse {
   repeated Node tree = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetMerkleProofRequest {
-  // Leaf is a hash value of the leaf node in the tree
-  string leaf = 1;
-}
-
-message QueryGetMerkleProofResponse {
-  repeated string proof = 1 [(gogoproto.nullable) = false];
 }
