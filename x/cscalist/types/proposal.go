@@ -60,6 +60,7 @@ func validateInputLeaves(leaves []string) error {
 		if _, ok := unique[leaf]; ok {
 			return errors.Wrapf(types.ErrInvalidProposalContent, "duplicate leaf: %s", leaf)
 		}
+		unique[leaf] = struct{}{}
 	}
 
 	return nil
