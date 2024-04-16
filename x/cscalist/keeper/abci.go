@@ -13,7 +13,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 	}
 
 	// Creating operation to be signed by TSS parties
-	err := k.rarimo.CreateCSCARootUpdateOperation(ctx, types.ModuleName, &rarimo.CSCARootUpdate{
+	index, err := k.rarimo.CreateCSCARootUpdateOperation(ctx, types.ModuleName, &rarimo.CSCARootUpdate{
 		Root:      params.RootKey,
 		Timestamp: uint64(ctx.BlockTime().Unix()),
 	})
@@ -23,5 +23,6 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 	}
 
 	params.RootUpdated = false
+	params.LastUpdateOperationIndex = index
 	k.SetParams(ctx, params)
 }

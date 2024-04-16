@@ -6,5 +6,5 @@ import (
 )
 
 type RarimocoreKeeper interface {
-	CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *rarimo.CSCARootUpdate) error
+	CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *rarimo.CSCARootUpdate) (string, error)
 }

@@ -25,6 +25,7 @@ func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCALi
 	if root != k.GetRootKey(ctx) {
 		params := k.GetParams(ctx)
 		params.RootUpdated = true
+		params.UpdatedAtBlock = uint64(ctx.BlockHeight())
 		k.SetParams(ctx, params)
 	}
 
@@ -43,6 +44,7 @@ func (k Keeper) ReplaceCSCAListProposal(ctx sdk.Context, proposal *types.Replace
 	if root != k.GetRootKey(ctx) {
 		params := k.GetParams(ctx)
 		params.RootUpdated = true
+		params.UpdatedAtBlock = uint64(ctx.BlockHeight())
 		k.SetParams(ctx, params)
 	}
 

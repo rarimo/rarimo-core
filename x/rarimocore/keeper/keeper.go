@@ -500,15 +500,15 @@ func (k Keeper) CreateWorldCoinIdentityTransferOperation(ctx sdk.Context, creato
 	return nil
 }
 
-func (k Keeper) CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *types.CSCARootUpdate) error {
+func (k Keeper) CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *types.CSCARootUpdate) (string, error) {
 	details, err := cosmostypes.NewAnyWithValue(update)
 	if err != nil {
-		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
+		return "", errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
 	}
 
 	content, err := pkg.GetCSCARootUpdateContent(update)
 	if err != nil {
-		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
+		return "", errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
 	}
 
 	operation := types.Operation{
@@ -521,7 +521,7 @@ func (k Keeper) CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, u
 	}
 
 	if _, ok := k.GetOperation(ctx, operation.Index); ok {
-		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "that operation can not be changed")
+		return "", errors.Wrapf(sdkerrors.ErrInvalidRequest, "that operation can not be changed")
 	}
 	k.SetOperation(ctx, operation)
 
@@ -532,10 +532,10 @@ func (k Keeper) CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, u
 
 	// Operation is auto-approved (cause created by EndBlock)
 	if err = k.ApproveOperation(ctx, operation); err != nil {
-		return errors.Wrap(err, "failed to auto-approve operation")
+		return "", errors.Wrap(err, "failed to auto-approve operation")
 	}
 
-	return nil
+	return operation.Index, nil
 }
 
 func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferOp) (*types.Transfer, error) {

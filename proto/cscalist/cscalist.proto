@@ -7,9 +7,13 @@ option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
 
 message Params {
   // RootKey is the key of the current root node
-  string rootKey = 5;
+  string rootKey = 1;
   // RootUpdated is true when the root node was updated in Rarimo, but not in Chain
-  bool rootUpdated = 6;
+  bool rootUpdated = 2;
+  // UpdatedAtBlock is the block number of the last root update
+  uint64 updatedAtBlock = 3;
+  // LastUpdateOperationIndex is index of last root update operation
+  string lastUpdateOperationIndex = 4;
 }
 
 message Node {
