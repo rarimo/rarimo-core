@@ -11,10 +11,10 @@ func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCALi
 	tree := Treap{k}
 	root := k.GetRootKey(ctx)
 
-	for _, leaf := range proposal.GetToRemove() {
+	for _, leaf := range proposal.ToRemove {
 		tree.Remove(ctx, leaf)
 	}
-	for _, leaf := range proposal.GetToAdd() {
+	for _, leaf := range proposal.ToAdd {
 		_, ok := k.GetNode(ctx, leaf)
 		if ok {
 			return errors.Wrapf(govtypes.ErrInvalidProposalContent, "node already exists")
@@ -36,7 +36,7 @@ func (k Keeper) ReplaceCSCAListProposal(ctx sdk.Context, proposal *types.Replace
 	root := k.GetRootKey(ctx)
 	k.RemoveTree(ctx) // safe while no errors are expected, otherwise think about a backup
 
-	for _, leaf := range proposal.GetLeaves() {
+	for _, leaf := range proposal.Leaves {
 		tree.Insert(ctx, leaf)
 	}
 
