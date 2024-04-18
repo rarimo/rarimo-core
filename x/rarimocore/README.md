@@ -39,6 +39,7 @@ In such case operation can be already approved.
 - Identity GIST transfer: `HASH(source contract, id, GIST hash, GIST timestamps, replaced GIST hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
 - WorldCoin identity transfer: `HASH(source contract, old state, new state, timestamp)`
+- CSCA root update: `HASH(hashPrefix, root, timestamp)`, where `hashPrefix="Rarimo CSCA root"`
 
 To add new operation check the following [manual](../../docs/common/core/001-adding-operation.md).
 
@@ -391,6 +392,19 @@ Also, use
 - `CreateUpdateFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error`
 - `CreateRemoveFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error`
 - `CreateAddFeeTokenOperation(ctx sdk.Context, token tokentypes.FeeToken, chain string, nonce string) error`
+
+### CreateCSCARootUpdateOperation
+
+**CreateCSCARootUpdateOperation** - used by `cscalist` module to create CSCA root update operation after proposal pass
+
+Definition: 
+`CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *rarimo.CSCARootUpdate) (string, error)`
+
+Flow:
+- Create proposal to replace/edit CSCA list (see [x/cscalist/README.md](../cscalist/README.md))
+- When proposal is accepted, root key is updated
+- On the end block operation with **Merkle root** is created
+- Operation is auto-approved
 
 ----
 
