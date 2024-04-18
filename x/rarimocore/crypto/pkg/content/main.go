@@ -100,6 +100,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_CSCA_ROOT_UPDATE:
+			content, err := GetCSCARootUpdateContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		default:
 			return nil, ErrUnsupportedContent
 		}
@@ -230,5 +239,15 @@ func GetWorldCoinIdentityTransferContent(op *types.Operation) (merkle.Content, e
 	}
 
 	content, err := pkg.GetWorldCoinIdentityTransferContent(transfer)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetCSCARootUpdateContent(op *types.Operation) (merkle.Content, error) {
+	update, err := pkg.GetCSCARootUpdate(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetCSCARootUpdateContent(update)
 	return content, errors.Wrap(err, "error creating content")
 }

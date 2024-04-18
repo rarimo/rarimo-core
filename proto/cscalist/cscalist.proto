@@ -1,0 +1,32 @@
+syntax = "proto3";
+package rarimo.rarimocore.cscalist;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
+
+message Params {
+  // RootKey is the key of the current root node
+  string rootKey = 1;
+  // RootUpdated is true when the root node was updated in Rarimo, but not in Chain
+  bool rootUpdated = 2;
+  // UpdatedAtBlock is the block number of the last root update
+  uint64 updatedAtBlock = 3;
+  // LastUpdateOperationIndex is index of last root update operation
+  string lastUpdateOperationIndex = 4;
+}
+
+message Node {
+  // Node self key
+  string key = 1;
+  // Node priority (should be random)
+  uint64 priority = 2;
+  // Node left son key
+  string left = 4;
+  // Node right son key
+  string right = 5;
+  // Merkle hash. H = Hash(Hash(left_key|right_key)|self_key)
+  string hash = 6;
+  // Hash(left_key|right_key)
+  string childrenHash = 7;
+}
