@@ -12,9 +12,15 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		return
 	}
 
+	root, ok := k.GetNode(ctx, params.RootKey)
+	if !ok {
+		k.Logger(ctx).Error("Root node not found: ", params.RootKey)
+		return
+	}
+
 	// Creating operation to be signed by TSS parties
 	index, err := k.rarimo.CreateCSCARootUpdateOperation(ctx, types.ModuleName, &rarimo.CSCARootUpdate{
-		Root:      params.RootKey,
+		Root:      root.Hash,
 		Timestamp: uint64(ctx.BlockTime().Unix()),
 	})
 	if err != nil {
