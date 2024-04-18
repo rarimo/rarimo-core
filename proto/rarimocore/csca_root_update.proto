@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message CSCARootUpdate {
+  // Root is new root. Hex 0x uint256
+  string root = 1;
+  // Timestamp is the moment of accepting proposal of CSCA list edit/replacement
+  uint64 timestamp = 2;
+}
