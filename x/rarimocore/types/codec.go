@@ -26,6 +26,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&IdentityGISTTransfer{}, "rarimocore/IdentityGISTTransfer", nil)
 	cdc.RegisterConcrete(&IdentityStateTransfer{}, "rarimocore/IdentityStateTransfer", nil)
 	cdc.RegisterConcrete(&WorldCoinIdentityTransfer{}, "rarimocore/WorldCoinIdentityTransfer", nil)
+	cdc.RegisterConcrete(&CSCARootUpdate{}, "rarimocore/CSCARootUpdate", nil)
 	cdc.RegisterConcrete(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal", nil)
 	cdc.RegisterConcrete(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal", nil)
 	cdc.RegisterConcrete(&SlashProposal{}, "rarimocore/SlashProposal", nil)
@@ -124,6 +125,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		"rarimo.rarimocore.rarimocore.WorldCoinIdentityTransfer",
 		(*proto.Message)(nil),
 		&WorldCoinIdentityTransfer{},
+	)
+
+	registry.RegisterInterface(
+		"rarimo.rarimocore.rarimocore.CSCARootUpdate",
+		(*proto.Message)(nil),
+		&CSCARootUpdate{},
 	)
 
 	registry.RegisterInterface(
