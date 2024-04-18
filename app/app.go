@@ -1023,14 +1023,14 @@ func New(
 		},
 	)
 
-	if upgradeInfo.Name == "v1.1.1-rc0" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	if upgradeInfo.Name == "v1.1.1-rc1" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
 			Added: []string{cscalisttypes.ModuleName},
 		}))
 	}
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v1.1.1-rc0",
+		"v1.1.1-rc1",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		},
