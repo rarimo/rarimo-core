@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine as buildbase
+FROM golang:1.20-alpine as buildbase
 
 WORKDIR /go/src/github.com/rarimo/rarimo-core
 COPY vendor .
