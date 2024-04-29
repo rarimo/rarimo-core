@@ -8,8 +8,11 @@ import (
 )
 
 func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCAListProposal) error {
-	tree := Treap{k}
-	root := k.GetRootKey(ctx)
+	var (
+		tree       = Treap{k}
+		oldRootKey = k.GetRootKey(ctx)
+		oldRoot, _ = k.GetNode(ctx, oldRootKey)
+	)
 
 	for _, leaf := range proposal.ToRemove {
 		tree.Remove(ctx, leaf)
@@ -22,31 +25,34 @@ func (k Keeper) EditCSCAListProposal(ctx sdk.Context, proposal *types.EditCSCALi
 		tree.Insert(ctx, leaf)
 	}
 
-	if root != k.GetRootKey(ctx) {
-		params := k.GetParams(ctx)
-		params.RootUpdated = true
-		params.UpdatedAtBlock = uint64(ctx.BlockHeight())
-		k.SetParams(ctx, params)
-	}
-
+	k.updateParamsOnNeed(ctx, oldRoot)
 	return nil
 }
 
 func (k Keeper) ReplaceCSCAListProposal(ctx sdk.Context, proposal *types.ReplaceCSCAListProposal) error {
-	tree := Treap{k}
-	root := k.GetRootKey(ctx)
+	var (
+		tree       = Treap{k}
+		oldRootKey = k.GetRootKey(ctx)
+		oldRoot, _ = k.GetNode(ctx, oldRootKey)
+	)
 	k.RemoveTree(ctx) // safe while no errors are expected, otherwise think about a backup
 
 	for _, leaf := range proposal.Leaves {
 		tree.Insert(ctx, leaf)
 	}
 
-	if root != k.GetRootKey(ctx) {
+	k.updateParamsOnNeed(ctx, oldRoot)
+	return nil
+}
+
+func (k Keeper) updateParamsOnNeed(ctx sdk.Context, oldRoot types.Node) {
+	newRootKey := k.GetRootKey(ctx)
+	newRoot, _ := k.GetNode(ctx, newRootKey)
+
+	if oldRoot.Hash != newRoot.Hash {
 		params := k.GetParams(ctx)
 		params.RootUpdated = true
 		params.UpdatedAtBlock = uint64(ctx.BlockHeight())
 		k.SetParams(ctx, params)
 	}
-
-	return nil
 }
