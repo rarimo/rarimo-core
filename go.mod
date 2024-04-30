@@ -26,7 +26,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rakyll/statik v0.1.7
 	github.com/rarimo/go-merkle v0.0.0-20231004122345-36fa49031c66
-	github.com/rarimo/ldif-sdk v0.4.3-0.20240418104626-798f3cb9706d
+	github.com/rarimo/ldif-sdk v0.4.5-rc.3
 	github.com/rs/cors v1.10.1
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
