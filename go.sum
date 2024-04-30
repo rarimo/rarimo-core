@@ -1414,8 +1414,8 @@ github.com/rarimo/cosmos-sdk v0.46.7 h1:jU2PiWzc+19SF02cXM0O0puKPeH1C6Q6t2lzJ9s1
 github.com/rarimo/cosmos-sdk v0.46.7/go.mod h1:fqKqz39U5IlEFb4nbQ72951myztsDzFKKDtffYJ63nk=
 github.com/rarimo/go-merkle v0.0.0-20231004122345-36fa49031c66 h1:1KAU4rfWWJwAJ/kencagL3k5BXN3HhP004QNkEUgvDE=
 github.com/rarimo/go-merkle v0.0.0-20231004122345-36fa49031c66/go.mod h1:5Pt9Lk8w7fWhyRO/NMb5x8DRhF2lESRVPT5uOlezInQ=
-github.com/rarimo/ldif-sdk v0.4.3-0.20240418104626-798f3cb9706d h1:/WbhRQ86BNR9tVe3PwUB+cSVaDh/YXnmwqqDZJxY2jo=
-github.com/rarimo/ldif-sdk v0.4.3-0.20240418104626-798f3cb9706d/go.mod h1:ONLsbueY7tnVHEt/v4jL1f0j0U4/jCfgxFyXI9k8yDo=
+github.com/rarimo/ldif-sdk v0.4.5-rc.3 h1:KlS3PBmCG4uWM8jb8qhbw1jovtuJ6hyTY0oRftJYvwA=
+github.com/rarimo/ldif-sdk v0.4.5-rc.3/go.mod h1:ONLsbueY7tnVHEt/v4jL1f0j0U4/jCfgxFyXI9k8yDo=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 h1:N/ElC8H3+5XpJzTSTfLsJV/mx9Q9g7kxmchpfZyxgzM=
 github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
