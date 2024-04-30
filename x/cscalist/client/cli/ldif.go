@@ -99,7 +99,7 @@ automatically, see ldif-tree-diff)`,
 				if err != nil {
 					return fmt.Errorf("build tree: %w", err)
 				}
-				if _, err = fmt.Fprintln(dst, tree.Root()); err != nil {
+				if _, err = fmt.Fprintln(dst, hexutil.Encode(tree.Root())); err != nil {
 					return fmt.Errorf("write to destination: %w", err)
 				}
 
@@ -156,12 +156,13 @@ Use cases:
 				return fmt.Errorf("get root node: %w", err)
 			}
 
-			if tree.Root() != root.Hash {
-				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", tree.Root(), root.Hash)
+			treeRoot := hexutil.Encode(tree.Root())
+			if treeRoot != root.Hash {
+				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", treeRoot, root.Hash)
 				return nil
 			}
 
-			fmt.Printf("Tree are same: root=%s", tree.Root())
+			fmt.Printf("Tree are same: root=%s\n", treeRoot)
 			return nil
 		},
 	}
