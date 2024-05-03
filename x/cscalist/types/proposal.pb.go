@@ -28,9 +28,9 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type EditCSCAListProposal struct {
 	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// Poseidon hashes of new CSCA public keys
+	// Keccak256 hashes of new CSCA public keys
 	ToAdd []string `protobuf:"bytes,3,rep,name=toAdd,proto3" json:"toAdd,omitempty"`
-	// Poseidon hashes of existing CSCA public keys
+	// Keccak256 hashes of existing CSCA public keys
 	ToRemove []string `protobuf:"bytes,4,rep,name=toRemove,proto3" json:"toRemove,omitempty"`
 }
 
@@ -101,7 +101,7 @@ func (m *EditCSCAListProposal) GetToRemove() []string {
 type ReplaceCSCAListProposal struct {
 	Title       string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// Poseidon hashes of all CSCA public keys
+	// Keccak256 hashes of all CSCA public keys
 	Leaves []string `protobuf:"bytes,3,rep,name=leaves,proto3" json:"leaves,omitempty"`
 }
 
