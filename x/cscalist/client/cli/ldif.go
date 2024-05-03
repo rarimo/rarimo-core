@@ -10,9 +10,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/iden3/go-iden3-crypto/keccak256"
 	"github.com/rarimo/ldif-sdk/ldif"
 	"github.com/rarimo/ldif-sdk/mt"
-	"github.com/rarimo/ldif-sdk/utils"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 	"github.com/spf13/cobra"
 )
@@ -24,7 +24,7 @@ func cmdParseLDIF() *cobra.Command {
 		rawFormat     = "raw"
 		hashFormat    = "hash"
 		rootFormat    = "root"
-		defaultFormat = rawFormat
+		defaultFormat = hashFormat
 	)
 	outputFormatValues := fmt.Sprintf("%s, %s, %s", rawFormat, hashFormat, rootFormat)
 
@@ -81,10 +81,7 @@ automatically, see ldif-tree-diff)`,
 
 			case hashFormat:
 				for _, pk := range pubKeys {
-					hash, err := utils.PoseidonHashBig(pk)
-					if err != nil {
-						return fmt.Errorf("hash public key: %w", err)
-					}
+					hash := keccak256.Hash(pk)
 					if _, err = fmt.Fprintln(dst, hexutil.Encode(hash)); err != nil {
 						return fmt.Errorf("write to destination: %w", err)
 					}

@@ -9,9 +9,9 @@ option go_package = "github.com/rarimo/rarimo-core/x/cscalist/types";
 message EditCSCAListProposal {
   string title = 1;
   string description = 2;
-  // Poseidon hashes of new CSCA public keys
+  // Keccak256 hashes of new CSCA public keys
   repeated string toAdd = 3;
-  // Poseidon hashes of existing CSCA public keys
+  // Keccak256 hashes of existing CSCA public keys
   repeated string toRemove = 4;
 }
 
@@ -21,6 +21,6 @@ message EditCSCAListProposal {
 message ReplaceCSCAListProposal {
   string title = 1;
   string description = 2;
-  // Poseidon hashes of all CSCA public keys
+  // Keccak256 hashes of all CSCA public keys
   repeated string leaves = 3;
 }
