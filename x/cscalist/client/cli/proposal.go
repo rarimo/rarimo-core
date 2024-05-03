@@ -29,7 +29,8 @@ If output-file is provided, the output is written to the specified file instead
 of stdout. This is useful to copy-paste from a file.
 
 Use cases:
-- Copy-paste the output to your EditCSCAListProposal draft`,
+- Copy-paste the output to your EditCSCAListProposal draft
+- Validate editing proposals: ensure that the leaves to add and remove are the same`,
 		SuggestionsMinimumDistance: 2,
 		Args:                       cobra.RangeArgs(1, 2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
