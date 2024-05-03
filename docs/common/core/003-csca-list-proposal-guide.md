@@ -17,7 +17,7 @@ When obtained the passport signer's root certificate, you can check its presence
 stored on Rarimo chain in a decentralized manner.
 This is how you ensure that the passport is signed by an eligible entity.
 
-Technical details can be found in [CSCA List Rarimo Core module](https://github.com/rarimo/rarimo-core/x/cscalist/README.md).
+Technical details can be found in [CSCA List Rarimo Core module](../../../x/cscalist/README.md).
 
 The keys of CSCA signers can be compromised or updated, ergo list updates must be handled.
 This is done via proposals. The guide will help you in creating and verifying proposals on list changes.
@@ -38,10 +38,12 @@ You can call the CLI from that dir, or add it to your `$PATH`:
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-<!-- TODO: where the user can get RPC? -->
-Some commands require network RPC in order to fetch state.
-You can put it into environment variable for convenient command calls:
+<!-- TODO: where the user can get RPC? And where will the user get home dir? -->
+All commands require Rarimo home directory set.
+Also, some of them require network RPC in order to fetch state.
+You can put these into environment variable for convenient command calls:
 ```bash
+export RARIMO_HOME=/path/to/your/rarimo/home
 export RPC=https://your-rpc
 ```
 
@@ -59,7 +61,7 @@ This is why you have to monitor the list manually if you are interested in up-to
 ### Compare with state
 
 ```bash
-rarimo-cored --node $RPC query cscalist ldif-tree-diff your-file.ldif
+rarimo-cored --home $RARIMO_HOME --node $RPC query cscalist ldif-tree-diff your-file.ldif
 ```
 If roots are different, the list was changed and the proposal must be created to update the tree.
 
@@ -70,7 +72,7 @@ Most likely, you have already filled basic proposal data in the block scan (titl
 Obtain primary data for your proposal:
 ```bash
 cd ~/Downloads # or wherever you have the file
-rarimo-cored query cscalist parse-ldif --output-format hash your-file.ldif your-output-file.txt
+rarimo-cored --home $RARIMO_HOME query cscalist parse-ldif --output-format hash your-file.ldif your-output-file.txt
 ```
 
 `your-output-file.txt` will contain the big list of hashes of public keys from the LDIF file. Example:
@@ -89,13 +91,13 @@ For `EditCSCAListProposal` the process is more complicated:
 If you don't have it, use **Method 2** instead.
 2. Optional: ensure that the list from file is the same as on-chain:
 ```bash
-rarimo-cored --node $RPC query cscalist ldif-tree-diff your-old-file.ldif
+rarimo-cored --home $RARIMO_HOME --node $RPC query cscalist ldif-tree-diff your-old-file.ldif
 ```
 You expect to see message that the trees' roots are the same.
 Otherwise, seek for an actual `your-old-file.ldif`.
 3. Extract the hashes from your old file:
 ```bash
-rarimo-cored query cscalist parse-ldif --output-format hash your-old-file.ldif old-output-file.txt
+rarimo-cored --home $RARIMO_HOME query cscalist parse-ldif --output-format hash your-old-file.ldif old-output-file.txt
 ```
 4. Compare `your-output-file.txt` and `old-output-file.txt` to find the differences.
 You can use `diff`, `vimdiff` or any preferable tool.
@@ -107,7 +109,7 @@ You can use `diff`, `vimdiff` or any preferable tool.
 
 1. Fetch the current hashes from the Merkle tree:
 ```bash
-rarimo-cored --node $RPC query cscalist tree > current-tree.txt
+rarimo-cored --home $RARIMO_HOME --node $RPC query cscalist tree > current-tree.txt
 ```
 2. Iterate over the `current-tree.txt` manually and collect `key` values.
 You may put them into `old-output-file.txt`.
@@ -125,7 +127,7 @@ and prepare the list of hashes, like described in **Create proposal** section.
 
 Secondly, check whether the proposal makes any difference to the current state:
 ```bash
-rarimo-cored --node $RPC query cscalist ldif-tree-diff your-file.ldif
+rarimo-cored --home $RARIMO_HOME --node $RPC query cscalist ldif-tree-diff your-file.ldif
 ```
 If there is no difference, the proposal does not make sense, and you should vote 'No' or 'NoWithVeto'.
 

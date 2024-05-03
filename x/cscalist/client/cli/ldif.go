@@ -115,11 +115,10 @@ automatically, see ldif-tree-diff)`,
 func cmdLDIFTreeDiff() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ldif-tree-diff <file>",
-		Short: "Build one tree from LDIF file, query another tree from chain and compare roots",
+		Short: "Build one tree from LDIF file, query tree root from chain and compare roots",
 		Long: `Provide a LDIF file to parse. The list can be manually retrieved from
-https://pkddownloadsg.icao.int/. When the file is parsed, one tree is built,
-another one is queried. Roots of 2 trees are compared. Use parse-ldif and tree
-subcommands to find out the exact differences of data.
+https://pkddownloadsg.icao.int/. Use parse-ldif and tree subcommands to find out
+the exact differences of data.
 
 Use cases:
 - Automatically validate proposals: ensure that stored and proposed list differ
@@ -132,40 +131,50 @@ Use cases:
 				return fmt.Errorf("parse LDIF from file: %w", err)
 			}
 
-			pubKeys, err := data.RawPubKeys()
-			if err != nil {
-				return fmt.Errorf("extract raw public keys: %w", err)
-			}
-			sPubKeys := make([]string, len(pubKeys))
-			for i, pk := range pubKeys {
-				sPubKeys[i] = string(pk)
-			}
-
-			tree, err := mt.BuildFromRaw(sPubKeys)
-			if err != nil {
-				return fmt.Errorf("build Merkle tree: %w", err)
-			}
-
 			cliCtx := client.GetClientContextFromCmd(cmd)
 			cli := types.NewQueryClient(cliCtx)
-			root, err := getRootNode(cli)
+
+			built, stored, err := getBuiltAndStoredRoots(data, cli)
 			if err != nil {
-				return fmt.Errorf("get root node: %w", err)
+				return fmt.Errorf("get built and stored roots: %w", err)
 			}
 
-			treeRoot := hexutil.Encode(tree.Root())
-			if treeRoot != root.Hash {
-				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", treeRoot, root.Hash)
+			if built != stored {
+				fmt.Printf("Trees differ: built_root=%s stored_root=%s\n", built, stored)
 				return nil
 			}
 
-			fmt.Printf("Tree are same: root=%s\n", treeRoot)
+			fmt.Printf("Tree are same: root=%s\n", built)
 			return nil
 		},
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
+}
+
+func getBuiltAndStoredRoots(data ldif.LDIF, cli types.QueryClient) (string, string, error) {
+	pubKeys, err := data.RawPubKeys()
+	if err != nil {
+		return "", "", fmt.Errorf("extract raw public keys: %w", err)
+	}
+
+	sPubKeys := make([]string, len(pubKeys))
+	for i, pk := range pubKeys {
+		sPubKeys[i] = string(pk)
+	}
+
+	tree, err := mt.BuildFromRaw(sPubKeys)
+	if err != nil {
+		return "", "", fmt.Errorf("build Merkle tree: %w", err)
+	}
+
+	root, err := getRootNode(cli)
+	if err != nil {
+		return "", "", fmt.Errorf("get root node: %w", err)
+	}
+
+	return hexutil.Encode(tree.Root()), root.Hash, nil
 }
 
 func getRootNode(cli types.QueryClient) (*types.Node, error) {
