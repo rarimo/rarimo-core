@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -21,12 +22,13 @@ const outputFormatFlag = "output-format"
 
 func cmdParseLDIF() *cobra.Command {
 	const (
-		rawFormat     = "raw"
-		hashFormat    = "hash"
-		rootFormat    = "root"
-		defaultFormat = hashFormat
+		rawFormat      = "raw"
+		hashFormat     = "hash"
+		proposalFormat = "proposal"
+		rootFormat     = "root"
+		defaultFormat  = proposalFormat
 	)
-	outputFormatValues := fmt.Sprintf("%s, %s, %s", rawFormat, hashFormat, rootFormat)
+	outputFormatValues := strings.Join([]string{rawFormat, hashFormat, proposalFormat, rootFormat}, ", ")
 
 	cmd := &cobra.Command{
 		Use:   "parse-ldif <file> [output-file]",
@@ -80,12 +82,10 @@ automatically, see ldif-tree-diff)`,
 				}
 
 			case hashFormat:
-				for _, pk := range pubKeys {
-					hash := keccak256.Hash(pk)
-					if _, err = fmt.Fprintln(dst, hexutil.Encode(hash)); err != nil {
-						return fmt.Errorf("write to destination: %w", err)
-					}
-				}
+				return printHashes(pubKeys, dst, false)
+
+			case proposalFormat:
+				return printHashes(pubKeys, dst, true)
 
 			case rootFormat:
 				sPubKeys := make([]string, len(pubKeys))
@@ -151,6 +151,27 @@ Use cases:
 
 	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
+}
+
+func printHashes(pubKeys [][]byte, dst *os.File, forProposal bool) error {
+	for i, pk := range pubKeys {
+		hash := keccak256.Hash(pk)
+
+		out := hexutil.Encode(hash)
+		if forProposal {
+			var comma string
+			if i < len(pubKeys)-1 {
+				comma = ","
+			}
+			out = fmt.Sprintf("%q%s", out, comma)
+		}
+
+		if _, err := fmt.Fprintln(dst, out); err != nil {
+			return fmt.Errorf("write to destination: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func getBuiltAndStoredRoots(data ldif.LDIF, cli types.QueryClient) (string, string, error) {
