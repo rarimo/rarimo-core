@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/rarimo/ldif-sdk/mt"
+	"github.com/iden3/go-iden3-crypto/keccak256"
 )
 
 const emptyHex = "0x"
@@ -28,8 +28,8 @@ func hash(a, b string) string {
 	bb := hexutil.MustDecode(b)
 
 	if bytes.Compare(aa, bb) < 0 {
-		return hexutil.Encode(mt.MustPoseidon(aa, bb))
+		return hexutil.Encode(keccak256.Hash(aa, bb))
 	}
 
-	return hexutil.Encode(mt.MustPoseidon(bb, aa))
+	return hexutil.Encode(keccak256.Hash(bb, aa))
 }

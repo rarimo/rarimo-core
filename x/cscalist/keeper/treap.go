@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/rarimo/ldif-sdk/mt"
+	"github.com/iden3/go-iden3-crypto/keccak256"
 	"github.com/rarimo/ldif-sdk/utils"
 	"github.com/rarimo/rarimo-core/x/cscalist/types"
 )
@@ -157,11 +157,11 @@ func (t Treap) merkleHashNodes(ctx sdk.Context, left, right string) string {
 	return hash(r.Hash, l.Hash)
 }
 
-// priority = poseidon(key) % (2^64-1)
+// priority = keccak256(key) % (2^64-1)
 func derivePriority(key string) uint64 {
 	var (
 		hex     = hexutil.MustDecode(key)
-		keyHash = new(big.Int).SetBytes(mt.MustPoseidon(hex))
+		keyHash = new(big.Int).SetBytes(keccak256.Hash(hex))
 		u64     = new(big.Int).SetUint64(math.MaxUint64)
 	)
 
