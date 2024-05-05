@@ -18,12 +18,13 @@ Changing the list is possible via proposal.
 ## Concepts
 
 The CSCA certificates can only be obtained from the ICAO website in form of an LDIF file.
-The file is parsed by our [LDIF SDK](https://github.com/rarimo/ldif-sdk) onto the hash values of raw public keys (Poseidon hash with special splitting scheme for 4096-bit RSA keys).
+The file is parsed by our [LDIF SDK](https://github.com/rarimo/ldif-sdk) onto the hash values of raw public keys (Keccak256).
 The obtained hashes are used as leaves for the Merkle tree.
 
 Dynamic treap-based Merkle tree is used to store the CSCA public key hashes, see [treap](https://en.wikipedia.org/wiki/Treap).
 The reason is good consistency of treap with Cosmos KVStore, while updates of the list may be quite frequent.
-For each node the priority is deterministically derived from the key with formula: `priority = poseidon_hash(key) mod MAX_UINT64`, where `key` is Poseidon hash of public key and `MAX_UINT64 = 2^64-1`.
+For each node the priority is deterministically derived from the key with formula:
+`priority = keccak256(key) mod MAX_UINT64`, where `key` is a hash of public key and `MAX_UINT64 = 2^64-1`.
 
 In order to update the tree the proposal can be created. There are two types:
 - `ReplaceCSCAListProposal` - replaces the whole tree with a new one, very gas-consuming, suits for initial setup.
