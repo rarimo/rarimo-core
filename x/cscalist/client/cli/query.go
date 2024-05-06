@@ -36,6 +36,7 @@ func GetQueryCmd() *cobra.Command {
 		cmdQueryTree(),
 		cmdParseLDIF(),
 		cmdLDIFTreeDiff(),
+		cmdPrepareProposal(),
 	)
 	// this line is used by starport scaffolding # 1
 
