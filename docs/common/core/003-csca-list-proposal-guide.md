@@ -108,7 +108,7 @@ Copy the respective hashes to the `toAdd` and `toRemove` fields of your draft pr
 
 Basically, you need a command:
 ```bash
-rarimo-cored --home $RARIMO_HOME tx gov submit-proposal draft_proposal.json --from <your-rarimo-account>
+rarimo-cored --home $RARIMO_HOME --node $RPC tx gov submit-proposal draft_proposal.json --from <your-rarimo-account>
 ```
 
 Refer to Cosmos SDK documentation and other guides to get more details about:
