@@ -106,6 +106,9 @@ import (
 	bridgemodule "github.com/rarimo/rarimo-core/x/bridge"
 	bridgemodulekeeper "github.com/rarimo/rarimo-core/x/bridge/keeper"
 	bridgemoduletypes "github.com/rarimo/rarimo-core/x/bridge/types"
+	cscalistmodule "github.com/rarimo/rarimo-core/x/cscalist"
+	cscalistkeeper "github.com/rarimo/rarimo-core/x/cscalist/keeper"
+	cscalisttypes "github.com/rarimo/rarimo-core/x/cscalist/types"
 	"github.com/rarimo/rarimo-core/x/evm"
 	evmkeeper "github.com/rarimo/rarimo-core/x/evm/keeper"
 	evmtypes "github.com/rarimo/rarimo-core/x/evm/types"
@@ -203,6 +206,7 @@ var (
 
 		vestingmintmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
+		cscalistmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -284,6 +288,7 @@ type App struct {
 
 	VestingmintKeeper vestingmintmodulekeeper.Keeper
 	IdentityKeeper    identitymodulekeeper.Keeper
+	CSCAListKeeper    cscalistkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
@@ -347,6 +352,7 @@ func New(
 		multisigmoduletypes.StoreKey, evmtypes.StoreKey, feemarkettypes.StoreKey,
 		vestingmintmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
+		cscalisttypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -522,6 +528,14 @@ func New(
 	)
 	identityModule := identitymodule.NewAppModule(appCodec, app.IdentityKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.CSCAListKeeper = *cscalistkeeper.NewKeeper(
+		appCodec,
+		keys[cscalisttypes.StoreKey],
+		keys[cscalisttypes.MemStoreKey],
+		app.RarimocoreKeeper,
+	)
+	cscaListModule := cscalistmodule.NewAppModule(appCodec, app.CSCAListKeeper)
+
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
 		appCodec,
@@ -578,7 +592,8 @@ func New(
 		AddRoute(tokenmanagermoduletypes.RouterKey, tokenmanagermodule.NewProposalHandler(app.TokenmanagerKeeper)).
 		//AddRoute(banktypes.RouterKey, bank.NewProposalHandler(app.BankKeeper)).
 		AddRoute(oraclemanagermoduletypes.RouterKey, oraclemanagermodule.NewProposalHandler(app.OraclemanagerKeeper)).
-		AddRoute(bridgemoduletypes.RouterKey, bridgemodule.NewProposalHandler(app.BridgeKeeper))
+		AddRoute(bridgemoduletypes.RouterKey, bridgemodule.NewProposalHandler(app.BridgeKeeper)).
+		AddRoute(cscalisttypes.RouterKey, cscalistmodule.NewProposalHandler(app.CSCAListKeeper))
 
 	govConfig := govtypes.DefaultConfig()
 	app.GovKeeper = govkeeper.NewKeeper(
@@ -722,6 +737,7 @@ func New(
 		evmModule,
 		vestingmintModule,
 		identityModule,
+		cscaListModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -760,6 +776,7 @@ func New(
 		multisigmoduletypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -793,6 +810,7 @@ func New(
 		vestingtypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -835,6 +853,7 @@ func New(
 		crisistypes.ModuleName,
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
+		cscalisttypes.ModuleName,
 
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)

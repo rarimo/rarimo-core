@@ -21,6 +21,8 @@ Based on Tendermint + Cosmos SDK blockchain core the main goal is to provide val
 
 ### 4. 🚀 [Bridging Overview](./docs/common/bridging/001-bridging.md)
 
+### 5. 📚 [Guides](./docs/common/core/004-core.md)
+
 ## Chains
 
 ### 1. 🌎 [Mainnet information](./docs/common/mainnet/001-mainnet.md)

@@ -12,6 +12,7 @@ title: List of Modules
 * [x/oraclemanager](./oraclemanager/README.md) - Managing oracles that submit events to Rarimo chain.
 * [x/evm and x/feemarket](./evm/README.md) - EVM compatibility feature.
 * [x/identity](./identity/README.md) - Storing aggregated identity data.
+* [x/cscalist](./cscalist/README.md) - Storing and managing CSCA Master List
 
 ## EVM
 
