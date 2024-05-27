@@ -1012,6 +1012,17 @@ func New(
 		},
 	)
 
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.1.2",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			params := app.FeeMarketKeeper.GetParams(ctx)
+			params.BaseFee = sdk.NewIntFromUint64(0)
+			params.NoBaseFee = true
+			app.FeeMarketKeeper.SetParams(ctx, params)
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
