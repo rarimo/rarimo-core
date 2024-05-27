@@ -10,7 +10,7 @@ title: Mainnet upgrades
 Core binary: (
 alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.2/rarimo-core-alpine-linux-amd64>".
 
-Also, you can build core from sources by yourself: use <"https://github.com/rarimo/rarimo-core/releases/tag/v1.1.2">
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.2>"
 release information.
 
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
@@ -26,7 +26,7 @@ and `NoBaseFee` that should be `0` and `true` while we are using zero commission
 Core binary: (
 alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.1/rarimo-core-alpine-linux-amd64>".
 
-Also, you can build core from sources by yourself: use <"https://github.com/rarimo/rarimo-core/releases/tag/v1.1.1>"
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.1>"
 release information.
 
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
