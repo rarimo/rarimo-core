@@ -538,6 +538,44 @@ func (k Keeper) CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, u
 	return operation.Index, nil
 }
 
+func (k Keeper) CreateArbitraryOperation(ctx sdk.Context, creator string, arbitrary *types.Arbitrary) error {
+	details, err := cosmostypes.NewAnyWithValue(arbitrary)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
+	}
+
+	content, err := pkg.GetArbitraryContent(arbitrary)
+	if err != nil {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
+	}
+
+	operation := types.Operation{
+		Index:         hexutil.Encode(content.CalculateHash()),
+		OperationType: types.OpType_ARBITRARY,
+		Details:       details,
+		Status:        types.OpStatus_INITIALIZED,
+		Creator:       creator,
+		Timestamp:     uint64(ctx.BlockTime().Unix()),
+	}
+
+	if _, ok := k.GetOperation(ctx, operation.Index); ok {
+		return errors.Wrapf(sdkerrors.ErrInvalidRequest, "that operation can not be changed")
+	}
+	k.SetOperation(ctx, operation)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
+		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
+		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
+	))
+
+	// Operation is auto-approved (cause created by EndBlock)
+	if err = k.ApproveOperation(ctx, operation); err != nil {
+		return errors.Wrap(err, "failed to auto-approve operation")
+	}
+
+	return nil
+}
+
 func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferOp) (*types.Transfer, error) {
 	hash := origin.NewDefaultOriginBuilder().
 		SetTxHash(msg.Tx).
