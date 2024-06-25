@@ -1,0 +1,12 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+import "rarimocore/params.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message Arbitrary {
+  // Hex encoded data to be signed. AWARE do not make collisions with existing operations.
+  string data = 1;
+}
+

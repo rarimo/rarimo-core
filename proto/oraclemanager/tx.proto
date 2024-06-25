@@ -13,7 +13,9 @@ service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc Unstake(MsgUnstake) returns (MsgUnstakeResponse);
   rpc CreateTransferOperation(MsgCreateTransferOp) returns (MsgCreateTransferOpResponse);
+  // Deprecated: consider using separate state and gist transfer operations.
   rpc CreateIdentityDefaultTransferOperation(MsgCreateIdentityDefaultTransferOp) returns (MsgCreateIdentityDefaultTransferOpResponse);
+
   rpc CreateIdentityGISTTransferOperation(MsgCreateIdentityGISTTransferOp) returns (MsgCreateIdentityGISTTransferOpResponse);
   rpc CreateIdentityStateTransferOperation(MsgCreateIdentityStateTransferOp) returns (MsgCreateIdentityStateTransferOpResponse);
   rpc CreateWorldCoinIdentityTransferOperation(MsgCreateWorldCoinIdentityTransferOp) returns (MsgCreateWorldCoinIdentityTransferOpResponse);

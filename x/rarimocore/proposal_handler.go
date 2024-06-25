@@ -19,6 +19,8 @@ func NewProposalHandler(k keeper.Keeper) govv1beta1.Handler {
 			return k.SlashProposal(ctx, c)
 		case *types.DropPartiesProposal:
 			return k.DropPartiesProposal(ctx, c)
+		case *types.ArbitrarySigningProposal:
+			return k.ArbitrarySigningProposal(ctx, c)
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized proposal content type: %T", c)
 		}

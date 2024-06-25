@@ -76,3 +76,7 @@ func (k Keeper) DropPartiesProposal(ctx sdk.Context, _ *types.DropPartiesProposa
 	k.SetParams(ctx, params)
 	return nil
 }
+
+func (k Keeper) ArbitrarySigningProposal(ctx sdk.Context, proposal *types.ArbitrarySigningProposal) error {
+	return k.CreateArbitraryOperation(ctx, types.ModuleName, &types.Arbitrary{Data: proposal.Data})
+}

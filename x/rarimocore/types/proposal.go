@@ -9,6 +9,7 @@ const (
 	ProposalTypeReshareKeys         = "rarimocore/ReshareKeys"
 	ProposalTypeSlash               = "rarimocore/SlashProposal"
 	ProposalTypeDropParties         = "rarimocore/DropPartiesProposal"
+	ProposalTypeArbitrarySigning    = "rarimocore/ArbitrarySigningProposal"
 )
 
 func init() {
@@ -16,10 +17,12 @@ func init() {
 	govv1beta1.RegisterProposalType(ProposalTypeReshareKeys)
 	govv1beta1.RegisterProposalType(ProposalTypeSlash)
 	govv1beta1.RegisterProposalType(ProposalTypeDropParties)
+	govv1beta1.RegisterProposalType(ProposalTypeArbitrarySigning)
 	govv1beta1.ModuleCdc.RegisterConcrete(&UnfreezeSignerPartyProposal{}, "rarimocore/UnfreezeSignerPartyProposal", nil)
 	govv1beta1.ModuleCdc.RegisterConcrete(&ReshareKeysProposal{}, "rarimocore/ReshareKeysProposal", nil)
 	govv1beta1.ModuleCdc.RegisterConcrete(&SlashProposal{}, "rarimocore/SlashProposal", nil)
 	govv1beta1.ModuleCdc.RegisterConcrete(&DropPartiesProposal{}, "rarimocore/DropPartiesProposal", nil)
+	govv1beta1.ModuleCdc.RegisterConcrete(&ArbitrarySigningProposal{}, "rarimocore/ArbitrarySigning", nil)
 }
 
 // Implements Proposal Interface
@@ -59,5 +62,15 @@ func (m *DropPartiesProposal) ProposalRoute() string { return RouterKey }
 func (m *DropPartiesProposal) ProposalType() string  { return ProposalTypeDropParties }
 
 func (m *DropPartiesProposal) ValidateBasic() error {
+	return govv1beta1.ValidateAbstract(m)
+}
+
+// Implements Proposal Interface
+var _ govv1beta1.Content = &ArbitrarySigningProposal{}
+
+func (m *ArbitrarySigningProposal) ProposalRoute() string { return RouterKey }
+func (m *ArbitrarySigningProposal) ProposalType() string  { return ProposalTypeArbitrarySigning }
+
+func (m *ArbitrarySigningProposal) ValidateBasic() error {
 	return govv1beta1.ValidateAbstract(m)
 }

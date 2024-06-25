@@ -55,6 +55,21 @@ var upgradeVerifiers = map[types.NetworkType]func(details *types.ContractUpgrade
 
 		return nil
 	},
+	types.NetworkType_RarimoEVM: func(details *types.ContractUpgradeDetails) error {
+		if _, err := hexutil.Decode(details.TargetContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid target contract address %s", err.Error())
+		}
+
+		if _, err := hexutil.Decode(details.NewImplementationContract); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid new contract address %s", err.Error())
+		}
+
+		if _, ok := new(big.Int).SetString(details.Nonce, 10); !ok {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid nonce")
+		}
+
+		return nil
+	},
 }
 
 func (k Keeper) HandleUpgradeContractProposal(ctx sdk.Context, proposal *types.UpgradeContractProposal) error {
