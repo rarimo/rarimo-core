@@ -51048,137 +51048,6 @@ paths:
           type: string
       tags:
         - Query
-  /rarimo/rarimo-core/oraclemanager/identity_default_transfer:
-    get:
-      operationId: RarimoRarimocoreOraclemanagerIdentityDefaultTransfer
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              transfer:
-                type: object
-                properties:
-                  contract:
-                    type: string
-                    title: Hex 0x
-                  chain:
-                    type: string
-                  GISTHash:
-                    type: string
-                    title: Hex 0x
-                  id:
-                    type: string
-                    title: Hex 0x
-                  stateHash:
-                    type: string
-                    title: Hex 0x
-                  stateCreatedAtTimestamp:
-                    type: string
-                    title: Dec
-                  stateCreatedAtBlock:
-                    type: string
-                  stateReplacedBy:
-                    type: string
-                    title: Hex 0x
-                  GISTReplacedBy:
-                    type: string
-                  GISTCreatedAtTimestamp:
-                    type: string
-                    title: Dec
-                  GISTCreatedAtBlock:
-                    type: string
-                  replacedStateHash:
-                    type: string
-                    title: HEX 0x
-                  replacedGISTHash:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: msg.creator
-          in: query
-          required: false
-          type: string
-        - name: msg.contract
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.chain
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTHash
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.id
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.stateHash
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.stateCreatedAtTimestamp
-          description: Dec
-          in: query
-          required: false
-          type: string
-        - name: msg.stateCreatedAtBlock
-          in: query
-          required: false
-          type: string
-        - name: msg.stateReplacedBy
-          description: Hex 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTReplacedBy
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTCreatedAtTimestamp
-          description: Dec
-          in: query
-          required: false
-          type: string
-        - name: msg.GISTCreatedAtBlock
-          in: query
-          required: false
-          type: string
-        - name: msg.replacedStateHash
-          description: HEx 0x
-          in: query
-          required: false
-          type: string
-        - name: msg.replacedGISTtHash
-          in: query
-          required: false
-          type: string
-      tags:
-        - Query
   /rarimo/rarimo-core/oraclemanager/identity_gist_transfer:
     get:
       operationId: RarimoRarimocoreOraclemanagerIdentityGISTTransfer
@@ -52536,7 +52405,11 @@ paths:
                         - IDENTITY_STATE_TRANSFER
                         - WORLDCOIN_IDENTITY_TRANSFER
                         - CSCA_ROOT_UPDATE
+                        - ARBITRARY
                       default: TRANSFER
+                      title: |-
+                        - CONTRACT_UPGRADE: Deprecated
+                         - IDENTITY_DEFAULT_TRANSFER: Deprecated
                     details:
                       title: Corresponding to type details
                       type: object
@@ -53027,7 +52900,11 @@ paths:
                       - IDENTITY_STATE_TRANSFER
                       - WORLDCOIN_IDENTITY_TRANSFER
                       - CSCA_ROOT_UPDATE
+                      - ARBITRARY
                     default: TRANSFER
+                    title: |-
+                      - CONTRACT_UPGRADE: Deprecated
+                       - IDENTITY_DEFAULT_TRANSFER: Deprecated
                   details:
                     title: Corresponding to type details
                     type: object
@@ -57544,6 +57421,7 @@ paths:
                       - Near
                       - Other
                       - Rarimo
+                      - RarimoEVM
                     default: EVM
                   params:
                     type: array
@@ -58928,6 +58806,7 @@ paths:
                             - Near
                             - Other
                             - Rarimo
+                            - RarimoEVM
                           default: EVM
                         params:
                           type: array
@@ -90134,47 +90013,6 @@ definitions:
         type: string
       amount:
         type: string
-  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp:
-    type: object
-    properties:
-      creator:
-        type: string
-      contract:
-        type: string
-        title: Hex 0x
-      chain:
-        type: string
-      GISTHash:
-        type: string
-        title: Hex 0x
-      id:
-        type: string
-        title: Hex 0x
-      stateHash:
-        type: string
-        title: Hex 0x
-      stateCreatedAtTimestamp:
-        type: string
-        title: Dec
-      stateCreatedAtBlock:
-        type: string
-      stateReplacedBy:
-        type: string
-        title: Hex 0x
-      GISTReplacedBy:
-        type: string
-      GISTCreatedAtTimestamp:
-        type: string
-        title: Dec
-      GISTCreatedAtBlock:
-        type: string
-      replacedStateHash:
-        type: string
-        title: HEx 0x
-      replacedGISTtHash:
-        type: string
-  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOpResponse:
-    type: object
   rarimo.rarimocore.oraclemanager.MsgCreateIdentityGISTTransferOp:
     type: object
     properties:
@@ -90477,46 +90315,6 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  rarimo.rarimocore.oraclemanager.QueryGetIdentityDefaultTransferResponse:
-    type: object
-    properties:
-      transfer:
-        type: object
-        properties:
-          contract:
-            type: string
-            title: Hex 0x
-          chain:
-            type: string
-          GISTHash:
-            type: string
-            title: Hex 0x
-          id:
-            type: string
-            title: Hex 0x
-          stateHash:
-            type: string
-            title: Hex 0x
-          stateCreatedAtTimestamp:
-            type: string
-            title: Dec
-          stateCreatedAtBlock:
-            type: string
-          stateReplacedBy:
-            type: string
-            title: Hex 0x
-          GISTReplacedBy:
-            type: string
-          GISTCreatedAtTimestamp:
-            type: string
-            title: Dec
-          GISTCreatedAtBlock:
-            type: string
-          replacedStateHash:
-            type: string
-            title: HEX 0x
-          replacedGISTHash:
-            type: string
   rarimo.rarimocore.oraclemanager.QueryGetIdentityGISTTransferResponse:
     type: object
     properties:
@@ -90778,43 +90576,6 @@ definitions:
           voteThreshold:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  rarimo.rarimocore.rarimocore.IdentityDefaultTransfer:
-    type: object
-    properties:
-      contract:
-        type: string
-        title: Hex 0x
-      chain:
-        type: string
-      GISTHash:
-        type: string
-        title: Hex 0x
-      id:
-        type: string
-        title: Hex 0x
-      stateHash:
-        type: string
-        title: Hex 0x
-      stateCreatedAtTimestamp:
-        type: string
-        title: Dec
-      stateCreatedAtBlock:
-        type: string
-      stateReplacedBy:
-        type: string
-        title: Hex 0x
-      GISTReplacedBy:
-        type: string
-      GISTCreatedAtTimestamp:
-        type: string
-        title: Dec
-      GISTCreatedAtBlock:
-        type: string
-      replacedStateHash:
-        type: string
-        title: HEX 0x
-      replacedGISTHash:
-        type: string
   rarimo.rarimocore.rarimocore.IdentityGISTTransfer:
     type: object
     properties:
@@ -91007,7 +90768,11 @@ definitions:
       - IDENTITY_STATE_TRANSFER
       - WORLDCOIN_IDENTITY_TRANSFER
       - CSCA_ROOT_UPDATE
+      - ARBITRARY
     default: TRANSFER
+    title: |-
+      - CONTRACT_UPGRADE: Deprecated
+       - IDENTITY_DEFAULT_TRANSFER: Deprecated
   rarimo.rarimocore.rarimocore.Operation:
     type: object
     properties:
@@ -91027,7 +90792,11 @@ definitions:
           - IDENTITY_STATE_TRANSFER
           - WORLDCOIN_IDENTITY_TRANSFER
           - CSCA_ROOT_UPDATE
+          - ARBITRARY
         default: TRANSFER
+        title: |-
+          - CONTRACT_UPGRADE: Deprecated
+           - IDENTITY_DEFAULT_TRANSFER: Deprecated
       details:
         title: Corresponding to type details
         type: object
@@ -91377,7 +91146,11 @@ definitions:
                 - IDENTITY_STATE_TRANSFER
                 - WORLDCOIN_IDENTITY_TRANSFER
                 - CSCA_ROOT_UPDATE
+                - ARBITRARY
               default: TRANSFER
+              title: |-
+                - CONTRACT_UPGRADE: Deprecated
+                 - IDENTITY_DEFAULT_TRANSFER: Deprecated
             details:
               title: Corresponding to type details
               type: object
@@ -91735,7 +91508,11 @@ definitions:
               - IDENTITY_STATE_TRANSFER
               - WORLDCOIN_IDENTITY_TRANSFER
               - CSCA_ROOT_UPDATE
+              - ARBITRARY
             default: TRANSFER
+            title: |-
+              - CONTRACT_UPGRADE: Deprecated
+               - IDENTITY_DEFAULT_TRANSFER: Deprecated
           details:
             title: Corresponding to type details
             type: object
@@ -92211,6 +91988,7 @@ definitions:
           - Near
           - Other
           - Rarimo
+          - RarimoEVM
         default: EVM
       params:
         type: array
@@ -92575,6 +92353,7 @@ definitions:
       - Near
       - Other
       - Rarimo
+      - RarimoEVM
     default: EVM
   rarimo.rarimocore.tokenmanager.OnChainItem:
     type: object
@@ -92609,6 +92388,7 @@ definitions:
                 - Near
                 - Other
                 - Rarimo
+                - RarimoEVM
               default: EVM
             params:
               type: array
@@ -93366,6 +93146,7 @@ definitions:
               - Near
               - Other
               - Rarimo
+              - RarimoEVM
             default: EVM
           params:
             type: array
@@ -93577,6 +93358,7 @@ definitions:
                     - Near
                     - Other
                     - Rarimo
+                    - RarimoEVM
                   default: EVM
                 params:
                   type: array

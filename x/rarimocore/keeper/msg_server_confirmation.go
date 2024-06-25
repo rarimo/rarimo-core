@@ -187,18 +187,6 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
 		}
 		return k.getFeeTokenManagementContent(ctx, manage)
-	case types.OpType_CONTRACT_UPGRADE:
-		upgrade, err := pkg.GetContractUpgrade(op)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-		}
-		return k.getContractUpgradeContent(ctx, upgrade)
-	case types.OpType_IDENTITY_DEFAULT_TRANSFER:
-		transfer, err := pkg.GetIdentityDefaultTransfer(op)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to unmarshal details")
-		}
-		return k.getIdentityDefaultTransferContent(ctx, transfer)
 	case types.OpType_IDENTITY_GIST_TRANSFER:
 		transfer, err := pkg.GetIdentityGISTTransfer(op)
 		if err != nil {
@@ -286,19 +274,6 @@ func (k Keeper) getFeeTokenManagementContent(ctx sdk.Context, manage *types.FeeT
 	}
 
 	return pkg.GetFeeTokenManagementContent(feeparams, manage)
-}
-
-func (k Keeper) getContractUpgradeContent(ctx sdk.Context, upgrade *types.ContractUpgrade) (*operation.ContractUpgradeContent, error) {
-	networkParams, ok := k.tm.GetNetwork(ctx, upgrade.Chain)
-	if !ok {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "network params not found")
-	}
-
-	return pkg.GetContractUpgradeContent(networkParams, upgrade)
-}
-
-func (k Keeper) getIdentityDefaultTransferContent(_ sdk.Context, transfer *types.IdentityDefaultTransfer) (*operation.IdentityDefaultTransferContent, error) {
-	return pkg.GetIdentityDefaultTransferContent(transfer)
 }
 
 func (k Keeper) getIdentityGISTTransferContent(_ sdk.Context, transfer *types.IdentityGISTTransfer) (*operation.IdentityGISTTransferContent, error) {

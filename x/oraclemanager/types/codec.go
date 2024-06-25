@@ -12,7 +12,6 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateTransferOp{}, "oraclemanager/CreateTransferOp", nil)
-	cdc.RegisterConcrete(&MsgCreateIdentityDefaultTransferOp{}, "oraclemanager/CreateIdentityDefaultTransferOp", nil)
 	cdc.RegisterConcrete(&MsgCreateIdentityGISTTransferOp{}, "oraclemanager/CreateIdentityGISTTransferOp", nil)
 	cdc.RegisterConcrete(&MsgCreateIdentityStateTransferOp{}, "oraclemanager/CreateIdentityStateTransferOp", nil)
 	cdc.RegisterConcrete(&MsgCreateWorldCoinIdentityTransferOp{}, "oraclemanager/CreateWorldCoinIdentityTransferOp", nil)
@@ -28,9 +27,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateTransferOp{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateIdentityDefaultTransferOp{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateIdentityGISTTransferOp{},

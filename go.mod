@@ -92,7 +92,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gballet/go-libpcsclite v0.0.0-20190607065134-2772fd86a8ff // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-gonic/gin v1.8.1 // indirect
 	github.com/github/smimesign v0.2.0 // indirect
 	github.com/go-kit/kit v0.12.0 // indirect

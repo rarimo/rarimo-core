@@ -8,7 +8,6 @@ import "oraclemanager/params.proto";
 import "oraclemanager/tx.proto";
 import "oraclemanager/oracle.proto";
 import "rarimocore/op_transfer.proto";
-import "rarimocore/op_identity_default_transfer.proto";
 import "rarimocore/op_identity_gist_transfer.proto";
 import "rarimocore/op_identity_state_transfer.proto";
 import "rarimocore/op_worldcoin_identity_transfer.proto";
@@ -25,10 +24,6 @@ service Query {
 
   rpc Transfer(QueryGetTransferRequest) returns (QueryGetTransferResponse) {
     option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/transfer";
-  }
-
-  rpc IdentityDefaultTransfer(QueryGetIdentityDefaultTransferRequest) returns (QueryGetIdentityDefaultTransferResponse) {
-    option (google.api.http).get = "/rarimo/rarimo-core/oraclemanager/identity_default_transfer";
   }
 
   rpc IdentityGISTTransfer(QueryGetIdentityGISTTransferRequest) returns (QueryGetIdentityGISTTransferResponse) {
@@ -73,14 +68,6 @@ message QueryGetTransferRequest {
 
 message QueryGetTransferResponse {
   rarimo.rarimocore.rarimocore.Transfer transfer = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetIdentityDefaultTransferRequest {
-  rarimo.rarimocore.oraclemanager.MsgCreateIdentityDefaultTransferOp msg = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetIdentityDefaultTransferResponse {
-  rarimo.rarimocore.rarimocore.IdentityDefaultTransfer transfer = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetIdentityGISTTransferRequest {

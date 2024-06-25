@@ -359,20 +359,6 @@ Flow:
 - Check operation status (should be `INITIALIZED`)
 - Save vote
 
-### CreateIdentityDefaultTransferOperation/CreateIdentityStateTransferOperation/CreateIdentityGISTTransferOperation/CreateWorldCoinIdentityTransferOperation
-
-**CreateIdentityDefaultTransferOperation** - used by `oraclemanager` module to create identity transfer operations
-
-Definition:
-`CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityDefaultTransfer) error`
-
-Flow:
-
-- Get source network from `tokenmanager` module. Check that bridge transfers are acceptable for that network.
-- Create operation entry and check that operation does not exist.
-- Only not approved operation can be replaced. If operation already exists and need to be replaced then we have to clear
-  all existing votes.
-
 ### CreateFeeTokenManagementOperation
 
 **CreateFeeTokenManagementOperation** - used by `tokenmanager` module to create fee management operation after proposal
