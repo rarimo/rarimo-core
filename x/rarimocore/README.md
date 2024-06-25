@@ -32,9 +32,6 @@ In such case operation can be already approved.
 - Transfer operation: `HASH(tx, event, chain)`
 - Change parties: `HASH(new set, new key, signature)`
 - Fee contract management: `HASH(block height, chain, fee token contract, fee amount)`
-- Contract upgrade: `HASH(block, content [depends on chain])`
-- Identity default
-  transfer: `HASH(source contract, id, state hash, state timestamps, state replaced by, GIST hash, GIST replaced by, GIST timestamps, replaced state hash, replaced GIST hash)`
 - Identity state transfer: `HASH(source contract, id, state hash, state timestamps, replaced state hash)`
 - Identity GIST transfer: `HASH(source contract, GIST hash, GIST timestamps, replaced GIST hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
