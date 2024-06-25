@@ -292,6 +292,7 @@ func (k Keeper) CreateIdentityAggregatedTransferOperation(ctx sdk.Context, creat
 	return operation.Index, nil
 }
 
+// Deprecated: consider using separate state and gist transfer operations.
 func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityDefaultTransfer) error {
 	network, ok := k.tm.GetNetwork(ctx, transfer.Chain)
 	if !ok {
