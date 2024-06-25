@@ -24,3 +24,10 @@ message DropPartiesProposal {
   string title = 1;
   string description = 2;
 }
+
+message ArbitrarySigningProposal {
+  string title = 1;
+  string description = 2;
+  // Hex encoded data to be signed. AWARE do not make collisions with existing operations.
+  string data = 3;
+}

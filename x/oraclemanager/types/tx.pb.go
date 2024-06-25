@@ -1270,6 +1270,7 @@ type MsgClient interface {
 	Stake(ctx context.Context, in *MsgStake, opts ...grpc.CallOption) (*MsgStakeResponse, error)
 	Unstake(ctx context.Context, in *MsgUnstake, opts ...grpc.CallOption) (*MsgUnstakeResponse, error)
 	CreateTransferOperation(ctx context.Context, in *MsgCreateTransferOp, opts ...grpc.CallOption) (*MsgCreateTransferOpResponse, error)
+	// Deprecated: consider using separate state and gist transfer operations.
 	CreateIdentityDefaultTransferOperation(ctx context.Context, in *MsgCreateIdentityDefaultTransferOp, opts ...grpc.CallOption) (*MsgCreateIdentityDefaultTransferOpResponse, error)
 	CreateIdentityGISTTransferOperation(ctx context.Context, in *MsgCreateIdentityGISTTransferOp, opts ...grpc.CallOption) (*MsgCreateIdentityGISTTransferOpResponse, error)
 	CreateIdentityStateTransferOperation(ctx context.Context, in *MsgCreateIdentityStateTransferOp, opts ...grpc.CallOption) (*MsgCreateIdentityStateTransferOpResponse, error)
@@ -1372,6 +1373,7 @@ type MsgServer interface {
 	Stake(context.Context, *MsgStake) (*MsgStakeResponse, error)
 	Unstake(context.Context, *MsgUnstake) (*MsgUnstakeResponse, error)
 	CreateTransferOperation(context.Context, *MsgCreateTransferOp) (*MsgCreateTransferOpResponse, error)
+	// Deprecated: consider using separate state and gist transfer operations.
 	CreateIdentityDefaultTransferOperation(context.Context, *MsgCreateIdentityDefaultTransferOp) (*MsgCreateIdentityDefaultTransferOpResponse, error)
 	CreateIdentityGISTTransferOperation(context.Context, *MsgCreateIdentityGISTTransferOp) (*MsgCreateIdentityGISTTransferOpResponse, error)
 	CreateIdentityStateTransferOperation(context.Context, *MsgCreateIdentityStateTransferOp) (*MsgCreateIdentityStateTransferOpResponse, error)

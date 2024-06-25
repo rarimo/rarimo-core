@@ -11,6 +11,7 @@ enum NetworkType {
   Near = 2;
   Other = 3;
   Rarimo = 4;
+  RarimoEVM = 5;
 }
 
 enum NetworkParamType {
