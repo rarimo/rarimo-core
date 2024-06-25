@@ -36,10 +36,11 @@ In such case operation can be already approved.
 - Identity default
   transfer: `HASH(source contract, id, state hash, state timestamps, state replaced by, GIST hash, GIST replaced by, GIST timestamps, replaced state hash, replaced GIST hash)`
 - Identity state transfer: `HASH(source contract, id, state hash, state timestamps, replaced state hash)`
-- Identity GIST transfer: `HASH(source contract, id, GIST hash, GIST timestamps, replaced GIST hash)`
+- Identity GIST transfer: `HASH(source contract, GIST hash, GIST timestamps, replaced GIST hash)`
 - Identity aggregated transfer: `HASH(GIST, timestamp, states root, contract address, chain)`
 - WorldCoin identity transfer: `HASH(source contract, old state, new state, timestamp)`
 - CSCA root update: `HASH(hashPrefix, root, timestamp)`, where `hashPrefix="Rarimo CSCA root"`
+- Arbitrary: `HASH(data)`
 
 To add new operation check the following [manual](../../docs/common/core/001-adding-operation.md).
 
@@ -383,10 +384,11 @@ Also, use
 
 **CreateCSCARootUpdateOperation** - used by `cscalist` module to create CSCA root update operation after proposal pass
 
-Definition: 
+Definition:
 `CreateCSCARootUpdateOperation(ctx sdk.Context, creator string, update *rarimo.CSCARootUpdate) (string, error)`
 
 Flow:
+
 - Create proposal to replace/edit CSCA list (see [x/cscalist/README.md](../cscalist/README.md))
 - When proposal is accepted, root key is updated
 - On the end block operation with **Merkle root** is created
@@ -575,6 +577,20 @@ Also changing bridge contracts will be also required because we can not provide 
 message DropPartiesProposal {
   string title = 1;
   string description = 2;
+}
+```
+
+### ArbitrarySigningProposal
+
+**ArbitrarySigningProposal** - will be used for most kinds of admin operations, where the sign data should be defined
+out of protocol definitions. Most common use case - contract upgrades.
+
+```protobuf
+message ArbitrarySigningProposal {
+  string title = 1;
+  string description = 2;
+  // Hex encoded data to be signed. AWARE do not make collisions with existing operations.
+  string data = 3;
 }
 ```
 
