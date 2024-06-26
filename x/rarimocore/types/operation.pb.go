@@ -26,10 +26,12 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type OpType int32
 
 const (
-	OpType_TRANSFER                     OpType = 0
-	OpType_CHANGE_PARTIES               OpType = 1
-	OpType_FEE_TOKEN_MANAGEMENT         OpType = 2
-	OpType_CONTRACT_UPGRADE             OpType = 3
+	OpType_TRANSFER             OpType = 0
+	OpType_CHANGE_PARTIES       OpType = 1
+	OpType_FEE_TOKEN_MANAGEMENT OpType = 2
+	// Deprecated
+	OpType_CONTRACT_UPGRADE OpType = 3
+	// Deprecated
 	OpType_IDENTITY_DEFAULT_TRANSFER    OpType = 4
 	OpType_IDENTITY_AGGREGATED_TRANSFER OpType = 5
 	OpType_IDENTITY_GIST_TRANSFER       OpType = 6

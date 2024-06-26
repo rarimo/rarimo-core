@@ -54,67 +54,6 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) CreateContractUpgradeOperation(ctx sdk.Context, upgradeDetails *tokenmanagertypes.ContractUpgradeDetails) error {
-	network, ok := k.tm.GetNetwork(ctx, upgradeDetails.Chain)
-	if !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "network not found")
-	}
-
-	upgrade := &types.ContractUpgrade{
-		TargetContract:            upgradeDetails.TargetContract,
-		Chain:                     upgradeDetails.Chain,
-		NewImplementationContract: upgradeDetails.NewImplementationContract,
-		Hash:                      upgradeDetails.Hash,
-		BufferAccount:             upgradeDetails.BufferAccount,
-		Nonce:                     upgradeDetails.Nonce,
-		Type:                      upgradeDetails.Type,
-	}
-
-	content, err := pkg.GetContractUpgradeContent(network, upgrade)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content %s", err.Error())
-	}
-
-	details, err := cosmostypes.NewAnyWithValue(upgrade)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
-	}
-
-	// Index is HASH(block, content [depending on chain])
-	index := hexutil.Encode(crypto.Keccak256(big.NewInt(ctx.BlockHeight()).Bytes(), content.CalculateHash()))
-
-	var operation = types.Operation{
-		Index:         index,
-		OperationType: types.OpType_CONTRACT_UPGRADE,
-		Details:       details,
-		Status:        types.OpStatus_INITIALIZED,
-		Creator:       types.ModuleName,
-		Timestamp:     uint64(ctx.BlockTime().Unix()),
-	}
-
-	// Mostly impossible case cause operation index depends on block height.
-	if _, ok := k.GetOperation(ctx, operation.Index); ok {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "can not recreate operation with type: %s", operation.OperationType.String())
-	}
-
-	k.SetOperation(
-		ctx,
-		operation,
-	)
-
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
-		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
-		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
-	))
-
-	// Operation is auto-approved (cause created by proposal)
-	if err := k.ApproveOperation(ctx, operation); err != nil {
-		return sdkerrors.Wrap(err, "failed to auto-approve operation")
-	}
-
-	return nil
-}
-
 func (k Keeper) CreateFeeTokenManagementOperation(ctx sdk.Context, op *types.FeeTokenManagement) error {
 	// Index is HASH(block height, chain, fee token contract, fee amount)
 	index := hexutil.Encode(crypto.Keccak256(big.NewInt(ctx.BlockHeight()).Bytes(), []byte(op.Chain), []byte(op.Token.Contract), []byte(op.Token.Amount)))
@@ -290,64 +229,6 @@ func (k Keeper) CreateIdentityAggregatedTransferOperation(ctx sdk.Context, creat
 	}
 
 	return operation.Index, nil
-}
-
-// Deprecated: consider using separate state and gist transfer operations.
-func (k Keeper) CreateIdentityDefaultTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityDefaultTransfer) error {
-	network, ok := k.tm.GetNetwork(ctx, transfer.Chain)
-	if !ok {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "source network not found")
-	}
-
-	if network.GetIdentityParams() == nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "identity transfers is not supported due to lack of parameters")
-	}
-
-	// TODO validate state contract using saver one in identity params
-
-	details, err := cosmostypes.NewAnyWithValue(transfer)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details %s", err.Error())
-	}
-
-	content, err := pkg.GetIdentityDefaultTransferContent(transfer)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content %s", err.Error())
-	}
-
-	var operation = types.Operation{
-		Index:         hexutil.Encode(content.CalculateHash()),
-		OperationType: types.OpType_IDENTITY_DEFAULT_TRANSFER,
-		Details:       details,
-		Status:        types.OpStatus_INITIALIZED,
-		Creator:       creator,
-		Timestamp:     uint64(ctx.BlockTime().Unix()),
-	}
-
-	// Only not approved operation can be changed
-	if op, ok := k.GetOperation(ctx, operation.Index); ok {
-		if op.Status != types.OpStatus_NOT_APPROVED {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "to change operation it should be unapproved")
-		}
-
-		// Otherwise - clear votes
-		k.IterateVotes(ctx, op.Index, func(vote types.Vote) (stop bool) {
-			k.RemoveVote(ctx, vote.Index)
-			return false
-		})
-	}
-
-	k.SetOperation(
-		ctx,
-		operation,
-	)
-
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.EventTypeNewOperation,
-		sdk.NewAttribute(types.AttributeKeyOperationId, operation.Index),
-		sdk.NewAttribute(types.AttributeKeyOperationType, operation.OperationType.String()),
-	))
-
-	return nil
 }
 
 func (k Keeper) CreateIdentityGISTTransferOperation(ctx sdk.Context, creator string, transfer *types.IdentityGISTTransfer) error {
@@ -611,24 +492,6 @@ func (k Keeper) GetTransfer(ctx sdk.Context, msg *oracletypes.MsgCreateTransferO
 		From:       msg.From,
 		To:         msg.To,
 		Meta:       msg.Meta,
-	}, nil
-}
-
-func (k Keeper) GetIdentityDefaultTransfer(_ sdk.Context, msg *oracletypes.MsgCreateIdentityDefaultTransferOp) (*types.IdentityDefaultTransfer, error) {
-	return &types.IdentityDefaultTransfer{
-		Contract:                msg.Contract,
-		Chain:                   msg.Chain,
-		GISTHash:                msg.GISTHash,
-		Id:                      msg.Id,
-		StateHash:               msg.StateHash,
-		StateCreatedAtTimestamp: msg.StateCreatedAtTimestamp,
-		StateCreatedAtBlock:     msg.StateCreatedAtBlock,
-		StateReplacedBy:         msg.StateReplacedBy,
-		GISTReplacedBy:          msg.GISTReplacedBy,
-		GISTCreatedAtTimestamp:  msg.GISTCreatedAtTimestamp,
-		GISTCreatedAtBlock:      msg.GISTCreatedAtBlock,
-		ReplacedStateHash:       msg.ReplacedStateHash,
-		ReplacedGISTHash:        msg.ReplacedGISTtHash,
 	}, nil
 }
 

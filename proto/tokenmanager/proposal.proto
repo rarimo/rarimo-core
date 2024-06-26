@@ -9,34 +9,6 @@ import "google/protobuf/any.proto";
 
 option go_package = "github.com/rarimo/rarimo-core/x/tokenmanager/types";
 
-enum UpgradeType {
-  NONE = 0;
-  BASIC_IMPLEMENTATION = 1;
-  OTHER = 2;
-}
-
-message ContractUpgradeDetails {
-  // Target contract address upgrade to
-  string targetContract = 1;
-  // New contract address: used on EVM
-  string newImplementationContract = 2;
-  // byte code hash: used on Solana and Near
-  string hash = 3;
-  // Solana buffer account
-  string bufferAccount = 4;
-  // chain name according to stored in tokenmanager params
-  string chain = 5;
-  // dec nonce
-  string nonce = 6;
-  UpgradeType type = 7;
-}
-
-message UpgradeContractProposal {
-  string title = 1;
-  string description = 2;
-  ContractUpgradeDetails details = 4 [(gogoproto.nullable) = false];
-}
-
 message AddNetworkProposal {
   string title = 1;
   string description = 2;
@@ -81,7 +53,6 @@ message WithdrawFeeProposal {
   string receiver = 5;
   string nonce = 6;
 }
-
 
 message UpdateTokenItemProposal {
   string title = 1;

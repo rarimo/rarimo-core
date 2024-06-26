@@ -11,8 +11,6 @@ import (
 func NewProposalHandler(k keeper.Keeper) govv1beta1.Handler {
 	return func(ctx sdk.Context, content govv1beta1.Content) error {
 		switch c := content.(type) {
-		case *types.UpgradeContractProposal:
-			return k.HandleUpgradeContractProposal(ctx, c)
 		case *types.AddNetworkProposal:
 			return k.HandleAddNetworkProposal(ctx, c)
 		case *types.RemoveNetworkProposal:

@@ -46,24 +46,6 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
-		case types.OpType_CONTRACT_UPGRADE:
-			content, err := GetContractUpgradeContent(client, op)
-			if err != nil {
-				return nil, err
-			}
-
-			if content != nil {
-				contents = append(contents, content)
-			}
-		case types.OpType_IDENTITY_DEFAULT_TRANSFER:
-			content, err := GetIdentityDefaultTransferContent(op)
-			if err != nil {
-				return nil, err
-			}
-
-			if content != nil {
-				contents = append(contents, content)
-			}
 		case types.OpType_IDENTITY_GIST_TRANSFER:
 			content, err := GetIdentityGISTTransferContent(op)
 			if err != nil {
@@ -183,31 +165,6 @@ func GetFeeManagementContent(client *grpc.ClientConn, op *types.Operation) (merk
 	}
 
 	content, err := pkg.GetFeeTokenManagementContent(feeparams, manage)
-	return content, errors.Wrap(err, "error creating content")
-}
-
-func GetContractUpgradeContent(client *grpc.ClientConn, op *types.Operation) (merkle.Content, error) {
-	upgrade, err := pkg.GetContractUpgrade(*op)
-	if err != nil {
-		return nil, errors.Wrap(err, "error parsing operation details")
-	}
-
-	networkResp, err := token.NewQueryClient(client).NetworkParams(context.TODO(), &token.QueryNetworkParamsRequest{Name: upgrade.Chain})
-	if err != nil {
-		return nil, errors.Wrap(err, "error getting network param entry")
-	}
-
-	content, err := pkg.GetContractUpgradeContent(networkResp.Params, upgrade)
-	return content, errors.Wrap(err, "error creating content")
-}
-
-func GetIdentityDefaultTransferContent(op *types.Operation) (merkle.Content, error) {
-	transfer, err := pkg.GetIdentityDefaultTransfer(*op)
-	if err != nil {
-		return nil, errors.Wrap(err, "error parsing operation details")
-	}
-
-	content, err := pkg.GetIdentityDefaultTransferContent(transfer)
 	return content, errors.Wrap(err, "error creating content")
 }
 

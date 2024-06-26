@@ -139,14 +139,6 @@ func getSourceChain(op rarimotypes.Operation) (string, error) {
 
 		return transfer.From.Chain, nil
 
-	case rarimotypes.OpType_IDENTITY_DEFAULT_TRANSFER:
-		transfer, err := pkg.GetIdentityDefaultTransfer(op)
-		if err != nil {
-			return "", err
-		}
-
-		return transfer.Chain, nil
-
 	case rarimotypes.OpType_IDENTITY_GIST_TRANSFER:
 		transfer, err := pkg.GetIdentityGISTTransfer(op)
 		if err != nil {

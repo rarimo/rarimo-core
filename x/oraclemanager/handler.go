@@ -28,8 +28,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err = msgServer.Unjail(sdk.WrapSDKContext(ctx), msg)
 		case *types.MsgCreateTransferOp:
 			res, err = msgServer.CreateTransferOperation(sdk.WrapSDKContext(ctx), msg)
-		case *types.MsgCreateIdentityDefaultTransferOp:
-			res, err = msgServer.CreateIdentityDefaultTransferOperation(sdk.WrapSDKContext(ctx), msg)
 		case *types.MsgCreateIdentityGISTTransferOp:
 			res, err = msgServer.CreateIdentityGISTTransferOperation(sdk.WrapSDKContext(ctx), msg)
 		case *types.MsgCreateIdentityStateTransferOp:
