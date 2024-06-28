@@ -109,6 +109,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_ARBITRARY:
+			content, err := GetArbitraryContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		default:
 			return nil, ErrUnsupportedContent
 		}
@@ -249,5 +258,15 @@ func GetCSCARootUpdateContent(op *types.Operation) (merkle.Content, error) {
 	}
 
 	content, err := pkg.GetCSCARootUpdateContent(update)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetArbitraryContent(op *types.Operation) (merkle.Content, error) {
+	update, err := pkg.GetArbitrary(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetArbitraryContent(update)
 	return content, errors.Wrap(err, "error creating content")
 }

@@ -5,6 +5,36 @@ title: Mainnet upgrades
 
 # Mainnet upgrades
 
+## V1.1.2
+
+Core binary: (
+alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.2/rarimo-core-alpine-linux-amd64>".
+
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.2>"
+release information.
+
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
+use Alpine binary on your machine.
+
+If you are using `cosmovisor` the upgrade will be done automatically.
+
+Upgrade v1.1.2 changes the parameters of [feemarket](../../../x/feemarket) module, in particular `BaseFee`
+and `NoBaseFee` that should be `0` and `true` while we are using zero commissions on production.
+
+## V1.1.1
+
+Core binary: (
+alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.1/rarimo-core-alpine-linux-amd64>".
+
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.1>"
+release information.
+
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
+use Alpine binary on your machine.
+
+Upgrade v1.1.1 introduces a new module to store and manage [CSCA Master List](https://pkddownloadsg.icao.int/). More
+information can be found in [module docs](../../../x/cscalist/README.md).
+
 ## V1.1.0
 
 Core binary: (
@@ -22,7 +52,7 @@ Upgrade v1.1.0 introduces a couple of features for identity transfers:
 
 - New WorldCoin identity transfer
 - Fix for the Iden3 identity transfers: GIST and state transfers are split into two different operations.
-- Double-sending of confirmation messages will not cause TX error. 
+- Double-sending of confirmation messages will not cause TX error.
 
 ## V1.0.7
 
