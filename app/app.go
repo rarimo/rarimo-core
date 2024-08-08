@@ -127,6 +127,9 @@ import (
 	rarimocoremodule "github.com/rarimo/rarimo-core/x/rarimocore"
 	rarimocoremodulekeeper "github.com/rarimo/rarimo-core/x/rarimocore/keeper"
 	rarimocoremoduletypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	rootupdatermodule "github.com/rarimo/rarimo-core/x/rootupdater"
+	rootupdatermodulekeeper "github.com/rarimo/rarimo-core/x/rootupdater/keeper"
+	rootupdatermoduletypes "github.com/rarimo/rarimo-core/x/rootupdater/types"
 	tokenmanagermodule "github.com/rarimo/rarimo-core/x/tokenmanager"
 	tokenmanagermodulekeeper "github.com/rarimo/rarimo-core/x/tokenmanager/keeper"
 	tokenmanagermoduletypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
@@ -206,6 +209,12 @@ var (
 		vestingmintmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		cscalistmodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -288,6 +297,9 @@ type App struct {
 	VestingmintKeeper vestingmintmodulekeeper.Keeper
 	IdentityKeeper    identitymodulekeeper.Keeper
 	CSCAListKeeper    cscalistkeeper.Keeper
+
+	RootupdaterKeeper rootupdatermodulekeeper.Keeper
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
@@ -352,6 +364,12 @@ func New(
 		vestingmintmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		cscalisttypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -662,6 +680,14 @@ func New(
 	)
 	vestingmintModule := vestingmintmodule.NewAppModule(appCodec, app.VestingmintKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.RootupdaterKeeper = *rootupdatermodulekeeper.NewKeeper(
+		appCodec,
+		keys[rootupdatermoduletypes.StoreKey],
+		keys[rootupdatermoduletypes.MemStoreKey],
+		app.GetSubspace(rootupdatermoduletypes.ModuleName),
+	)
+	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -690,7 +716,7 @@ func New(
 
 	app.GovKeeper.SetHooks(
 		govtypes.NewMultiGovHooks(
-		// insert governance hooks receivers here
+			// insert governance hooks receivers here
 		),
 	)
 
@@ -737,6 +763,12 @@ func New(
 		vestingmintModule,
 		identityModule,
 		cscaListModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -776,6 +808,12 @@ func New(
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -810,6 +848,12 @@ func New(
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -854,6 +898,12 @@ func New(
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
 
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -890,6 +940,12 @@ func New(
 		multisigModule,
 		evmModule,
 		feeMarketModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
+		rootupdaterModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -1136,6 +1192,12 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	//paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
