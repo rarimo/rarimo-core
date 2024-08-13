@@ -210,11 +210,7 @@ var (
 		identitymodule.AppModuleBasic{},
 		cscalistmodule.AppModuleBasic{},
 		rootupdatermodule.AppModuleBasic{},
-		rootupdatermodule.AppModuleBasic{},
-		rootupdatermodule.AppModuleBasic{},
-		rootupdatermodule.AppModuleBasic{},
-		rootupdatermodule.AppModuleBasic{},
-		rootupdatermodule.AppModuleBasic{},
+
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
