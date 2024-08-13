@@ -109,6 +109,15 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
+		case types.OpType_UPDATE_ROOT:
+			content, err := GetRootUpdateContent(op)
+			if err != nil {
+				return nil, err
+			}
+
+			if content != nil {
+				contents = append(contents, content)
+			}
 		case types.OpType_ARBITRARY:
 			content, err := GetArbitraryContent(op)
 			if err != nil {
@@ -268,5 +277,15 @@ func GetArbitraryContent(op *types.Operation) (merkle.Content, error) {
 	}
 
 	content, err := pkg.GetArbitraryContent(update)
+	return content, errors.Wrap(err, "error creating content")
+}
+
+func GetRootUpdateContent(op *types.Operation) (merkle.Content, error) {
+	update, err := pkg.GetRootUpdate(*op)
+	if err != nil {
+		return nil, errors.Wrap(err, "error parsing operation details")
+	}
+
+	content, err := pkg.GetRootUpdateContent(update)
 	return content, errors.Wrap(err, "error creating content")
 }

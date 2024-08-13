@@ -17,6 +17,7 @@ enum OpType {
   WORLDCOIN_IDENTITY_TRANSFER = 8;
   CSCA_ROOT_UPDATE = 9;
   ARBITRARY = 10;
+  UPDATE_ROOT = 11;
 }
 
 enum OpStatus {

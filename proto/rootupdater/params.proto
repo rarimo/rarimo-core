@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rarimo.rootupdater;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
+
+// Params defines the parameters for the module.
+message Params {
+  string contract_address = 1;
+  string root = 2;
+  string last_root = 3;
+  string index = 4;
+  string event_name = 5;
+}

@@ -365,11 +365,7 @@ func New(
 		identitymoduletypes.StoreKey,
 		cscalisttypes.StoreKey,
 		rootupdatermoduletypes.StoreKey,
-		rootupdatermoduletypes.StoreKey,
-		rootupdatermoduletypes.StoreKey,
-		rootupdatermoduletypes.StoreKey,
-		rootupdatermoduletypes.StoreKey,
-		rootupdatermoduletypes.StoreKey,
+
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -669,7 +665,11 @@ func New(
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
 	)
-	app.EvmKeeper = app.EvmKeeper.SetHooks(app.IdentityKeeper)
+	app.EvmKeeper = app.EvmKeeper.SetHooks(evmkeeper.NewMultiEvmHooks(
+		app.IdentityKeeper,
+		app.RootupdaterKeeper,
+	))
+
 	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs) // <- ACTUAL module creation in app.go that you need
 
 	app.VestingmintKeeper = *vestingmintmodulekeeper.NewKeeper(
@@ -685,8 +685,9 @@ func New(
 		keys[rootupdatermoduletypes.StoreKey],
 		keys[rootupdatermoduletypes.MemStoreKey],
 		app.GetSubspace(rootupdatermoduletypes.ModuleName),
+		app.RarimocoreKeeper,
 	)
-	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper, app.AccountKeeper, app.BankKeeper)
+	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -716,7 +717,7 @@ func New(
 
 	app.GovKeeper.SetHooks(
 		govtypes.NewMultiGovHooks(
-			// insert governance hooks receivers here
+		// insert governance hooks receivers here
 		),
 	)
 
@@ -764,11 +765,7 @@ func New(
 		identityModule,
 		cscaListModule,
 		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
+
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -809,11 +806,7 @@ func New(
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
 		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -849,11 +842,7 @@ func New(
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
 		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -899,11 +888,6 @@ func New(
 		cscalisttypes.ModuleName,
 
 		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
-		rootupdatermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -941,11 +925,7 @@ func New(
 		evmModule,
 		feeMarketModule,
 		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
-		rootupdaterModule,
+
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -1192,11 +1172,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	//paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
-	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
-	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
-	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
-	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
-	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
 	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message RootUpdate {
+//   Root is new Merkle root. Hex 0x uint256
+  string root = 1;
+  string contract_address = 2;
+  uint64 timestamp = 3;
+}
