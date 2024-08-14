@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/rarimo/rarimo-core/ethermint/utils"
 	"github.com/rarimo/rarimo-core/x/rootupdater/pkg/state"
 	"strings"
 
@@ -53,7 +54,7 @@ func NewKeeper(
 }
 
 // PostTxProcessing is used to listen EVM smart contract events,
-// filter and process `StateTransited` events emitted by configured in module params contract address.
+// filter and process `RootUpdated` events emitted by configured in module params contract address.
 // Will be called by EVM module as hook.
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
 	params := k.GetParams(ctx)
@@ -82,7 +83,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		}
 
 		eventBody := state.PoseidonSMTRootUpdated{}
-		if err := unpackLog(stateV2, &eventBody, event.Name, log); err != nil {
+		if err := utils.UnpackLog(stateV2, &eventBody, event.Name, log); err != nil {
 			return err
 		}
 
@@ -97,24 +98,4 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
-}
-
-// unpackLog copy-pasted from logic in generated s-c bindings.
-func unpackLog(contractAbi abi.ABI, out interface{}, event string, log *ethtypes.Log) error {
-	if log.Topics[0] != contractAbi.Events[event].ID {
-		return fmt.Errorf("event signature mismatch")
-	}
-
-	if len(log.Data) > 0 {
-		if err := contractAbi.UnpackIntoInterface(out, event, log.Data); err != nil {
-			return err
-		}
-	}
-	var indexed abi.Arguments
-	for _, arg := range contractAbi.Events[event].Inputs {
-		if arg.Indexed {
-			indexed = append(indexed, arg)
-		}
-	}
-	return abi.ParseTopics(out, indexed, log.Topics[1:])
 }

@@ -9,13 +9,15 @@ import (
 func (k Keeper) EndBlocker(ctx sdk.Context) {
 	params := k.GetParams(ctx)
 
-	if params.Root == params.LastRoot {
+	if params.Root == params.LastSignedRoot {
 		return
 	}
+
 	// Creating operation to be signed by TSS parties
-	index, err := k.rarimo.CreateRootUpdateOperation(ctx, types.ModuleName, &rarimocoremoduletypes.RootUpdate{
+	index, err := k.rarimo.CreateRootUpdateOperation(ctx, types.ModuleName, &rarimocoremoduletypes.PassportRootUpdate{
 		ContractAddress: params.ContractAddress,
 		Root:            params.Root,
+		Timestamp:       params.RootTimestamp,
 	})
 
 	if err != nil {
@@ -23,7 +25,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		return
 	}
 
-	params.LastRoot = params.Root
-	params.Index = index
+	params.LastSignedRoot = params.Root
+	params.LastSignedRootIndex = index
 	k.SetParams(ctx, params)
 }

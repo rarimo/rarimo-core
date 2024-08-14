@@ -6,5 +6,5 @@ import (
 )
 
 type RarimocoreKeeper interface {
-	CreateRootUpdateOperation(ctx sdk.Context, creator string, update *types.RootUpdate) (string, error)
+	CreateRootUpdateOperation(ctx sdk.Context, creator string, update *types.PassportRootUpdate) (string, error)
 }

@@ -106,7 +106,7 @@ func NewAppModule(
 
 // Deprecated: use RegisterServices
 func (am AppModule) Route() sdk.Route {
-	return sdk.NewRoute(types.RouterKey, NewHandler(am.keeper))
+	return sdk.Route{}
 }
 
 // Deprecated: use RegisterServices

@@ -9,7 +9,8 @@ option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
 message Params {
   string contract_address = 1;
   string root = 2;
-  string last_root = 3;
-  string index = 4;
+  string last_signed_root = 3;
+  string last_signed_root_index = 4;
   string event_name = 5;
+  uint32 root_timestamp = 6;
 }
