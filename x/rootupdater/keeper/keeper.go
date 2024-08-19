@@ -64,8 +64,15 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		return err
 	}
 
+	contractAddress, err := hexutil.Decode(params.ContractAddress)
+	if err != nil {
+		// If return an error here, the whole EVM module won't work
+		k.Logger(ctx).Debug("failed to decode contract address")
+		return nil
+	}
+
 	// Validating message receiver address (should be our state smart contract)
-	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), hexutil.MustDecode(params.ContractAddress)) != 0 {
+	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), contractAddress) != 0 {
 		return nil
 	}
 

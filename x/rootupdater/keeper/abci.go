@@ -9,7 +9,7 @@ import (
 func (k Keeper) EndBlocker(ctx sdk.Context) {
 	params := k.GetParams(ctx)
 
-	if params.Root == params.LastSignedRoot {
+	if params.Root == params.LastSignedRoot && params.Root != "" {
 		return
 	}
 

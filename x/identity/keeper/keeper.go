@@ -105,7 +105,13 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 	}
 
 	// Validating message receiver address (should be our state smart contract)
-	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), hexutil.MustDecode(params.IdentityContractAddress)) != 0 {
+	addressBytes, err := hexutil.Decode(params.IdentityContractAddress)
+	if err != nil {
+		k.Logger(ctx).Debug("failed to decode contract address")
+		return nil
+	}
+
+	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), addressBytes) != 0 {
 		return nil
 	}
 

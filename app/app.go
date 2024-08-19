@@ -654,6 +654,15 @@ func New(
 	)
 	feeMarketModule := feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs) // <- ACTUAL module creation in app.go that you need
 
+	app.RootupdaterKeeper = *rootupdatermodulekeeper.NewKeeper(
+		appCodec,
+		keys[rootupdatermoduletypes.StoreKey],
+		keys[rootupdatermoduletypes.MemStoreKey],
+		app.GetSubspace(rootupdatermoduletypes.ModuleName),
+		app.RarimocoreKeeper,
+	)
+	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper)
+
 	// Set authority to x/gov module account to only expect the module account to update params
 	evmSs := app.GetSubspace(evmtypes.ModuleName)
 	app.EvmKeeper = evmkeeper.NewKeeper(
@@ -675,15 +684,6 @@ func New(
 		app.BankKeeper,
 	)
 	vestingmintModule := vestingmintmodule.NewAppModule(appCodec, app.VestingmintKeeper, app.AccountKeeper, app.BankKeeper)
-
-	app.RootupdaterKeeper = *rootupdatermodulekeeper.NewKeeper(
-		appCodec,
-		keys[rootupdatermoduletypes.StoreKey],
-		keys[rootupdatermoduletypes.MemStoreKey],
-		app.GetSubspace(rootupdatermoduletypes.ModuleName),
-		app.RarimocoreKeeper,
-	)
-	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
