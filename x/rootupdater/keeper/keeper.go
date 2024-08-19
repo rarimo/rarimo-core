@@ -11,6 +11,7 @@ import (
 	"github.com/rarimo/rarimo-core/ethermint/utils"
 	"github.com/rarimo/rarimo-core/x/rootupdater/pkg/state"
 	"strings"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -95,6 +96,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		}
 
 		params.Root = hex.EncodeToString(eventBody.Root[:])
+		params.RootTimestamp = uint32(time.Now().Unix())
 
 		k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
 		k.SetParams(ctx, params)
