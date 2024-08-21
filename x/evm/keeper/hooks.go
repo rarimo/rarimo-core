@@ -39,7 +39,7 @@ func (mh MultiEvmHooks) PostTxProcessing(ctx sdk.Context, msg core.Message, rece
 
 	for i := range mh {
 		if err := mh[i].PostTxProcessing(ctx, msg, receipt); err != nil {
-			errBunch = errorsmod.Wrapf(err, "EVM hook %T failed", mh[i])
+			errBunch = errorsmod.Wrapf(errorsmod.Wrap(errBunch, err.Error()), "EVM hook %T failed", mh[i])
 		}
 	}
 	return errBunch

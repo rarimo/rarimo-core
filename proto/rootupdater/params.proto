@@ -12,5 +12,5 @@ message Params {
   string last_signed_root = 3;
   string last_signed_root_index = 4;
   string event_name = 5;
-  uint32 root_timestamp = 6;
+  int64 root_timestamp = 6;
 }

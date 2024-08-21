@@ -2,22 +2,19 @@ package keeper
 
 import (
 	"bytes"
-	"encoding/hex"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/codec"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/rarimo/rarimo-core/ethermint/utils"
 	"github.com/rarimo/rarimo-core/x/rootupdater/pkg/state"
-	"strings"
-	"time"
-
-	"github.com/cosmos/cosmos-sdk/codec"
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/tendermint/tendermint/libs/log"
+	"strings"
 
 	"github.com/rarimo/rarimo-core/x/rootupdater/types"
 )
@@ -95,8 +92,8 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 			return err
 		}
 
-		params.Root = hex.EncodeToString(eventBody.Root[:])
-		params.RootTimestamp = uint32(time.Now().Unix())
+		params.Root = hexutil.Encode(eventBody.Root[:])
+		params.RootTimestamp = ctx.BlockTime().Unix()
 
 		k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
 		k.SetParams(ctx, params)

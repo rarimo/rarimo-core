@@ -7,7 +7,6 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"github.com/rarimo/rarimo-core/x/rarimocore/types"
-	"time"
 )
 
 func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate, error) {
@@ -19,29 +18,9 @@ func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate
 }
 
 func GetPassportRootUpdateContent(op *types.PassportRootUpdate) (*operation.PassportRootUpdateContent, error) {
-	timestamp := time.Unix(int64(op.Timestamp), 0)
-	timestampBytes, err := timestamp.MarshalBinary()
-	if err != nil {
-		return nil, errors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-	
-	if op.Root[:2] != "0x" {
-		op.Root = "0x" + op.Root
-	}
-
-	root, err := hexutil.Decode(op.Root)
-	if err != nil {
-		return nil, errors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-
-	contractAddress, err := hexutil.Decode(op.ContractAddress)
-	if err != nil {
-		return nil, errors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())
-	}
-
 	return &operation.PassportRootUpdateContent{
-		ContractAddress: operation.To32Bytes(contractAddress),
-		Root:            operation.To32Bytes(root),
-		RootTimestamp:   operation.To32Bytes(timestampBytes),
+		ContractAddress: operation.To32Bytes(hexutil.MustDecode(op.ContractAddress)),
+		Root:            operation.To32Bytes(hexutil.MustDecode(op.Root)),
+		RootTimestamp:   operation.IntTo32Bytes(int(op.Timestamp)),
 	}, nil
 }

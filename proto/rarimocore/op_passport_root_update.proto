@@ -6,6 +6,7 @@ option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
 message PassportRootUpdate {
   string root = 1;
   string contract_address = 2;
-  uint32 timestamp = 3;
+  int64 timestamp = 3;
 }
+
 
