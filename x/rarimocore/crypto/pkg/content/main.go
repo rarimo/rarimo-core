@@ -109,8 +109,8 @@ func GetContents(client *grpc.ClientConn, operations ...*types.Operation) ([]mer
 			if content != nil {
 				contents = append(contents, content)
 			}
-		case types.OpType_UPDATE_ROOT:
-			content, err := GetRootUpdateContent(op)
+		case types.OpType_PASSPORT_ROOT_UPDATE:
+			content, err := GetPassportRootUpdateContent(op)
 			if err != nil {
 				return nil, err
 			}
@@ -280,12 +280,12 @@ func GetArbitraryContent(op *types.Operation) (merkle.Content, error) {
 	return content, errors.Wrap(err, "error creating content")
 }
 
-func GetRootUpdateContent(op *types.Operation) (merkle.Content, error) {
-	update, err := pkg.GetRootUpdate(*op)
+func GetPassportRootUpdateContent(op *types.Operation) (merkle.Content, error) {
+	update, err := pkg.GetPassportRootUpdate(*op)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing operation details")
 	}
 
-	content, err := pkg.GetRootUpdateContent(update)
+	content, err := pkg.GetPassportRootUpdateContent(update)
 	return content, errors.Wrap(err, "error creating content")
 }

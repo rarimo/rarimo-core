@@ -9,17 +9,18 @@ import (
 	"github.com/rarimo/rarimo-core/x/rarimocore/types"
 )
 
-func GetRootUpdate(operation types.Operation) (*types.RootUpdate, error) {
-	if operation.OperationType == types.OpType_UPDATE_ROOT {
-		op := new(types.RootUpdate)
+func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate, error) {
+	if operation.OperationType == types.OpType_PASSPORT_ROOT_UPDATE {
+		op := new(types.PassportRootUpdate)
 		return op, proto.Unmarshal(operation.Details.Value, op)
 	}
 	return nil, errors.Wrap(sdkerrors.ErrInvalidType, "invalid operation type")
 }
 
-func GetRootUpdateContent(op *types.RootUpdate) (*operation.RootUpdateContent, error) {
-	return &operation.RootUpdateContent{
+func GetPassportRootUpdateContent(op *types.PassportRootUpdate) (*operation.PassportRootUpdateContent, error) {
+	return &operation.PassportRootUpdateContent{
 		ContractAddress: operation.To32Bytes(hexutil.MustDecode(op.ContractAddress)),
 		Root:            operation.To32Bytes(hexutil.MustDecode(op.Root)),
+		RootTimestamp:   operation.IntTo32Bytes(int(op.Timestamp)),
 	}, nil
 }

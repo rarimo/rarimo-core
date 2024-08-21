@@ -577,20 +577,20 @@ func (k Keeper) CreateArbitraryOperation(ctx sdk.Context, creator string, arbitr
 	return nil
 }
 
-func (k Keeper) CreateRootUpdateOperation(ctx sdk.Context, creator string, update *types.RootUpdate) (string, error) {
+func (k Keeper) CreateRootUpdateOperation(ctx sdk.Context, creator string, update *types.PassportRootUpdate) (string, error) {
 	details, err := cosmostypes.NewAnyWithValue(update)
 	if err != nil {
 		return "", errors.Wrapf(sdkerrors.ErrInvalidRequest, "error parsing details: %s", err.Error())
 	}
 
-	content, err := pkg.GetRootUpdateContent(update)
+	content, err := pkg.GetPassportRootUpdateContent(update)
 	if err != nil {
 		return "", errors.Wrapf(sdkerrors.ErrInvalidRequest, "error creating content: %s", err.Error())
 	}
 
 	operation := types.Operation{
 		Index:         hexutil.Encode(content.CalculateHash()),
-		OperationType: types.OpType_UPDATE_ROOT,
+		OperationType: types.OpType_PASSPORT_ROOT_UPDATE,
 		Details:       details,
 		Status:        types.OpStatus_INITIALIZED,
 		Creator:       creator,

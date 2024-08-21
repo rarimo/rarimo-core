@@ -5,13 +5,7 @@ option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc UpdateRoot(MsgUpdateRoot) returns (MsgUpdateRootResponse);
+
 }
 
-message MsgUpdateRoot{
-  string creator = 1;
-  string root = 2;
-}
-
-message MsgUpdateRootResponse {}
-
+// this line is used by starport scaffolding # proto/tx/message
