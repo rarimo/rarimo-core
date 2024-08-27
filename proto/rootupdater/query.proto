@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarimo.rootupdater;
+package rarimo.rarimocore.rootupdater;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
