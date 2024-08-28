@@ -18,6 +18,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 		ContractAddress: params.ContractAddress,
 		Root:            params.Root,
 		Timestamp:       params.RootTimestamp,
+		BlockHeight:     params.BlockHeight,
 	})
 
 	if err != nil {

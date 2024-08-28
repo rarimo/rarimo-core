@@ -94,6 +94,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 
 		params.Root = hexutil.Encode(eventBody.Root[:])
 		params.RootTimestamp = ctx.BlockTime().Unix()
+		params.BlockHeight = log.BlockNumber
 
 		k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
 		k.SetParams(ctx, params)
