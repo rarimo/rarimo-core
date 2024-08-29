@@ -5,7 +5,6 @@ import (
 )
 
 const (
-	ProposalTypeUpgradeContract       = "tokenmanager/UpgradeContract"
 	ProposalTypeAddNetwork            = "tokenmanager/AddNetwork"
 	ProposalTypeRemoveNetwork         = "tokenmanager/RemoveNetwork"
 	ProposalTypeUpdateContractAddress = "tokenmanager/UpdateContractAddressNetwork"
@@ -24,7 +23,6 @@ const (
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeUpgradeContract)
 	gov.RegisterProposalType(ProposalTypeAddNetwork)
 	gov.RegisterProposalType(ProposalTypeRemoveNetwork)
 	gov.RegisterProposalType(ProposalTypeUpdateContractAddress)
@@ -42,7 +40,6 @@ func init() {
 	gov.RegisterProposalType(ProposalTypeRemoveCollectionData)
 	gov.RegisterProposalType(ProposalTypeRemoveCollection)
 
-	gov.ModuleCdc.RegisterConcrete(&UpgradeContractProposal{}, "tokenmanager/UpgradeContractProposal", nil)
 	gov.ModuleCdc.RegisterConcrete(&AddNetworkProposal{}, "tokenmanager/AddNetworkProposal", nil)
 	gov.ModuleCdc.RegisterConcrete(&RemoveNetworkProposal{}, "tokenmanager/RemoveNetworkProposal", nil)
 
@@ -58,20 +55,6 @@ func init() {
 	gov.ModuleCdc.RegisterConcrete(&AddCollectionDataProposal{}, "tokenmanager/AddCollectionDataProposal", nil)
 	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionDataProposal{}, "tokenmanager/RemoveCollectionDataProposal", nil)
 	gov.ModuleCdc.RegisterConcrete(&RemoveCollectionProposal{}, "tokenmanager/RemoveCollectionProposal", nil)
-}
-
-// Implements Proposal Interface
-var _ gov.Content = &UpgradeContractProposal{}
-
-func (m *UpgradeContractProposal) ProposalRoute() string { return RouterKey }
-func (m *UpgradeContractProposal) ProposalType() string  { return ProposalTypeUpgradeContract }
-
-func (m *UpgradeContractProposal) ValidateBasic() error {
-	if err := gov.ValidateAbstract(m); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // Implements Proposal Interface

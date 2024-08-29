@@ -200,38 +200,6 @@ message MsgCreateTransferOp {
 }
 ```
 
-### CreateIdentityDefaultTransferOperation
-
-**CreateIdentityDefaultTransferOperation** - creates Operation with type `IDENTITY_DEFAULT_TRANSFER` and `INITIALIZED`
-status.
-
-```protobuf
-message MsgCreateIdentityDefaultTransferOp {
-  string creator = 1;
-  // Hex 0x
-  string contract = 2;
-  string chain = 3;
-  // Hex 0x
-  string GISTHash = 4;
-  // Hex 0x
-  string id = 5;
-  // Hex 0x
-  string stateHash = 6;
-  // Dec
-  string stateCreatedAtTimestamp = 7;
-  string stateCreatedAtBlock = 8;
-  // Hex 0x
-  string stateReplacedBy = 11;
-  string GISTReplacedBy = 12;
-  // Dec
-  string GISTCreatedAtTimestamp = 13;
-  string GISTCreatedAtBlock = 14;
-  // HEx 0x
-  string replacedStateHash = 17;
-  string replacedGISTtHash = 18;
-}
-```
-
 ### CreateIdentityGISTTransferOperation
 
 **CreateIdentityGISTTransferOperation** - creates Operation with type `IDENTITY_GIST_TRANSFER` and `INITIALIZED`

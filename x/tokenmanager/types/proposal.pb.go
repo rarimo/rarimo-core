@@ -24,192 +24,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type UpgradeType int32
-
-const (
-	UpgradeType_NONE                 UpgradeType = 0
-	UpgradeType_BASIC_IMPLEMENTATION UpgradeType = 1
-	UpgradeType_OTHER                UpgradeType = 2
-)
-
-var UpgradeType_name = map[int32]string{
-	0: "NONE",
-	1: "BASIC_IMPLEMENTATION",
-	2: "OTHER",
-}
-
-var UpgradeType_value = map[string]int32{
-	"NONE":                 0,
-	"BASIC_IMPLEMENTATION": 1,
-	"OTHER":                2,
-}
-
-func (x UpgradeType) String() string {
-	return proto.EnumName(UpgradeType_name, int32(x))
-}
-
-func (UpgradeType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{0}
-}
-
-type ContractUpgradeDetails struct {
-	// Target contract address upgrade to
-	TargetContract string `protobuf:"bytes,1,opt,name=targetContract,proto3" json:"targetContract,omitempty"`
-	// New contract address: used on EVM
-	NewImplementationContract string `protobuf:"bytes,2,opt,name=newImplementationContract,proto3" json:"newImplementationContract,omitempty"`
-	// byte code hash: used on Solana and Near
-	Hash string `protobuf:"bytes,3,opt,name=hash,proto3" json:"hash,omitempty"`
-	// Solana buffer account
-	BufferAccount string `protobuf:"bytes,4,opt,name=bufferAccount,proto3" json:"bufferAccount,omitempty"`
-	// chain name according to stored in tokenmanager params
-	Chain string `protobuf:"bytes,5,opt,name=chain,proto3" json:"chain,omitempty"`
-	// dec nonce
-	Nonce string      `protobuf:"bytes,6,opt,name=nonce,proto3" json:"nonce,omitempty"`
-	Type  UpgradeType `protobuf:"varint,7,opt,name=type,proto3,enum=rarimo.rarimocore.tokenmanager.UpgradeType" json:"type,omitempty"`
-}
-
-func (m *ContractUpgradeDetails) Reset()         { *m = ContractUpgradeDetails{} }
-func (m *ContractUpgradeDetails) String() string { return proto.CompactTextString(m) }
-func (*ContractUpgradeDetails) ProtoMessage()    {}
-func (*ContractUpgradeDetails) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{0}
-}
-func (m *ContractUpgradeDetails) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *ContractUpgradeDetails) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_ContractUpgradeDetails.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *ContractUpgradeDetails) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ContractUpgradeDetails.Merge(m, src)
-}
-func (m *ContractUpgradeDetails) XXX_Size() int {
-	return m.Size()
-}
-func (m *ContractUpgradeDetails) XXX_DiscardUnknown() {
-	xxx_messageInfo_ContractUpgradeDetails.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ContractUpgradeDetails proto.InternalMessageInfo
-
-func (m *ContractUpgradeDetails) GetTargetContract() string {
-	if m != nil {
-		return m.TargetContract
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetNewImplementationContract() string {
-	if m != nil {
-		return m.NewImplementationContract
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetHash() string {
-	if m != nil {
-		return m.Hash
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetBufferAccount() string {
-	if m != nil {
-		return m.BufferAccount
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetChain() string {
-	if m != nil {
-		return m.Chain
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetNonce() string {
-	if m != nil {
-		return m.Nonce
-	}
-	return ""
-}
-
-func (m *ContractUpgradeDetails) GetType() UpgradeType {
-	if m != nil {
-		return m.Type
-	}
-	return UpgradeType_NONE
-}
-
-type UpgradeContractProposal struct {
-	Title       string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Description string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Details     ContractUpgradeDetails `protobuf:"bytes,4,opt,name=details,proto3" json:"details"`
-}
-
-func (m *UpgradeContractProposal) Reset()         { *m = UpgradeContractProposal{} }
-func (m *UpgradeContractProposal) String() string { return proto.CompactTextString(m) }
-func (*UpgradeContractProposal) ProtoMessage()    {}
-func (*UpgradeContractProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{1}
-}
-func (m *UpgradeContractProposal) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *UpgradeContractProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_UpgradeContractProposal.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *UpgradeContractProposal) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpgradeContractProposal.Merge(m, src)
-}
-func (m *UpgradeContractProposal) XXX_Size() int {
-	return m.Size()
-}
-func (m *UpgradeContractProposal) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpgradeContractProposal.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_UpgradeContractProposal proto.InternalMessageInfo
-
-func (m *UpgradeContractProposal) GetTitle() string {
-	if m != nil {
-		return m.Title
-	}
-	return ""
-}
-
-func (m *UpgradeContractProposal) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
-func (m *UpgradeContractProposal) GetDetails() ContractUpgradeDetails {
-	if m != nil {
-		return m.Details
-	}
-	return ContractUpgradeDetails{}
-}
-
 type AddNetworkProposal struct {
 	Title       string  `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description string  `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
@@ -220,7 +34,7 @@ func (m *AddNetworkProposal) Reset()         { *m = AddNetworkProposal{} }
 func (m *AddNetworkProposal) String() string { return proto.CompactTextString(m) }
 func (*AddNetworkProposal) ProtoMessage()    {}
 func (*AddNetworkProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{2}
+	return fileDescriptor_095086fc1f73fe4b, []int{0}
 }
 func (m *AddNetworkProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -280,7 +94,7 @@ func (m *RemoveNetworkProposal) Reset()         { *m = RemoveNetworkProposal{} }
 func (m *RemoveNetworkProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveNetworkProposal) ProtoMessage()    {}
 func (*RemoveNetworkProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{3}
+	return fileDescriptor_095086fc1f73fe4b, []int{1}
 }
 func (m *RemoveNetworkProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -342,7 +156,7 @@ func (m *AddFeeTokenProposal) Reset()         { *m = AddFeeTokenProposal{} }
 func (m *AddFeeTokenProposal) String() string { return proto.CompactTextString(m) }
 func (*AddFeeTokenProposal) ProtoMessage()    {}
 func (*AddFeeTokenProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{4}
+	return fileDescriptor_095086fc1f73fe4b, []int{2}
 }
 func (m *AddFeeTokenProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -418,7 +232,7 @@ func (m *UpdateFeeTokenProposal) Reset()         { *m = UpdateFeeTokenProposal{}
 func (m *UpdateFeeTokenProposal) String() string { return proto.CompactTextString(m) }
 func (*UpdateFeeTokenProposal) ProtoMessage()    {}
 func (*UpdateFeeTokenProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{5}
+	return fileDescriptor_095086fc1f73fe4b, []int{3}
 }
 func (m *UpdateFeeTokenProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -494,7 +308,7 @@ func (m *RemoveFeeTokenProposal) Reset()         { *m = RemoveFeeTokenProposal{}
 func (m *RemoveFeeTokenProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveFeeTokenProposal) ProtoMessage()    {}
 func (*RemoveFeeTokenProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{6}
+	return fileDescriptor_095086fc1f73fe4b, []int{4}
 }
 func (m *RemoveFeeTokenProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -571,7 +385,7 @@ func (m *WithdrawFeeProposal) Reset()         { *m = WithdrawFeeProposal{} }
 func (m *WithdrawFeeProposal) String() string { return proto.CompactTextString(m) }
 func (*WithdrawFeeProposal) ProtoMessage()    {}
 func (*WithdrawFeeProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{7}
+	return fileDescriptor_095086fc1f73fe4b, []int{5}
 }
 func (m *WithdrawFeeProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -652,7 +466,7 @@ func (m *UpdateTokenItemProposal) Reset()         { *m = UpdateTokenItemProposal
 func (m *UpdateTokenItemProposal) String() string { return proto.CompactTextString(m) }
 func (*UpdateTokenItemProposal) ProtoMessage()    {}
 func (*UpdateTokenItemProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{8}
+	return fileDescriptor_095086fc1f73fe4b, []int{6}
 }
 func (m *UpdateTokenItemProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -712,7 +526,7 @@ func (m *RemoveTokenItemProposal) Reset()         { *m = RemoveTokenItemProposal
 func (m *RemoveTokenItemProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveTokenItemProposal) ProtoMessage()    {}
 func (*RemoveTokenItemProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{9}
+	return fileDescriptor_095086fc1f73fe4b, []int{7}
 }
 func (m *RemoveTokenItemProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -777,7 +591,7 @@ func (m *CreateCollectionProposal) Reset()         { *m = CreateCollectionPropos
 func (m *CreateCollectionProposal) String() string { return proto.CompactTextString(m) }
 func (*CreateCollectionProposal) ProtoMessage()    {}
 func (*CreateCollectionProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{10}
+	return fileDescriptor_095086fc1f73fe4b, []int{8}
 }
 func (m *CreateCollectionProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -865,7 +679,7 @@ func (m *UpdateCollectionDataProposal) Reset()         { *m = UpdateCollectionDa
 func (m *UpdateCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*UpdateCollectionDataProposal) ProtoMessage()    {}
 func (*UpdateCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{11}
+	return fileDescriptor_095086fc1f73fe4b, []int{9}
 }
 func (m *UpdateCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -925,7 +739,7 @@ func (m *AddCollectionDataProposal) Reset()         { *m = AddCollectionDataProp
 func (m *AddCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*AddCollectionDataProposal) ProtoMessage()    {}
 func (*AddCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{12}
+	return fileDescriptor_095086fc1f73fe4b, []int{10}
 }
 func (m *AddCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -985,7 +799,7 @@ func (m *RemoveCollectionDataProposal) Reset()         { *m = RemoveCollectionDa
 func (m *RemoveCollectionDataProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveCollectionDataProposal) ProtoMessage()    {}
 func (*RemoveCollectionDataProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{13}
+	return fileDescriptor_095086fc1f73fe4b, []int{11}
 }
 func (m *RemoveCollectionDataProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1045,7 +859,7 @@ func (m *RemoveCollectionProposal) Reset()         { *m = RemoveCollectionPropos
 func (m *RemoveCollectionProposal) String() string { return proto.CompactTextString(m) }
 func (*RemoveCollectionProposal) ProtoMessage()    {}
 func (*RemoveCollectionProposal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_095086fc1f73fe4b, []int{14}
+	return fileDescriptor_095086fc1f73fe4b, []int{12}
 }
 func (m *RemoveCollectionProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1096,9 +910,6 @@ func (m *RemoveCollectionProposal) GetIndex() string {
 }
 
 func init() {
-	proto.RegisterEnum("rarimo.rarimocore.tokenmanager.UpgradeType", UpgradeType_name, UpgradeType_value)
-	proto.RegisterType((*ContractUpgradeDetails)(nil), "rarimo.rarimocore.tokenmanager.ContractUpgradeDetails")
-	proto.RegisterType((*UpgradeContractProposal)(nil), "rarimo.rarimocore.tokenmanager.UpgradeContractProposal")
 	proto.RegisterType((*AddNetworkProposal)(nil), "rarimo.rarimocore.tokenmanager.AddNetworkProposal")
 	proto.RegisterType((*RemoveNetworkProposal)(nil), "rarimo.rarimocore.tokenmanager.RemoveNetworkProposal")
 	proto.RegisterType((*AddFeeTokenProposal)(nil), "rarimo.rarimocore.tokenmanager.AddFeeTokenProposal")
@@ -1117,177 +928,47 @@ func init() {
 func init() { proto.RegisterFile("tokenmanager/proposal.proto", fileDescriptor_095086fc1f73fe4b) }
 
 var fileDescriptor_095086fc1f73fe4b = []byte{
-	// 843 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x56, 0x4f, 0x8f, 0xdb, 0x54,
-	0x10, 0xcf, 0xdb, 0x38, 0xfb, 0x67, 0x2c, 0xaa, 0xd5, 0xeb, 0xb2, 0xeb, 0x5d, 0x4a, 0x58, 0x59,
-	0x15, 0xac, 0x40, 0x24, 0x92, 0x2b, 0x21, 0x0e, 0x95, 0x50, 0x36, 0xbb, 0x85, 0x48, 0x4d, 0x52,
-	0x99, 0x14, 0x24, 0x2e, 0xe8, 0xc5, 0x9e, 0x75, 0xac, 0xc6, 0x7e, 0xd6, 0xcb, 0x4b, 0xb7, 0xfb,
-	0x19, 0x7a, 0xe1, 0x82, 0x40, 0xdc, 0x38, 0x70, 0xe0, 0x53, 0x20, 0x71, 0xea, 0xb1, 0x47, 0x24,
-	0x24, 0x84, 0x76, 0xbf, 0x08, 0xf2, 0x7b, 0xb6, 0xd7, 0xa9, 0x0a, 0xa1, 0x24, 0x91, 0xe8, 0xc9,
-	0x9e, 0x99, 0x37, 0x33, 0xbf, 0xf9, 0xcd, 0xbc, 0x3f, 0xf0, 0x96, 0xe4, 0x8f, 0x30, 0x8e, 0x58,
-	0xcc, 0x02, 0x14, 0xcd, 0x44, 0xf0, 0x84, 0x4f, 0xd8, 0xb8, 0x91, 0x08, 0x2e, 0x39, 0xad, 0x0b,
-	0x26, 0xc2, 0x88, 0x37, 0xf4, 0xc7, 0xe3, 0x02, 0x1b, 0xe5, 0xe5, 0x07, 0x3b, 0x01, 0x0f, 0xb8,
-	0x5a, 0xda, 0x4c, 0xff, 0xb4, 0xd7, 0xc1, 0xdb, 0x33, 0x21, 0x3d, 0x3e, 0x1e, 0xa3, 0x27, 0x43,
-	0x1e, 0x67, 0xe6, 0xbd, 0x19, 0x73, 0x28, 0x31, 0xca, 0x0c, 0xfb, 0xb3, 0x50, 0x98, 0x60, 0xd1,
-	0x24, 0x37, 0x05, 0x9c, 0x07, 0x63, 0x6c, 0x2a, 0x69, 0x38, 0x3d, 0x6b, 0xb2, 0xf8, 0x42, 0x9b,
-	0xec, 0x9f, 0xd6, 0x60, 0xb7, 0xcd, 0x63, 0x29, 0x98, 0x27, 0x1f, 0x26, 0x81, 0x60, 0x3e, 0x9e,
-	0xa0, 0x64, 0xe1, 0x78, 0x42, 0xdf, 0x85, 0x1b, 0x92, 0x89, 0x00, 0x65, 0x6e, 0xb7, 0xc8, 0x21,
-	0x39, 0xda, 0x72, 0x5f, 0xd0, 0xd2, 0xbb, 0xb0, 0x1f, 0xe3, 0x79, 0x27, 0x4a, 0xc6, 0x18, 0x61,
-	0x2c, 0x59, 0x0a, 0xb6, 0x70, 0x59, 0x53, 0x2e, 0x7f, 0xbf, 0x80, 0x52, 0x30, 0x46, 0x6c, 0x32,
-	0xb2, 0xaa, 0x6a, 0xa1, 0xfa, 0xa7, 0xb7, 0xe1, 0x8d, 0xe1, 0xf4, 0xec, 0x0c, 0x45, 0xcb, 0xf3,
-	0xf8, 0x34, 0x96, 0x96, 0xa1, 0x8c, 0xb3, 0x4a, 0xba, 0x03, 0x35, 0x6f, 0xc4, 0xc2, 0xd8, 0xaa,
-	0x29, 0xab, 0x16, 0x52, 0x6d, 0xcc, 0x63, 0x0f, 0xad, 0x75, 0xad, 0x55, 0x02, 0xfd, 0x04, 0x0c,
-	0x79, 0x91, 0xa0, 0xb5, 0x71, 0x48, 0x8e, 0x6e, 0x38, 0x1f, 0x34, 0xfe, 0xb9, 0x33, 0x8d, 0x8c,
-	0x89, 0xc1, 0x45, 0x82, 0xae, 0x72, 0xb4, 0x7f, 0x26, 0xb0, 0x97, 0x69, 0x73, 0xe8, 0x0f, 0xb2,
-	0x6e, 0xa7, 0x29, 0x65, 0x28, 0xc7, 0x98, 0xf1, 0xa3, 0x05, 0x7a, 0x08, 0xa6, 0x8f, 0x13, 0x4f,
-	0x84, 0x49, 0x5a, 0x6f, 0x46, 0x44, 0x59, 0x45, 0xbf, 0x80, 0x0d, 0x5f, 0x73, 0xad, 0x0a, 0x34,
-	0x9d, 0x8f, 0xe6, 0xe1, 0x7a, 0x79, 0xa7, 0x8e, 0x8d, 0x67, 0x7f, 0xbc, 0x53, 0x71, 0xf3, 0x60,
-	0xf6, 0xb7, 0x04, 0x68, 0xcb, 0xf7, 0x7b, 0x28, 0xcf, 0xb9, 0x78, 0xb4, 0x30, 0xcc, 0x4f, 0x61,
-	0x23, 0xd6, 0xa1, 0x54, 0x93, 0x4c, 0xe7, 0xbd, 0x79, 0x30, 0xb3, 0xcc, 0x39, 0xae, 0xcc, 0xdb,
-	0x46, 0x78, 0xd3, 0xc5, 0x88, 0x3f, 0xc6, 0x65, 0x21, 0x2b, 0x26, 0xa0, 0x5a, 0x9a, 0x00, 0xfb,
-	0x17, 0x02, 0x37, 0x5b, 0xbe, 0x7f, 0x0f, 0x71, 0x90, 0x82, 0x5a, 0x4d, 0x96, 0xeb, 0x39, 0x33,
-	0xca, 0x73, 0x76, 0x02, 0x35, 0xc5, 0x84, 0x9a, 0x49, 0xd3, 0x39, 0x9a, 0xc7, 0x54, 0x0e, 0x32,
-	0xa3, 0x4a, 0x3b, 0xdb, 0xbf, 0x12, 0xd8, 0x7d, 0x98, 0xf8, 0x4c, 0xe2, 0x6b, 0x5c, 0xc4, 0xf7,
-	0x04, 0x76, 0x75, 0xbb, 0x57, 0x5c, 0xc4, 0x01, 0x6c, 0x7a, 0xf9, 0x71, 0xa3, 0xeb, 0x28, 0xe4,
-	0xeb, 0x02, 0x6b, 0xa5, 0x02, 0xed, 0xdf, 0x09, 0xdc, 0xfc, 0x32, 0x94, 0x23, 0x5f, 0xb0, 0xf3,
-	0x7b, 0x88, 0x2b, 0xc2, 0x55, 0xd0, 0x68, 0x2c, 0x40, 0x63, 0x5a, 0x9d, 0x40, 0x0f, 0xc3, 0xc7,
-	0x28, 0xb2, 0x22, 0x0a, 0xf9, 0xe5, 0x67, 0x9d, 0xfd, 0x54, 0x1d, 0x55, 0xe9, 0xf4, 0xa8, 0x70,
-	0x1d, 0x89, 0xd1, 0xc2, 0x15, 0x7e, 0x0c, 0x46, 0x7a, 0xd5, 0x58, 0xd5, 0xc3, 0xea, 0x91, 0xe9,
-	0xdc, 0x9e, 0x57, 0x4a, 0x9a, 0xd3, 0x55, 0x1e, 0x76, 0x00, 0x7b, 0x7a, 0x0a, 0x96, 0x07, 0x66,
-	0x07, 0x6a, 0x61, 0xec, 0xe3, 0x13, 0x85, 0x66, 0xcb, 0xd5, 0x82, 0xfd, 0xb4, 0x0a, 0x56, 0x5b,
-	0x20, 0x93, 0xd8, 0x2e, 0xee, 0xcc, 0x65, 0xa6, 0x22, 0x45, 0x2a, 0x3a, 0x80, 0xcd, 0x08, 0x25,
-	0xf3, 0x99, 0x64, 0x59, 0x73, 0x9d, 0xf9, 0x27, 0x77, 0x8e, 0xa9, 0x9b, 0x79, 0x66, 0x6d, 0x2e,
-	0x22, 0xd1, 0x63, 0x30, 0x54, 0xc4, 0x9a, 0xe2, 0xb8, 0xf1, 0xef, 0x23, 0x9e, 0x30, 0xc9, 0x5c,
-	0xe5, 0x5b, 0xf4, 0x69, 0xfd, 0x55, 0xfb, 0x44, 0xbb, 0x60, 0xf2, 0xb8, 0x9d, 0x0e, 0x6e, 0xaa,
-	0xb4, 0x36, 0x54, 0x80, 0xb9, 0x17, 0x65, 0xff, 0xda, 0xc5, 0x2d, 0xfb, 0xdb, 0x3f, 0x10, 0xb8,
-	0xa5, 0x87, 0x70, 0x16, 0xe7, 0xc2, 0x1d, 0xc9, 0x59, 0xaa, 0xfe, 0x77, 0x96, 0xec, 0xef, 0x08,
-	0xec, 0xb7, 0x7c, 0xff, 0x7f, 0x88, 0xec, 0x47, 0x02, 0xb7, 0xf4, 0x76, 0x59, 0x32, 0xb8, 0x4e,
-	0x79, 0xcf, 0x98, 0xce, 0x9d, 0x57, 0x43, 0xd7, 0x49, 0x5d, 0xf3, 0x8d, 0x36, 0x02, 0xeb, 0x45,
-	0x88, 0xab, 0xd9, 0x67, 0xef, 0xdf, 0x05, 0xb3, 0xf4, 0x12, 0xa3, 0x9b, 0x60, 0xf4, 0xfa, 0xbd,
-	0xd3, 0xed, 0x0a, 0xb5, 0x60, 0xe7, 0xb8, 0xf5, 0x79, 0xa7, 0xfd, 0x75, 0xa7, 0xfb, 0xe0, 0xfe,
-	0x69, 0xf7, 0xb4, 0x37, 0x68, 0x0d, 0x3a, 0xfd, 0xde, 0x36, 0xa1, 0x5b, 0x50, 0xeb, 0x0f, 0x3e,
-	0x3b, 0x75, 0xb7, 0xd7, 0x8e, 0xef, 0x3f, 0xbb, 0xac, 0x93, 0xe7, 0x97, 0x75, 0xf2, 0xe7, 0x65,
-	0x9d, 0x7c, 0x73, 0x55, 0xaf, 0x3c, 0xbf, 0xaa, 0x57, 0x7e, 0xbb, 0xaa, 0x57, 0xbe, 0x72, 0x82,
-	0x50, 0x8e, 0xa6, 0xc3, 0x86, 0xc7, 0xa3, 0xa6, 0x26, 0x20, 0xfb, 0x7c, 0x98, 0x12, 0xd1, 0x7c,
-	0xd2, 0x9c, 0x79, 0x4a, 0xa7, 0xef, 0xbf, 0xc9, 0x70, 0x5d, 0xbd, 0x97, 0xef, 0xfc, 0x15, 0x00,
-	0x00, 0xff, 0xff, 0xeb, 0xa3, 0xa7, 0xd9, 0xf2, 0x0b, 0x00, 0x00,
-}
-
-func (m *ContractUpgradeDetails) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *ContractUpgradeDetails) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ContractUpgradeDetails) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Type != 0 {
-		i = encodeVarintProposal(dAtA, i, uint64(m.Type))
-		i--
-		dAtA[i] = 0x38
-	}
-	if len(m.Nonce) > 0 {
-		i -= len(m.Nonce)
-		copy(dAtA[i:], m.Nonce)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Nonce)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Chain) > 0 {
-		i -= len(m.Chain)
-		copy(dAtA[i:], m.Chain)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Chain)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.BufferAccount) > 0 {
-		i -= len(m.BufferAccount)
-		copy(dAtA[i:], m.BufferAccount)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.BufferAccount)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Hash) > 0 {
-		i -= len(m.Hash)
-		copy(dAtA[i:], m.Hash)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Hash)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.NewImplementationContract) > 0 {
-		i -= len(m.NewImplementationContract)
-		copy(dAtA[i:], m.NewImplementationContract)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.NewImplementationContract)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.TargetContract) > 0 {
-		i -= len(m.TargetContract)
-		copy(dAtA[i:], m.TargetContract)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.TargetContract)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *UpgradeContractProposal) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *UpgradeContractProposal) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *UpgradeContractProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	{
-		size, err := m.Details.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintProposal(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x22
-	if len(m.Description) > 0 {
-		i -= len(m.Description)
-		copy(dAtA[i:], m.Description)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Description)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Title) > 0 {
-		i -= len(m.Title)
-		copy(dAtA[i:], m.Title)
-		i = encodeVarintProposal(dAtA, i, uint64(len(m.Title)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	// 636 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x56, 0x4d, 0x6f, 0xd3, 0x40,
+	0x10, 0xcd, 0x92, 0xb8, 0x1f, 0x93, 0x9b, 0x1b, 0x5a, 0xb7, 0x14, 0x13, 0x59, 0x48, 0x44, 0x42,
+	0xd8, 0x52, 0x7a, 0xe1, 0xda, 0xa6, 0x2a, 0x8a, 0x44, 0x01, 0x59, 0x45, 0x48, 0xdc, 0x36, 0xf6,
+	0xe0, 0x58, 0x8d, 0xbd, 0xd6, 0x66, 0xfb, 0xf5, 0x1b, 0x7a, 0xe1, 0x82, 0x40, 0xdc, 0xf8, 0x25,
+	0x48, 0x9c, 0x7a, 0xec, 0x11, 0x09, 0x09, 0xa1, 0xe4, 0x8f, 0x20, 0xef, 0x3a, 0x8e, 0xc3, 0x81,
+	0x50, 0x92, 0x48, 0x70, 0xb2, 0x67, 0xc7, 0x6f, 0xe6, 0xbd, 0x37, 0xbb, 0xd6, 0xc2, 0x1d, 0xc1,
+	0x8e, 0x31, 0x8e, 0x68, 0x4c, 0x03, 0xe4, 0x4e, 0xc2, 0x59, 0xc2, 0xfa, 0xb4, 0x67, 0x27, 0x9c,
+	0x09, 0xa6, 0x9b, 0x9c, 0xf2, 0x30, 0x62, 0xb6, 0x7a, 0x78, 0x8c, 0xa3, 0x5d, 0xfc, 0x7c, 0xab,
+	0x16, 0xb0, 0x80, 0xc9, 0x4f, 0x9d, 0xf4, 0x4d, 0xa1, 0xb6, 0xee, 0x4e, 0x94, 0xf4, 0x58, 0xaf,
+	0x87, 0x9e, 0x08, 0x59, 0x9c, 0xa5, 0x37, 0x26, 0xd2, 0xa1, 0xc0, 0x28, 0x4b, 0x6c, 0x4e, 0x52,
+	0xa1, 0x9c, 0x46, 0xfd, 0x51, 0x2a, 0x60, 0x2c, 0xe8, 0xa1, 0x23, 0xa3, 0xce, 0xc9, 0x1b, 0x87,
+	0xc6, 0x17, 0x2a, 0x65, 0xbd, 0x23, 0xa0, 0xef, 0xfa, 0xfe, 0x33, 0x14, 0x67, 0x8c, 0x1f, 0xbf,
+	0xc8, 0x04, 0xe8, 0x35, 0xd0, 0x44, 0x28, 0x7a, 0x68, 0x90, 0x3a, 0x69, 0xac, 0xba, 0x2a, 0xd0,
+	0xeb, 0x50, 0xf5, 0xb1, 0xef, 0xf1, 0x30, 0x49, 0x09, 0x19, 0xb7, 0x64, 0xae, 0xb8, 0xa4, 0x3f,
+	0x81, 0xe5, 0x58, 0x95, 0x32, 0xca, 0x75, 0xd2, 0xa8, 0x36, 0x1f, 0xd8, 0xbf, 0x37, 0xc1, 0xce,
+	0x3a, 0xef, 0x55, 0xae, 0xbe, 0xdf, 0x2b, 0xb9, 0x23, 0xb4, 0x85, 0x70, 0xdb, 0xc5, 0x88, 0x9d,
+	0xe2, 0xbc, 0x98, 0xd5, 0x40, 0xf3, 0xba, 0x34, 0x8c, 0x25, 0xaf, 0x55, 0x57, 0x05, 0xd6, 0x67,
+	0x02, 0x6b, 0xbb, 0xbe, 0x7f, 0x80, 0x78, 0x94, 0x92, 0x5a, 0x4c, 0x97, 0x74, 0x35, 0x66, 0xb1,
+	0x87, 0x46, 0x45, 0xad, 0xca, 0x40, 0xdf, 0x07, 0x4d, 0x3a, 0x61, 0x68, 0xd2, 0xa9, 0xc6, 0x34,
+	0xa7, 0x46, 0x24, 0x33, 0xab, 0x14, 0xd8, 0xfa, 0x42, 0x60, 0xfd, 0x65, 0xe2, 0x53, 0x81, 0xff,
+	0xb1, 0x88, 0x0f, 0x04, 0xd6, 0xd5, 0xb8, 0x17, 0x2c, 0x62, 0x0b, 0x56, 0x3c, 0x16, 0x0b, 0x4e,
+	0x3d, 0x91, 0xe9, 0xc8, 0xe3, 0xb1, 0x40, 0xad, 0x20, 0xd0, 0xfa, 0x46, 0x60, 0xed, 0x55, 0x28,
+	0xba, 0x3e, 0xa7, 0x67, 0x07, 0x88, 0x0b, 0xe2, 0x95, 0xdb, 0x58, 0x99, 0xc1, 0xc6, 0x54, 0x1d,
+	0x47, 0x0f, 0xc3, 0x53, 0xe4, 0x99, 0x88, 0x3c, 0x1e, 0xab, 0x5b, 0x2a, 0xaa, 0xbb, 0x24, 0xb0,
+	0xa1, 0x76, 0x8f, 0x2c, 0xd7, 0x16, 0x18, 0xcd, 0xac, 0xf0, 0x31, 0x54, 0xd2, 0xdf, 0x92, 0x51,
+	0xae, 0x97, 0x1b, 0xd5, 0xe6, 0xfd, 0x69, 0x52, 0xd2, 0x9e, 0xae, 0x44, 0x58, 0x01, 0x6c, 0xa8,
+	0x5d, 0x30, 0x3f, 0x32, 0x35, 0xd0, 0xc2, 0xd8, 0xc7, 0x73, 0xc9, 0x66, 0xd5, 0x55, 0x81, 0x75,
+	0x59, 0x06, 0xa3, 0xc5, 0x91, 0x0a, 0x6c, 0xe5, 0xff, 0xd7, 0x79, 0xb6, 0x22, 0x79, 0x2b, 0xfd,
+	0x08, 0x56, 0x22, 0x14, 0xd4, 0xa7, 0x82, 0x66, 0xc3, 0x6d, 0x4e, 0x73, 0x64, 0xcc, 0xe9, 0x30,
+	0x43, 0x66, 0x63, 0xce, 0x2b, 0xe9, 0x7b, 0x50, 0x91, 0x15, 0x35, 0xe9, 0xb1, 0xfd, 0xe7, 0x15,
+	0xf7, 0xa9, 0xa0, 0xae, 0xc4, 0xe6, 0x73, 0x5a, 0xba, 0xe9, 0x9c, 0xf4, 0x43, 0xa8, 0xb2, 0xb8,
+	0x95, 0x6e, 0xdc, 0x74, 0xd1, 0x58, 0x96, 0x05, 0x1e, 0x4e, 0x2b, 0xf0, 0x7c, 0x0c, 0x71, 0x8b,
+	0x78, 0xeb, 0x23, 0x81, 0x6d, 0xb5, 0x09, 0x27, 0x79, 0xce, 0x3c, 0x91, 0x91, 0x4b, 0xe5, 0xbf,
+	0x77, 0xc9, 0x7a, 0x4f, 0x60, 0x73, 0xd7, 0xf7, 0xff, 0x41, 0x66, 0x9f, 0x08, 0x6c, 0xab, 0xe3,
+	0x32, 0x67, 0x72, 0xed, 0xe2, 0x99, 0xa9, 0x36, 0x77, 0x6e, 0xc6, 0xae, 0x9d, 0x42, 0x47, 0x07,
+	0xad, 0x0b, 0xc6, 0xaf, 0x14, 0x17, 0x73, 0xce, 0xf6, 0x9e, 0x5e, 0x0d, 0x4c, 0x72, 0x3d, 0x30,
+	0xc9, 0x8f, 0x81, 0x49, 0xde, 0x0e, 0xcd, 0xd2, 0xf5, 0xd0, 0x2c, 0x7d, 0x1d, 0x9a, 0xa5, 0xd7,
+	0xcd, 0x20, 0x14, 0xdd, 0x93, 0x8e, 0xed, 0xb1, 0xc8, 0x51, 0x12, 0xb2, 0xc7, 0xa3, 0x54, 0x8a,
+	0x73, 0xee, 0x4c, 0x5c, 0x9c, 0xc4, 0x45, 0x82, 0xfd, 0xce, 0x92, 0xbc, 0x1d, 0xed, 0xfc, 0x0c,
+	0x00, 0x00, 0xff, 0xff, 0x47, 0x40, 0x93, 0x97, 0xe0, 0x09, 0x00, 0x00,
 }
 
 func (m *AddNetworkProposal) Marshal() (dAtA []byte, err error) {
@@ -2030,61 +1711,6 @@ func encodeVarintProposal(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *ContractUpgradeDetails) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.TargetContract)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.NewImplementationContract)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Hash)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.BufferAccount)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Chain)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Nonce)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	if m.Type != 0 {
-		n += 1 + sovProposal(uint64(m.Type))
-	}
-	return n
-}
-
-func (m *UpgradeContractProposal) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Title)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = len(m.Description)
-	if l > 0 {
-		n += 1 + l + sovProposal(uint64(l))
-	}
-	l = m.Details.Size()
-	n += 1 + l + sovProposal(uint64(l))
-	return n
-}
-
 func (m *AddNetworkProposal) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2421,414 +2047,6 @@ func sovProposal(x uint64) (n int) {
 }
 func sozProposal(x uint64) (n int) {
 	return sovProposal(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (m *ContractUpgradeDetails) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowProposal
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: ContractUpgradeDetails: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ContractUpgradeDetails: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TargetContract", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TargetContract = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field NewImplementationContract", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.NewImplementationContract = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Hash", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Hash = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BufferAccount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.BufferAccount = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Chain = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Nonce", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Nonce = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 7:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
-			}
-			m.Type = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Type |= UpgradeType(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipProposal(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *UpgradeContractProposal) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowProposal
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: UpgradeContractProposal: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UpgradeContractProposal: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Title = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Description = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Details", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProposal
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthProposal
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.Details.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipProposal(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthProposal
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *AddNetworkProposal) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
