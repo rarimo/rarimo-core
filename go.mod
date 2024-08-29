@@ -39,11 +39,11 @@ require (
 	github.com/tidwall/gjson v1.14.4
 	github.com/tidwall/sjson v1.2.5
 	github.com/tyler-smith/go-bip39 v1.1.0
-	golang.org/x/net v0.24.0
-	golang.org/x/text v0.15.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20240513163218-0867130af1f8
-	google.golang.org/grpc v1.64.0
-	google.golang.org/protobuf v1.34.1
+	golang.org/x/net v0.26.0
+	golang.org/x/text v0.17.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142
+	google.golang.org/grpc v1.64.1
+	google.golang.org/protobuf v1.34.2
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -117,7 +117,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0 // indirect
 	github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c // indirect
 	github.com/gtank/merlin v0.1.1 // indirect
 	github.com/gtank/ristretto255 v0.1.2 // indirect
@@ -195,16 +195,16 @@ require (
 	go.opentelemetry.io/otel/metric v1.24.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
-	golang.org/x/oauth2 v0.20.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/term v0.19.0 // indirect
+	golang.org/x/oauth2 v0.22.0 // indirect
+	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/term v0.21.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/api v0.170.0 // indirect
 	google.golang.org/genproto v0.0.0-20240415180920-8c6c420018be // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240513163218-0867130af1f8 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240814211410-ddb44dafa142 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
@@ -222,4 +222,5 @@ replace (
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 	github.com/tendermint/tendermint => github.com/tendermint/tendermint v0.34.24
 	google.golang.org/grpc => google.golang.org/grpc v1.55.0
+	nhooyr.io/websocket => github.com/coder/websocket v1.8.6
 )
