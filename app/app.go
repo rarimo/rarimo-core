@@ -1111,9 +1111,9 @@ func New(
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
 				ContractAddress:     "0xBF926a23B4A0bcA301F97Ccd27358b55Dc4C7D3C",
-				Root:                "0x00",
-				LastSignedRoot:      "",
-				LastSignedRootIndex: "",
+				Root:                "0x000000",
+				LastSignedRoot:      "0x00",
+				LastSignedRootIndex: "0x00",
 				EventName:           "RootUpdated",
 				RootTimestamp:       1724316208,
 			})
