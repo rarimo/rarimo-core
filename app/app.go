@@ -128,6 +128,9 @@ import (
 	rarimocoremodule "github.com/rarimo/rarimo-core/x/rarimocore"
 	rarimocoremodulekeeper "github.com/rarimo/rarimo-core/x/rarimocore/keeper"
 	rarimocoremoduletypes "github.com/rarimo/rarimo-core/x/rarimocore/types"
+	rootupdatermodule "github.com/rarimo/rarimo-core/x/rootupdater"
+	rootupdatermodulekeeper "github.com/rarimo/rarimo-core/x/rootupdater/keeper"
+	rootupdatermoduletypes "github.com/rarimo/rarimo-core/x/rootupdater/types"
 	tokenmanagermodule "github.com/rarimo/rarimo-core/x/tokenmanager"
 	tokenmanagermodulekeeper "github.com/rarimo/rarimo-core/x/tokenmanager/keeper"
 	tokenmanagermoduletypes "github.com/rarimo/rarimo-core/x/tokenmanager/types"
@@ -207,6 +210,8 @@ var (
 		vestingmintmodule.AppModuleBasic{},
 		identitymodule.AppModuleBasic{},
 		cscalistmodule.AppModuleBasic{},
+		rootupdatermodule.AppModuleBasic{},
+
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -289,6 +294,9 @@ type App struct {
 	VestingmintKeeper vestingmintmodulekeeper.Keeper
 	IdentityKeeper    identitymodulekeeper.Keeper
 	CSCAListKeeper    cscalistkeeper.Keeper
+
+	RootupdaterKeeper rootupdatermodulekeeper.Keeper
+
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 	RarimocoreKeeper rarimocoremodulekeeper.Keeper
 
@@ -353,6 +361,8 @@ func New(
 		vestingmintmoduletypes.StoreKey,
 		identitymoduletypes.StoreKey,
 		cscalisttypes.StoreKey,
+		rootupdatermoduletypes.StoreKey,
+
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey, evmtypes.TransientKey, feemarkettypes.TransientKey)
@@ -645,6 +655,15 @@ func New(
 	)
 	feeMarketModule := feemarket.NewAppModule(app.FeeMarketKeeper, feeMarketSs) // <- ACTUAL module creation in app.go that you need
 
+	app.RootupdaterKeeper = *rootupdatermodulekeeper.NewKeeper(
+		appCodec,
+		keys[rootupdatermoduletypes.StoreKey],
+		keys[rootupdatermoduletypes.MemStoreKey],
+		app.GetSubspace(rootupdatermoduletypes.ModuleName),
+		app.RarimocoreKeeper,
+	)
+	rootupdaterModule := rootupdatermodule.NewAppModule(appCodec, app.RootupdaterKeeper)
+
 	// Set authority to x/gov module account to only expect the module account to update params
 	evmSs := app.GetSubspace(evmtypes.ModuleName)
 	app.EvmKeeper = evmkeeper.NewKeeper(
@@ -652,7 +671,11 @@ func New(
 		app.AccountKeeper, app.BankKeeper, app.StakingKeeper, app.FeeMarketKeeper,
 		nil, geth.NewEVM, cast.ToString(appOpts.Get(srvflags.EVMTracer)), evmSs,
 	)
-	app.EvmKeeper = app.EvmKeeper.SetHooks(app.IdentityKeeper)
+	app.EvmKeeper = app.EvmKeeper.SetHooks(evmkeeper.NewMultiEvmHooks(
+		app.IdentityKeeper,
+		app.RootupdaterKeeper,
+	))
+
 	evmModule := evm.NewAppModule(app.EvmKeeper, app.AccountKeeper, evmSs) // <- ACTUAL module creation in app.go that you need
 
 	app.VestingmintKeeper = *vestingmintmodulekeeper.NewKeeper(
@@ -738,6 +761,8 @@ func New(
 		vestingmintModule,
 		identityModule,
 		cscaListModule,
+		rootupdaterModule,
+
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -777,6 +802,8 @@ func New(
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -811,6 +838,8 @@ func New(
 		vestingmintmoduletypes.ModuleName,
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
+		rootupdatermoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -855,6 +884,7 @@ func New(
 		identitymoduletypes.ModuleName,
 		cscalisttypes.ModuleName,
 
+		rootupdatermoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -891,6 +921,8 @@ func New(
 		multisigModule,
 		evmModule,
 		feeMarketModule,
+		rootupdaterModule,
+
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -1064,6 +1096,29 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		"v1.1.3-rc1",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
+	if upgradeInfo.Name == "v1.1.4-rc1" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: []string{rootupdatermoduletypes.ModuleName},
+		}))
+	}
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.1.4-rc1",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
+				ContractAddress:     "0xBF926a23B4A0bcA301F97Ccd27358b55Dc4C7D3C",
+				Root:                "0x00",
+				LastSignedRoot:      "0x00",
+				LastSignedRootIndex: "0x00",
+				EventName:           "RootUpdated",
+				RootTimestamp:       1724316208,
+			})
+			fromVM[rootupdatermoduletypes.ModuleName] = rootupdatermodule.AppModule{}.ConsensusVersion()
+
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		},
 	)
@@ -1280,6 +1335,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	//paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(evmtypes.ModuleName)
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
+	paramsKeeper.Subspace(rootupdatermoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

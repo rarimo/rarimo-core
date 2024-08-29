@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rarimo.rarimocore.rootupdater;
+
+option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
+
+// Msg defines the Msg service.
+service Msg {
+
+}
+
+// this line is used by starport scaffolding # proto/tx/message

@@ -3,6 +3,7 @@ package keeper
 import (
 	"bytes"
 	"fmt"
+	"github.com/rarimo/rarimo-core/ethermint/utils"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -104,7 +105,13 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 	}
 
 	// Validating message receiver address (should be our state smart contract)
-	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), hexutil.MustDecode(params.IdentityContractAddress)) != 0 {
+	addressBytes, err := hexutil.Decode(params.IdentityContractAddress)
+	if err != nil {
+		k.Logger(ctx).Debug("failed to decode contract address")
+		return nil
+	}
+
+	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), addressBytes) != 0 {
 		return nil
 	}
 
@@ -122,7 +129,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		}
 
 		eventBody := state.StateStateTransited{}
-		if err := unpackLog(stateV2, &eventBody, event.Name, log); err != nil {
+		if err := utils.UnpackLog(stateV2, &eventBody, event.Name, log); err != nil {
 			return err
 		}
 
@@ -133,24 +140,4 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 	}
 
 	return nil
-}
-
-// unpackLog copy-pasted from logic in generated s-c bindings.
-func unpackLog(contractAbi abi.ABI, out interface{}, event string, log *ethtypes.Log) error {
-	if log.Topics[0] != contractAbi.Events[event].ID {
-		return fmt.Errorf("event signature mismatch")
-	}
-
-	if len(log.Data) > 0 {
-		if err := contractAbi.UnpackIntoInterface(out, event, log.Data); err != nil {
-			return err
-		}
-	}
-	var indexed abi.Arguments
-	for _, arg := range contractAbi.Events[event].Inputs {
-		if arg.Indexed {
-			indexed = append(indexed, arg)
-		}
-	}
-	return abi.ParseTopics(out, indexed, log.Topics[1:])
 }

@@ -229,6 +229,12 @@ func (k Keeper) getContent(ctx sdk.Context, op types.Operation) (merkle.Content,
 			return nil, fmt.Errorf("%w: failed to unmarshal details: %s", sdkerrors.ErrInvalidRequest, err.Error())
 		}
 		return pkg.GetCSCARootUpdateContent(update)
+	case types.OpType_PASSPORT_ROOT_UPDATE:
+		update, err := pkg.GetPassportRootUpdate(op)
+		if err != nil {
+			return nil, fmt.Errorf("%w: failed to unmarshal details: %s", sdkerrors.ErrInvalidRequest, err.Error())
+		}
+		return pkg.GetPassportRootUpdateContent(update)
 	case types.OpType_ARBITRARY:
 		arbitrary, err := pkg.GetArbitrary(op)
 		if err != nil {
