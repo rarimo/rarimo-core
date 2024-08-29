@@ -1123,6 +1123,16 @@ func New(
 		},
 	)
 
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.1.4-rc2",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			params := app.RootupdaterKeeper.GetParams(ctx)
+			params.ContractAddress = "0xc1534912902BBe8C54626e2D69288C76a843bc0E"
+			app.RootupdaterKeeper.SetParams(ctx, params)
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
