@@ -35,10 +35,12 @@ func NewMultiEvmHooks(hooks ...types.EvmHooks) MultiEvmHooks {
 
 // PostTxProcessing delegate the call to underlying hooks
 func (mh MultiEvmHooks) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
+	var errBunch error
+
 	for i := range mh {
 		if err := mh[i].PostTxProcessing(ctx, msg, receipt); err != nil {
-			return errorsmod.Wrapf(err, "EVM hook %T failed", mh[i])
+			errBunch = errorsmod.Wrapf(errorsmod.Wrap(errBunch, err.Error()), "EVM hook %T failed", mh[i])
 		}
 	}
-	return nil
+	return errBunch
 }

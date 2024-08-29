@@ -5,6 +5,24 @@ title: Mainnet upgrades
 
 # Mainnet upgrades
 
+## V1.1.3
+
+Core binary: (
+alpine-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.3/rarimo-core-alpine-linux-amd64>".
+
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.3>"
+release information.
+
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
+use Alpine binary on your machine.
+
+If you are using `cosmovisor` the upgrade will be done automatically.
+
+### What's new?
+
+Upgrade v1.1.3 introduces the new Arbitrary proposal in terms of `rarimocore` module that can be used to sign any
+specified byte data in body.
+
 ## V1.1.2
 
 Core binary: (
@@ -18,6 +36,7 @@ use Alpine binary on your machine.
 
 If you are using `cosmovisor` the upgrade will be done automatically.
 
+### What's new?
 Upgrade v1.1.2 changes the parameters of [feemarket](../../../x/feemarket) module, in particular `BaseFee`
 and `NoBaseFee` that should be `0` and `true` while we are using zero commissions on production.
 
@@ -32,6 +51,7 @@ release information.
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade v1.1.1 introduces a new module to store and manage [CSCA Master List](https://pkddownloadsg.icao.int/). More
 information can be found in [module docs](../../../x/cscalist/README.md).
 
@@ -48,6 +68,7 @@ Upgrade will perform automatically if you are using `cosmovisor` under Alpine li
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade v1.1.0 introduces a couple of features for identity transfers:
 
 - New WorldCoin identity transfer
@@ -65,6 +86,7 @@ Upgrade will perform automatically if you are using `cosmovisor` under Alpine li
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade v1.0.7 introduces fixes to the `rarimocore` module:
 
 - Adding feature to clear old TSS violation reports.
@@ -78,6 +100,7 @@ Upgrade will perform automatically if you are using `cosmovisor` under Alpine li
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade V1.0.6 introduces:
 
 - Adding message for operation resign by Threshold signature producers.
@@ -93,6 +116,7 @@ Upgrade will perform automatically if you are using `cosmovisor` under Alpine li
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade v1.0.5 introduces several fixes:
 
 - Adding `createdAtBlock` field to `StateInfo` entry in `identity` module.
@@ -106,6 +130,7 @@ Upgrade will perform automatically if you are using `cosmovisor` under Alpine li
 Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
 use Alpine binary on your machine.
 
+### What's new?
 Upgrade v1.0.4 introduces `identity` core module that is responsible for storing aggregated information about
 identity state transitions published into Rarimo chain. It uses deployed into Rarimo EVM original Iden3 state
 smart-contracts.
