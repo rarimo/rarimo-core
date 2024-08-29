@@ -54947,6 +54947,56 @@ paths:
           type: string
       tags:
         - Query
+  /rarimo/rarimo-core/rootupdater/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarimoRarimocoreRootupdaterParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  contract_address:
+                    type: string
+                  root:
+                    type: string
+                  last_signed_root:
+                    type: string
+                  last_signed_root_index:
+                    type: string
+                  event_name:
+                    type: string
+                  root_timestamp:
+                    type: string
+                    format: int64
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /rarimo/rarimo-core/tokenmanager/collection:
     get:
       operationId: RarimoRarimocoreTokenmanagerCollectionAll
@@ -60049,56 +60099,6 @@ paths:
           required: true
           type: string
           format: uint64
-      tags:
-        - Query
-  /rarimo/rarimo-core/rootupdater/params:
-    get:
-      summary: Parameters queries the parameters of the module.
-      operationId: RarimoRootupdaterParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-                properties:
-                  contract_address:
-                    type: string
-                  root:
-                    type: string
-                  last_signed_root:
-                    type: string
-                  last_signed_root_index:
-                    type: string
-                  event_name:
-                    type: string
-                  root_timestamp:
-                    type: integer
-                    format: int64
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
       tags:
         - Query
 definitions:
@@ -92156,6 +92156,44 @@ definitions:
         type: string
       validator:
         type: string
+  rarimo.rarimocore.rootupdater.Params:
+    type: object
+    properties:
+      contract_address:
+        type: string
+      root:
+        type: string
+      last_signed_root:
+        type: string
+      last_signed_root_index:
+        type: string
+      event_name:
+        type: string
+      root_timestamp:
+        type: string
+        format: int64
+    description: Params defines the parameters for the module.
+  rarimo.rarimocore.rootupdater.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          contract_address:
+            type: string
+          root:
+            type: string
+          last_signed_root:
+            type: string
+          last_signed_root_index:
+            type: string
+          event_name:
+            type: string
+          root_timestamp:
+            type: string
+            format: int64
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
     properties:
@@ -93970,41 +94008,3 @@ definitions:
         format: uint64
       denom:
         type: string
-  rarimo.rootupdater.Params:
-    type: object
-    properties:
-      contract_address:
-        type: string
-      root:
-        type: string
-      last_signed_root:
-        type: string
-      last_signed_root_index:
-        type: string
-      event_name:
-        type: string
-      root_timestamp:
-        type: integer
-        format: int64
-    description: Params defines the parameters for the module.
-  rarimo.rootupdater.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-        properties:
-          contract_address:
-            type: string
-          root:
-            type: string
-          last_signed_root:
-            type: string
-          last_signed_root_index:
-            type: string
-          event_name:
-            type: string
-          root_timestamp:
-            type: integer
-            format: int64
-    description: QueryParamsResponse is response type for the Query/Params RPC method.

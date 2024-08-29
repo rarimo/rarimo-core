@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rarimo.rootupdater;
+package rarimo.rarimocore.rootupdater;
 
 import "gogoproto/gogo.proto";
 
@@ -13,4 +13,5 @@ message Params {
   string last_signed_root_index = 4;
   string event_name = 5;
   int64 root_timestamp = 6;
+  uint64 block_height = 7;
 }
