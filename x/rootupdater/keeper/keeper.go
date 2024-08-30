@@ -6,7 +6,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -79,7 +78,6 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		return nil
 	}
 
-	var commonError error
 	// https://docs.evmos.org/protocol/modules/evm#posttxprocessing
 
 	if len(receipt.Logs) == 0 {
@@ -91,7 +89,6 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		event, err := stateV2.EventByID(eventId)
 		if err != nil {
 			k.Logger(ctx).Error("failed to get event by ID")
-			commonError = errors.Wrap(commonError, errors.Wrapf(err, "failed to get event by id %s", eventId).Error())
 			continue
 		}
 
@@ -103,7 +100,6 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		eventBody := state.PoseidonSMTRootUpdated{}
 		if err := utils.UnpackLog(stateV2, &eventBody, event.Name, log); err != nil {
 			k.Logger(ctx).Error("failed to unpack event body")
-			commonError = errors.Wrap(commonError, errors.Wrapf(err, "failed to unpack event %s", eventId).Error())
 			continue
 		}
 
@@ -115,7 +111,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		k.SetParams(ctx, params)
 	}
 
-	return commonError
+	return nil
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
