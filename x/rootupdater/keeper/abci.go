@@ -10,8 +10,11 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 	params := k.GetParams(ctx)
 
 	if params.Root == params.LastSignedRoot && params.Root != "" {
+		k.Logger(ctx).Info("root is not updated. Skipping end block")
 		return
 	}
+
+	k.Logger(ctx).Info("root is updated. Operation creating")
 
 	// Creating operation to be signed by TSS parties
 	index, err := k.rarimo.CreateRootUpdateOperation(ctx, types.ModuleName, &rarimocoremoduletypes.PassportRootUpdate{
