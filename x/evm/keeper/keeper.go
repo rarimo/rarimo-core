@@ -261,9 +261,14 @@ func (k *Keeper) SetHooks(eh types.EvmHooks) *Keeper {
 
 // PostTxProcessing delegate the call to the hooks. If no hook has been registered, this function returns with a `nil` error
 func (k *Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
+	k.Logger(ctx).Info("Process main eth hook handler")
 	if k.hooks == nil {
+		k.Logger(ctx).Info("eth hooks is nil")
 		return nil
 	}
+
+	k.Logger(ctx).Info("PostTxProcessing", "msg ", msg)
+
 	return k.hooks.PostTxProcessing(ctx, msg, receipt)
 }
 

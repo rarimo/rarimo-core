@@ -163,9 +163,11 @@ func (k *Keeper) ApplyTransaction(ctx sdk.Context, msgEth *types.MsgEthereumTx) 
 	signer := ethtypes.MakeSigner(cfg.ChainConfig, big.NewInt(ctx.BlockHeight()))
 	msg, err := msgEth.AsMessage(signer, cfg.BaseFee)
 	if err != nil {
+		k.Logger(ctx).Error("failed to return ethereum transaction as core message")
 		return nil, errorsmod.Wrap(err, "failed to return ethereum transaction as core message")
 	}
 
+	k.Logger(ctx).Info("msg from msgEth.AsMessage ", msg)
 	// snapshot to contain the tx processing and post processing in same scope
 	var commit func()
 	tmpCtx := ctx
@@ -203,6 +205,7 @@ func (k *Keeper) ApplyTransaction(ctx sdk.Context, msgEth *types.MsgEthereumTx) 
 
 	var contractAddr common.Address
 	if msg.To() == nil {
+		k.Logger(ctx).Info("msg to is empty. Creating contract address...")
 		contractAddr = crypto.CreateAddress(msg.From(), msg.Nonce())
 	}
 
@@ -241,6 +244,7 @@ func (k *Keeper) ApplyTransaction(ctx sdk.Context, msgEth *types.MsgEthereumTx) 
 
 	// refund gas in order to match the Ethereum gas consumption instead of the default SDK one.
 	if err = k.RefundGas(ctx, msg, msg.Gas()-res.GasUsed, cfg.Params.EvmDenom); err != nil {
+		k.Logger(ctx).Error("failed to refund gas leftover gas to sender %s", msg.From())
 		return nil, errorsmod.Wrapf(err, "failed to refund gas leftover gas to sender %s", msg.From())
 	}
 
@@ -254,6 +258,7 @@ func (k *Keeper) ApplyTransaction(ctx sdk.Context, msgEth *types.MsgEthereumTx) 
 
 	totalGasUsed, err := k.AddTransientGasUsed(ctx, res.GasUsed)
 	if err != nil {
+		k.Logger(ctx).Error("failed to add transient gas used")
 		return nil, errorsmod.Wrap(err, "failed to add transient gas used")
 	}
 
@@ -346,10 +351,12 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context,
 
 	sender := vm.AccountRef(msg.From())
 	contractCreation := msg.To() == nil
+	k.Logger(ctx).Info("ApplyMessageWithConfig ", "contractCreation is ", contractCreation)
 	isLondon := cfg.ChainConfig.IsLondon(evm.Context().BlockNumber)
 
 	intrinsicGas, err := k.GetEthIntrinsicGas(ctx, msg, cfg.ChainConfig, contractCreation)
 	if err != nil {
+		k.Logger(ctx).Error("intrinsic gas failed")
 		// should have already been checked on Ante Handler
 		return nil, errorsmod.Wrap(err, "intrinsic gas failed")
 	}
@@ -357,6 +364,7 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context,
 	// Should check again even if it is checked on Ante Handler, because eth_call don't go through Ante Handler.
 	if leftoverGas < intrinsicGas {
 		// eth_estimateGas will check for this exact error
+		k.Logger(ctx).Error("apply message")
 		return nil, errorsmod.Wrap(core.ErrIntrinsicGas, "apply message")
 	}
 	leftoverGas -= intrinsicGas

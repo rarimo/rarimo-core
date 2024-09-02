@@ -330,6 +330,8 @@ func (msg MsgEthereumTx) AsMessage(signer ethtypes.Signer, baseFee *big.Int) (co
 		return nil, err
 	}
 
+	fmt.Println("txData ", txData) // TODO remove fmt log or replace with Logger
+
 	gasPrice, gasFeeCap, gasTipCap := txData.GetGasPrice(), txData.GetGasFeeCap(), txData.GetGasTipCap()
 	if baseFee != nil {
 		gasPrice = math.BigMin(gasPrice.Add(gasTipCap, baseFee), gasFeeCap)
