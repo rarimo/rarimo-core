@@ -57,24 +57,18 @@ func NewKeeper(
 func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *ethtypes.Receipt) error {
 	params := k.GetParams(ctx)
 
-	k.Logger(ctx).Error("PostTxProcessing", "msg", msg, "receipt", receipt)
+	k.Logger(ctx).Info("PostTxProcessing", "msg", msg, "receipt", receipt)
 
 	stateV2, err := abi.JSON(strings.NewReader(state.PoseidonSMTABI))
 	if err != nil {
 		k.Logger(ctx).Error("failed to marshal poseidon smart abi", "error", err)
-		return err
+		return nil
 	}
 
 	contractAddress, err := hexutil.Decode(params.ContractAddress)
 	if err != nil {
 		// If return an error here, the whole EVM module won't work
-		k.Logger(ctx).Info("failed to decode contract address")
-		return nil
-	}
-
-	// Validating message receiver address (should be our state smart contract)
-	if msg.To() == nil || bytes.Compare(msg.To().Bytes(), contractAddress) != 0 {
-		k.Logger(ctx).Info("inappropriate contract address")
+		k.Logger(ctx).Error("failed to decode contract address")
 		return nil
 	}
 
@@ -85,6 +79,12 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 	}
 
 	for _, log := range receipt.Logs {
+		// Validating message receiver address (should be our state smart contract)
+		if log.Address.Bytes() == nil || bytes.Compare(log.Address.Bytes(), contractAddress) != 0 {
+			k.Logger(ctx).Info(fmt.Sprintf("inappropriate contract address: expected %s got %s", params.ContractAddress, log.Address.String()))
+			continue
+		}
+
 		eventId := log.Topics[0]
 		event, err := stateV2.EventByID(eventId)
 		if err != nil {
@@ -93,7 +93,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		}
 
 		if event.Name != params.EventName {
-			k.Logger(ctx).Info("unmatched event: got %s, expected %s", event.Name, params.EventName)
+			k.Logger(ctx).Info(fmt.Sprintf("unmatched event: got %s, expected %s", event.Name, params.EventName))
 			continue
 		}
 
