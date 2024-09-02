@@ -87,36 +87,37 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 			isAppropriateAddress = true
 		}
 	}
+	if !isAppropriateAddress {
+		return nil
+	}
 
-	if isAppropriateAddress {
-		for _, log := range receipt.Logs {
+	for _, log := range receipt.Logs {
 
-			eventId := log.Topics[0]
+		eventId := log.Topics[0]
 
-			event, err := stateV2.EventByID(eventId)
-			if err != nil {
-				k.Logger(ctx).Error("failed to get event by ID")
-				continue
-			}
-
-			if event.Name != params.EventName {
-				k.Logger(ctx).Info(fmt.Sprintf("unmatched event: got %s, expected %s", event.Name, params.EventName))
-				continue
-			}
-
-			eventBody := state.PoseidonSMTRootUpdated{}
-			if err := utils.UnpackLog(stateV2, &eventBody, event.Name, log); err != nil {
-				k.Logger(ctx).Error("failed to unpack event body")
-				continue
-			}
-
-			params.Root = hexutil.Encode(eventBody.Root[:])
-			params.RootTimestamp = ctx.BlockTime().Unix()
-			params.BlockHeight = log.BlockNumber
-
-			k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
-			k.SetParams(ctx, params)
+		event, err := stateV2.EventByID(eventId)
+		if err != nil {
+			k.Logger(ctx).Error("failed to get event by ID")
+			continue
 		}
+
+		if event.Name != params.EventName {
+			k.Logger(ctx).Info(fmt.Sprintf("unmatched event: got %s, expected %s", event.Name, params.EventName))
+			continue
+		}
+
+		eventBody := state.PoseidonSMTRootUpdated{}
+		if err := utils.UnpackLog(stateV2, &eventBody, event.Name, log); err != nil {
+			k.Logger(ctx).Error("failed to unpack event body")
+			continue
+		}
+
+		params.Root = hexutil.Encode(eventBody.Root[:])
+		params.RootTimestamp = ctx.BlockTime().Unix()
+		params.BlockHeight = log.BlockNumber
+
+		k.Logger(ctx).Info(fmt.Sprintf("Received PostTxProcessing event in %s module: %v", types.ModuleName, eventBody))
+		k.SetParams(ctx, params)
 	}
 
 	return nil
