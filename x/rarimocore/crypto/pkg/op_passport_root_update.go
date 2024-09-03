@@ -20,8 +20,9 @@ func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate
 
 func GetPassportRootUpdateContent(op *types.PassportRootUpdate) (*operation.PassportRootUpdateContent, error) {
 	return &operation.PassportRootUpdateContent{
-		ContractAddress: hexutil.MustDecode(op.ContractAddress),
-		Root:            operation.To32Bytes(hexutil.MustDecode(op.Root)),
-		RootTimestamp:   operation.To32Bytes(new(big.Int).SetInt64(op.Timestamp).Bytes()),
+		SourceContractAddress:      hexutil.MustDecode(op.SourceContractAddress),
+		DestinationContractAddress: hexutil.MustDecode(op.DestinationContractAddress),
+		Root:                       operation.To32Bytes(hexutil.MustDecode(op.Root)),
+		RootTimestamp:              operation.To32Bytes(new(big.Int).SetInt64(op.Timestamp).Bytes()),
 	}, nil
 }

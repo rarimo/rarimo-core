@@ -54961,7 +54961,7 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
-                  contract_address:
+                  source_contract_address:
                     type: string
                   root:
                     type: string
@@ -54974,6 +54974,11 @@ paths:
                   root_timestamp:
                     type: string
                     format: int64
+                  block_height:
+                    type: string
+                    format: uint64
+                  destination_contract_address:
+                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -92159,7 +92164,7 @@ definitions:
   rarimo.rarimocore.rootupdater.Params:
     type: object
     properties:
-      contract_address:
+      source_contract_address:
         type: string
       root:
         type: string
@@ -92172,6 +92177,11 @@ definitions:
       root_timestamp:
         type: string
         format: int64
+      block_height:
+        type: string
+        format: uint64
+      destination_contract_address:
+        type: string
     description: Params defines the parameters for the module.
   rarimo.rarimocore.rootupdater.QueryParamsResponse:
     type: object
@@ -92180,7 +92190,7 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
-          contract_address:
+          source_contract_address:
             type: string
           root:
             type: string
@@ -92193,6 +92203,11 @@ definitions:
           root_timestamp:
             type: string
             format: int64
+          block_height:
+            type: string
+            format: uint64
+          destination_contract_address:
+            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
