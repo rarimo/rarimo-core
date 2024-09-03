@@ -8,9 +8,10 @@ import (
 )
 
 type PassportRootUpdateContent struct {
-	ContractAddress []byte
-	Root            []byte
-	RootTimestamp   []byte
+	SourceContractAddress      []byte
+	DestinationContractAddress []byte
+	Root                       []byte
+	RootTimestamp              []byte
 }
 
 const hashPassportRootUpdatePrefix = "Rarimo passport root"
@@ -18,7 +19,7 @@ const hashPassportRootUpdatePrefix = "Rarimo passport root"
 var _ merkle.Content = PassportRootUpdateContent{}
 
 func (c PassportRootUpdateContent) CalculateHash() []byte {
-	return eth.Keccak256([]byte(hashPassportRootUpdatePrefix), c.ContractAddress, c.Root, c.RootTimestamp)
+	return eth.Keccak256([]byte(hashPassportRootUpdatePrefix), c.SourceContractAddress, c.DestinationContractAddress, c.Root, c.RootTimestamp)
 }
 
 func (c PassportRootUpdateContent) Equals(other merkle.Content) bool {

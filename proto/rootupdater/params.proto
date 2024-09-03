@@ -7,7 +7,7 @@ option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
 
 // Params defines the parameters for the module.
 message Params {
-  string contract_address = 1;
+  string source_contract_address = 1;
   string root = 2;
   string last_signed_root = 3;
   string last_signed_root_index = 4;

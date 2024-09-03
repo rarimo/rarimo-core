@@ -54961,7 +54961,7 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
-                  contract_address:
+                  source_contract_address:
                     type: string
                   root:
                     type: string
@@ -92164,7 +92164,7 @@ definitions:
   rarimo.rarimocore.rootupdater.Params:
     type: object
     properties:
-      contract_address:
+      source_contract_address:
         type: string
       root:
         type: string
@@ -92190,7 +92190,7 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
-          contract_address:
+          source_contract_address:
             type: string
           root:
             type: string
