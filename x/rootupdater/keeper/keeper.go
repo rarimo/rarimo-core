@@ -65,7 +65,7 @@ func (k Keeper) PostTxProcessing(ctx sdk.Context, msg core.Message, receipt *eth
 		return nil
 	}
 
-	contractAddress, err := hexutil.Decode(params.ContractAddress)
+	contractAddress, err := hexutil.Decode(params.SourceContractAddress)
 	if err != nil {
 		// If return an error here, the whole EVM module won't work
 		k.Logger(ctx).Error("failed to decode contract address")
