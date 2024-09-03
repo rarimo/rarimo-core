@@ -18,7 +18,7 @@ func (k Keeper) EndBlocker(ctx sdk.Context) {
 
 	// Creating operation to be signed by TSS parties
 	index, err := k.rarimo.CreateRootUpdateOperation(ctx, types.ModuleName, &rarimocoremoduletypes.PassportRootUpdate{
-		ContractAddress: params.ContractAddress,
+		ContractAddress: params.DestinationContractAddress,
 		Root:            params.Root,
 		Timestamp:       params.RootTimestamp,
 		BlockHeight:     params.BlockHeight,
