@@ -1110,12 +1110,12 @@ func New(
 		"v1.1.4-rc1",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
-				ContractAddress:     "0xBF926a23B4A0bcA301F97Ccd27358b55Dc4C7D3C",
-				Root:                "0x00",
-				LastSignedRoot:      "0x00",
-				LastSignedRootIndex: "0x00",
-				EventName:           "RootUpdated",
-				RootTimestamp:       1724316208,
+				SourceContractAddress: "0xBF926a23B4A0bcA301F97Ccd27358b55Dc4C7D3C",
+				Root:                  "0x00",
+				LastSignedRoot:        "0x00",
+				LastSignedRootIndex:   "0x00",
+				EventName:             "RootUpdated",
+				RootTimestamp:         1724316208,
 			})
 			fromVM[rootupdatermoduletypes.ModuleName] = rootupdatermodule.AppModule{}.ConsensusVersion()
 
@@ -1127,7 +1127,7 @@ func New(
 		"v1.1.4-rc2",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			params := app.RootupdaterKeeper.GetParams(ctx)
-			params.ContractAddress = "0xc1534912902BBe8C54626e2D69288C76a843bc0E"
+			params.SourceContractAddress = "0xc1534912902BBe8C54626e2D69288C76a843bc0E"
 			app.RootupdaterKeeper.SetParams(ctx, params)
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		},
@@ -1157,6 +1157,27 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		"v1.1.4-rc5",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.1.4-rc6",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			oldParams := app.RootupdaterKeeper.GetParams(ctx)
+
+			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
+				SourceContractAddress:      "0xBF926a23B4A0bcA301F97Ccd27358b55Dc4C7D3C",
+				DestinationContractAddress: "0x2af05993a27df83094a963af64b5d25296230544",
+				EventName:                  "RootUpdated",
+				RootTimestamp:              oldParams.RootTimestamp,
+				Root:                       oldParams.Root,
+				LastSignedRootIndex:        oldParams.LastSignedRootIndex,
+				LastSignedRoot:             oldParams.LastSignedRoot,
+				BlockHeight:                oldParams.BlockHeight,
+			})
+			fromVM[rootupdatermoduletypes.ModuleName] = rootupdatermodule.AppModule{}.ConsensusVersion()
+
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		},
 	)
