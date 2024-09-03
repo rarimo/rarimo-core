@@ -7,6 +7,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/rarimo/rarimo-core/x/rarimocore/crypto/operation"
 	"github.com/rarimo/rarimo-core/x/rarimocore/types"
+	"math/big"
 )
 
 func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate, error) {
@@ -19,8 +20,8 @@ func GetPassportRootUpdate(operation types.Operation) (*types.PassportRootUpdate
 
 func GetPassportRootUpdateContent(op *types.PassportRootUpdate) (*operation.PassportRootUpdateContent, error) {
 	return &operation.PassportRootUpdateContent{
-		ContractAddress: operation.To32Bytes(hexutil.MustDecode(op.ContractAddress)),
+		ContractAddress: hexutil.MustDecode(op.ContractAddress),
 		Root:            operation.To32Bytes(hexutil.MustDecode(op.Root)),
-		RootTimestamp:   operation.IntTo32Bytes(int(op.Timestamp)),
+		RootTimestamp:   operation.To32Bytes(new(big.Int).SetInt64(op.Timestamp).Bytes()),
 	}, nil
 }
