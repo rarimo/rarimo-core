@@ -5,6 +5,22 @@ title: Mainnet upgrades
 
 # Mainnet upgrades
 
+## V1.1.4
+Core binary: (aplina-linux/amd64): "<https://github.com/rarimo/rarimo-core/releases/download/v1.1.4/rarimo-core-alpine-linux-amd64>".
+
+Also, you can build core from sources by yourself: use "<https://github.com/rarimo/rarimo-core/releases/tag/v1.1.4>"
+release information.
+
+Also, if you are using Ubuntu linux, please install `musl-dev` using `sudo apt install musl-dev` command to be able to
+use Alpine binary on your machine.
+
+If you are using `cosmovisor` the upgrade will be done automatically.
+
+### What's new?
+
+Upgrade v1.1.4 introduces the new Rootupdater module. This module is designed to extract the passport root from Ethereum Virtual Machine (EVM) contract events and
+subsequently create a new operation for `rarimo-core` module. To learn more, refer to the documentation for the [rootupdater](../../../x/rootupdater) module
+
 ## V1.1.3
 
 Core binary: (
