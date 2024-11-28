@@ -1,0 +1,12 @@
+syntax = "proto3";
+package rarimo.rarimocore.rootupdater;
+
+import "gogoproto/gogo.proto";
+import "rootupdater/params.proto";
+
+option go_package = "github.com/rarimo/rarimo-core/x/rootupdater/types";
+
+// GenesisState defines the rootupdater module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rarimo.rarimocore.rarimocore;
+
+option go_package = "github.com/rarimo/rarimo-core/x/rarimocore/types";
+
+message PassportRootUpdate {
+  string root = 1;
+  string source_contract_address = 2;
+  string destination_contract_address = 3;
+  int64 timestamp = 4;
+  uint64 block_height = 5;
+}
+
+

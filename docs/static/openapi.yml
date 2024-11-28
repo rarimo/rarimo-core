@@ -52536,6 +52536,8 @@ paths:
                         - IDENTITY_STATE_TRANSFER
                         - WORLDCOIN_IDENTITY_TRANSFER
                         - CSCA_ROOT_UPDATE
+                        - ARBITRARY
+                        - PASSPORT_ROOT_UPDATE
                       default: TRANSFER
                     details:
                       title: Corresponding to type details
@@ -53027,6 +53029,8 @@ paths:
                       - IDENTITY_STATE_TRANSFER
                       - WORLDCOIN_IDENTITY_TRANSFER
                       - CSCA_ROOT_UPDATE
+                      - ARBITRARY
+                      - PASSPORT_ROOT_UPDATE
                     default: TRANSFER
                   details:
                     title: Corresponding to type details
@@ -54941,6 +54945,61 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  /rarimo/rarimo-core/rootupdater/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: RarimoRarimocoreRootupdaterParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  source_contract_address:
+                    type: string
+                  root:
+                    type: string
+                  last_signed_root:
+                    type: string
+                  last_signed_root_index:
+                    type: string
+                  event_name:
+                    type: string
+                  root_timestamp:
+                    type: string
+                    format: int64
+                  block_height:
+                    type: string
+                    format: uint64
+                  destination_contract_address:
+                    type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /rarimo/rarimo-core/tokenmanager/collection:
@@ -57544,6 +57603,7 @@ paths:
                       - Near
                       - Other
                       - Rarimo
+                      - RarimoEVM
                     default: EVM
                   params:
                     type: array
@@ -58928,6 +58988,7 @@ paths:
                             - Near
                             - Other
                             - Rarimo
+                            - RarimoEVM
                           default: EVM
                         params:
                           type: array
@@ -91007,6 +91068,8 @@ definitions:
       - IDENTITY_STATE_TRANSFER
       - WORLDCOIN_IDENTITY_TRANSFER
       - CSCA_ROOT_UPDATE
+      - ARBITRARY
+      - PASSPORT_ROOT_UPDATE
     default: TRANSFER
   rarimo.rarimocore.rarimocore.Operation:
     type: object
@@ -91027,6 +91090,8 @@ definitions:
           - IDENTITY_STATE_TRANSFER
           - WORLDCOIN_IDENTITY_TRANSFER
           - CSCA_ROOT_UPDATE
+          - ARBITRARY
+          - PASSPORT_ROOT_UPDATE
         default: TRANSFER
       details:
         title: Corresponding to type details
@@ -91377,6 +91442,8 @@ definitions:
                 - IDENTITY_STATE_TRANSFER
                 - WORLDCOIN_IDENTITY_TRANSFER
                 - CSCA_ROOT_UPDATE
+                - ARBITRARY
+                - PASSPORT_ROOT_UPDATE
               default: TRANSFER
             details:
               title: Corresponding to type details
@@ -91735,6 +91802,8 @@ definitions:
               - IDENTITY_STATE_TRANSFER
               - WORLDCOIN_IDENTITY_TRANSFER
               - CSCA_ROOT_UPDATE
+              - ARBITRARY
+              - PASSPORT_ROOT_UPDATE
             default: TRANSFER
           details:
             title: Corresponding to type details
@@ -92092,6 +92161,54 @@ definitions:
         type: string
       validator:
         type: string
+  rarimo.rarimocore.rootupdater.Params:
+    type: object
+    properties:
+      source_contract_address:
+        type: string
+      root:
+        type: string
+      last_signed_root:
+        type: string
+      last_signed_root_index:
+        type: string
+      event_name:
+        type: string
+      root_timestamp:
+        type: string
+        format: int64
+      block_height:
+        type: string
+        format: uint64
+      destination_contract_address:
+        type: string
+    description: Params defines the parameters for the module.
+  rarimo.rarimocore.rootupdater.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          source_contract_address:
+            type: string
+          root:
+            type: string
+          last_signed_root:
+            type: string
+          last_signed_root_index:
+            type: string
+          event_name:
+            type: string
+          root_timestamp:
+            type: string
+            format: int64
+          block_height:
+            type: string
+            format: uint64
+          destination_contract_address:
+            type: string
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   rarimo.rarimocore.tokenmanager.Collection:
     type: object
     properties:
@@ -92211,6 +92328,7 @@ definitions:
           - Near
           - Other
           - Rarimo
+          - RarimoEVM
         default: EVM
       params:
         type: array
@@ -92575,6 +92693,7 @@ definitions:
       - Near
       - Other
       - Rarimo
+      - RarimoEVM
     default: EVM
   rarimo.rarimocore.tokenmanager.OnChainItem:
     type: object
@@ -92609,6 +92728,7 @@ definitions:
                 - Near
                 - Other
                 - Rarimo
+                - RarimoEVM
               default: EVM
             params:
               type: array
@@ -93366,6 +93486,7 @@ definitions:
               - Near
               - Other
               - Rarimo
+              - RarimoEVM
             default: EVM
           params:
             type: array
@@ -93577,6 +93698,7 @@ definitions:
                     - Near
                     - Other
                     - Rarimo
+                    - RarimoEVM
                   default: EVM
                 params:
                   type: array

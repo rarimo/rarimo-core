@@ -23,7 +23,7 @@ shell:
     - cd /go/src/github.com/rarimo/rarimo-core
     - go mod tidy
     - go mod vendor
-    - go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+    - go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.5.0
     - cp $GOPATH/bin/cosmovisor /usr/local/bin/cosmovisor
   setup:
     - export GOPRIVATE=github.com/*
