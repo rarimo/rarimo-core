@@ -1062,6 +1062,29 @@ func New(
 		},
 	)
 
+	if upgradeInfo.Name == "v1.1.4" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storetypes.StoreUpgrades{
+			Added: []string{rootupdatermoduletypes.ModuleName},
+		}))
+	}
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"v1.1.4",
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
+				SourceContractAddress:      "0xA25a197d26Cad659A8fFf7F268cA4F9e0283de03",
+				DestinationContractAddress: "0xcB1d24266F25897838a59491e03A57602DC1b415",
+				Root:                       "0x00",
+				LastSignedRoot:             "0x00",
+				LastSignedRootIndex:        "0x00",
+				EventName:                  "RootUpdated",
+				RootTimestamp:              1724316208,
+				BlockHeight:                0,
+			})
+			fromVM[rootupdatermoduletypes.ModuleName] = rootupdatermodule.AppModule{}.ConsensusVersion()
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		},
+	)
+
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
