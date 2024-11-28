@@ -1,6 +1,8 @@
 module github.com/rarimo/rarimo-core
 
-go 1.20
+go 1.21
+
+toolchain go1.23.2
 
 require (
 	cosmossdk.io/errors v1.0.1
