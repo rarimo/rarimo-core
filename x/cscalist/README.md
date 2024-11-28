@@ -91,7 +91,7 @@ Replace CSCA list proposal
 {
         "@type": "/rarimo.rarimocore.cscalist.ReplaceCSCAListProposal",
         "title": "Init",
-        "description": "Lorem ipsum dolor sit amet concestetur!",
+        "description": "Lorem ipsum dolor sit amet consectetur!",
         "leaves": [
           "0x28815c9a1c9d638886d6ac193df55f98824c491d09bbbd712f96b5adfeba742e"
         ]
@@ -103,7 +103,7 @@ Edit CSCA list proposal
 {
         "@type": "/rarimo.rarimocore.cscalist.EditCSCAListProposal",
         "title": "Add",
-        "description": "Lorem ipsum dolor sit amet concestetur!",
+        "description": "Lorem ipsum dolor sit amet consectetur!",
         "toAdd": [
           "0x28815c9a1c9d638886d6ac193df55f98824c491d09bbbd712f96b5adfeba742e"
         ],
@@ -127,7 +127,7 @@ Or you can directly edit this sample (replace `@type` and `leaves` for another t
       "content": {
         "@type": "/rarimo.rarimocore.cscalist.ReplaceCSCAListProposal",
         "title": "Init",
-        "description": "Lorem ipsum dolor sit amet concestetur!",
+        "description": "Lorem ipsum dolor sit amet consectetur!",
         "leaves": [
           "0x28815c9a1c9d638886d6ac193df55f98824c491d09bbbd712f96b5adfeba742e"
         ]
