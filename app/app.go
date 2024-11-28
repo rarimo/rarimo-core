@@ -1071,8 +1071,8 @@ func New(
 		"v1.1.4",
 		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			app.RootupdaterKeeper.SetParams(ctx, rootupdatermoduletypes.Params{
-				SourceContractAddress:      "",
-				DestinationContractAddress: "",
+				SourceContractAddress:      "0xA25a197d26Cad659A8fFf7F268cA4F9e0283de03",
+				DestinationContractAddress: "0xcB1d24266F25897838a59491e03A57602DC1b415",
 				Root:                       "0x00",
 				LastSignedRoot:             "0x00",
 				LastSignedRootIndex:        "0x00",
