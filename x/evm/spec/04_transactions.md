@@ -151,9 +151,9 @@ type LegacyTx struct {
 
 This message field validation is expected to fail if:
 
-- `GasPrice` is invalid (`nil` , negaitve or out of int256 bound)
+- `GasPrice` is invalid (`nil` , negative or out of int256 bound)
 - `Fee` (gasprice * gaslimit) is invalid
-- `Amount` is invalid (negaitve or out of int256 bound)
+- `Amount` is invalid (negative or out of int256 bound)
 - `To` address is invalid (non valid ethereum hex address)
 
 ### `DynamicFeeTx`
