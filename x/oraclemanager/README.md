@@ -7,7 +7,7 @@ title: x/oraclemanager
 
 ## Abstract
 
-The `oraclemanager` cosmos module contains logic for managing distibuted public oracles that supports our bridge by
+The `oraclemanager` cosmos module contains logic for managing distributed public oracles that supports our bridge by
 delivering
 information about transfers.
 
