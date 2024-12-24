@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cosmos/cosmos-sdk/store/rootmulti"
 	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
 	ante2 "github.com/rarimo/rarimo-core/ethermint/ante"
 
@@ -379,8 +378,6 @@ func New(
 		tkeys:             tkeys,
 		memKeys:           memKeys,
 	}
-
-	app.CommitMultiStore().(*rootmulti.Store).SetLazyLoading(true)
 
 	app.ParamsKeeper = initParamsKeeper(
 		appCodec,
