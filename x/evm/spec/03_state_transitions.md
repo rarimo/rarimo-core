@@ -70,7 +70,7 @@ After authentication through the `antehandler`, each `sdk.Msg` (in this case `Ms
     5. Confirm that EVM params for contract creation (`EnableCreate`) and contract execution (`EnableCall`) are enabled
     6. Apply message. If `To` address is `nil`, create new contract using code as deployment code. Else call contract at given address with the given input as parameters
     7. Calculate gas used by the evm operation
-3. If `Tx` applied sucessfully
+3. If `Tx` applied successfully
     1. Execute EVM `Tx` postprocessing hooks. If hooks return error, revert the whole `Tx`
     2. Refund gas according to Ethereum gas accounting rules
     3. Update block bloom filter value using the logs generated from the tx

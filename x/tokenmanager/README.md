@@ -1,13 +1,13 @@
 ---
 layout: default
-title: x/tokenamanager
+title: x/tokenmanager
 ---
 
-# `x/tokenamanager`
+# `x/tokenmanager`
 
 ## Abstract
 
-The `tokenamanager` module is responsible for storing information about all supported tokens.
+The `tokenmanager` module is responsible for storing information about all supported tokens.
 
 ## Concepts
 
@@ -440,7 +440,7 @@ message RemoveCollectionDataProposal {
 
 ### RemoveCollectionProposal
 
-**RemoveCollectionProposal** - removing the hole collection
+**RemoveCollectionProposal** - removing the whole collection
 
 ```protobuf
 message RemoveCollectionProposal {
